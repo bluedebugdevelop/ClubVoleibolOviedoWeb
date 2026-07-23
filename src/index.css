@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+@theme {
+  /* Paleta corporativa Club Voleibol Oviedo — azul y blanco */
+  --color-navy-950: #05192e;
+  --color-navy-900: #082139;
+  --color-navy-800: #0b2f52;
+  --color-navy-700: #0f3d6b;
+  --color-brand-600: #1560bd;
+  --color-brand-500: #1d74d8;
+  --color-brand-400: #3d94ef;
+  --color-sky-300: #7cc4f7;
+  --color-sky-100: #dbeeff;
+  --color-ice-50: #f2f8ff;
+
+  --font-display: "Poppins", "Segoe UI", system-ui, sans-serif;
+  --font-sans: "Inter", "Segoe UI", system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    color: var(--color-navy-900);
+    background-color: #ffffff;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+}
+
+@layer utilities {
+  .container-cvo {
+    width: 100%;
+    max-width: 1200px;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Fuentes web (Google Fonts vía import CSS) */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 300 800;
+  font-display: swap;
+  src: local("Inter"), local("Segoe UI");
+}
