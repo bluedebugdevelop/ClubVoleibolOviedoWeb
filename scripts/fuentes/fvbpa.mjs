@@ -91,8 +91,17 @@ function sets(bloque, desde, hasta) {
 
 /** Partidos de una página de calendario. */
 function partidos(pagina, anioInicio) {
-  return todos(/<div class="day">([\s\S]*?)(?=<div class="day">|<\/div>\s*<\/div>\s*$)/g, pagina)
-    .map((m) => m[1])
+  // Se parte por el marcador de cada partido en vez de casar un bloque con una
+  // expresión regular: la versión con `(?=…|$)` exigía que la página terminara
+  // justo detrás del último partido y, como no es así, se comía uno de cada
+  // equipo (21 de 22 en la nacional masculina).
+  //
+  // El último trozo arrastra el pie de página, pero da igual: de cada bloque se
+  // lee siempre la PRIMERA fecha, el primer equipo local, etc., que son los del
+  // partido; lo que venga detrás no se mira.
+  return pagina
+    .split('<div class="day">')
+    .slice(1)
     .map((b) => {
       const id = /live_match_(\d+)/.exec(b)?.[1]
       const local = divs(b, 'home_team')[0]

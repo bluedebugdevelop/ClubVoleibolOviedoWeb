@@ -8,7 +8,7 @@ import { retransmisiones } from '../data/contenido'
 import {
   equiposFiltro,
   bloquesDe,
-  jornadasDe,
+  mitadesDe,
   competiciones,
   clasificaciones,
   destacadosClasificacion,
@@ -76,20 +76,20 @@ function Clasificacion({ equipo }) {
 
 export default function Calendario() {
   const [filtro, setFiltro] = useState(TODOS)
-  const [jornada, setJornada] = useState('') // '' = todas
+  const [parte, setParte] = useState('') // '' = temporada entera
 
   const equipo = filtro === TODOS ? null : filtro
-  const opcionesJornada = jornadasDe(equipo)
+  const mitades = mitadesDe(equipo)
 
   /* los bloques se piden ya filtrados: así, al elegir un equipo, las fechas que
      se enseñan son las suyas y no las del club entero */
-  const jornadasFiltradas = bloquesDe(equipo, jornada || null)
+  const jornadasFiltradas = bloquesDe(equipo, parte || null)
 
-  /* al cambiar de equipo se vuelve a "todas": la jornada elegida era del equipo
-     anterior y sus ids no valen para el nuevo */
+  /* al cambiar de equipo se vuelve a la temporada entera: no todos tienen ida y
+     vuelta, y dejar el filtro puesto podía enseñar una lista vacía */
   function elegirEquipo(eq) {
     setFiltro(eq)
-    setJornada('')
+    setParte('')
   }
 
   /* con "Todos los equipos" no hay una sola clasificación que enseñar, así que
@@ -124,18 +124,27 @@ export default function Calendario() {
           ))}
         </div>
 
-        {/* el selector solo aparece con un equipo elegido: con "todos" las
-            jornadas no son comparables, porque la 5ª de cada competición cae en
-            fechas distintas */}
-        {opcionesJornada.length > 1 && (
-          <div className="jornadas">
-            <label htmlFor="jornada">Jornada</label>
-            <select id="jornada" value={jornada} onChange={(e) => setJornada(e.target.value)}>
-              <option value="">Todas ({opcionesJornada.length})</option>
-              {opcionesJornada.map((o) => (
-                <option key={o.id} value={o.id}>{o.etiqueta}</option>
-              ))}
-            </select>
+        {/* ida y vuelta solo con un equipo elegido: con "todos" no significan
+            nada, porque cada competición va por su jornada */}
+        {mitades.length > 0 && (
+          <div className="mitades">
+            <button
+              type="button"
+              aria-pressed={parte === ''}
+              onClick={() => setParte('')}
+            >
+              Toda la temporada
+            </button>
+            {mitades.map((m) => (
+              <button
+                key={m.id}
+                type="button"
+                aria-pressed={parte === m.id}
+                onClick={() => setParte(m.id)}
+              >
+                {m.etiqueta} <span>{m.n}</span>
+              </button>
+            ))}
           </div>
         )}
 
@@ -161,7 +170,10 @@ export default function Calendario() {
                         <span>{p.detalle}</span>
                       </span>
                       {p.resultado ? (
-                        <span className={`r ${p.tipo}`}>{p.resultado}</span>
+                        <span className={`r ${p.tipo}`}>
+                          {p.resultado}
+                          {p.parciales?.length > 0 && <i>{p.parciales.join('  ')}</i>}
+                        </span>
                       ) : (
                         <span>
                           <span className="r next">{p.local ? 'Local' : 'Visitante'}</span>

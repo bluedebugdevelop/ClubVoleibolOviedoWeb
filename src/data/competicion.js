@@ -67,11 +67,12 @@ function colores(equipo) {
 // ---------------------------------------------------------------------------
 const PRESENTACION = [
   {
+    // vale tanto para la Primera División Masculina de la RFEVB (la fuente
+    // buena) como para la copia de la FVBPA, por si algún día hay que tirar de
+    // ella
     casa: (e) =>
-      e.ente === 'FVBPA' &&
-      /^s[eé]nior$/i.test(e.categoria ?? '') &&
       e.genero === 'Masculino' &&
-      /primera\s+divisi[oó]n\s+nacional/i.test(e.division ?? ''),
+      /primera\s+divisi[oó]n\s+(masculina|nacional)/i.test(e.division ?? ''),
     nombre: 'Superliga 2 Masculina',
     nacional: true,
     paleta: ROJO,
@@ -267,10 +268,55 @@ export const jornadas = hayDatosReales ? bloques(TODOS_PARTIDOS) : jornadasMuest
 const partidosDe = (equipo) =>
   equipo ? TODOS_PARTIDOS.filter((p) => p.equipo === equipo) : TODOS_PARTIDOS
 
-/** Opciones del selector de jornada de un equipo: `[{ id, etiqueta }]`. */
-export function jornadasDe(equipo) {
+/**
+ * Reparte los partidos de un equipo entre ida y vuelta.
+ *
+ * En una liga a doble vuelta la ida es la primera mitad de las jornadas: con 22
+ * jornadas, de la 1 a la 11. La cuenta se hace sobre la fase con más partidos
+ * (la liga regular), y todo lo que venga después —segunda vuelta, fases
+ * finales, partidos sin jornada— cae en la vuelta, que es donde el calendario
+ * lo coloca.
+ */
+function mitad(partido, corte, faseRegular) {
+  if (partido.fase !== faseRegular || partido.jornada == null) return 'vuelta'
+  return partido.jornada <= corte ? 'ida' : 'vuelta'
+}
+
+function reparto(equipo) {
+  const lista = partidosDe(equipo)
+  if (!lista.length) return null
+
+  const porFase = new Map()
+  for (const p of lista) porFase.set(p.fase, (porFase.get(p.fase) ?? 0) + 1)
+  const faseRegular = [...porFase.entries()].sort((a, b) => b[1] - a[1])[0][0]
+
+  const jornadas = lista
+    .filter((p) => p.fase === faseRegular && p.jornada != null)
+    .map((p) => p.jornada)
+  if (!jornadas.length) return null
+
+  const corte = Math.ceil(Math.max(...jornadas) / 2)
+  return { corte, faseRegular }
+}
+
+/**
+ * Mitades con partidos de un equipo: `[{ id, etiqueta, n }]`.
+ * Vacío si no tiene sentido separarlas (no hay partidos en las dos).
+ */
+export function mitadesDe(equipo) {
   if (!hayDatosReales || !equipo) return []
-  return agruparPorJornada(partidosDe(equipo)).map(({ id, etiqueta }) => ({ id, etiqueta }))
+  const r = reparto(equipo)
+  if (!r) return []
+
+  const lista = partidosDe(equipo)
+  const ida = lista.filter((p) => mitad(p, r.corte, r.faseRegular) === 'ida').length
+  const vuelta = lista.length - ida
+  if (!ida || !vuelta) return []
+
+  return [
+    { id: 'ida', etiqueta: 'Ida', n: ida },
+    { id: 'vuelta', etiqueta: 'Vuelta', n: vuelta },
+  ]
 }
 
 /**
@@ -282,15 +328,13 @@ export function jornadasDe(equipo) {
  * - Con equipo: la temporada COMPLETA de ese equipo, jornada a jornada. Antes
  *   se reutilizaba la vista por fines de semana y se quedaba en los últimos
  *   cinco partidos; al mirar un equipo se quiere ver todo lo que lleva jugado.
- * - Con equipo y jornada: solo esa jornada (`jornada` es el id del bloque que
- *   devuelve `jornadasDe`, no el número, para no confundir las jornadas
- *   homónimas de fases distintas).
+ * - Con equipo y mitad ('ida' o 'vuelta'): solo esa parte de la temporada.
  *
  * Se agrupa DESPUÉS de filtrar, no antes: cada equipo termina su temporada
  * cuando termina, y si se agrupara primero sobre el club entero, al elegir uno
  * que acabó antes que el resto no saldría ni un partido.
  */
-export function bloquesDe(equipo, jornada = null) {
+export function bloquesDe(equipo, parte = null) {
   if (!hayDatosReales) {
     return jornadasMuestra
       .map((j) => ({
@@ -302,8 +346,11 @@ export function bloquesDe(equipo, jornada = null) {
 
   if (!equipo) return bloques(TODOS_PARTIDOS)
 
-  const todos = agruparPorJornada(partidosDe(equipo))
-  return jornada ? todos.filter((b) => b.id === jornada) : todos
+  let lista = partidosDe(equipo)
+  const r = parte ? reparto(equipo) : null
+  if (r) lista = lista.filter((p) => mitad(p, r.corte, r.faseRegular) === parte)
+
+  return agruparPorJornada(lista)
 }
 
 export const competiciones = hayDatosReales

@@ -465,24 +465,30 @@ footer .legal a:hover{color:#fff}
   .filters button:hover,.filters button:active{transform:none}
 }
 
-/* Selector de jornada. Sale solo con un equipo elegido, debajo de los filtros.
-   Se viste como las pastillas de .filters para que se lea como parte de la
-   misma barra, pero es un <select> y no botones: son hasta 22 jornadas y en
-   pastillas ocuparían media pantalla. */
-.jornadas{display:flex;align-items:center;gap:10px;margin:-10px 0 26px}
-.jornadas label{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:13.5px;
-  letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
-.jornadas select{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:13.5px;
-  letter-spacing:.06em;text-transform:uppercase;padding:9px 34px 9px 16px;border:1.5px solid var(--line);
-  border-radius:999px;background:#fff;color:var(--ink);cursor:pointer;appearance:none;
-  /* la flechita va en el fondo: un <select> nativo no deja estilar su marcador */
-  background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23082139' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;background-position:right 14px center;
-  transition:border-color .15s,color .15s}
-.jornadas select:hover,.jornadas select:focus{border-color:var(--blue);color:var(--blue);outline:none}
+/* Ida / vuelta. Sale solo con un equipo elegido, debajo de sus filtros. Van
+   más pequeñas y sin borde de color que las pastillas de .filters: son un
+   segundo nivel de filtro, no otra barra al mismo peso que la de equipos. */
+.mitades{display:flex;gap:6px;flex-wrap:wrap;margin:-14px 0 26px}
+.mitades button{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:12.5px;
+  letter-spacing:.1em;text-transform:uppercase;padding:7px 14px;border:1px solid var(--line);
+  border-radius:999px;background:#fff;color:var(--dim);cursor:pointer;
+  transition:background .15s,color .15s,border-color .15s}
+.mitades button:hover{border-color:var(--blue);color:var(--blue)}
+.mitades button[aria-pressed="true"],
+.mitades button[aria-pressed="true"]:hover{background:var(--tint);border-color:var(--blue);color:var(--blue)}
+/* el número de partidos, en discreto */
+.mitades button span{opacity:.6;margin-left:3px;font-size:11.5px}
 @media(max-width:640px){
-  .jornadas{margin:-6px 0 20px}
-  .jornadas select{font-size:12px;padding:8px 30px 8px 12px}
+  .mitades{margin:-10px 0 20px}
+  .mitades button{font-size:11.5px;padding:6px 11px}
+}
+
+/* Parciales de los sets, debajo del marcador. En gris y sin negrita para que
+   el resultado siga siendo lo que se lee primero. */
+.fix .r i{display:block;font-family:"Barlow",sans-serif;font-style:normal;font-weight:400;
+  font-size:11.5px;letter-spacing:0;color:var(--dim);margin-top:3px;white-space:nowrap}
+@media(max-width:640px){
+  .fix .r i{font-size:10.5px;white-space:normal}
 }
 
 .round{margin-bottom:34px}

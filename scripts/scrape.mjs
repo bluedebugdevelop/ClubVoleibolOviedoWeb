@@ -115,10 +115,39 @@ const ultimaFecha = (f) =>
 const ORDEN = ['Sénior', 'Senior', 'Junior', 'Juvenil', 'Cadete', 'Infantil', 'Alevín', 'Benjamín', 'Minibenjamín']
 function ordenar(a, b) {
   if (a.ente !== b.ente) return a.ente === 'RFEVB' ? -1 : 1
+  // Entre los dos equipos nacionales manda el masculino, que es el primer
+  // equipo del club (petición de Adrián, 2026-07-29). En la cantera se sigue
+  // ordenando por nombre, donde el femenino cae antes por alfabeto.
+  if (a.ente === 'RFEVB' && a.genero !== b.genero) return a.genero === 'Masculino' ? -1 : 1
   const ia = ORDEN.indexOf(a.categoria)
   const ib = ORDEN.indexOf(b.categoria)
   if (ia !== ib) return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib)
   return a.nombre.localeCompare(b.nombre, 'es')
+}
+
+/**
+ * Quita las competiciones nacionales que la FVBPA copia de la RFEVB.
+ *
+ * La federación asturiana replica las ligas nacionales en su web, pero con
+ * retraso: jornadas sin meter y clasificaciones a medias. Cuando el mismo
+ * equipo aparece en las dos, se conserva el de la RFEVB, que es la fuente
+ * oficial y además trae los parciales de cada set. Si la RFEVB fallara, se
+ * queda el asturiano y al menos hay datos.
+ */
+function sinDuplicadosNacionales(entradas, log = () => {}) {
+  const generosEnRfevb = new Set(
+    entradas.filter((e) => e.ente === 'RFEVB').map((e) => e.genero),
+  )
+  return entradas.filter((e) => {
+    const esCopia =
+      e.ente === 'FVBPA' &&
+      /nacional/i.test(e.division ?? '') &&
+      generosEnRfevb.has(e.genero)
+    if (esCopia) {
+      log(`  - se descarta la copia de la FVBPA: ${e.categoria} ${e.genero} — ${e.division}`)
+    }
+    return !esCopia
+  })
 }
 
 async function main() {
@@ -142,7 +171,7 @@ async function main() {
     log(`  !! RFEVB falló entera: ${e.message}`)
   }
 
-  const equipos = fusionar(crudo).sort(ordenar)
+  const equipos = fusionar(sinDuplicadosNacionales(crudo, log)).sort(ordenar)
   const partidos = equipos.reduce((n, e) => n + e.partidos.length, 0)
 
   log(`\n${'='.repeat(46)}`)

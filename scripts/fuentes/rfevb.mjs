@@ -37,6 +37,14 @@ export const GRUPOS_NACIONALES = [
   ['Primera División Femenina', 'Grupo C (asc.)', 'https://esvoley.es/voleibol/competiciones-femeninas/primera-division-femenina/grupo-c-sub-ascenso/'],
   ['Primera División Femenina', 'Grupo C (desc.)', 'https://esvoley.es/voleibol/competiciones-femeninas/primera-division-femenina/grupo-c-sub-descenso/'],
   ['Primera División Femenina', 'Grupo D', 'https://esvoley.es/voleibol/competiciones-femeninas/primera-division-femenina/grupo-d/'],
+  // La Primera División Masculina también la publica la FVBPA, pero su copia va
+  // con semanas de retraso (jornadas sin meter y clasificación a medias). Se
+  // toma de aquí, que es la fuente oficial, y en scrape.mjs se descarta la
+  // asturiana para no tener el mismo equipo dos veces.
+  ['Primera División Masculina', 'Grupo A', 'https://esvoley.es/voleibol/competiciones-masculinas/primera-division-masculina/grupo-a/'],
+  ['Primera División Masculina', 'Grupo B', 'https://esvoley.es/voleibol/competiciones-masculinas/primera-division-masculina/grupo-b/'],
+  ['Primera División Masculina', 'Grupo C', 'https://esvoley.es/voleibol/competiciones-masculinas/primera-division-masculina/grupo-c/'],
+  ['Primera División Masculina', 'Grupo D', 'https://esvoley.es/voleibol/competiciones-masculinas/primera-division-masculina/grupo-d/'],
   // Por si algún equipo acaba en Superliga 2 Femenina en vez de Primera
   ['Superliga 2 Femenina', 'Grupo A', 'https://esvoley.es/voleibol/competiciones-femeninas/superliga-2-femenina/grupo-a/'],
   ['Superliga 2 Femenina', 'Grupo B', 'https://esvoley.es/voleibol/competiciones-femeninas/superliga-2-femenina/grupo-b/'],

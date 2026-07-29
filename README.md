@@ -34,6 +34,11 @@ las dos federaciones donde compite el club.
 | **FVBPA** — Federación Asturiana | Cantera y equipos territoriales | [fvbpa.com](https://www.fvbpa.com) |
 | **RFEVB** — Federación Española | Los equipos de categoría nacional | [esvoley.es](https://esvoley.es) |
 
+> Las ligas nacionales salen **siempre de la RFEVB**, aunque la FVBPA también
+> las publique: su copia va con semanas de retraso (jornadas sin meter y
+> clasificaciones a medias) y no trae los parciales de cada set. Cuando el mismo
+> equipo aparece en las dos fuentes, el scraper descarta el de la FVBPA.
+
 ```bash
 npm run datos            # baja los datos y escribe src/data/competicion.json
 npm run datos -- --seco  # solo enseña lo que encontraría, sin escribir

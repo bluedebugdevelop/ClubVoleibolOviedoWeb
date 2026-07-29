@@ -50,7 +50,10 @@ export default function Equipo() {
                     <span>{f.detalle}</span>
                   </span>
                   {f.resultado ? (
-                    <span className={`r ${f.tipo}`}>{f.resultado}</span>
+                    <span className={`r ${f.tipo}`}>
+                      {f.resultado}
+                      {f.parciales?.length > 0 && <i>{f.parciales.join('  ')}</i>}
+                    </span>
                   ) : (
                     <span className="r next">Próximo</span>
                   )}
