@@ -1,57 +1,812 @@
-@import "tailwindcss";
+/* ==========================================================================
+   CVO — sistema visual
+   Dirección "Marcador" repintada en blanco y azul.
+   Un solo sitio para tocar colores, tipos y espaciados.
+   ========================================================================== */
 
-@theme {
-  /* Paleta corporativa Club Voleibol Oviedo — azul y blanco */
-  --color-navy-950: #05192e;
-  --color-navy-900: #082139;
-  --color-navy-800: #0b2f52;
-  --color-navy-700: #0f3d6b;
-  --color-brand-600: #1560bd;
-  --color-brand-500: #1d74d8;
-  --color-brand-400: #3d94ef;
-  --color-sky-300: #7cc4f7;
-  --color-sky-100: #dbeeff;
-  --color-ice-50: #f2f8ff;
+:root{
+  --ink:#082139;          /* azul marino — texto y fondos oscuros */
+  --ink-soft:#0d3157;
+  --blue:#1560bd;         /* azul del club — acentos y botones */
+  --blue-dark:#0f4a94;
+  --blue-light:#7cc4f7;   /* azul claro — sobre fondo oscuro */
+  --tint:#eaf2fb;         /* azul muy claro — fondos de sección */
+  --line:#dbe6f2;
+  --dim:#5c6b7d;
+  --white:#fff;
 
-  --font-display: "Poppins", "Segoe UI", system-ui, sans-serif;
-  --font-sans: "Inter", "Segoe UI", system-ui, sans-serif;
+  /* tratamiento del vídeo del hero */
+  --vblur:4px;
+  --vveil:.72;
+
+  /* La página ocupa todo el ancho de la pantalla: el tope de 2040px es solo
+     para que en monitores enormes no se estire sin fin. El aire de los lados
+     lo pone --pad, que crece con la ventana (20px en un móvil, 88px en 1920). */
+  --wrap:min(2040px,100%);
+  --pad:clamp(20px,4.6vw,88px);
 }
 
-@layer base {
-  html {
-    scroll-behavior: smooth;
-  }
-  body {
-    margin: 0;
-    font-family: var(--font-sans);
-    color: var(--color-navy-900);
-    background-color: #ffffff;
-    -webkit-font-smoothing: antialiased;
-  }
-  h1, h2, h3, h4 {
-    font-family: var(--font-display);
-    font-weight: 700;
-    letter-spacing: -0.01em;
-  }
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--white);color:var(--ink);overflow-x:hidden;
+  font-family:"Barlow",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+/* con el menú de móvil abierto la página de detrás se congela */
+body.menu-abierto{overflow:hidden}
+img,video{display:block;max-width:100%}
+a{color:inherit}
+.wrap{max-width:var(--wrap);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
+
+/* ---------------- navegación ---------------- */
+.nav{position:relative;z-index:20;background:var(--white);border-bottom:1px solid var(--line)}
+.nav-in{max-width:var(--wrap);margin:0 auto;padding:14px var(--pad);display:flex;align-items:center;gap:26px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+/* el escudo va incrustado como <svg><use/></svg>: vectorial, sin pixelarse a
+   ningun tamano. 56px es el minimo al que el texto del aro sigue leyendose. */
+.brand .mark{width:56px;height:56px;flex:none}
+.brand span{font-family:"Barlow Condensed",sans-serif;font-weight:700;text-transform:uppercase;
+  line-height:1.02;font-size:16px;letter-spacing:.02em}
+/* el nombre va entero al mismo cuerpo, en dos lineas; solo el ano baja de
+   tamano. "Oviedo" es parte del nombre, no un subtitulo. */
+.brand span em{display:block;font-style:normal}
+.brand span i{font-style:normal;font-size:10.5px;font-weight:500;letter-spacing:.2em;color:var(--dim);
+  margin-left:7px;vertical-align:1px}
+.links{display:flex;gap:19px;margin-left:22px}
+.links > a,.links .drop > a{text-decoration:none;white-space:nowrap;font-family:"Barlow Condensed",sans-serif;
+  font-weight:600;font-size:14.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink);opacity:.75}
+.links > a:hover,.links .drop > a:hover,.links > a[aria-current]{opacity:1;color:var(--blue)}
+.links > a[aria-current]{border-bottom:2px solid var(--blue);padding-bottom:2px}
+.drop{position:relative}
+.drop > a::after{content:"▾";margin-left:6px;font-size:11px;opacity:.6}
+.drop-menu{position:absolute;left:-14px;top:100%;margin-top:10px;background:#fff;border:1px solid var(--line);
+  min-width:210px;padding:6px 0;opacity:0;visibility:hidden;transform:translateY(-6px);transition:.16s;
+  box-shadow:0 18px 40px -22px rgba(8,33,57,.5)}
+.drop:hover .drop-menu{opacity:1;visibility:visible;transform:none}
+.drop-menu a{display:block;padding:10px 18px;text-decoration:none;font-size:14px;font-weight:500}
+.drop-menu a:hover{background:var(--tint);color:var(--blue)}
+.nav .right{margin-left:auto;display:flex;align-items:center;gap:14px}
+.social{display:flex;gap:9px}
+.social a{width:32px;height:32px;border:1px solid var(--line);border-radius:99px;display:grid;place-content:center;color:var(--dim)}
+.social a:hover{border-color:var(--blue);color:var(--blue)}
+/* Botones de la barra: esquinas redondeadas pero sin llegar a pastilla.
+   Los botones del hero se quedan a escuadra a proposito — asi la barra
+   se lee como interfaz y el hero como cartel. */
+.btn-cta{background:var(--blue);color:#fff;text-decoration:none;font-family:"Barlow Condensed",sans-serif;
+  font-weight:700;font-size:14px;letter-spacing:.12em;text-transform:uppercase;padding:12px 22px;
+  white-space:nowrap;border-radius:10px;transition:.15s}
+.btn-cta:hover{background:var(--blue-dark)}
+.btn-cta.alt{background:transparent;color:var(--ink);border:1.5px solid var(--line);padding:10.5px 20px}
+.btn-cta.alt:hover{border-color:var(--blue);color:var(--blue);background:var(--tint)}
+
+/* ---------------- menú de móvil ----------------
+   Por debajo de 1000px la fila de enlaces no cabe, así que se sustituye por
+   un cajón desplegable. Sin esto, en un móvil la barra se quedaba sin menú
+   (solo escudo y botones) y además desbordaba a lo ancho. */
+.burger{display:none;width:44px;height:44px;flex:none;padding:0;margin-left:2px;
+  background:none;border:1px solid var(--line);border-radius:10px;cursor:pointer;
+  place-content:center;gap:5px}
+.burger span{display:block;width:20px;height:2px;background:var(--ink);border-radius:2px;transition:.18s}
+.burger[aria-expanded="true"]{background:var(--ink);border-color:var(--ink)}
+.burger[aria-expanded="true"] span{background:#fff}
+.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.mnav-veil{position:fixed;inset:0;z-index:18;background:rgba(8,33,57,.45)}
+.mnav{position:absolute;z-index:19;left:0;right:0;top:100%;background:#fff;
+  border-bottom:1px solid var(--line);box-shadow:0 22px 40px -26px rgba(8,33,57,.55);
+  padding:10px var(--pad) 22px;max-height:calc(100vh - 100%);overflow-y:auto}
+.mnav-lbl{display:block;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:11.5px;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin:16px 0 2px}
+.mnav-lbl:first-child{margin-top:6px}
+.mnav > a{display:block;text-decoration:none;padding:12px 0;border-bottom:1px solid var(--line);
+  font-family:"Barlow Condensed",sans-serif;font-weight:600;font-size:19px;letter-spacing:.04em;
+  text-transform:uppercase;color:var(--ink)}
+.mnav > a[aria-current]{color:var(--blue)}
+.mnav-cta{display:flex;gap:10px;margin-top:22px}
+.mnav-cta .btn-cta{flex:1;text-align:center}
+.mnav-social{display:flex;gap:10px;margin-top:20px}
+.mnav-social a{width:40px;height:40px;border:1px solid var(--line);border-radius:99px;
+  display:grid;place-content:center;color:var(--dim)}
+
+/* ---------------- hero con vídeo ---------------- */
+.hero{position:relative;min-height:600px;display:flex;align-items:center;overflow:hidden;background:var(--ink)}
+.hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  filter:blur(var(--vblur)) saturate(.62) brightness(.6);transform:scale(1.07)}
+.hero .veil{position:absolute;inset:0;
+  background:linear-gradient(105deg,
+    rgba(8,33,57,var(--vveil)) 0%,
+    rgba(8,33,57,calc(var(--vveil) * .84)) 46%,
+    rgba(21,96,189,calc(var(--vveil) * .5)) 100%)}
+.hero .grain{position:absolute;inset:0;opacity:.45;
+  background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.03) 0 1px,transparent 1px 3px)}
+.hero-in{position:relative;max-width:var(--wrap);width:100%;margin:0 auto;padding:76px var(--pad)}
+.kicker{display:flex;align-items:center;gap:14px;font-family:"Barlow Condensed",sans-serif;font-weight:600;
+  font-size:13px;letter-spacing:.26em;text-transform:uppercase;color:#9dc2ec;margin-bottom:22px}
+.kicker::before{content:"";width:44px;height:2px;background:var(--blue-light)}
+h1{font-family:"Barlow Condensed",sans-serif;font-weight:800;text-transform:uppercase;
+  font-size:clamp(50px,7.4vw,104px);line-height:.86;letter-spacing:-.012em;margin:0;color:#fff;
+  text-shadow:0 2px 30px rgba(0,0,0,.4)}
+h1 em{font-style:normal;display:block;color:var(--blue-light)}
+.lede{margin:26px 0 0;max-width:46ch;color:#dbe8f6;font-size:17px;line-height:1.6}
+.btns{display:flex;gap:12px;margin-top:34px;flex-wrap:wrap}
+.btn{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:15px;letter-spacing:.14em;
+  text-transform:uppercase;padding:16px 30px;text-decoration:none;background:#fff;color:var(--ink);transition:.15s}
+.btn:hover{background:#dbeeff}
+.btn.ghost{background:transparent;border:1.5px solid rgba(255,255,255,.45);color:#fff}
+.btn.ghost:hover{border-color:#fff;background:rgba(255,255,255,.09)}
+.btn.solid{background:var(--blue);color:#fff}
+.btn.solid:hover{background:var(--blue-dark)}
+
+/* ---------------- barra de sede ---------------- */
+.venue{background:var(--ink);color:#b9cbe0}
+.venue-in{max-width:var(--wrap);margin:0 auto;padding:16px var(--pad);display:flex;align-items:center;gap:14px;
+  flex-wrap:wrap;font-size:14px;border-top:1px solid rgba(255,255,255,.09)}
+.venue svg{color:var(--blue-light);flex:none}
+/* el texto se queda pegado al pin y parte por dentro; sin esto, en un movil
+   el pin se quedaba solo en una linea y la direccion bajaba a la siguiente */
+.venue-in > span{flex:1 1 220px;min-width:0}
+.venue b{color:#fff;font-weight:600}
+.venue a{margin-left:auto;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:13px;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--blue-light);text-decoration:none;white-space:nowrap}
+.venue a:hover{color:#fff}
+
+/* ---------------- cifras ---------------- */
+.stats{max-width:var(--wrap);margin:0 auto;padding:0 var(--pad)}
+.stats-in{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--line)}
+.stat{padding:38px 0}
+.stat b{display:block;font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:52px;line-height:1;
+  letter-spacing:-.02em;color:var(--blue)}
+.stat span{display:block;margin-top:6px;font-family:"Barlow Condensed",sans-serif;font-weight:600;font-size:12px;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
+
+/* ---------------- secciones ---------------- */
+.sec{max-width:var(--wrap);margin:0 auto;padding:64px var(--pad)}
+.band{background:var(--tint)}
+.band .sec{padding-top:60px;padding-bottom:60px}
+.sechead{display:flex;align-items:baseline;gap:18px;margin-bottom:30px}
+.sechead h2{font-family:"Barlow Condensed",sans-serif;font-weight:800;text-transform:uppercase;font-size:38px;margin:0}
+.sechead .rule{flex:1;height:2px;background:var(--line)}
+.sechead a{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:13px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--blue);text-decoration:none;white-space:nowrap}
+
+/* la linea de temporada, cuando va debajo de los botones del hero */
+.kicker.below{margin:38px 0 0;padding-top:22px;border-top:1px solid rgba(255,255,255,.16);
+  display:inline-flex;color:#a8c8ec}
+.kicker.below::before{display:none}
+
+/* tarjetas de equipo */
+.teams{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+/* rejilla completa: los 11 equipos federados, tarjeta mas compacta */
+.teams.all{grid-template-columns:repeat(4,1fr);gap:16px}
+.teams.all .ph{aspect-ratio:1/1}
+.teams.all .txt{padding:16px}
+.teams.all h3{font-size:19px}
+.teams.all .cat{font-size:10.5px;letter-spacing:.16em}
+.teams.all p{font-size:12px;margin-top:5px}
+.teams .featured{grid-column:span 2}
+.teams.all .featured .ph{aspect-ratio:2/1}
+.teams.all .featured h3{font-size:26px}
+.team{position:relative;overflow:hidden;text-decoration:none;background:var(--ink);display:block}
+.team .ph{aspect-ratio:4/5;overflow:hidden}
+.team img{width:100%;height:100%;object-fit:cover;transition:.45s}
+.team:hover img{transform:scale(1.04)}
+.team .ov{position:absolute;inset:0;background:linear-gradient(180deg,transparent 38%,rgba(8,33,57,.94) 100%);pointer-events:none}
+.team .txt{position:absolute;left:0;bottom:0;padding:24px;color:#fff}
+.team .cat{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:12px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--blue-light)}
+.team h3{font-family:"Barlow Condensed",sans-serif;font-weight:800;text-transform:uppercase;font-size:27px;margin:5px 0 0;line-height:1}
+.team p{margin:7px 0 0;font-size:13px;color:#c3d5e8}
+
+/* noticias y retransmisiones */
+.cols{display:grid;grid-template-columns:2fr 1fr;gap:44px}
+.news{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.card{background:#fff;border:1px solid var(--line);text-decoration:none;display:flex;flex-direction:column}
+.card .ph{aspect-ratio:16/10;overflow:hidden}
+.card img{width:100%;height:100%;object-fit:cover;transition:.4s}
+.card:hover img{transform:scale(1.04)}
+.card .in{padding:18px 20px 22px}
+.card .meta{display:flex;gap:10px;align-items:center;font-size:11px;color:var(--dim);margin-bottom:9px}
+.card .meta b{background:var(--tint);color:var(--blue);font-family:"Barlow Condensed",sans-serif;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;padding:3px 8px}
+.card h3{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:21px;margin:0;line-height:1.12;text-transform:uppercase}
+.card p{margin:9px 0 0;font-size:14px;color:var(--dim);line-height:1.55}
+.streams{display:flex;flex-direction:column;gap:10px}
+.stream{display:flex;gap:14px;align-items:flex-start;border:1px solid var(--line);padding:16px;text-decoration:none;
+  transition:.15s;background:#fff}
+.stream:hover{border-color:var(--blue)}
+.stream .play{width:38px;height:38px;flex:none;border-radius:99px;background:var(--blue);color:#fff;display:grid;place-content:center}
+.stream b{display:block;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:16px;text-transform:uppercase;line-height:1.15}
+.stream span{display:block;margin-top:4px;font-size:12px;color:var(--dim)}
+
+/* patrocinadores */
+.sponsors{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.sponsors-in{max-width:var(--wrap);margin:0 auto;padding:32px var(--pad);display:flex;align-items:center;gap:38px;flex-wrap:wrap}
+.sponsors .lbl{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:12px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--dim)}
+.sponsors img{height:38px;opacity:.55;filter:grayscale(1);
+  transition:opacity .2s,filter .2s,transform .22s cubic-bezier(.22,.68,.3,1.1)}
+.sponsors a:hover img{opacity:1;filter:none;transform:scale(1.08)}
+.sponsors .more{margin-left:auto;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:13px;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--blue);text-decoration:none}
+
+/* llamada a inscripción */
+.join{background:var(--blue);color:#fff}
+.join-in{max-width:var(--wrap);margin:0 auto;padding:52px var(--pad);display:flex;align-items:center;gap:34px;flex-wrap:wrap}
+.join h2{font-family:"Barlow Condensed",sans-serif;font-weight:800;text-transform:uppercase;font-size:36px;margin:0;line-height:1.02}
+.join p{margin:10px 0 0;color:#d9e8fb;max-width:50ch;font-size:16px}
+.join .btn{margin-left:auto}
+
+/* pie */
+footer{background:var(--ink);color:#a9c0d8}
+footer .in{max-width:var(--wrap);margin:0 auto;padding:48px var(--pad);display:flex;gap:46px;flex-wrap:wrap;align-items:flex-start}
+footer .crest{width:96px;height:96px;flex:none}
+footer .col b{display:block;color:#fff;font-family:"Barlow Condensed",sans-serif;font-weight:700;letter-spacing:.16em;
+  text-transform:uppercase;font-size:12px;margin-bottom:13px}
+footer .col a,footer .col p{display:block;text-decoration:none;font-size:14px;margin:0 0 7px;color:#a9c0d8}
+footer .col a:hover{color:#fff}
+footer .legal{border-top:1px solid rgba(255,255,255,.1)}
+footer .legal div{max-width:var(--wrap);margin:0 auto;padding:18px var(--pad);font-size:12.5px;color:#7f97b3;
+  display:flex;gap:20px;flex-wrap:wrap}
+footer .legal a{color:#7f97b3;text-decoration:none}
+footer .legal a:hover{color:#fff}
+
+/* cabecera de página interior */
+.phead{background:var(--ink);color:#fff;position:relative;overflow:hidden}
+.phead .bg{position:absolute;inset:0;opacity:.3}
+.phead .bg img{width:100%;height:100%;object-fit:cover}
+/* la banda se hace más alta de lo que pide el texto: cuanto más apaisada, más
+   brutal es el recorte de la foto de fondo y menos se ve de lo que hay dentro */
+.phead .in{position:relative;max-width:var(--wrap);margin:0 auto;padding:76px var(--pad) 84px}
+.crumbs{font-size:13px;color:#9dc2ec;margin-bottom:16px}
+.crumbs a{text-decoration:none}
+.crumbs a:hover{color:#fff}
+.phead h1{font-size:clamp(38px,5.2vw,66px)}
+.phead .sub{margin:14px 0 0;color:#c3d5e8;font-size:17px;max-width:56ch}
+
+/* aviso de maqueta */
+/* el texto se para a 90ch aunque la caja llegue al borde: a pantalla completa,
+   una línea de 1700px no hay quien la lea */
+.note{max-width:var(--wrap);margin:0 auto;padding:30px var(--pad) 70px;color:var(--dim);font-size:14px;line-height:1.7}
+.note > *{max-width:90ch}
+.note b{color:var(--ink)}
+.note ul{margin:10px 0 0;padding-left:20px}
+.note li{margin-bottom:6px}
+
+/* la barra se descarga por tramos: primero las redes, luego el menú (que pasa
+   al cajón del burger), luego los botones. Sin esto, en cuanto la ventana baja
+   de ~1050px el bloque derecho se sale y aparece scroll horizontal. */
+/* Medido sobre la barra real: escudo+nombre 159 + menú 592 + botones 244 + el
+   aire de los lados. Los cortes salen de ahí, no a ojo. El de 1200 subió desde
+   1160 cuando "Oviedo" pasó a tamaño completo y el nombre creció 34px. */
+@media(max-width:1360px){ .social{display:none} }
+@media(max-width:1200px){
+  .links{display:none}
+  .burger{display:grid}
+  .nav-in{gap:14px;padding-top:11px;padding-bottom:11px}
+}
+@media(max-width:760px){ .nav .right > .btn-cta.alt{display:none} }
+@media(max-width:480px){
+  .nav .right > .btn-cta{display:none}
+  .brand span{font-size:15px}
 }
 
-@layer utilities {
-  .container-cvo {
-    width: 100%;
-    max-width: 1200px;
-    margin-inline: auto;
-    padding-inline: 1.25rem;
-  }
-  .text-balance {
-    text-wrap: balance;
-  }
+@media(max-width:1080px){ .teams.all{grid-template-columns:repeat(3,1fr)} }
+
+@media(max-width:900px){
+  .stats-in{grid-template-columns:1fr 1fr}
+  .teams,.news{grid-template-columns:1fr}
+  .teams.all{grid-template-columns:1fr 1fr}
+  .teams .featured{grid-column:span 2}
+  .cols{grid-template-columns:1fr}
+  .venue-in a{margin-left:0}
+  .join .btn{margin-left:0}
+  .sechead{flex-wrap:wrap;gap:12px}
+  .sechead .rule{display:none}
+  .sechead h2{font-size:30px}
+  .sec{padding-top:48px;padding-bottom:48px}
+  .band .sec{padding-top:46px;padding-bottom:46px}
 }
 
-/* Fuentes web (Google Fonts vía import CSS) */
-@font-face {
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 300 800;
-  font-display: swap;
-  src: local("Inter"), local("Segoe UI");
+/* ---------------- móvil ----------------
+   Todo lo que a partir de aquí se reduce es porque a 390px de ancho, con los
+   tamaños de escritorio, o no cabe o se come la pantalla entera. */
+@media(max-width:700px){
+  .hero{min-height:auto}
+  .hero-in{padding-top:64px;padding-bottom:56px}
+  h1{font-size:clamp(42px,12vw,60px)}
+  .lede{margin-top:20px;font-size:16px}
+  .btns{margin-top:28px;gap:10px}
+  .kicker{font-size:12px;letter-spacing:.2em;margin-bottom:18px}
+  .kicker.below{margin-top:30px;padding-top:18px;font-size:11.5px;letter-spacing:.16em}
+
+  .venue-in{gap:10px;font-size:13.5px}
+  .venue-in a{font-size:12px}
+
+  .stat{padding:26px 0}
+  .stat b{font-size:40px}
+  .stat span{font-size:11px;letter-spacing:.16em}
+
+  .sechead h2{font-size:26px}
+  .sechead a{font-size:12px}
+  .team .txt{padding:18px}
+  .team h3{font-size:23px}
+
+  .join-in{padding-top:40px;padding-bottom:40px;gap:22px}
+  .join h2{font-size:28px}
+  .join p{font-size:15px}
+  .join .btn{width:100%;text-align:center}
+
+  .sponsors-in{gap:22px;padding-top:26px;padding-bottom:26px}
+  .sponsors img{height:32px}
+  .sponsors .more{margin-left:0}
+
+  footer .in{gap:26px;padding-top:38px;padding-bottom:38px}
+  footer .crest{width:72px;height:72px}
+  footer .col{min-width:44%}
+
+  .phead .in{padding-top:40px;padding-bottom:40px}
+  .phead .sub{font-size:15.5px}
+  .crumbs{font-size:12px;margin-bottom:12px}
+
+  .note{padding-bottom:52px}
+  .notfound{padding:70px var(--pad)}
 }
+
+/* botones del hero a todo el ancho: en dos líneas descolocadas quedaban peor */
+@media(max-width:520px){
+  .btns{flex-direction:column;align-items:stretch}
+  .btns .btn{text-align:center;padding-left:18px;padding-right:18px}
+}
+
+/* ==========================================================================
+   Añadido al portar las maquetas a componentes React.
+   De aquí para abajo: piezas que en las maquetas HTML vivían en el <style>
+   propio de cada página (ficha de equipo, calendario, cantera) más las
+   páginas nuevas que no tenían maqueta (noticias, quiénes somos,
+   patrocinadores, tienda, inscripciones, contacto, 404).
+   ========================================================================== */
+
+/* -------- desplegable "Nuestros equipos": el disparador ya no es <a>
+   (no lleva a ningún sitio, solo abre el menú), así que se estiliza aparte
+   pero igual que el resto de enlaces de la barra. -------- */
+.drop > .drop-label{text-decoration:none;white-space:nowrap;font-family:"Barlow Condensed",sans-serif;
+  font-weight:600;font-size:14.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink);opacity:.75;cursor:default}
+.drop:hover > .drop-label{opacity:1;color:var(--blue)}
+.drop > .drop-label::after{content:"▾";margin-left:6px;font-size:11px;opacity:.6}
+
+/* -------- ficha de equipo (Equipo.jsx) -------- */
+.layout{display:grid;grid-template-columns:1fr 340px;gap:44px;align-items:start}
+
+.fixtures{border:1px solid var(--line)}
+.fix{display:grid;grid-template-columns:70px 1fr auto;gap:16px;align-items:center;padding:15px 20px;border-bottom:1px solid var(--line);text-decoration:none}
+.fix:last-child{border-bottom:0}
+.fix:hover{background:var(--tint)}
+.fix .d{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:13px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--dim);line-height:1.2}
+.fix .d b{display:block;font-size:22px;color:var(--ink);letter-spacing:-.01em}
+.fix .t{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:19px;text-transform:uppercase}
+.fix .t span{display:block;font-family:"Barlow",sans-serif;font-weight:400;font-size:12.5px;
+  text-transform:none;color:var(--dim);letter-spacing:0;margin-top:2px}
+.fix .r{font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:24px;letter-spacing:.02em}
+.fix .r.w{color:#1a8a4c}
+.fix .r.l{color:#b5313a}
+.fix .r.next{font-size:13px;letter-spacing:.14em;color:var(--blue);border:1px solid var(--line);padding:7px 12px}
+
+.squad{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+.pl{border:1px solid var(--line);text-align:center;padding-bottom:14px;background:#fff}
+.pl .ph{aspect-ratio:3/4;background:var(--tint);display:grid;place-content:center;position:relative;overflow:hidden}
+.pl .ph span{font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:46px;color:#c3d9f0;line-height:1}
+.pl .no{position:absolute;left:0;top:0;background:var(--blue);color:#fff;font-family:"Barlow Condensed",sans-serif;
+  font-weight:800;font-size:15px;padding:3px 9px}
+.pl b{display:block;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:15px;
+  text-transform:uppercase;margin-top:11px;line-height:1.1}
+.pl i{display:block;font-style:normal;font-size:11.5px;color:var(--dim);margin-top:3px}
+
+.side{border:1px solid var(--line)}
+.side h3{font-family:"Barlow Condensed",sans-serif;font-weight:800;text-transform:uppercase;font-size:19px;
+  margin:0;padding:16px 20px;background:var(--ink);color:#fff;letter-spacing:.04em}
+.side .row{display:flex;justify-content:space-between;gap:14px;padding:12px 20px;border-bottom:1px solid var(--line);font-size:14px}
+.side .row:last-child{border-bottom:0}
+.side .row span{color:var(--dim)}
+.side .row b{font-weight:600;text-align:right}
+.side .staff{padding:16px 20px}
+.side .staff div{display:flex;gap:12px;align-items:center;margin-bottom:14px}
+.side .staff div:last-child{margin-bottom:0}
+.side .staff .av{width:42px;height:42px;flex:none;border-radius:99px;background:var(--tint);color:var(--blue);
+  display:grid;place-content:center;font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:16px}
+.side .staff b{display:block;font-size:14.5px;font-weight:600}
+.side .staff i{display:block;font-style:normal;font-size:12px;color:var(--dim)}
+
+/* la galería no enlaza a ningún sitio (no hay visor de fotos), así que las
+   miniaturas son <div>, no <a>; el hover de zoom se mantiene igual */
+.gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.gallery div{overflow:hidden;display:block}
+.gallery img{width:100%;aspect-ratio:4/3;object-fit:cover;transition:.4s}
+.gallery div:hover img{transform:scale(1.06)}
+
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr}
+  .squad{grid-template-columns:repeat(3,1fr)}
+  .gallery{grid-template-columns:1fr 1fr}
+}
+
+/* -------- calendario (Calendario.jsx) --------
+   Mismo componente .fix que la ficha de equipo, pero aquí cada fila lleva
+   además la columna del equipo (.who), así que la variante ancha vive bajo
+   .fixtures.wide para no descuadrar las filas de 3 columnas de Equipo. */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:26px}
+/* pastillas: es lo que se espera de una barra de filtros, y las separa de los
+   botones a escuadra del hero */
+.filters button{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:13.5px;letter-spacing:.1em;
+  text-transform:uppercase;padding:10px 18px;border:1.5px solid var(--line);border-radius:999px;background:#fff;
+  color:var(--ink);cursor:pointer;
+  transition:transform .18s cubic-bezier(.22,.68,.3,1.1),background .15s,color .15s,border-color .15s,box-shadow .18s}
+.filters button:hover{transform:scale(1.07);box-shadow:0 8px 18px -10px rgba(8,33,57,.55)}
+.filters button:active{transform:scale(1.02)}
+/* --liga / --liga-sobre / --liga-tinte / --liga-tinta los inyecta Calendario.jsx
+   por elemento a partir de `competiciones` (colores oficiales de la RFEVB). */
+.filters button:hover{border-color:var(--blue);color:var(--blue)}
+.filters button[aria-pressed="true"],
+.filters button[aria-pressed="true"]:hover{background:var(--ink);border-color:var(--ink);color:#fff}
+
+/* Las dos competiciones nacionales llevan su color SIEMPRE, no solo al
+   pulsarlas: en reposo van de contorno y al activarse se rellenan. Así se ve
+   de quién es cada filtro sin tener que tocarlo, y se sigue distinguiendo
+   cuál está puesto. */
+.filters button.liga{border-color:var(--liga);color:var(--liga-tinta)}
+.filters button.liga:hover{background:var(--liga-tinte);border-color:var(--liga);color:var(--liga-tinta)}
+.filters button.liga[aria-pressed="true"],
+.filters button.liga[aria-pressed="true"]:hover{background:var(--liga);border-color:var(--liga);
+  color:var(--liga-sobre)}
+
+/* quien haya pedido menos animación en el sistema no se lleva el rebote */
+@media(prefers-reduced-motion:reduce){
+  .filters button{transition:background .15s,color .15s,border-color .15s}
+  .filters button:hover,.filters button:active{transform:none}
+}
+
+.round{margin-bottom:34px}
+.round > h3{font-family:"Barlow Condensed",sans-serif;font-weight:800;text-transform:uppercase;font-size:17px;
+  letter-spacing:.16em;color:var(--dim);margin:0 0 12px;display:flex;align-items:center;gap:14px}
+.round > h3::after{content:"";flex:1;height:1px;background:var(--line)}
+
+.fixtures.wide .fix{grid-template-columns:78px 128px 1fr auto}
+/* etiqueta de competición: bloque macizo con el color de la liga, para que de
+   un vistazo se vea de qué equipo es cada partido sin leerlo */
+.fix .who{align-self:center;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:11.5px;
+  letter-spacing:.11em;text-transform:uppercase;line-height:1.15;text-align:center;padding:7px 8px;
+  border-radius:3px;background:var(--liga,var(--blue));color:var(--liga-sobre,#fff)}
+.fix .r.tv{display:block;font-family:"Barlow",sans-serif;font-weight:600;font-size:11.5px;letter-spacing:0;
+  color:var(--dim);margin-top:5px}
+
+.table{width:100%;border-collapse:collapse;border:1px solid var(--line);background:#fff}
+.table th{background:var(--ink);color:#fff;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:11.5px;
+  letter-spacing:.14em;text-transform:uppercase;padding:12px 14px;text-align:left}
+.table th.n,.table td.n{text-align:center;width:52px}
+.table td{padding:11px 14px;border-bottom:1px solid var(--line);font-size:14.5px}
+.table tr:last-child td{border-bottom:0}
+.table tr.me td{background:var(--tint);font-weight:700}
+.table td.pos{font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:17px;color:var(--dim)}
+.table tr.me td.pos{color:var(--blue)}
+
+/* clasificación por competición: cambia con el filtro, y se pinta con el color
+   de la liga que toque en cada momento */
+.standing{border:1px solid var(--line);background:#fff;margin-bottom:20px}
+.standing:last-of-type{margin-bottom:0}
+.standing-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;padding:12px 16px;
+  border-bottom:1px solid var(--line);border-left:5px solid var(--liga,var(--blue))}
+.standing-head b{font-family:"Barlow Condensed",sans-serif;font-weight:800;text-transform:uppercase;
+  font-size:17px;letter-spacing:.03em}
+.standing-head span{font-size:12px;color:var(--dim)}
+.table.liga{border:0}
+.table.liga th{background:var(--liga,var(--ink));color:var(--liga-sobre,#fff)}
+.table.liga tr.me td{background:var(--liga-tinte,var(--tint))}
+.table.liga tr.me td.pos{color:var(--liga,var(--blue))}
+
+.twocol{display:grid;grid-template-columns:1fr 400px;gap:44px;align-items:start}
+@media(max-width:980px){
+  .twocol{grid-template-columns:1fr}
+  .fixtures.wide .fix{grid-template-columns:62px 1fr;gap:14px;row-gap:7px;align-items:start}
+  .fixtures.wide .fix .d{grid-column:1;grid-row:1 / span 3}
+  .fixtures.wide .fix .who{grid-column:2;grid-row:1;justify-self:start;font-size:10.5px;
+    letter-spacing:.12em;padding:5px 8px}
+  .fixtures.wide .fix .t{grid-column:2;grid-row:2}
+  .fixtures.wide .fix .r,.fixtures.wide .fix > span:last-child{grid-column:2;grid-row:3;text-align:left}
+  .fixtures.wide .fix .r.next{display:inline-block}
+  .fixtures.wide .fix .r.tv{display:inline-block;margin:0 0 0 10px}
+}
+
+/* -------- cantera (Cantera.jsx) -------- */
+.intro-cols{display:grid;grid-template-columns:1.2fr 1fr;gap:44px;align-items:start;margin-bottom:12px}
+.intro-cols p{margin:0 0 14px;font-size:16.5px;line-height:1.7;color:#3d4b5a}
+.facts{border:1px solid var(--line)}
+.facts .row{display:flex;justify-content:space-between;gap:16px;padding:14px 20px;border-bottom:1px solid var(--line);font-size:14.5px}
+.facts .row:last-child{border-bottom:0}
+.facts .row span{color:var(--dim)}
+.facts .row b{font-weight:600;text-align:right}
+@media(max-width:900px){ .intro-cols{grid-template-columns:1fr} }
+
+/* -------- noticias (Noticias.jsx) -------- */
+.destacada{display:grid;grid-template-columns:1.3fr 1fr;gap:0;border:1px solid var(--line);margin-bottom:48px;
+  text-decoration:none}
+.destacada .ph{aspect-ratio:16/10;overflow:hidden}
+.destacada .ph img{width:100%;height:100%;object-fit:cover}
+.destacada .in{padding:30px 32px;display:flex;flex-direction:column;justify-content:center}
+.destacada .meta{display:flex;gap:10px;align-items:center;font-size:11px;color:var(--dim);margin-bottom:11px}
+.destacada .meta b{background:var(--tint);color:var(--blue);font-family:"Barlow Condensed",sans-serif;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;padding:3px 8px}
+.destacada h2{font-family:"Barlow Condensed",sans-serif;font-weight:800;text-transform:uppercase;font-size:32px;margin:0;line-height:1.05}
+.destacada p{margin:14px 0 0;font-size:15.5px;color:var(--dim);line-height:1.65}
+.news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+@media(max-width:900px){
+  .destacada{grid-template-columns:1fr}
+  .news-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:600px){ .news-grid{grid-template-columns:1fr} }
+
+/* -------- quiénes somos (QuienesSomos.jsx) -------- */
+.historia{max-width:74ch}
+.historia p{font-size:16.5px;line-height:1.75;color:#3d4b5a;margin:0 0 16px}
+
+.timeline{border-left:2px solid var(--line);margin-left:6px;padding-left:30px;display:flex;flex-direction:column;gap:30px}
+.tl-item{position:relative}
+.tl-item::before{content:"";position:absolute;left:-35px;top:4px;width:10px;height:10px;border-radius:99px;background:var(--blue)}
+.tl-item b{display:block;font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:22px;color:var(--blue)}
+.tl-item p{margin:6px 0 0;font-size:15px;color:var(--dim);max-width:60ch}
+
+.values{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.value{border:1px solid var(--line);padding:24px 22px}
+.value h3{font-family:"Barlow Condensed",sans-serif;font-weight:800;text-transform:uppercase;font-size:19px;margin:0}
+.value p{margin:10px 0 0;font-size:14px;color:var(--dim);line-height:1.6}
+
+.instalaciones{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center}
+.instalaciones .ph{aspect-ratio:4/3;overflow:hidden}
+.instalaciones .ph img{width:100%;height:100%;object-fit:cover}
+.instalaciones p{font-size:15.5px;color:#3d4b5a;line-height:1.7;margin:0 0 14px;max-width:60ch}
+
+@media(max-width:900px){
+  .values{grid-template-columns:1fr 1fr}
+  .instalaciones{grid-template-columns:1fr}
+}
+@media(max-width:600px){ .values{grid-template-columns:1fr} }
+
+/* -------- patrocinadores (Patrocinadores.jsx y Patrocinador.jsx) --------
+   La página ya no vende patrocinio, solo enseña las marcas: fuera los niveles
+   de precio, la ficha en tarjeta y el bloque de "¿hablamos?". Cada logo va en
+   un aro que se ilumina con el color de SU marca al pasar por encima.
+   --marca / --marca-glow los inyecta el JSX por elemento. */
+.marcas{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:40px 28px;justify-items:center;
+  max-width:1000px;margin:0 auto}
+.marca{display:block;text-align:center;text-decoration:none;max-width:280px}
+.aro{width:190px;height:190px;margin:0 auto;border-radius:50%;background:#fff;border:1.5px solid var(--line);
+  display:grid;place-content:center;
+  transition:border-color .28s,box-shadow .28s,transform .28s cubic-bezier(.22,.68,.3,1.1)}
+.aro img{width:106px;height:106px;object-fit:contain;
+  transition:transform .32s cubic-bezier(.22,.68,.3,1.2)}
+.marca:hover .aro{border-color:var(--marca);transform:translateY(-4px);
+  box-shadow:0 0 0 7px var(--marca-glow),0 20px 38px -20px var(--marca)}
+.marca:hover .aro img{transform:scale(1.16)}
+.marca b{display:block;margin-top:20px;font-family:"Barlow Condensed",sans-serif;font-weight:800;
+  text-transform:uppercase;font-size:22px;letter-spacing:.03em;color:var(--ink)}
+.marca i{display:block;margin-top:5px;font-style:normal;font-size:14px;color:var(--dim);line-height:1.45}
+.marca:hover b{color:var(--marca)}
+
+/* ficha de un patrocinador */
+.ficha-marca{display:grid;grid-template-columns:230px 1fr;gap:48px;align-items:start}
+.ficha-marca .aro.grande{width:230px;height:230px}
+.ficha-marca .aro.grande img{width:128px;height:128px}
+.ficha-texto p{margin:0 0 16px;font-size:16.5px;line-height:1.75;color:#3d4b5a;max-width:66ch}
+.ficha-texto .web{display:inline-block;margin-top:10px;background:var(--marca);color:#fff;border-radius:10px;
+  letter-spacing:.06em;text-transform:none;font-size:16px}
+.ficha-texto .web:hover{background:var(--marca);filter:brightness(.9)}
+.volver{margin:44px 0 0;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:14px;
+  letter-spacing:.14em;text-transform:uppercase}
+.volver a{color:var(--blue);text-decoration:none}
+.volver a:hover{color:var(--ink)}
+
+@media(max-width:760px){
+  .ficha-marca{grid-template-columns:1fr;gap:28px;justify-items:center;text-align:center}
+  .ficha-texto p{text-align:left}
+}
+
+/* el aro no rebota para quien haya pedido menos animación */
+@media(prefers-reduced-motion:reduce){
+  .aro,.aro img{transition:border-color .28s,box-shadow .28s}
+  .marca:hover .aro{transform:none}
+  .marca:hover .aro img{transform:none}
+}
+
+/* -------- tienda (Tienda.jsx) -------- */
+.products{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.product{border:1px solid var(--line);background:#fff;display:block;text-decoration:none;color:inherit;
+  transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease}
+.product:hover{border-color:var(--blue);box-shadow:0 18px 34px -24px rgba(8,33,57,.5);transform:translateY(-3px)}
+.product .ph img{transition:transform .3s ease}
+.product:hover .ph img{transform:scale(1.04)}
+.product .ph{aspect-ratio:1/1;background:var(--tint);display:grid;place-content:center;color:var(--dim);
+  font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:13px;letter-spacing:.1em;text-transform:uppercase}
+/* con foto, el hueco lo llena la imagen: place-content:center dejaría el img
+   a su tamaño intrínseco en vez de estirarlo a la caja */
+.product .ph:has(img){display:block;overflow:hidden}
+.product .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.product .in{padding:16px 18px 20px}
+.product .cat{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--blue)}
+.product h3{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:19px;text-transform:uppercase;margin:6px 0 0}
+.product .price{margin:8px 0 0;font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:20px;color:var(--ink)}
+
+.shopnote{border:1px solid var(--line);background:var(--tint);padding:20px 24px;font-size:14.5px;color:var(--dim);margin-top:30px}
+.shopnote b{color:var(--ink)}
+
+/* -------- ficha de producto (Producto.jsx) -------- */
+.ficha-prod{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:52px;align-items:start}
+.galeria .grande{aspect-ratio:1/1;background:var(--tint);border:1px solid var(--line);overflow:hidden}
+.galeria .grande img{width:100%;height:100%;object-fit:cover;display:block}
+.galeria .tiras{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:12px}
+.galeria .tiras button{padding:0;background:none;cursor:pointer;aspect-ratio:1/1;overflow:hidden;
+  border:1px solid var(--line);transition:border-color .18s ease,opacity .18s ease;opacity:.72}
+.galeria .tiras button:hover{opacity:1;border-color:var(--blue)}
+/* el aria-pressed ya marca el estado; el borde azul es solo el eco visual */
+.galeria .tiras button.on{opacity:1;border-color:var(--blue);border-width:2px}
+.galeria .tiras img{width:100%;height:100%;object-fit:cover;display:block}
+
+.ficha-prod-texto .precio-grande{font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:40px;
+  line-height:1;color:var(--ink);margin-bottom:18px}
+.ficha-prod-texto p{color:var(--dim);line-height:1.65;margin:0 0 14px;max-width:56ch}
+/* `.btn` es un <a> sin display propio: fuera de un `.btns` flex no ocupa alto y
+   se montaba encima de la lista de detalles */
+.ficha-prod-texto .btn{display:inline-block;margin-top:22px}
+.nota-pago{font-size:13.5px;margin:18px 0 0;color:var(--dim);line-height:1.6;max-width:52ch}
+.detalles{list-style:none;padding:0;margin:22px 0 4px;border-top:1px solid var(--line)}
+.detalles li{border-bottom:1px solid var(--line);padding:11px 0;font-size:14.5px;color:var(--dim);
+  display:flex;gap:10px;align-items:center}
+.detalles li::before{content:"";width:6px;height:6px;flex:none;border-radius:99px;background:var(--blue-light)}
+
+@media(max-width:900px){
+  .products{grid-template-columns:1fr 1fr}
+  .ficha-prod{grid-template-columns:1fr;gap:34px}
+}
+@media(max-width:600px){ .products{grid-template-columns:1fr} }
+
+/* -------- inscripciones (Inscripciones.jsx) -------- */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.step{border:1px solid var(--line);padding:26px 24px;background:#fff}
+.step .num{font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:42px;color:var(--blue);line-height:1}
+.step h3{font-family:"Barlow Condensed",sans-serif;font-weight:800;text-transform:uppercase;font-size:19px;margin:12px 0 0}
+.step p{margin:8px 0 0;font-size:14.5px;color:var(--dim);line-height:1.6}
+
+.checklist{border:1px solid var(--line);padding:26px 30px;background:#fff;max-width:80ch}
+.checklist li{margin-bottom:10px;font-size:15px;color:#3d4b5a}
+.checklist li:last-child{margin-bottom:0}
+
+.bigcta{text-align:center;padding:50px var(--pad);background:var(--tint);border:1px solid var(--line)}
+.bigcta h2{font-family:"Barlow Condensed",sans-serif;font-weight:800;text-transform:uppercase;font-size:32px;margin:0 0 14px}
+
+/* -------- formulario de inscripción --------
+   Rejilla de dos columnas; los campos largos ocupan las dos. Se queda a 900px
+   de ancho aunque la página vaya a sangre: un formulario de 1700px es
+   incomodísimo de rellenar. */
+.form.inscripcion{max-width:900px}
+.campos{display:grid;grid-template-columns:1fr 1fr;gap:0 22px}
+.campos .ancho{grid-column:1 / -1}
+.form label span{text-transform:none;letter-spacing:0;font-weight:400;font-size:12.5px}
+.form select{width:100%;border:1px solid var(--line);padding:11px 13px;font-family:"Barlow",sans-serif;
+  font-size:14.5px;color:var(--ink);background:#fff}
+.form select:focus{outline:none;border-color:var(--blue)}
+.form input[type="date"]{min-height:43px}
+
+.notice.bien{border-color:#1a8a4c;background:#eaf7ef;color:#155e35}
+.notice.aviso{border-color:#d8a41a;background:#fdf6e3;color:#6b4e07}
+.notice a{color:inherit;font-weight:600}
+
+/* Ojo con la especificidad: las reglas genéricas `.form label` y `.form input`
+   viven más abajo (bloque de contacto) y le ganaban a `.consent` a secas — el
+   checkbox salía estirado a todo el ancho. De ahí `.form label.consent`. */
+.form label.consent{display:flex;gap:11px;align-items:flex-start;margin:4px 0 22px;cursor:pointer}
+.form .consent input[type="checkbox"]{margin-top:2px;width:17px;height:17px;min-height:0;flex:none;
+  accent-color:var(--blue)}
+.form .consent span{font-size:14px;color:var(--dim);line-height:1.55;text-transform:none;letter-spacing:0;
+  font-family:"Barlow",sans-serif;font-weight:400}
+
+.form button[disabled]{opacity:.6;cursor:default}
+.letra-pequena{margin:22px 0 0;font-size:13px;color:var(--dim);line-height:1.6;max-width:70ch}
+
+/* la trampa antirrobots no se ve ni la lee un lector de pantalla, pero un bot
+   que rellena todos los campos sí cae */
+.trampa{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+@media(max-width:900px){ .steps{grid-template-columns:1fr} }
+@media(max-width:640px){ .campos{grid-template-columns:1fr} }
+
+/* -------- contacto (Contacto.jsx) -------- */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:start}
+.contact-info{border:1px solid var(--line);padding:28px;background:#fff}
+.contact-info .row{display:flex;gap:14px;margin-bottom:18px;align-items:flex-start}
+.contact-info .row:last-child{margin-bottom:0}
+.contact-info svg{color:var(--blue);flex:none;margin-top:2px}
+.contact-info b{display:block;font-size:14.5px}
+.contact-info span{display:block;font-size:14px;color:var(--dim);margin-top:2px}
+.map-frame{border:1px solid var(--line);overflow:hidden;aspect-ratio:4/3}
+.map-frame iframe{width:100%;height:100%;border:0;display:block}
+
+.form{border:1px solid var(--line);padding:28px;background:#fff}
+.form label{display:block;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:12px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+.form .field{margin-bottom:18px}
+.form input,.form textarea{width:100%;border:1px solid var(--line);padding:11px 13px;font-family:"Barlow",sans-serif;
+  font-size:14.5px;color:var(--ink);background:#fff}
+.form input:focus,.form textarea:focus{outline:none;border-color:var(--blue)}
+.form textarea{resize:vertical;min-height:120px}
+.form .notice{border:1px solid var(--line);background:var(--tint);padding:12px 16px;font-size:13.5px;color:var(--dim);margin-bottom:18px}
+
+@media(max-width:900px){ .contact-grid{grid-template-columns:1fr} }
+
+/* ==========================================================================
+   Ajustes de móvil de las páginas interiores.
+   Van al final para no repetir cada regla dentro de su bloque: aquí solo se
+   corrige lo que a 390-600px no cabía o quedaba desproporcionado.
+   ========================================================================== */
+@media(max-width:700px){
+  /* ficha de equipo */
+  .layout{gap:30px}
+  .side h3{font-size:17px;padding:13px 16px}
+  .side .row,.facts .row{padding-left:16px;padding-right:16px;font-size:13.5px}
+  .side .staff{padding:14px 16px}
+  .fix{padding:13px 14px;gap:12px}
+  .fix .d b{font-size:19px}
+  .fix .t{font-size:17px}
+  .fix .r{font-size:21px}
+
+  /* calendario */
+  .filters{gap:6px;margin-bottom:20px}
+  .filters button{font-size:12px;padding:9px 12px;letter-spacing:.06em}
+  .twocol{gap:34px}
+  .table th{font-size:10.5px;padding:10px 8px;letter-spacing:.1em}
+  .table td{padding:9px 8px;font-size:13.5px}
+  .table th.n,.table td.n{width:38px}
+
+  /* cantera / quiénes somos */
+  .intro-cols{gap:26px}
+  .intro-cols p{font-size:15.5px}
+  .historia p{font-size:15.5px}
+  .timeline{padding-left:22px;gap:24px}
+  .tl-item::before{left:-27px}
+  .instalaciones{gap:24px}
+
+  /* noticias */
+  .destacada{margin-bottom:34px}
+  .destacada .in{padding:22px 20px}
+  .destacada h2{font-size:25px}
+  .destacada p{font-size:14.5px}
+
+  /* patrocinadores */
+  .marcas{gap:34px 20px}
+  .aro{width:160px;height:160px}
+  .aro img{width:88px;height:88px}
+  .ficha-marca .aro.grande{width:186px;height:186px}
+  .ficha-marca .aro.grande img{width:104px;height:104px}
+  .marca b{font-size:20px;margin-top:16px}
+  .ficha-texto p{font-size:15.5px}
+
+  /* inscripciones */
+  .step{padding:22px 20px}
+  .checklist{padding:22px 20px}
+  .bigcta{padding:38px var(--pad)}
+  .bigcta h2{font-size:26px}
+
+  /* contacto */
+  .contact-grid{gap:30px}
+  .contact-info,.form{padding:20px}
+}
+
+/* a partir de aquí las fichas de jugador de 3 en 3 se quedan en miniaturas */
+@media(max-width:520px){
+  .squad{grid-template-columns:repeat(2,1fr);gap:12px}
+  .pl .ph span{font-size:38px}
+}
+
+/* -------- 404 (NoEncontrado.jsx) -------- */
+.notfound{max-width:var(--wrap);margin:0 auto;padding:110px var(--pad);text-align:center}
+.notfound .mark404{width:88px;height:88px;margin:0 auto 26px}
+.notfound h1{font-size:clamp(40px,6vw,72px);color:var(--ink);text-shadow:none}
+.notfound p{margin:14px auto 30px;max-width:46ch;color:var(--dim);font-size:16px}

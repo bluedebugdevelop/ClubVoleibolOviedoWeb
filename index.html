@@ -2,10 +2,30 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/jpeg" href="/images/logo.jpg" />
+    <!-- Icono de pestana: el escudo redibujado, no la variante del monograma.
+         El SVG lo usan los navegadores modernos y se ve nitido a cualquier
+         tamano; los PNG son el respaldo y el icono de pantalla de inicio.
+         Generados con System.Drawing desde public/media/escudo.png. -->
+    <link rel="icon" type="image/svg+xml" href="/escudo.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Web oficial del Club Voleibol Oviedo. Equipos, resultados, noticias, tienda y contacto." />
     <title>Club Voleibol Oviedo</title>
+    <meta
+      name="description"
+      content="Club Voleibol Oviedo, fundado en 1991. Equipos en Superliga 2 Masculino, Primera Nacional Femenina y una cantera de 9 equipos en el Polideportivo José Manuel Fuente, Colloto."
+    />
+    <!-- La web lleva datos de muestra (resultados, noticias, precios) y aun no
+         tiene dominio propio. Quitar esta linea y public/robots.txt el dia que
+         se publique de verdad. -->
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div id="root"></div>

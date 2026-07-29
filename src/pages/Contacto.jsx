@@ -1,137 +1,100 @@
 import { useState } from 'react'
-import { PageHero } from './Equipos'
-import { CLUB } from '../data/content'
+import { Link } from 'react-router-dom'
+import PageHead from '../components/PageHead'
+import SectionHead from '../components/SectionHead'
+import { club } from '../data/contenido'
 
 export default function Contacto() {
   const [enviado, setEnviado] = useState(false)
 
-  function onSubmit(e) {
+  function handleSubmit(e) {
     e.preventDefault()
-    // Demo: no se envía a ningún servidor. Integra aquí tu backend o servicio de email.
     setEnviado(true)
   }
 
   return (
     <>
-      <PageHero
-        title="Contacta con nosotros"
-        subtitle="¿Quieres jugar con nosotros, patrocinar al club o tienes cualquier consulta? Escríbenos."
+      <PageHead
+        crumbs={<><Link to="/">Inicio</Link> · Contacto</>}
+        kicker="Estamos en Colloto"
+        title="Contacto"
+        sub="Para patrocinios, prensa o cualquier duda sobre el club, puedes escribirnos, llamarnos o venir a vernos entrenar."
+        bg="/media/pista-azul.jpg"
+        foco="center 38%"
       />
 
-      <section className="container-cvo py-16 grid lg:grid-cols-5 gap-10">
-        {/* Info */}
-        <div className="lg:col-span-2 space-y-6">
-          <ContactItem
-            icon="📍"
-            titulo="Dónde estamos"
-            lineas={[CLUB.direccion]}
-          />
-          <ContactItem
-            icon="✉️"
-            titulo="Email"
-            lineas={[CLUB.email]}
-            href={`mailto:${CLUB.email}`}
-          />
-          <ContactItem icon="📞" titulo="Teléfono" lineas={[CLUB.telefono]} />
-          <ContactItem
-            icon="🕑"
-            titulo="Horario de oficina"
-            lineas={['Lunes a viernes: 17:00 – 20:00', 'Sábados: 10:00 – 13:00']}
-          />
+      <section className="sec">
+        <SectionHead title="Cómo llegar" />
+        <div className="contact-grid">
+          <div className="contact-info">
+            <div className="row">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M12 21s7-6.5 7-11a7 7 0 1 0-14 0c0 4.5 7 11 7 11z" />
+                <circle cx="12" cy="10" r="2.6" />
+              </svg>
+              <span>
+                <b>Sede</b>
+                <span>{club.sede}</span>
+              </span>
+            </div>
+            <div className="row">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.68 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.32 1.85.55 2.81.68A2 2 0 0 1 22 16.92z" />
+              </svg>
+              <span>
+                <b>Teléfono</b>
+                <span>{club.telefono}</span>
+              </span>
+            </div>
+            <div className="row">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M4 4h16v16H4z" />
+                <path d="m4 6 8 7 8-7" />
+              </svg>
+              <span>
+                <b>Email</b>
+                <span>{club.email}</span>
+              </span>
+            </div>
+          </div>
 
-          <div className="rounded-2xl overflow-hidden ring-1 ring-sky-100 h-56">
+          <div className="map-frame">
             <iframe
-              title="Mapa Oviedo"
-              src="https://www.openstreetmap.org/export/embed.html?bbox=-5.876%2C43.354%2C-5.828%2C43.375&layer=mapnik&marker=43.3644%2C-5.852"
-              className="w-full h-full border-0"
+              title="Polideportivo José Manuel Fuente, Colloto"
+              src="https://www.google.com/maps?q=Polideportivo+Jose+Manuel+Fuente,+Colloto,+Oviedo&output=embed"
               loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
             />
           </div>
         </div>
-
-        {/* Formulario */}
-        <div className="lg:col-span-3">
-          <div className="bg-white rounded-2xl shadow-md ring-1 ring-sky-100 p-8">
-            {enviado ? (
-              <div className="text-center py-12">
-                <div className="text-5xl mb-4">✅</div>
-                <h3 className="text-2xl font-extrabold text-navy-900">¡Mensaje enviado!</h3>
-                <p className="mt-2 text-navy-800/70">
-                  Gracias por contactar con el {CLUB.nombre}. Te responderemos lo antes posible.
-                </p>
-                <button
-                  onClick={() => setEnviado(false)}
-                  className="mt-6 font-semibold text-brand-500 hover:text-brand-600"
-                >
-                  Enviar otro mensaje
-                </button>
-              </div>
-            ) : (
-              <form onSubmit={onSubmit} className="space-y-5">
-                <h3 className="text-xl font-extrabold text-navy-900">Envíanos un mensaje</h3>
-                <div className="grid sm:grid-cols-2 gap-5">
-                  <Field label="Nombre" name="nombre" required />
-                  <Field label="Email" name="email" type="email" required />
-                </div>
-                <Field label="Asunto" name="asunto" required />
-                <div>
-                  <label className="block text-sm font-semibold text-navy-900 mb-1.5">Mensaje</label>
-                  <textarea
-                    name="mensaje"
-                    required
-                    rows={5}
-                    className="w-full rounded-lg border border-sky-100 bg-ice-50 px-4 py-2.5 text-navy-900 outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-400/30 transition"
-                    placeholder="Cuéntanos en qué podemos ayudarte..."
-                  />
-                </div>
-                <label className="flex items-start gap-2 text-sm text-navy-800/70">
-                  <input type="checkbox" required className="mt-1 accent-brand-500" />
-                  He leído y acepto la política de privacidad del club.
-                </label>
-                <button
-                  type="submit"
-                  className="w-full rounded-lg bg-brand-500 hover:bg-brand-400 text-white font-bold py-3 shadow-lg shadow-brand-600/30 transition"
-                >
-                  Enviar mensaje
-                </button>
-              </form>
-            )}
-          </div>
-        </div>
       </section>
-    </>
-  )
-}
 
-function Field({ label, name, type = 'text', required }) {
-  return (
-    <div>
-      <label className="block text-sm font-semibold text-navy-900 mb-1.5">{label}</label>
-      <input
-        type={type}
-        name={name}
-        required={required}
-        className="w-full rounded-lg border border-sky-100 bg-ice-50 px-4 py-2.5 text-navy-900 outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-400/30 transition"
-      />
-    </div>
-  )
-}
-
-function ContactItem({ icon, titulo, lineas, href }) {
-  const content = (
-    <div className="flex gap-4">
-      <span className="text-2xl">{icon}</span>
-      <div>
-        <h4 className="font-bold text-navy-900">{titulo}</h4>
-        {lineas.map((l) => (
-          <p key={l} className="text-sm text-navy-800/70">{l}</p>
-        ))}
+      <div className="band">
+        <section className="sec">
+          <SectionHead title="Escríbenos" />
+          <form className="form" onSubmit={handleSubmit}>
+            {enviado && (
+              <div className="notice">
+                Gracias por escribir. Este formulario todavía no está conectado a ningún envío automático: por
+                ahora, escribe directamente a {club.email}.
+              </div>
+            )}
+            <div className="field">
+              <label htmlFor="nombre">Nombre</label>
+              <input id="nombre" name="nombre" type="text" required />
+            </div>
+            <div className="field">
+              <label htmlFor="email">Email</label>
+              <input id="email" name="email" type="email" required />
+            </div>
+            <div className="field">
+              <label htmlFor="mensaje">Mensaje</label>
+              <textarea id="mensaje" name="mensaje" required />
+            </div>
+            <button className="btn solid" type="submit">Enviar mensaje →</button>
+          </form>
+        </section>
       </div>
-    </div>
-  )
-  return href ? (
-    <a href={href} className="block hover:opacity-80 transition">{content}</a>
-  ) : (
-    content
+    </>
   )
 }
