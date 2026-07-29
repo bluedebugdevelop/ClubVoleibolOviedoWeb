@@ -7,7 +7,7 @@ import { retransmisiones } from '../data/contenido'
    solo en los datos de muestra de contenido.js. */
 import {
   equiposFiltro,
-  jornadas,
+  bloquesDe,
   competiciones,
   clasificaciones,
   destacadosClasificacion,
@@ -17,11 +17,6 @@ import {
 } from '../data/competicion'
 
 const TODOS = 'Todos los equipos'
-
-function coincide(equipo, filtro) {
-  if (filtro === TODOS) return true
-  return equipo === filtro || equipo.includes(filtro)
-}
 
 /* los tres colores de la liga viajan como custom properties: así el CSS pinta
    badge, cabecera de tabla y fila del club sin saber de qué competición se
@@ -81,9 +76,9 @@ function Clasificacion({ equipo }) {
 export default function Calendario() {
   const [filtro, setFiltro] = useState(TODOS)
 
-  const jornadasFiltradas = jornadas
-    .map((j) => ({ ...j, partidos: j.partidos.filter((p) => coincide(p.equipo, filtro)) }))
-    .filter((j) => j.partidos.length > 0)
+  /* los bloques se piden ya filtrados: así, al elegir un equipo, las fechas que
+     se enseñan son las suyas y no las del club entero */
+  const jornadasFiltradas = bloquesDe(filtro === TODOS ? null : filtro)
 
   /* con "Todos los equipos" no hay una sola clasificación que enseñar, así que
      se enseñan las nacionales, que son las que sigue la mayoría */

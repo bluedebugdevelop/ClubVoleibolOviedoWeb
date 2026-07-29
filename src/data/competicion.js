@@ -14,9 +14,9 @@ import {
   equiposFiltro as equiposFiltroMuestra,
 } from './contenido'
 
-const EQUIPOS = Array.isArray(datos?.equipos) ? datos.equipos : []
+const CRUDOS = Array.isArray(datos?.equipos) ? datos.equipos : []
 
-export const hayDatosReales = EQUIPOS.length > 0
+export const hayDatosReales = CRUDOS.length > 0
 export const generado = datos?.generado ?? null
 export const temporadaDatos = datos?.temporada ?? null
 
@@ -50,6 +50,48 @@ function colores(equipo) {
   if (equipo.ente !== 'RFEVB') return AZUL
   return equipo.genero === 'Femenino' ? AMBAR : ROJO
 }
+
+// ---------------------------------------------------------------------------
+// Ajustes de presentación
+//
+// El sénior masculino jugó 2025/26 en Primera División Nacional, pero la
+// temporada que viene compite en Superliga 2. Los datos de la pasada están
+// solo de prueba mientras las federaciones no publican la nueva, así que el
+// equipo se enseña ya con el nombre y el rojo de la categoría en la que va a
+// jugar (decisión de Adrián, 2026-07-29).
+//
+// El equipo se localiza por su competición, no por el nombre generado: cuando
+// empiece la temporada, el scraper lo encontrará en la RFEVB, este apaño dejará
+// de casar y el equipo pasará a llamarse Superliga 2 por la vía normal, sin
+// tener que acordarse de venir a borrar nada.
+// ---------------------------------------------------------------------------
+const PRESENTACION = [
+  {
+    casa: (e) =>
+      e.ente === 'FVBPA' &&
+      /^s[eé]nior$/i.test(e.categoria ?? '') &&
+      e.genero === 'Masculino' &&
+      /primera\s+divisi[oó]n\s+nacional/i.test(e.division ?? ''),
+    nombre: 'Superliga 2 Masculina',
+    nacional: true,
+    paleta: ROJO,
+  },
+]
+
+/** Equipos ya con los ajustes de presentación aplicados. */
+const EQUIPOS = CRUDOS.map((e) => {
+  const ajuste = PRESENTACION.find((p) => p.casa(e))
+  return {
+    ...e,
+    nombre: ajuste?.nombre ?? e.nombre,
+    // se guarda de dónde salen de verdad los datos, para poder decirlo debajo
+    // del titular de la clasificación sin fingir que son de otra competición
+    competicionReal: e.division,
+    ajustado: Boolean(ajuste),
+    esNacional: ajuste?.nacional ?? e.ente === 'RFEVB',
+    paleta: ajuste?.paleta ?? colores(e),
+  }
+})
 
 /** ¿Es este el equipo del club dentro del partido? */
 const esClub = (nombre, equipoClub) => {
@@ -127,44 +169,61 @@ function agrupar(partidos) {
 const HOY = new Date()
 HOY.setHours(0, 0, 0, 0)
 
-const futuros = TODOS_PARTIDOS.filter((p) => {
-  const d = aFecha(p.iso)
-  return d && d >= HOY
-})
-const pasados = TODOS_PARTIDOS.filter((p) => {
-  const d = aFecha(p.iso)
-  return d && d < HOY
-})
-
 /**
  * Bloques que ve la página: primero lo que viene (más cercano arriba) y después
  * lo ya jugado (más reciente arriba). Se limita para no volcar la temporada
- * entera de once equipos de golpe.
+ * entera de doce equipos de golpe.
  */
-export const jornadas = hayDatosReales
-  ? [
-      ...agrupar(futuros).slice(0, 3).map((b, i) => ({
+function bloques(lista) {
+  return [
+    ...agrupar(lista.filter((p) => { const d = aFecha(p.iso); return d && d >= HOY }))
+      .slice(0, 3)
+      .map((b, i) => ({
         ...b,
         titulo: i === 0 ? `Próximos partidos · ${b.titulo}` : `Jornada · ${b.titulo}`,
       })),
-      ...agrupar(pasados).reverse().slice(0, 4).map((b) => ({
-        ...b,
-        titulo: `Jugado · ${b.titulo}`,
-      })),
-    ]
-  : jornadasMuestra
+    ...agrupar(lista.filter((p) => { const d = aFecha(p.iso); return d && d < HOY }))
+      .reverse()
+      .slice(0, 4)
+      .map((b) => ({ ...b, titulo: `Jugado · ${b.titulo}` })),
+  ]
+}
+
+export const jornadas = hayDatosReales ? bloques(TODOS_PARTIDOS) : jornadasMuestra
+
+/**
+ * Bloques de jornada de un equipo, o de todos si no se pasa ninguno.
+ *
+ * Se agrupa DESPUÉS de filtrar, no antes: los bloques se quedan con las últimas
+ * fechas con partidos, y cada equipo termina su temporada cuando termina. Si se
+ * agrupara primero sobre el club entero, al elegir un equipo que acabó antes
+ * que el resto no saldría ni un partido.
+ */
+export function bloquesDe(equipo) {
+  if (!hayDatosReales) {
+    return jornadasMuestra
+      .map((j) => ({
+        ...j,
+        partidos: j.partidos.filter((p) => !equipo || p.equipo === equipo || p.equipo.includes(equipo)),
+      }))
+      .filter((j) => j.partidos.length > 0)
+  }
+  return bloques(equipo ? TODOS_PARTIDOS.filter((p) => p.equipo === equipo) : TODOS_PARTIDOS)
+}
 
 export const competiciones = hayDatosReales
   ? Object.fromEntries(
       EQUIPOS.map((e) => [
         e.nombre,
         {
-          liga: e.division || e.grupo,
-          grupo: e.grupo || '',
+          // en los equipos ajustados el titular es la categoría en la que van a
+          // jugar, y debajo se dice de qué competición salen los datos
+          liga: e.ajustado ? e.nombre : e.division || e.grupo,
+          grupo: e.ajustado ? e.competicionReal : e.grupo || '',
           ente: e.ente,
-          nacional: e.ente === 'RFEVB',
+          nacional: e.esNacional,
           url: e.url,
-          ...colores(e),
+          ...e.paleta,
         },
       ]),
     )
@@ -182,7 +241,7 @@ export const equiposFiltro = hayDatosReales
 
 /** Equipos con clasificación, en orden: los que enseña el filtro "Todos". */
 export const destacadosClasificacion = hayDatosReales
-  ? EQUIPOS.filter((e) => e.ente === 'RFEVB' && e.clasificacion?.length).map((e) => e.nombre)
+  ? EQUIPOS.filter((e) => e.esNacional && e.clasificacion?.length).map((e) => e.nombre)
   : ['Superliga 2 Masculino', 'Primera Nacional Femenina']
 
 export const equiposCompeticion = EQUIPOS
@@ -200,6 +259,7 @@ export const equiposCompeticion = EQUIPOS
 const ALIAS = {
   'superliga-2-masculino': [
     'Superliga Masculina 2',
+    'Superliga 2 Masculina',
     'Senior Masculino · 1ª Nacional',
     'Sénior Masculino · 1ª Nacional',
     'Senior Masculino',
