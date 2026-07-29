@@ -1,5 +1,5 @@
 {
- "generado": "2026-07-29T16:37:37.314Z",
+ "generado": "2026-07-29T17:05:12.339Z",
  "temporada": "2025/26",
  "fuentes": {
   "FVBPA": "https://www.fvbpa.com",
@@ -32,7 +32,8 @@
       "25-12"
      ],
      "estado": "Finalizado",
-     "jornada": 1
+     "jornada": 1,
+     "fase": "Grupo A"
     },
     {
      "id": "rfevb-2-Sestao-CV_Oviedo",
@@ -49,7 +50,8 @@
       "25-20"
      ],
      "estado": "Finalizado",
-     "jornada": 2
+     "jornada": 2,
+     "fase": "Grupo A"
     },
     {
      "id": "rfevb-3-Getxo_Etorki-CV_Oviedo",
@@ -67,7 +69,8 @@
       "25-12"
      ],
      "estado": "Finalizado",
-     "jornada": 3
+     "jornada": 3,
+     "fase": "Grupo A"
     },
     {
      "id": "rfevb-4-CV_Oviedo-CD_Aule",
@@ -84,7 +87,8 @@
       "25-13"
      ],
      "estado": "Finalizado",
-     "jornada": 4
+     "jornada": 4,
+     "fase": "Grupo A"
     },
     {
      "id": "rfevb-5-Rehermann_Ciudad_de_A_Coruña-CV_Oviedo",
@@ -102,7 +106,8 @@
       "25-20"
      ],
      "estado": "Finalizado",
-     "jornada": 5
+     "jornada": 5,
+     "fase": "Grupo A"
     },
     {
      "id": "rfevb-6-CV_Oviedo-Fertiberia_Los_Campos",
@@ -121,7 +126,8 @@
       "15-12"
      ],
      "estado": "Finalizado",
-     "jornada": 6
+     "jornada": 6,
+     "fase": "Grupo A"
     },
     {
      "id": "rfevb-7-Santa_Cruz_Cuesta_Piedra-CV_Oviedo",
@@ -138,7 +144,8 @@
       "16-25"
      ],
      "estado": "Finalizado",
-     "jornada": 7
+     "jornada": 7,
+     "fase": "Grupo A"
     },
     {
      "id": "rfevb-8-CV_Oviedo-Curtidora_Uniovi",
@@ -155,7 +162,8 @@
       "25-20"
      ],
      "estado": "Finalizado",
-     "jornada": 8
+     "jornada": 8,
+     "fase": "Grupo A"
     },
     {
      "id": "rfevb-9-Conforgal_Xuvenil_Teis-CV_Oviedo",
@@ -174,7 +182,8 @@
       "15-10"
      ],
      "estado": "Finalizado",
-     "jornada": 9
+     "jornada": 9,
+     "fase": "Grupo A"
     },
     {
      "id": "rfevb-10-CV_Oviedo-CV_Oleiros",
@@ -193,7 +202,8 @@
       "15-8"
      ],
      "estado": "Finalizado",
-     "jornada": 10
+     "jornada": 10,
+     "fase": "Grupo A"
     },
     {
      "id": "rfevb-11-Emeve-CV_Oviedo",
@@ -210,7 +220,8 @@
       "25-18"
      ],
      "estado": "Finalizado",
-     "jornada": 11
+     "jornada": 11,
+     "fase": "Grupo A"
     },
     {
      "id": "rfevb-12-Cafés_Foronda_Ekialde-CV_Oviedo",
@@ -227,7 +238,8 @@
       "18-25"
      ],
      "estado": "Finalizado",
-     "jornada": 12
+     "jornada": 12,
+     "fase": "Grupo A"
     },
     {
      "id": "rfevb-13-CV_Oviedo-Sestao",
@@ -245,7 +257,8 @@
       "25-10"
      ],
      "estado": "Finalizado",
-     "jornada": 13
+     "jornada": 13,
+     "fase": "Grupo A"
     },
     {
      "id": "rfevb-14-CV_Oviedo-Getxo_Etorki",
@@ -264,7 +277,8 @@
       "15-8"
      ],
      "estado": "Finalizado",
-     "jornada": 14
+     "jornada": 14,
+     "fase": "Grupo A"
     },
     {
      "id": "rfevb-15-CD_Aule-CV_Oviedo",
@@ -281,7 +295,8 @@
       "25-20"
      ],
      "estado": "Finalizado",
-     "jornada": 15
+     "jornada": 15,
+     "fase": "Grupo A"
     },
     {
      "id": "rfevb-16-CV_Oviedo-Rehermann_Ciudad_de_A_Coruña",
@@ -299,7 +314,8 @@
       "17-25"
      ],
      "estado": "Finalizado",
-     "jornada": 16
+     "jornada": 16,
+     "fase": "Grupo A"
     },
     {
      "id": "rfevb-17-Fertiberia_Los_Campos-CV_Oviedo",
@@ -318,7 +334,8 @@
       "13-15"
      ],
      "estado": "Finalizado",
-     "jornada": 17
+     "jornada": 17,
+     "fase": "Grupo A"
     },
     {
      "id": "rfevb-18-CV_Oviedo-Santa_Cruz_Cuesta_Piedra",
@@ -336,7 +353,8 @@
       "20-25"
      ],
      "estado": "Finalizado",
-     "jornada": 18
+     "jornada": 18,
+     "fase": "Grupo A"
     },
     {
      "id": "rfevb-19-Curtidora_Uniovi-CV_Oviedo",
@@ -355,7 +373,8 @@
       "15-12"
      ],
      "estado": "Finalizado",
-     "jornada": 19
+     "jornada": 19,
+     "fase": "Grupo A"
     },
     {
      "id": "rfevb-20-CV_Oviedo-Conforgal_Xuvenil_Teis",
@@ -373,7 +392,8 @@
       "25-8"
      ],
      "estado": "Finalizado",
-     "jornada": 20
+     "jornada": 20,
+     "fase": "Grupo A"
     },
     {
      "id": "rfevb-21-CV_Oleiros-CV_Oviedo",
@@ -391,7 +411,8 @@
       "25-21"
      ],
      "estado": "Finalizado",
-     "jornada": 21
+     "jornada": 21,
+     "fase": "Grupo A"
     },
     {
      "id": "rfevb-22-CV_Oviedo-Emeve",
@@ -410,7 +431,8 @@
       "16-14"
      ],
      "estado": "Finalizado",
-     "jornada": 22
+     "jornada": 22,
+     "fase": "Grupo A"
     }
    ],
    "clasificacion": [
@@ -550,7 +572,9 @@
       "25-18",
       "25-17"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 1,
+     "fase": "Jornada 1"
     },
     {
      "id": "fvbpa-10654",
@@ -568,7 +592,9 @@
       "25-23",
       "11-15"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 2,
+     "fase": "Jornada 1"
     },
     {
      "id": "fvbpa-10666",
@@ -584,7 +610,9 @@
       "25-20",
       "25-19"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 4,
+     "fase": "Jornada 1"
     },
     {
      "id": "fvbpa-10721",
@@ -601,7 +629,9 @@
       "25-23",
       "25-16"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 14,
+     "fase": "Jornada 1"
     },
     {
      "id": "fvbpa-10668",
@@ -618,7 +648,9 @@
       "25-22",
       "25-23"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 5,
+     "fase": "Jornada 1"
     },
     {
      "id": "fvbpa-10677",
@@ -634,7 +666,9 @@
       "25-12",
       "25-16"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 6,
+     "fase": "Jornada 1"
     },
     {
      "id": "fvbpa-10655",
@@ -651,7 +685,9 @@
       "23-25",
       "16-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 3,
+     "fase": "Jornada 1"
     },
     {
      "id": "fvbpa-10681",
@@ -667,7 +703,9 @@
       "12-25",
       "24-26"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 7,
+     "fase": "Jornada 1"
     },
     {
      "id": "fvbpa-10688",
@@ -683,7 +721,9 @@
       "25-12",
       "26-24"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 8,
+     "fase": "Jornada 1"
     },
     {
      "id": "fvbpa-10694",
@@ -700,7 +740,9 @@
       "25-21",
       "24-26"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 9,
+     "fase": "Jornada 1"
     },
     {
      "id": "fvbpa-10699",
@@ -716,7 +758,9 @@
       "25-22",
       "25-21"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 10,
+     "fase": "Jornada 1"
     },
     {
      "id": "fvbpa-10720",
@@ -733,7 +777,9 @@
       "23-25",
       "27-29"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 13,
+     "fase": "Jornada 1"
     },
     {
      "id": "fvbpa-10707",
@@ -750,7 +796,9 @@
       "29-27",
       "25-20"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 11,
+     "fase": "Jornada 1"
     },
     {
      "id": "fvbpa-10710",
@@ -767,7 +815,9 @@
       "21-25",
       "21-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 12,
+     "fase": "Jornada 1"
     },
     {
      "id": "fvbpa-10732",
@@ -783,7 +833,9 @@
       "25-23",
       "25-16"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 15,
+     "fase": "Jornada 1"
     },
     {
      "id": "fvbpa-10734",
@@ -799,7 +851,9 @@
       "25-19",
       "25-19"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 16,
+     "fase": "Jornada 1"
     },
     {
      "id": "fvbpa-10747",
@@ -815,7 +869,9 @@
       "25-15",
       "25-22"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 18,
+     "fase": "Jornada 1"
     },
     {
      "id": "fvbpa-10760",
@@ -833,7 +889,9 @@
       "25-27",
       "15-11"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 20,
+     "fase": "Jornada 1"
     },
     {
      "id": "fvbpa-10743",
@@ -845,7 +903,9 @@
      "setsLocal": null,
      "setsVisitante": null,
      "parciales": [],
-     "estado": "Sin comenzar"
+     "estado": "Sin comenzar",
+     "jornada": 17,
+     "fase": "Jornada 1"
     },
     {
      "id": "fvbpa-10754",
@@ -857,7 +917,9 @@
      "setsLocal": null,
      "setsVisitante": null,
      "parciales": [],
-     "estado": "Sin comenzar"
+     "estado": "Sin comenzar",
+     "jornada": 19,
+     "fase": "Jornada 1"
     },
     {
      "id": "fvbpa-10765",
@@ -869,7 +931,9 @@
      "setsLocal": null,
      "setsVisitante": null,
      "parciales": [],
-     "estado": "Sin comenzar"
+     "estado": "Sin comenzar",
+     "jornada": 21,
+     "fase": "Jornada 1"
     }
    ],
    "clasificacion": [
@@ -1010,7 +1074,9 @@
       "25-23",
       "19-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 1,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11981",
@@ -1026,7 +1092,9 @@
       "0-25",
       "0-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 5,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-12026",
@@ -1042,7 +1110,9 @@
       "25-0",
       "25-0"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 14,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11966",
@@ -1060,7 +1130,9 @@
       "16-25",
       "15-13"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 2,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11970",
@@ -1076,7 +1148,9 @@
       "19-25",
       "16-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 3,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11975",
@@ -1093,7 +1167,9 @@
       "25-20",
       "22-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 4,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11984",
@@ -1109,7 +1185,9 @@
       "25-18",
       "25-20"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 6,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11992",
@@ -1125,7 +1203,9 @@
       "26-24",
       "25-22"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 7,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11993",
@@ -1141,7 +1221,9 @@
       "6-25",
       "11-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 8,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-12002",
@@ -1157,7 +1239,9 @@
       "25-23",
       "25-17"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 9,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-12004",
@@ -1173,7 +1257,9 @@
       "25-16",
       "25-20"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 10,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-12011",
@@ -1191,7 +1277,9 @@
       "20-25",
       "12-15"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 11,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-12015",
@@ -1207,7 +1295,9 @@
       "25-11",
       "25-17"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 12,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-12020",
@@ -1223,7 +1313,9 @@
       "25-18",
       "25-22"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 13,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-12029",
@@ -1239,7 +1331,9 @@
       "20-25",
       "12-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 15,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-12037",
@@ -1256,7 +1350,9 @@
       "25-15",
       "25-19"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 16,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-12038",
@@ -1272,7 +1368,9 @@
       "25-15",
       "25-12"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 17,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-14058",
@@ -1288,7 +1386,9 @@
       "25-17",
       "25-23"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 1,
+     "fase": "Fase final"
     }
    ],
    "clasificacion": [
@@ -1403,7 +1503,9 @@
       "23-25",
       "18-16"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 2,
+     "fase": "Fase única"
     },
     {
      "id": "fvbpa-11706",
@@ -1419,7 +1521,9 @@
       "25-10",
       "25-21"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 1,
+     "fase": "Fase única"
     }
    ],
    "clasificacion": [
@@ -1487,7 +1591,9 @@
       "25-12",
       "25-5"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 1,
+     "fase": "Grupo B"
     },
     {
      "id": "fvbpa-12110",
@@ -1503,7 +1609,9 @@
       "12-25",
       "6-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 2,
+     "fase": "Grupo B"
     },
     {
      "id": "fvbpa-12113",
@@ -1519,7 +1627,9 @@
       "25-13",
       "25-18"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 3,
+     "fase": "Grupo B"
     },
     {
      "id": "fvbpa-12119",
@@ -1536,7 +1646,9 @@
       "25-27",
       "23-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 4,
+     "fase": "Grupo B"
     },
     {
      "id": "fvbpa-12120",
@@ -1552,7 +1664,9 @@
       "25-16",
       "25-17"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 5,
+     "fase": "Grupo B"
     },
     {
      "id": "fvbpa-12127",
@@ -1568,7 +1682,9 @@
       "25-19",
       "25-7"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 6,
+     "fase": "Grupo B"
     },
     {
      "id": "fvbpa-12129",
@@ -1584,7 +1700,9 @@
       "6-25",
       "12-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 7,
+     "fase": "Grupo B"
     },
     {
      "id": "fvbpa-12134",
@@ -1600,7 +1718,9 @@
       "13-25",
       "20-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 8,
+     "fase": "Grupo B"
     },
     {
      "id": "fvbpa-12138",
@@ -1616,7 +1736,9 @@
       "25-9",
       "25-6"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 9,
+     "fase": "Grupo B"
     },
     {
      "id": "fvbpa-12147",
@@ -1633,7 +1755,9 @@
       "25-11",
       "25-21"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 11,
+     "fase": "Grupo B"
     },
     {
      "id": "fvbpa-12148",
@@ -1649,7 +1773,9 @@
       "27-25",
       "25-14"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 12,
+     "fase": "Grupo B"
     },
     {
      "id": "fvbpa-12155",
@@ -1665,7 +1791,9 @@
       "12-25",
       "15-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 13,
+     "fase": "Grupo B"
     },
     {
      "id": "fvbpa-12141",
@@ -1683,7 +1811,9 @@
       "20-25",
       "11-15"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 10,
+     "fase": "Grupo B"
     },
     {
      "id": "fvbpa-14078",
@@ -1699,7 +1829,9 @@
       "25-14",
       "25-10"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 1,
+     "fase": "Fase final"
     },
     {
      "id": "fvbpa-14082",
@@ -1715,7 +1847,9 @@
       "25-17",
       "25-13"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 2,
+     "fase": "Fase final"
     }
    ],
    "clasificacion": [
@@ -1819,7 +1953,9 @@
       "16-25",
       "13-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 1,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11346",
@@ -1835,7 +1971,9 @@
       "15-25",
       "20-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 2,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11351",
@@ -1851,7 +1989,9 @@
       "25-18",
       "25-19"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 3,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11356",
@@ -1867,7 +2007,9 @@
       "25-12",
       "27-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 4,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11361",
@@ -1883,7 +2025,9 @@
       "25-11",
       "25-10"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 5,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11366",
@@ -1900,7 +2044,9 @@
       "25-22",
       "25-18"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 6,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11371",
@@ -1916,7 +2062,9 @@
       "25-19",
       "25-11"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 7,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11378",
@@ -1932,7 +2080,9 @@
       "25-17",
       "25-7"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 8,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11385",
@@ -1948,7 +2098,9 @@
       "25-21",
       "25-23"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 9,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11392",
@@ -1964,7 +2116,9 @@
       "25-14",
       "25-14"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 10,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11399",
@@ -1980,7 +2134,9 @@
       "16-25",
       "9-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 11,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11406",
@@ -1996,7 +2152,9 @@
       "25-12",
       "25-23"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 12,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11412",
@@ -2013,7 +2171,9 @@
       "19-25",
       "25-13"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 13,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11417",
@@ -2031,7 +2191,9 @@
       "14-25",
       "15-9"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 14,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11422",
@@ -2048,7 +2210,9 @@
       "12-25",
       "12-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 15,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11427",
@@ -2064,7 +2228,9 @@
       "14-25",
       "17-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 16,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11432",
@@ -2081,7 +2247,9 @@
       "25-23",
       "25-19"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 17,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11437",
@@ -2097,7 +2265,9 @@
       "13-25",
       "20-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 18,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11444",
@@ -2113,7 +2283,9 @@
       "11-25",
       "11-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 19,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11451",
@@ -2130,7 +2302,9 @@
       "23-25",
       "25-18"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 20,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11458",
@@ -2146,7 +2320,9 @@
       "17-25",
       "10-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 21,
+     "fase": "Grupo A"
     }
    ],
    "clasificacion": [
@@ -2286,7 +2462,9 @@
       "11-25",
       "12-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 1,
+     "fase": "Grupo C"
     },
     {
      "id": "fvbpa-12431",
@@ -2302,7 +2480,9 @@
       "11-25",
       "14-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 2,
+     "fase": "Grupo C"
     },
     {
      "id": "fvbpa-12432",
@@ -2318,7 +2498,9 @@
       "27-25",
       "25-11"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 3,
+     "fase": "Grupo C"
     },
     {
      "id": "fvbpa-12441",
@@ -2334,7 +2516,9 @@
       "25-16",
       "25-17"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 4,
+     "fase": "Grupo C"
     },
     {
      "id": "fvbpa-12443",
@@ -2352,7 +2536,9 @@
       "25-21",
       "13-15"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 5,
+     "fase": "Grupo C"
     },
     {
      "id": "fvbpa-12450",
@@ -2369,7 +2555,9 @@
       "14-25",
       "25-15"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 6,
+     "fase": "Grupo C"
     },
     {
      "id": "fvbpa-12454",
@@ -2385,7 +2573,9 @@
       "19-25",
       "20-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 7,
+     "fase": "Grupo C"
     },
     {
      "id": "fvbpa-12459",
@@ -2401,7 +2591,9 @@
       "25-13",
       "25-20"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 8,
+     "fase": "Grupo C"
     },
     {
      "id": "fvbpa-12465",
@@ -2418,7 +2610,9 @@
       "25-21",
       "25-10"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 9,
+     "fase": "Grupo C"
     },
     {
      "id": "fvbpa-12594",
@@ -2434,7 +2628,9 @@
       "25-22",
       "25-17"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 10,
+     "fase": "Grupo C"
     },
     {
      "id": "fvbpa-12602",
@@ -2451,7 +2647,9 @@
       "25-13",
       "25-15"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 11,
+     "fase": "Grupo C"
     },
     {
      "id": "fvbpa-12603",
@@ -2467,7 +2665,9 @@
       "9-25",
       "27-29"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 12,
+     "fase": "Grupo C"
     },
     {
      "id": "fvbpa-12612",
@@ -2483,7 +2683,9 @@
       "11-25",
       "7-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 13,
+     "fase": "Grupo C"
     },
     {
      "id": "fvbpa-12614",
@@ -2501,7 +2703,9 @@
       "19-25",
       "15-7"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 14,
+     "fase": "Grupo C"
     },
     {
      "id": "fvbpa-12621",
@@ -2519,7 +2723,9 @@
       "19-25",
       "8-15"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 15,
+     "fase": "Grupo C"
     },
     {
      "id": "fvbpa-12625",
@@ -2537,7 +2743,9 @@
       "20-25",
       "20-18"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 16,
+     "fase": "Grupo C"
     },
     {
      "id": "fvbpa-12630",
@@ -2555,7 +2763,9 @@
       "20-25",
       "7-15"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 17,
+     "fase": "Grupo C"
     }
    ],
    "clasificacion": [
@@ -2677,7 +2887,9 @@
       "10-25",
       "10-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 1,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-12317",
@@ -2693,7 +2905,9 @@
       "6-25",
       "10-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 2,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-12315",
@@ -2709,7 +2923,9 @@
       "25-0",
       "25-0"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 6,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-12324",
@@ -2725,7 +2941,9 @@
       "25-15",
       "25-11"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 3,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-12331",
@@ -2741,7 +2959,9 @@
       "25-18",
       "25-15"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 4,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-12337",
@@ -2759,7 +2979,9 @@
       "18-25",
       "12-15"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 5,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-12320",
@@ -2775,7 +2997,9 @@
       "25-11",
       "25-10"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 7,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-12327",
@@ -2791,7 +3015,9 @@
       "18-25",
       "21-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 8,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-12334",
@@ -2807,7 +3033,9 @@
       "17-25",
       "14-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 9,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-14113",
@@ -2823,7 +3051,9 @@
       "25-20",
       "27-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 1,
+     "fase": "Fase final"
     }
    ],
    "clasificacion": [
@@ -2910,7 +3140,9 @@
       "25-17",
       "25-23"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 1,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11207",
@@ -2926,7 +3158,9 @@
       "25-15",
       "25-10"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 2,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11214",
@@ -2942,7 +3176,9 @@
       "25-13",
       "25-19"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 3,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11221",
@@ -2958,7 +3194,9 @@
       "25-16",
       "25-14"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 4,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11228",
@@ -2975,7 +3213,9 @@
       "12-25",
       "25-16"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 5,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11235",
@@ -2991,7 +3231,9 @@
       "9-25",
       "9-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 6,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11242",
@@ -3007,7 +3249,9 @@
       "25-20",
       "25-13"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 7,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11253",
@@ -3023,7 +3267,9 @@
       "22-25",
       "22-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 9,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11258",
@@ -3041,7 +3287,9 @@
       "25-20",
       "15-13"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 10,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11248",
@@ -3059,7 +3307,9 @@
       "19-25",
       "15-13"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 8,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11263",
@@ -3075,7 +3325,9 @@
       "25-13",
       "25-18"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 11,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11268",
@@ -3091,7 +3343,9 @@
       "21-25",
       "13-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 12,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11273",
@@ -3107,7 +3361,9 @@
       "17-25",
       "7-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 13,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11280",
@@ -3124,7 +3380,9 @@
       "25-9",
       "13-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 14,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11287",
@@ -3140,7 +3398,9 @@
       "8-25",
       "15-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 15,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11294",
@@ -3158,7 +3418,9 @@
       "23-25",
       "10-15"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 16,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11301",
@@ -3174,7 +3436,9 @@
       "25-12",
       "25-17"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 17,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11308",
@@ -3190,7 +3454,9 @@
       "5-25",
       "11-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 18,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11314",
@@ -3207,7 +3473,9 @@
       "25-17",
       "13-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 19,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11319",
@@ -3223,7 +3491,9 @@
       "25-15",
       "25-17"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 20,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-11324",
@@ -3241,7 +3511,9 @@
       "17-25",
       "13-15"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 21,
+     "fase": "Grupo A"
     }
    ],
    "clasificacion": [
@@ -3382,7 +3654,9 @@
       "15-25",
       "21-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 1,
+     "fase": "Grupo B"
     },
     {
      "id": "fvbpa-12743",
@@ -3398,7 +3672,9 @@
       "25-18",
       "26-24"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 2,
+     "fase": "Grupo B"
     },
     {
      "id": "fvbpa-12747",
@@ -3416,7 +3692,9 @@
       "25-21",
       "9-15"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 3,
+     "fase": "Grupo B"
     },
     {
      "id": "fvbpa-12751",
@@ -3432,7 +3710,9 @@
       "25-9",
       "25-6"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 4,
+     "fase": "Grupo B"
     },
     {
      "id": "fvbpa-12755",
@@ -3448,7 +3728,9 @@
       "25-22",
       "25-17"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 5,
+     "fase": "Grupo B"
     },
     {
      "id": "fvbpa-12759",
@@ -3465,7 +3747,9 @@
       "18-25",
       "16-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 6,
+     "fase": "Grupo B"
     },
     {
      "id": "fvbpa-12763",
@@ -3481,7 +3765,9 @@
       "17-25",
       "10-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 7,
+     "fase": "Grupo B"
     },
     {
      "id": "fvbpa-12767",
@@ -3499,7 +3785,9 @@
       "25-12",
       "17-15"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 8,
+     "fase": "Grupo B"
     },
     {
      "id": "fvbpa-12771",
@@ -3515,7 +3803,9 @@
       "18-25",
       "11-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 9,
+     "fase": "Grupo B"
     },
     {
      "id": "fvbpa-12775",
@@ -3532,7 +3822,9 @@
       "15-25",
       "20-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 10,
+     "fase": "Grupo B"
     },
     {
      "id": "fvbpa-12779",
@@ -3548,7 +3840,9 @@
       "1-25",
       "9-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 11,
+     "fase": "Grupo B"
     },
     {
      "id": "fvbpa-12783",
@@ -3564,7 +3858,9 @@
       "25-16",
       "28-26"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 12,
+     "fase": "Grupo B"
     },
     {
      "id": "fvbpa-12787",
@@ -3580,7 +3876,9 @@
       "25-23",
       "25-20"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 13,
+     "fase": "Grupo B"
     }
    ],
    "clasificacion": [
@@ -3684,7 +3982,9 @@
       "0-25",
       "0-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 4,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-12295",
@@ -3700,7 +4000,9 @@
       "25-0",
       "25-0"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 11,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-12266",
@@ -3716,7 +4018,9 @@
       "4-25",
       "11-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 3,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-12274",
@@ -3732,7 +4036,9 @@
       "0-25",
       "0-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 5,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-12276",
@@ -3749,7 +4055,9 @@
       "25-19",
       "25-21"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 6,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-12281",
@@ -3765,7 +4073,9 @@
       "25-9",
       "25-13"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 7,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-12294",
@@ -3781,7 +4091,9 @@
       "25-4",
       "25-4"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 10,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-12285",
@@ -3797,7 +4109,9 @@
       "25-23",
       "25-22"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 8,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-12302",
@@ -3813,7 +4127,9 @@
       "11-25",
       "7-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 12,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-12304",
@@ -3829,7 +4145,9 @@
       "18-25",
       "23-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 13,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-12257",
@@ -3845,7 +4163,9 @@
       "14-25",
       "22-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 1,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-14121",
@@ -3861,7 +4181,9 @@
       "25-16",
       "25-13"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 1,
+     "fase": "Fase final"
     }
    ],
    "clasificacion": [
@@ -3956,7 +4278,9 @@
       "9-25",
       "8-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 1,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-13999",
@@ -3972,7 +4296,9 @@
       "23-25",
       "25-11"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 2,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-14007",
@@ -3988,7 +4314,9 @@
       "12-25",
       "21-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 4,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-14010",
@@ -4004,7 +4332,9 @@
       "7-25",
       "15-25"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 5,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-13996",
@@ -4020,7 +4350,9 @@
       "25-11",
       "25-11"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 6,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-14001",
@@ -4036,7 +4368,9 @@
       "13-25",
       "25-20"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 7,
+     "fase": "Grupo A"
     },
     {
      "id": "fvbpa-14009",
@@ -4052,10 +4386,58 @@
       "25-7",
       "25-14"
      ],
-     "estado": "Finalizado"
+     "estado": "Finalizado",
+     "jornada": 9,
+     "fase": "Grupo A"
     }
    ],
-   "clasificacion": [],
+   "clasificacion": [
+    {
+     "pos": 1,
+     "equipo": "AD LOS CAMPOS",
+     "pts": 16,
+     "pj": 8,
+     "sf": 23,
+     "sc": 1,
+     "yo": false
+    },
+    {
+     "pos": 2,
+     "equipo": "RGC COVADONGA A",
+     "pts": 14,
+     "pj": 8,
+     "sf": 19,
+     "sc": 5,
+     "yo": false
+    },
+    {
+     "pos": 3,
+     "equipo": "CV LA CALZADA A",
+     "pts": 12,
+     "pj": 8,
+     "sf": 10,
+     "sc": 14,
+     "yo": false
+    },
+    {
+     "pos": 4,
+     "equipo": "CDV INMACULADA",
+     "pts": 9,
+     "pj": 8,
+     "sf": 4,
+     "sc": 20,
+     "yo": false
+    },
+    {
+     "pos": 5,
+     "equipo": "CV OVIEDO",
+     "pts": 9,
+     "pj": 8,
+     "sf": 4,
+     "sc": 20,
+     "yo": true
+    }
+   ],
    "clave": "alevin-femenino-clasificatoria-campeonato-de-espana-alevin-fvbpa",
    "nombre": "Alevín Femenino"
   }

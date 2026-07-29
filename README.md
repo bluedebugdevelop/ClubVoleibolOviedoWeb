@@ -55,16 +55,34 @@ Esto es a propósito: cada temporada las federaciones crean competiciones nuevas
 con ids distintos. Al descubrirlos solos, el cambio de temporada no obliga a
 tocar código. Si el club sube, baja o mete un equipo nuevo, aparece sin más.
 
-### Actualización automática
+### Actualización automática (a diario, a las 00:00)
 
-`.github/workflows/datos.yml` lo ejecuta a diario (y otra vez las tardes de fin
-de semana). Si el JSON cambia, lo commitea y el push despliega en Vercel.
-También se puede lanzar a mano desde la pestaña **Actions → Actualizar datos de
+`.github/workflows/datos.yml` baja los datos **todos los días a medianoche
+hora española**. Si el JSON cambia, lo commitea; el push dispara el despliegue
+en Vercel y la web queda actualizada sola. Si no cambia nada, no commitea.
+
+También se puede lanzar cuando quieras desde **Actions → Actualizar datos de
 competición → Run workflow**.
 
-> El workflow commitea con el correo de GitHub del propietario del proyecto en
-> Vercel. En el plan Hobby, un commit de otro autor deja el despliegue
-> **bloqueado**, así que ese dato no es cosmético.
+Para que funcione hay que darle permiso de escritura **una sola vez**, con la
+cuenta `bluedebugdevelop`:
+
+> **Settings → Actions → General → Workflow permissions → Read and write
+> permissions → Save**
+
+Sin eso el scraper se ejecuta pero no puede commitear, y el workflow falla al
+hacer push.
+
+Detalles de la programación:
+
+- GitHub ejecuta los cron en **UTC** y no conoce el horario de verano, así que
+  hay dos programados (`0 22` y `0 23`) y el primer paso del job descarta el que
+  no cae a medianoche en España. Sin ese truco, media temporada se actualizaría
+  a las 23:00 y la otra media a la 01:00.
+- GitHub no garantiza el minuto exacto: cuando hay mucha carga, los cron
+  públicos pueden retrasarse bastantes minutos. Para esto da igual.
+- El workflow commitea como `bluedebugdevelop` por lo dicho arriba: firmado con
+  otro correo, Vercel deja el despliegue bloqueado.
 
 ### Estructura
 

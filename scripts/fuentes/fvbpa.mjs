@@ -138,17 +138,28 @@ function partidos(pagina, anioInicio) {
     .filter(Boolean)
 }
 
+/** Cabeceras <th> de una tabla, en texto. */
+const cabeceras = (tabla) => todos(/<th[^>]*>([\s\S]*?)<\/th>/g, tabla).map((m) => texto(m[1]))
+
 /** Clasificación de un grupo. */
 function clasificacion(pagina) {
-  // La tabla de clasificación es la única con cabecera Pts/J/G3…
-  const tablas = todos(/<table[\s\S]*?<\/table>/g, pagina).map((m) => m[0])
-  const tabla = tablas.find((t) => /\bG3\b/.test(texto(t)))
+  // La tabla de clasificación se reconoce por llevar columnas Pts y J.
+  //
+  // No vale buscar "G3": las categorías pequeñas puntúan distinto y usan otras
+  // columnas (el alevín lleva PG/PP en vez de G3/G2/P1/P0), así que exigir G3
+  // dejaba esas clasificaciones fuera.
+  const tabla = todos(/<table[\s\S]*?<\/table>/g, pagina)
+    .map((m) => m[0])
+    .find((t) => {
+      const th = cabeceras(t)
+      return th.includes('Pts') && th.includes('J')
+    })
   if (!tabla) return []
 
   // Las columnas se localizan POR CABECERA, no por posición: la tabla empieza
   // con celdas sin título (el corazón de "equipo favorito", el puesto y el
   // nombre), así que los índices fijos no valen.
-  const cabecera = todos(/<th[^>]*>([\s\S]*?)<\/th>/g, tabla).map((m) => texto(m[1]))
+  const cabecera = cabeceras(tabla)
   const col = (nombre) => cabecera.indexOf(nombre)
   const iPts = col('Pts')
   if (iPts < 0) return []
@@ -187,6 +198,40 @@ function clasificacion(pagina) {
       }
     })
     .filter(Boolean)
+}
+
+/**
+ * Mapa `id de partido → número de jornada` de un grupo.
+ *
+ * El calendario completo lista los partidos seguidos, sin decir a qué jornada
+ * pertenece cada uno; quien lo sabe es la vista por jornada (`&day=N`). Así que
+ * se recorren las jornadas del grupo UNA vez y se apunta en qué jornada sale
+ * cada id. Con eso, los partidos que ya tenemos del equipo quedan etiquetados
+ * sin volver a pedirlos.
+ */
+async function jornadasDelGrupo(ed, gid) {
+  const mapa = new Map()
+  let portada
+  try {
+    portada = await html(`${BASE}/editions/${ed}/calendars?edition_group_id=${gid}`)
+  } catch {
+    return mapa
+  }
+
+  const dias = [...new Set(todos(/[?&]day=(\d+)/g, portada).map((m) => Number(m[1])))]
+    .sort((a, b) => a - b)
+
+  for (const dia of dias) {
+    try {
+      const p = await html(`${BASE}/editions/${ed}/calendars?edition_group_id=${gid}&day=${dia}`)
+      for (const m of todos(/live_match_(\d+)/g, p)) {
+        if (!mapa.has(m[1])) mapa.set(m[1], dia)
+      }
+    } catch {
+      // si una jornada falla, los partidos de esa se quedan sin número
+    }
+  }
+  return mapa
 }
 
 /** Ids de edición de todas las categorías. */
@@ -273,6 +318,9 @@ export async function scrapeFvbpa({ anioInicio, log = () => {} }) {
         // sin clasificación (fases finales, cuadros) seguimos igual
       }
 
+      // se calcula una sola vez por grupo y se reparte entre sus equipos
+      const jornadaDe = await jornadasDelGrupo(ed, gid)
+
       for (const equipo of míos) {
         let cal
         try {
@@ -280,7 +328,14 @@ export async function scrapeFvbpa({ anioInicio, log = () => {} }) {
         } catch {
           continue
         }
-        const lista = partidos(cal, anioInicio)
+        const lista = partidos(cal, anioInicio).map((p) => ({
+          ...p,
+          jornada: jornadaDe.get(String(p.id).replace(/^fvbpa-/, '')) ?? null,
+          // la fase viaja con cada partido porque al unir liga regular y fase
+          // final en un mismo equipo las jornadas vuelven a empezar por 1, y sin
+          // saber de qué fase es cada una saldrían dos "Jornada 1" sueltas
+          fase: grupo,
+        }))
         if (!lista.length && !tabla.length) continue
 
         salida.push({

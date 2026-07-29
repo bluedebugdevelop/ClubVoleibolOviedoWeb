@@ -184,7 +184,9 @@ export async function scrapeRfevb({ log = () => {} } = {}) {
       url,
       idCampeonato: id,
       // solo los partidos del club: el grupo entero no interesa en la web
-      partidos: partidos.filter((p) => esDelClub(p.local) || esDelClub(p.visitante)),
+      partidos: partidos
+        .filter((p) => esDelClub(p.local) || esDelClub(p.visitante))
+        .map((p) => ({ ...p, fase: grupo })),
       clasificacion: tabla,
     })
     log(`    · ${liga} ${grupo} (id ${id}) — ${equipoClub}: ${salida.at(-1).partidos.length} partidos`)

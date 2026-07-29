@@ -121,6 +121,8 @@ function aPartido(p, equipo) {
   return {
     id: p.id,
     equipo: equipo.nombre,
+    jornada: p.jornada ?? null,
+    fase: p.fase ?? null,
     iso: p.iso,
     diaSemana: d ? DIAS[d.getDay()] : '',
     dia: d ? String(d.getDate()) : '',
@@ -137,6 +139,19 @@ function aPartido(p, equipo) {
 
 /** Todos los partidos de todos los equipos, ya en formato de página. */
 const TODOS_PARTIDOS = EQUIPOS.flatMap((e) => e.partidos.map((p) => aPartido(p, e)))
+
+const porFecha = (a, b) => String(a.iso).localeCompare(String(b.iso))
+
+/** "11 y 12 de abril" a partir de los partidos de un bloque. */
+function etiquetaFechas(lista) {
+  const dias = [...new Set(lista.map((p) => aFecha(p.iso)?.getDate()).filter(Boolean))]
+  if (!dias.length) return 'fecha por confirmar'
+  const mes = aFecha(lista[0].iso)?.getMonth() ?? 0
+  const texto = dias.length > 1
+    ? `${dias.slice(0, -1).join(', ')} y ${dias.at(-1)}`
+    : `${dias[0]}`
+  return `${texto} de ${MESES_LARGO[mes]}`
+}
 
 /** Agrupa por fin de semana y titula el bloque con las fechas que contiene. */
 function agrupar(partidos) {
@@ -155,15 +170,72 @@ function agrupar(partidos) {
 
   return [...bloques.entries()]
     .map(([clave, lista]) => {
-      lista.sort((a, b) => String(a.iso).localeCompare(String(b.iso)))
-      const fechas = [...new Set(lista.map((p) => aFecha(p.iso)?.getDate()).filter(Boolean))]
-      const mes = aFecha(lista[0].iso)?.getMonth() ?? 0
-      const dias = fechas.length > 1
-        ? `${fechas.slice(0, -1).join(', ')} y ${fechas.at(-1)}`
-        : `${fechas[0]}`
-      return { id: `s-${clave}`, clave, titulo: `${dias} de ${MESES_LARGO[mes]}`, partidos: lista }
+      lista.sort(porFecha)
+      return { id: `s-${clave}`, clave, titulo: etiquetaFechas(lista), partidos: lista }
     })
     .sort((a, b) => a.clave.localeCompare(b.clave))
+}
+
+/**
+ * Agrupa los partidos de UN equipo por jornada, en orden de calendario.
+ *
+ * Cuando se mira un equipo suelto interesa la temporada entera y ordenada, no
+ * los últimos fines de semana: es la forma natural de repasar cómo ha ido.
+ *
+ * La jornada por sí sola no identifica un bloque: al unir la liga regular con
+ * la fase final, la numeración vuelve a empezar por 1 y saldrían dos "Jornada
+ * 1". Por eso la clave lleva también la fase, y esta se nombra cuando el equipo
+ * ha jugado más de una.
+ *
+ * Se ordena por fase y, dentro de cada una, por número de jornada, NO por
+ * fecha: en la cantera es normal adelantar o aplazar partidos, y ordenar por
+ * fecha dejaba el selector con "Jornada 4, Jornada 11, Jornada 3…", que parece
+ * roto. Los huecos que se ven (falta la 2, la 9…) son las jornadas en las que
+ * el equipo descansaba.
+ */
+function agruparPorJornada(partidos) {
+  const fases = new Set(partidos.map((p) => p.fase).filter(Boolean))
+  const variasFases = fases.size > 1
+  const grupos = new Map()
+
+  for (const p of partidos) {
+    const clave = `${p.fase ?? ''}|${p.jornada ?? ''}`
+    if (!grupos.has(clave)) grupos.set(clave, [])
+    grupos.get(clave).push(p)
+  }
+
+  // las fases se ordenan por cuándo empezaron: la liga regular antes que su
+  // fase final, sin depender de cómo se llamen
+  const inicioFase = new Map()
+  for (const p of partidos) {
+    const previo = inicioFase.get(p.fase)
+    if (!previo || String(p.iso) < previo) inicioFase.set(p.fase, String(p.iso))
+  }
+
+  return [...grupos.values()]
+    .map((lista) => {
+      lista.sort(porFecha)
+      const { jornada, fase } = lista[0]
+      const nombre = jornada != null ? `Jornada ${jornada}` : 'Otros partidos'
+      const etiqueta = variasFases && fase ? `${fase} · ${nombre}` : nombre
+      return {
+        id: `b-${fase ?? 'x'}-${jornada ?? 'x'}`.replace(/\s+/g, '_'),
+        jornada,
+        fase,
+        etiqueta,
+        titulo: `${etiqueta} · ${etiquetaFechas(lista)}`,
+        partidos: lista,
+      }
+    })
+    .sort((a, b) => {
+      const fa = inicioFase.get(a.fase) ?? ''
+      const fb = inicioFase.get(b.fase) ?? ''
+      if (fa !== fb) return fa.localeCompare(fb)
+      // sin número de jornada, al final
+      if (a.jornada == null) return 1
+      if (b.jornada == null) return -1
+      return a.jornada - b.jornada
+    })
 }
 
 const HOY = new Date()
@@ -191,15 +263,34 @@ function bloques(lista) {
 
 export const jornadas = hayDatosReales ? bloques(TODOS_PARTIDOS) : jornadasMuestra
 
+/** Partidos de un equipo (o de todo el club si no se pasa ninguno). */
+const partidosDe = (equipo) =>
+  equipo ? TODOS_PARTIDOS.filter((p) => p.equipo === equipo) : TODOS_PARTIDOS
+
+/** Opciones del selector de jornada de un equipo: `[{ id, etiqueta }]`. */
+export function jornadasDe(equipo) {
+  if (!hayDatosReales || !equipo) return []
+  return agruparPorJornada(partidosDe(equipo)).map(({ id, etiqueta }) => ({ id, etiqueta }))
+}
+
 /**
- * Bloques de jornada de un equipo, o de todos si no se pasa ninguno.
+ * Bloques que pinta la página.
  *
- * Se agrupa DESPUÉS de filtrar, no antes: los bloques se quedan con las últimas
- * fechas con partidos, y cada equipo termina su temporada cuando termina. Si se
- * agrupara primero sobre el club entero, al elegir un equipo que acabó antes
- * que el resto no saldría ni un partido.
+ * - Sin equipo: los últimos fines de semana de todo el club. Agrupar por
+ *   jornada no valdría aquí, porque la jornada 5 de cada competición cae en
+ *   fechas distintas.
+ * - Con equipo: la temporada COMPLETA de ese equipo, jornada a jornada. Antes
+ *   se reutilizaba la vista por fines de semana y se quedaba en los últimos
+ *   cinco partidos; al mirar un equipo se quiere ver todo lo que lleva jugado.
+ * - Con equipo y jornada: solo esa jornada (`jornada` es el id del bloque que
+ *   devuelve `jornadasDe`, no el número, para no confundir las jornadas
+ *   homónimas de fases distintas).
+ *
+ * Se agrupa DESPUÉS de filtrar, no antes: cada equipo termina su temporada
+ * cuando termina, y si se agrupara primero sobre el club entero, al elegir uno
+ * que acabó antes que el resto no saldría ni un partido.
  */
-export function bloquesDe(equipo) {
+export function bloquesDe(equipo, jornada = null) {
   if (!hayDatosReales) {
     return jornadasMuestra
       .map((j) => ({
@@ -208,7 +299,11 @@ export function bloquesDe(equipo) {
       }))
       .filter((j) => j.partidos.length > 0)
   }
-  return bloques(equipo ? TODOS_PARTIDOS.filter((p) => p.equipo === equipo) : TODOS_PARTIDOS)
+
+  if (!equipo) return bloques(TODOS_PARTIDOS)
+
+  const todos = agruparPorJornada(partidosDe(equipo))
+  return jornada ? todos.filter((b) => b.id === jornada) : todos
 }
 
 export const competiciones = hayDatosReales

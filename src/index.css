@@ -465,6 +465,26 @@ footer .legal a:hover{color:#fff}
   .filters button:hover,.filters button:active{transform:none}
 }
 
+/* Selector de jornada. Sale solo con un equipo elegido, debajo de los filtros.
+   Se viste como las pastillas de .filters para que se lea como parte de la
+   misma barra, pero es un <select> y no botones: son hasta 22 jornadas y en
+   pastillas ocuparían media pantalla. */
+.jornadas{display:flex;align-items:center;gap:10px;margin:-10px 0 26px}
+.jornadas label{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:13.5px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.jornadas select{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:13.5px;
+  letter-spacing:.06em;text-transform:uppercase;padding:9px 34px 9px 16px;border:1.5px solid var(--line);
+  border-radius:999px;background:#fff;color:var(--ink);cursor:pointer;appearance:none;
+  /* la flechita va en el fondo: un <select> nativo no deja estilar su marcador */
+  background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23082139' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 14px center;
+  transition:border-color .15s,color .15s}
+.jornadas select:hover,.jornadas select:focus{border-color:var(--blue);color:var(--blue);outline:none}
+@media(max-width:640px){
+  .jornadas{margin:-6px 0 20px}
+  .jornadas select{font-size:12px;padding:8px 30px 8px 12px}
+}
+
 .round{margin-bottom:34px}
 .round > h3{font-family:"Barlow Condensed",sans-serif;font-weight:800;text-transform:uppercase;font-size:17px;
   letter-spacing:.16em;color:var(--dim);margin:0 0 12px;display:flex;align-items:center;gap:14px}

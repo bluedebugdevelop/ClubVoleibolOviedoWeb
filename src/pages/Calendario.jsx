@@ -8,6 +8,7 @@ import { retransmisiones } from '../data/contenido'
 import {
   equiposFiltro,
   bloquesDe,
+  jornadasDe,
   competiciones,
   clasificaciones,
   destacadosClasificacion,
@@ -75,10 +76,21 @@ function Clasificacion({ equipo }) {
 
 export default function Calendario() {
   const [filtro, setFiltro] = useState(TODOS)
+  const [jornada, setJornada] = useState('') // '' = todas
+
+  const equipo = filtro === TODOS ? null : filtro
+  const opcionesJornada = jornadasDe(equipo)
 
   /* los bloques se piden ya filtrados: así, al elegir un equipo, las fechas que
      se enseñan son las suyas y no las del club entero */
-  const jornadasFiltradas = bloquesDe(filtro === TODOS ? null : filtro)
+  const jornadasFiltradas = bloquesDe(equipo, jornada || null)
+
+  /* al cambiar de equipo se vuelve a "todas": la jornada elegida era del equipo
+     anterior y sus ids no valen para el nuevo */
+  function elegirEquipo(eq) {
+    setFiltro(eq)
+    setJornada('')
+  }
 
   /* con "Todos los equipos" no hay una sola clasificación que enseñar, así que
      se enseñan las nacionales, que son las que sigue la mayoría */
@@ -105,12 +117,27 @@ export default function Calendario() {
               className={esNacional(eq) ? 'liga' : undefined}
               aria-pressed={filtro === eq}
               style={esNacional(eq) ? tokens(eq) : undefined}
-              onClick={() => setFiltro(eq)}
+              onClick={() => elegirEquipo(eq)}
             >
               {eq}
             </button>
           ))}
         </div>
+
+        {/* el selector solo aparece con un equipo elegido: con "todos" las
+            jornadas no son comparables, porque la 5ª de cada competición cae en
+            fechas distintas */}
+        {opcionesJornada.length > 1 && (
+          <div className="jornadas">
+            <label htmlFor="jornada">Jornada</label>
+            <select id="jornada" value={jornada} onChange={(e) => setJornada(e.target.value)}>
+              <option value="">Todas ({opcionesJornada.length})</option>
+              {opcionesJornada.map((o) => (
+                <option key={o.id} value={o.id}>{o.etiqueta}</option>
+              ))}
+            </select>
+          </div>
+        )}
 
         <div className="twocol">
           <div>
