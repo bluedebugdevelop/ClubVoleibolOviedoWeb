@@ -2,6 +2,20 @@
 
 Sitio del club en React + Vite. Se despliega en Vercel desde `main`.
 
+> **Antes de commitear: identidad de git.** El proyecto está en Vercel bajo la
+> cuenta `bluedebugdevelop` con **plan Hobby**, y ese plan solo despliega los
+> commits cuyo autor es el dueño de la cuenta. Un commit firmado con cualquier
+> otro correo deja el despliegue *Blocked* ("Vercel user not found"). Al clonar,
+> configura en el repo:
+>
+> ```bash
+> git config user.name  "bluedebugdevelop"
+> git config user.email "256811162+bluedebugdevelop@users.noreply.github.com"
+> ```
+>
+> Es `git config` sin `--global`: solo afecta a este repositorio. Para dejar
+> constancia de quién escribió cada cosa, usa `Co-Authored-By:` en el mensaje.
+
 ```bash
 npm install
 npm run dev      # servidor de desarrollo

@@ -36,10 +36,12 @@ jobs:
 
       - name: Commitear si hay cambios
         run: |
-          # Se firma con la cuenta del propietario del proyecto en Vercel: en el
-          # plan Hobby, un commit de otro autor deja el despliegue BLOQUEADO.
-          git config user.name  "Adrián Estrada González"
-          git config user.email "79706281+AdrianEstradaGonzalez@users.noreply.github.com"
+          # Se firma como bluedebugdevelop, que es el dueño del proyecto en
+          # Vercel. En el plan Hobby solo despliegan los commits de esa cuenta:
+          # firmados por cualquier otro autor, el despliegue queda BLOQUEADO
+          # ("Vercel user not found / Account not linked").
+          git config user.name  "bluedebugdevelop"
+          git config user.email "256811162+bluedebugdevelop@users.noreply.github.com"
 
           if git diff --quiet -- src/data/competicion.json; then
             echo "Sin cambios en los datos: no se commitea."
