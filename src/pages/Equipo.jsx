@@ -5,6 +5,7 @@ import JoinCta from '../components/JoinCta'
 import Sponsors from '../components/Sponsors'
 import NoEncontrado from './NoEncontrado'
 import { equipos } from '../data/contenido'
+import { fixturesDeFicha } from '../data/competicion'
 
 export default function Equipo() {
   const { slug } = useParams()
@@ -36,7 +37,8 @@ export default function Equipo() {
           <div>
             <SectionHead title="Calendario y resultados" />
             <div className="fixtures">
-              {equipo.fixtures.map((f) => (
+              {/* datos reales de la federación; si aún no los hay, los de la ficha */}
+              {fixturesDeFicha(slug, equipo.fixtures).map((f) => (
                 <div className="fix" key={f.id}>
                   <span className="d">
                     {f.diaSemana}

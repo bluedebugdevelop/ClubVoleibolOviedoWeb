@@ -1,13 +1,22 @@
 import { useState } from 'react'
 import PageHead from '../components/PageHead'
 import Sponsors from '../components/Sponsors'
-import { equiposFiltro, jornadas, competiciones, clasificaciones, retransmisiones } from '../data/contenido'
+import { retransmisiones } from '../data/contenido'
+/* calendario, resultados y clasificaciones vienen de las federaciones (FVBPA y
+   RFEVB) a través de `npm run datos`. Si ese JSON aún no existe, el módulo cae
+   solo en los datos de muestra de contenido.js. */
+import {
+  equiposFiltro,
+  jornadas,
+  competiciones,
+  clasificaciones,
+  destacadosClasificacion,
+  hayDatosReales,
+  generado,
+  temporadaDatos,
+} from '../data/competicion'
 
 const TODOS = 'Todos los equipos'
-
-/* con "Todos los equipos" no hay una sola clasificación que enseñar, así que
-   se enseñan las dos nacionales, que son las que siguen la mayoría */
-const NACIONALES = ['Superliga 2 Masculino', 'Primera Nacional Femenina']
 
 function coincide(equipo, filtro) {
   if (filtro === TODOS) return true
@@ -76,13 +85,16 @@ export default function Calendario() {
     .map((j) => ({ ...j, partidos: j.partidos.filter((p) => coincide(p.equipo, filtro)) }))
     .filter((j) => j.partidos.length > 0)
 
-  const tablas = filtro === TODOS ? NACIONALES : [filtro]
+  /* con "Todos los equipos" no hay una sola clasificación que enseñar, así que
+     se enseñan las nacionales, que son las que sigue la mayoría */
+  const tablas = (filtro === TODOS ? destacadosClasificacion : [filtro])
+    .filter((eq) => clasificaciones[eq])
 
   return (
     <>
       <PageHead
         crumbs={<>Inicio · Calendario y resultados</>}
-        kicker="Temporada 2026/27"
+        kicker={temporadaDatos ? `Temporada ${temporadaDatos}` : 'Temporada 2026/27'}
         title="Calendario y resultados"
         sub="Todos los partidos del club, equipo por equipo. Los que se retransmiten llevan el enlace al canal de YouTube."
         bg="/media/pista-azul.jpg"
@@ -141,7 +153,17 @@ export default function Calendario() {
             ))}
 
             <p style={{ fontSize: 13.5, color: 'var(--dim)' }}>
-              Resultados, rivales y fechas son de muestra, a la espera de los datos reales de cada equipo.
+              {hayDatosReales ? (
+                <>
+                  Datos oficiales de la Federación Asturiana (FVBPA) y de la Real Federación
+                  Española (RFEVB).
+                  {generado && ` Actualizado el ${new Date(generado).toLocaleDateString('es-ES', {
+                    day: 'numeric', month: 'long', year: 'numeric',
+                  })}.`}
+                </>
+              ) : (
+                'Resultados, rivales y fechas son de muestra, a la espera de los datos reales de cada equipo.'
+              )}
             </p>
           </div>
 
@@ -150,6 +172,12 @@ export default function Calendario() {
               <h2 style={{ fontSize: 24 }}>{tablas.length > 1 ? 'Clasificaciones' : 'Clasificación'}</h2>
             </div>
 
+            {tablas.length === 0 && (
+              <p style={{ color: 'var(--dim)', fontSize: 14 }}>
+                La federación no publica clasificación para esta competición
+                {filtro !== TODOS ? ` (${filtro})` : ''}.
+              </p>
+            )}
             {tablas.map((eq) => (
               <Clasificacion key={eq} equipo={eq} />
             ))}

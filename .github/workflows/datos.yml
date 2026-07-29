@@ -1,0 +1,53 @@
+name: Actualizar datos de competición
+
+# Baja calendario, resultados y clasificaciones de las federaciones (FVBPA y
+# RFEVB) y, si algo ha cambiado, commitea el JSON. El push dispara el
+# despliegue en Vercel, así que la web se actualiza sola.
+
+on:
+  schedule:
+    # En hora peninsular: ~08:00 y ~21:00. Los partidos son casi todos en fin de
+    # semana, pero las federaciones tardan en publicar actas, así que se mira a
+    # diario. GitHub programa los cron en UTC.
+    - cron: '0 6 * * *'
+    - cron: '0 19 * * 0,6'
+  workflow_dispatch: # botón de "ejecutar ahora" en la pestaña Actions
+
+concurrency:
+  group: datos
+  cancel-in-progress: false
+
+jobs:
+  actualizar:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # El scraper no usa dependencias, así que no hace falta npm install.
+      - name: Bajar datos de las federaciones
+        run: npm run datos
+
+      - name: Commitear si hay cambios
+        run: |
+          # Se firma con la cuenta del propietario del proyecto en Vercel: en el
+          # plan Hobby, un commit de otro autor deja el despliegue BLOQUEADO.
+          git config user.name  "Adrián Estrada González"
+          git config user.email "79706281+AdrianEstradaGonzalez@users.noreply.github.com"
+
+          if git diff --quiet -- src/data/competicion.json; then
+            echo "Sin cambios en los datos: no se commitea."
+            exit 0
+          fi
+
+          git add src/data/competicion.json
+          git commit -m "datos: actualizar calendario y clasificaciones
+
+          Generado automáticamente desde fvbpa.com y esvoley.es."
+          git push

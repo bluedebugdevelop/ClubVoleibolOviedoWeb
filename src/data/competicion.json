@@ -1,0 +1,4081 @@
+{
+ "generado": "2026-07-29T16:27:44.724Z",
+ "temporada": "2025/26",
+ "fuentes": {
+  "FVBPA": "https://www.fvbpa.com",
+  "RFEVB": "https://esvoley.es"
+ },
+ "equipos": [
+  {
+   "fuente": "RFEVB",
+   "ente": "RFEVB",
+   "categoria": "Sénior",
+   "genero": "Femenino",
+   "division": "Primera División Femenina",
+   "grupo": "Grupo A",
+   "equipoClub": "CV Oviedo",
+   "url": "https://esvoley.es/voleibol/competiciones-femeninas/primera-division-femenina/grupo-a/",
+   "idCampeonato": "9975",
+   "partidos": [
+    {
+     "id": "rfevb-1-CV_Oviedo-Cafés_Foronda_Ekialde",
+     "iso": "2025-10-04T17:00",
+     "hora": "17:00",
+     "sede": null,
+     "local": "CV Oviedo",
+     "visitante": "Cafés Foronda Ekialde",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-9",
+      "25-17",
+      "25-12"
+     ],
+     "estado": "Finalizado",
+     "jornada": 1
+    },
+    {
+     "id": "rfevb-2-Sestao-CV_Oviedo",
+     "iso": "2025-10-11T19:30",
+     "hora": "19:30",
+     "sede": null,
+     "local": "Sestao",
+     "visitante": "CV Oviedo",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "27-25",
+      "25-22",
+      "25-20"
+     ],
+     "estado": "Finalizado",
+     "jornada": 2
+    },
+    {
+     "id": "rfevb-3-Getxo_Etorki-CV_Oviedo",
+     "iso": "2025-10-19T11:30",
+     "hora": "11:30",
+     "sede": null,
+     "local": "Getxo Etorki",
+     "visitante": "CV Oviedo",
+     "setsLocal": 3,
+     "setsVisitante": 1,
+     "parciales": [
+      "25-16",
+      "23-25",
+      "25-23",
+      "25-12"
+     ],
+     "estado": "Finalizado",
+     "jornada": 3
+    },
+    {
+     "id": "rfevb-4-CV_Oviedo-CD_Aule",
+     "iso": "2025-10-25T17:00",
+     "hora": "17:00",
+     "sede": null,
+     "local": "CV Oviedo",
+     "visitante": "CD Aule",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-18",
+      "25-22",
+      "25-13"
+     ],
+     "estado": "Finalizado",
+     "jornada": 4
+    },
+    {
+     "id": "rfevb-5-Rehermann_Ciudad_de_A_Coruña-CV_Oviedo",
+     "iso": "2025-11-02T12:00",
+     "hora": "12:00",
+     "sede": null,
+     "local": "Rehermann Ciudad de A Coruña",
+     "visitante": "CV Oviedo",
+     "setsLocal": 3,
+     "setsVisitante": 1,
+     "parciales": [
+      "25-15",
+      "27-29",
+      "25-17",
+      "25-20"
+     ],
+     "estado": "Finalizado",
+     "jornada": 5
+    },
+    {
+     "id": "rfevb-6-CV_Oviedo-Fertiberia_Los_Campos",
+     "iso": "2025-11-08T17:00",
+     "hora": "17:00",
+     "sede": null,
+     "local": "CV Oviedo",
+     "visitante": "Fertiberia Los Campos",
+     "setsLocal": 3,
+     "setsVisitante": 2,
+     "parciales": [
+      "27-25",
+      "19-25",
+      "25-9",
+      "19-25",
+      "15-12"
+     ],
+     "estado": "Finalizado",
+     "jornada": 6
+    },
+    {
+     "id": "rfevb-7-Santa_Cruz_Cuesta_Piedra-CV_Oviedo",
+     "iso": "2025-11-15T19:30",
+     "hora": "19:30",
+     "sede": null,
+     "local": "Santa Cruz Cuesta Piedra",
+     "visitante": "CV Oviedo",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "20-25",
+      "21-25",
+      "16-25"
+     ],
+     "estado": "Finalizado",
+     "jornada": 7
+    },
+    {
+     "id": "rfevb-8-CV_Oviedo-Curtidora_Uniovi",
+     "iso": "2025-11-22T17:00",
+     "hora": "17:00",
+     "sede": null,
+     "local": "CV Oviedo",
+     "visitante": "Curtidora Uniovi",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-22",
+      "25-18",
+      "25-20"
+     ],
+     "estado": "Finalizado",
+     "jornada": 8
+    },
+    {
+     "id": "rfevb-9-Conforgal_Xuvenil_Teis-CV_Oviedo",
+     "iso": "2025-11-29T19:15",
+     "hora": "19:15",
+     "sede": null,
+     "local": "Conforgal Xuvenil Teis",
+     "visitante": "CV Oviedo",
+     "setsLocal": 3,
+     "setsVisitante": 2,
+     "parciales": [
+      "27-25",
+      "20-25",
+      "25-19",
+      "24-26",
+      "15-10"
+     ],
+     "estado": "Finalizado",
+     "jornada": 9
+    },
+    {
+     "id": "rfevb-10-CV_Oviedo-CV_Oleiros",
+     "iso": "2025-12-13T17:00",
+     "hora": "17:00",
+     "sede": null,
+     "local": "CV Oviedo",
+     "visitante": "CV Oleiros",
+     "setsLocal": 3,
+     "setsVisitante": 2,
+     "parciales": [
+      "25-17",
+      "23-25",
+      "25-23",
+      "16-25",
+      "15-8"
+     ],
+     "estado": "Finalizado",
+     "jornada": 10
+    },
+    {
+     "id": "rfevb-11-Emeve-CV_Oviedo",
+     "iso": "2025-12-21T10:30",
+     "hora": "10:30",
+     "sede": null,
+     "local": "Emeve",
+     "visitante": "CV Oviedo",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-20",
+      "25-17",
+      "25-18"
+     ],
+     "estado": "Finalizado",
+     "jornada": 11
+    },
+    {
+     "id": "rfevb-12-Cafés_Foronda_Ekialde-CV_Oviedo",
+     "iso": "2026-01-11T12:00",
+     "hora": "12:00",
+     "sede": null,
+     "local": "Cafés Foronda Ekialde",
+     "visitante": "CV Oviedo",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "24-26",
+      "22-25",
+      "18-25"
+     ],
+     "estado": "Finalizado",
+     "jornada": 12
+    },
+    {
+     "id": "rfevb-13-CV_Oviedo-Sestao",
+     "iso": "2026-01-17T17:00",
+     "hora": "17:00",
+     "sede": null,
+     "local": "CV Oviedo",
+     "visitante": "Sestao",
+     "setsLocal": 3,
+     "setsVisitante": 1,
+     "parciales": [
+      "26-24",
+      "26-24",
+      "17-25",
+      "25-10"
+     ],
+     "estado": "Finalizado",
+     "jornada": 13
+    },
+    {
+     "id": "rfevb-14-CV_Oviedo-Getxo_Etorki",
+     "iso": "2026-01-24T17:00",
+     "hora": "17:00",
+     "sede": null,
+     "local": "CV Oviedo",
+     "visitante": "Getxo Etorki",
+     "setsLocal": 3,
+     "setsVisitante": 2,
+     "parciales": [
+      "22-25",
+      "25-16",
+      "23-25",
+      "25-20",
+      "15-8"
+     ],
+     "estado": "Finalizado",
+     "jornada": 14
+    },
+    {
+     "id": "rfevb-15-CD_Aule-CV_Oviedo",
+     "iso": "2026-01-31T18:00",
+     "hora": "18:00",
+     "sede": null,
+     "local": "CD Aule",
+     "visitante": "CV Oviedo",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-20",
+      "25-12",
+      "25-20"
+     ],
+     "estado": "Finalizado",
+     "jornada": 15
+    },
+    {
+     "id": "rfevb-16-CV_Oviedo-Rehermann_Ciudad_de_A_Coruña",
+     "iso": "2026-02-07T17:00",
+     "hora": "17:00",
+     "sede": null,
+     "local": "CV Oviedo",
+     "visitante": "Rehermann Ciudad de A Coruña",
+     "setsLocal": 1,
+     "setsVisitante": 3,
+     "parciales": [
+      "25-19",
+      "22-25",
+      "10-25",
+      "17-25"
+     ],
+     "estado": "Finalizado",
+     "jornada": 16
+    },
+    {
+     "id": "rfevb-17-Fertiberia_Los_Campos-CV_Oviedo",
+     "iso": "2026-02-14T20:00",
+     "hora": "20:00",
+     "sede": null,
+     "local": "Fertiberia Los Campos",
+     "visitante": "CV Oviedo",
+     "setsLocal": 2,
+     "setsVisitante": 3,
+     "parciales": [
+      "18-25",
+      "26-24",
+      "25-12",
+      "14-25",
+      "13-15"
+     ],
+     "estado": "Finalizado",
+     "jornada": 17
+    },
+    {
+     "id": "rfevb-18-CV_Oviedo-Santa_Cruz_Cuesta_Piedra",
+     "iso": "2026-02-21T17:00",
+     "hora": "17:00",
+     "sede": null,
+     "local": "CV Oviedo",
+     "visitante": "Santa Cruz Cuesta Piedra",
+     "setsLocal": 1,
+     "setsVisitante": 3,
+     "parciales": [
+      "19-25",
+      "24-26",
+      "25-19",
+      "20-25"
+     ],
+     "estado": "Finalizado",
+     "jornada": 18
+    },
+    {
+     "id": "rfevb-19-Curtidora_Uniovi-CV_Oviedo",
+     "iso": "2026-02-28T18:00",
+     "hora": "18:00",
+     "sede": null,
+     "local": "Curtidora Uniovi",
+     "visitante": "CV Oviedo",
+     "setsLocal": 3,
+     "setsVisitante": 2,
+     "parciales": [
+      "16-25",
+      "25-21",
+      "19-25",
+      "25-21",
+      "15-12"
+     ],
+     "estado": "Finalizado",
+     "jornada": 19
+    },
+    {
+     "id": "rfevb-20-CV_Oviedo-Conforgal_Xuvenil_Teis",
+     "iso": "2026-03-07T17:00",
+     "hora": "17:00",
+     "sede": null,
+     "local": "CV Oviedo",
+     "visitante": "Conforgal Xuvenil Teis",
+     "setsLocal": 3,
+     "setsVisitante": 1,
+     "parciales": [
+      "25-21",
+      "22-25",
+      "25-14",
+      "25-8"
+     ],
+     "estado": "Finalizado",
+     "jornada": 20
+    },
+    {
+     "id": "rfevb-21-CV_Oleiros-CV_Oviedo",
+     "iso": "2026-03-14T16:30",
+     "hora": "16:30",
+     "sede": null,
+     "local": "CV Oleiros",
+     "visitante": "CV Oviedo",
+     "setsLocal": 3,
+     "setsVisitante": 1,
+     "parciales": [
+      "25-23",
+      "23-25",
+      "25-18",
+      "25-21"
+     ],
+     "estado": "Finalizado",
+     "jornada": 21
+    },
+    {
+     "id": "rfevb-22-CV_Oviedo-Emeve",
+     "iso": "2026-03-21T17:00",
+     "hora": "17:00",
+     "sede": null,
+     "local": "CV Oviedo",
+     "visitante": "Emeve",
+     "setsLocal": 3,
+     "setsVisitante": 2,
+     "parciales": [
+      "22-25",
+      "21-25",
+      "25-23",
+      "25-22",
+      "16-14"
+     ],
+     "estado": "Finalizado",
+     "jornada": 22
+    }
+   ],
+   "clasificacion": [
+    {
+     "pos": 1,
+     "equipo": "Rehermann Ciudad de A Coruña",
+     "pts": 61,
+     "pj": 22,
+     "sf": 64,
+     "sc": 16,
+     "yo": false
+    },
+    {
+     "pos": 2,
+     "equipo": "Sestao",
+     "pts": 56,
+     "pj": 22,
+     "sf": 60,
+     "sc": 18,
+     "yo": false
+    },
+    {
+     "pos": 3,
+     "equipo": "Fertiberia Los Campos",
+     "pts": 38,
+     "pj": 22,
+     "sf": 48,
+     "sc": 38,
+     "yo": false
+    },
+    {
+     "pos": 4,
+     "equipo": "Santa Cruz Cuesta Piedra",
+     "pts": 38,
+     "pj": 22,
+     "sf": 43,
+     "sc": 38,
+     "yo": false
+    },
+    {
+     "pos": 5,
+     "equipo": "CV Oviedo",
+     "pts": 33,
+     "pj": 22,
+     "sf": 45,
+     "sc": 42,
+     "yo": true
+    },
+    {
+     "pos": 6,
+     "equipo": "Emeve",
+     "pts": 30,
+     "pj": 22,
+     "sf": 38,
+     "sc": 39,
+     "yo": false
+    },
+    {
+     "pos": 7,
+     "equipo": "Getxo Etorki",
+     "pts": 29,
+     "pj": 22,
+     "sf": 35,
+     "sc": 45,
+     "yo": false
+    },
+    {
+     "pos": 8,
+     "equipo": "CV Oleiros",
+     "pts": 28,
+     "pj": 22,
+     "sf": 37,
+     "sc": 47,
+     "yo": false
+    },
+    {
+     "pos": 9,
+     "equipo": "Curtidora Uniovi",
+     "pts": 27,
+     "pj": 22,
+     "sf": 35,
+     "sc": 46,
+     "yo": false
+    },
+    {
+     "pos": 10,
+     "equipo": "CD Aule",
+     "pts": 27,
+     "pj": 22,
+     "sf": 32,
+     "sc": 43,
+     "yo": false
+    },
+    {
+     "pos": 11,
+     "equipo": "Conforgal Xuvenil Teis",
+     "pts": 23,
+     "pj": 22,
+     "sf": 33,
+     "sc": 49,
+     "yo": false
+    },
+    {
+     "pos": 12,
+     "equipo": "Cafés Foronda Ekialde",
+     "pts": 6,
+     "pj": 22,
+     "sf": 13,
+     "sc": 62,
+     "yo": false
+    }
+   ],
+   "clave": "primera-division-femenina-primera-division-femenina-rfevb",
+   "nombre": "Primera División Femenina"
+  },
+  {
+   "fuente": "FVBPA",
+   "ente": "FVBPA",
+   "categoria": "Senior",
+   "genero": "Masculino",
+   "division": "Primera División Nacional",
+   "grupo": "Jornada 1",
+   "equipoClub": "CV Oviedo",
+   "url": "https://www.fvbpa.com/editions/171/calendars?tab=full_calendar&edition_group_id=1745&team_id=2529",
+   "partidos": [
+    {
+     "id": "fvbpa-10644",
+     "iso": "2025-10-04T19:30",
+     "hora": "19:30",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV Oviedo",
+     "visitante": "UNIVERSIDAD BURGOS CVB",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-15",
+      "25-18",
+      "25-17"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-10654",
+     "iso": "2025-10-13",
+     "hora": null,
+     "sede": null,
+     "local": "CyL PALENCIA 2026",
+     "visitante": "CV Oviedo",
+     "setsLocal": 2,
+     "setsVisitante": 3,
+     "parciales": [
+      "25-16",
+      "12-25",
+      "23-25",
+      "25-23",
+      "11-15"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-10666",
+     "iso": "2025-10-25T19:30",
+     "hora": "19:30",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV Oviedo",
+     "visitante": "RIO DUERO SORIA",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-23",
+      "25-20",
+      "25-19"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-10721",
+     "iso": "2025-10-26T13:00",
+     "hora": "13:00",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CLUB VOLEIBOL HARIS",
+     "visitante": "CV Oviedo",
+     "setsLocal": 3,
+     "setsVisitante": 1,
+     "parciales": [
+      "25-14",
+      "18-25",
+      "25-23",
+      "25-16"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-10668",
+     "iso": "2025-11-05",
+     "hora": null,
+     "sede": null,
+     "local": "JATORKIDE BOLEIBOL KIROL KLUBA",
+     "visitante": "CV Oviedo",
+     "setsLocal": 3,
+     "setsVisitante": 1,
+     "parciales": [
+      "16-25",
+      "25-21",
+      "25-22",
+      "25-23"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-10677",
+     "iso": "2025-11-08T19:30",
+     "hora": "19:30",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV Oviedo",
+     "visitante": "CHAMARTIN VERGARA",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-15",
+      "25-12",
+      "25-16"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-10655",
+     "iso": "2025-11-21",
+     "hora": null,
+     "sede": null,
+     "local": "CV Oviedo",
+     "visitante": "CLUB VOLEIBOL HARIS",
+     "setsLocal": 1,
+     "setsVisitante": 3,
+     "parciales": [
+      "14-25",
+      "25-18",
+      "23-25",
+      "16-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-10681",
+     "iso": "2025-11-21",
+     "hora": null,
+     "sede": null,
+     "local": "CV COSLADA",
+     "visitante": "CV Oviedo",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "21-25",
+      "12-25",
+      "24-26"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-10688",
+     "iso": "2025-11-22T19:30",
+     "hora": "19:30",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV Oviedo",
+     "visitante": "ARONA",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-18",
+      "25-12",
+      "26-24"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-10694",
+     "iso": "2025-11-29T17:00",
+     "hora": "17:00",
+     "sede": "Pab Braulio García",
+     "local": "RGC COVADONGA",
+     "visitante": "CV Oviedo",
+     "setsLocal": 1,
+     "setsVisitante": 3,
+     "parciales": [
+      "21-25",
+      "19-25",
+      "25-21",
+      "24-26"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-10699",
+     "iso": "2025-12-13T19:30",
+     "hora": "19:30",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV Oviedo",
+     "visitante": "CV OLEIROS",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-15",
+      "25-22",
+      "25-21"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-10720",
+     "iso": "2026-01-17T19:30",
+     "hora": "19:30",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV Oviedo",
+     "visitante": "CyL PALENCIA 2026",
+     "setsLocal": 1,
+     "setsVisitante": 3,
+     "parciales": [
+      "25-21",
+      "20-25",
+      "23-25",
+      "27-29"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-10707",
+     "iso": "2026-02-02",
+     "hora": null,
+     "sede": null,
+     "local": "MORENO SAEZ SPORTING",
+     "visitante": "CV Oviedo",
+     "setsLocal": 3,
+     "setsVisitante": 1,
+     "parciales": [
+      "21-25",
+      "25-23",
+      "29-27",
+      "25-20"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-10710",
+     "iso": "2026-02-02",
+     "hora": null,
+     "sede": null,
+     "local": "UNIVERSIDAD BURGOS CVB",
+     "visitante": "CV Oviedo",
+     "setsLocal": 1,
+     "setsVisitante": 3,
+     "parciales": [
+      "20-25",
+      "25-23",
+      "21-25",
+      "21-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-10732",
+     "iso": "2026-02-02",
+     "hora": null,
+     "sede": null,
+     "local": "RIO DUERO SORIA",
+     "visitante": "CV Oviedo",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "26-25",
+      "25-23",
+      "25-16"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-10734",
+     "iso": "2026-02-07T19:30",
+     "hora": "19:30",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV Oviedo",
+     "visitante": "JATORKIDE BOLEIBOL KIROL KLUBA",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-19",
+      "25-19",
+      "25-19"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-10747",
+     "iso": "2026-02-21T19:30",
+     "hora": "19:30",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV Oviedo",
+     "visitante": "CV COSLADA",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-17",
+      "25-15",
+      "25-22"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-10760",
+     "iso": "2026-03-07T19:30",
+     "hora": "19:30",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV Oviedo",
+     "visitante": "RGC COVADONGA",
+     "setsLocal": 3,
+     "setsVisitante": 2,
+     "parciales": [
+      "25-21",
+      "25-23",
+      "24-26",
+      "25-27",
+      "15-11"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-10743",
+     "iso": null,
+     "hora": null,
+     "sede": null,
+     "local": "CHAMARTIN VERGARA",
+     "visitante": "CV Oviedo",
+     "setsLocal": null,
+     "setsVisitante": null,
+     "parciales": [],
+     "estado": "Sin comenzar"
+    },
+    {
+     "id": "fvbpa-10754",
+     "iso": null,
+     "hora": null,
+     "sede": null,
+     "local": "ARONA",
+     "visitante": "CV Oviedo",
+     "setsLocal": null,
+     "setsVisitante": null,
+     "parciales": [],
+     "estado": "Sin comenzar"
+    },
+    {
+     "id": "fvbpa-10765",
+     "iso": null,
+     "hora": null,
+     "sede": null,
+     "local": "CV OLEIROS",
+     "visitante": "CV Oviedo",
+     "setsLocal": null,
+     "setsVisitante": null,
+     "parciales": [],
+     "estado": "Sin comenzar"
+    }
+   ],
+   "clasificacion": [
+    {
+     "pos": 1,
+     "equipo": "MORENO SAEZ SPORTING",
+     "pts": 42,
+     "pj": 17,
+     "sf": 47,
+     "sc": 22,
+     "yo": false
+    },
+    {
+     "pos": 2,
+     "equipo": "CV Oviedo",
+     "pts": 37,
+     "pj": 19,
+     "sf": 44,
+     "sc": 25,
+     "yo": true
+    },
+    {
+     "pos": 3,
+     "equipo": "CyL PALENCIA 2026",
+     "pts": 36,
+     "pj": 17,
+     "sf": 40,
+     "sc": 20,
+     "yo": false
+    },
+    {
+     "pos": 4,
+     "equipo": "RGC COVADONGA",
+     "pts": 29,
+     "pj": 19,
+     "sf": 37,
+     "sc": 38,
+     "yo": false
+    },
+    {
+     "pos": 5,
+     "equipo": "CV OLEIROS",
+     "pts": 28,
+     "pj": 15,
+     "sf": 35,
+     "sc": 26,
+     "yo": false
+    },
+    {
+     "pos": 6,
+     "equipo": "CLUB VOLEIBOL HARIS",
+     "pts": 22,
+     "pj": 14,
+     "sf": 27,
+     "sc": 25,
+     "yo": false
+    },
+    {
+     "pos": 7,
+     "equipo": "JATORKIDE BOLEIBOL KIROL KLUBA",
+     "pts": 22,
+     "pj": 16,
+     "sf": 29,
+     "sc": 31,
+     "yo": false
+    },
+    {
+     "pos": 8,
+     "equipo": "RIO DUERO SORIA",
+     "pts": 21,
+     "pj": 15,
+     "sf": 27,
+     "sc": 28,
+     "yo": false
+    },
+    {
+     "pos": 9,
+     "equipo": "ARONA",
+     "pts": 18,
+     "pj": 15,
+     "sf": 21,
+     "sc": 31,
+     "yo": false
+    },
+    {
+     "pos": 10,
+     "equipo": "CV COSLADA",
+     "pts": 14,
+     "pj": 16,
+     "sf": 22,
+     "sc": 41,
+     "yo": false
+    },
+    {
+     "pos": 11,
+     "equipo": "CHAMARTIN VERGARA",
+     "pts": 12,
+     "pj": 16,
+     "sf": 20,
+     "sc": 37,
+     "yo": false
+    },
+    {
+     "pos": 12,
+     "equipo": "UNIVERSIDAD BURGOS CVB",
+     "pts": 4,
+     "pj": 15,
+     "sf": 15,
+     "sc": 40,
+     "yo": false
+    }
+   ],
+   "clave": "senior-masculino-primera-division-nacional-fvbpa",
+   "nombre": "Senior Masculino · 1ª Nacional"
+  },
+  {
+   "fuente": "FVBPA",
+   "ente": "FVBPA",
+   "categoria": "Senior",
+   "genero": "Masculino",
+   "division": "Segunda División Masculina",
+   "grupo": "Grupo A",
+   "equipoClub": "CV OVIEDO",
+   "url": "https://www.fvbpa.com/editions/175/calendars?tab=full_calendar&edition_group_id=1837&team_id=2530",
+   "partidos": [
+    {
+     "id": "fvbpa-11959",
+     "iso": "2025-10-18T20:00",
+     "hora": "20:00",
+     "sede": "COLEGIO INMACULADA",
+     "local": "AAA GIJON",
+     "visitante": "CV OVIEDO",
+     "setsLocal": 1,
+     "setsVisitante": 3,
+     "parciales": [
+      "17-25",
+      "25-27",
+      "25-23",
+      "19-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11981",
+     "iso": "2025-10-21",
+     "hora": null,
+     "sede": null,
+     "local": "C.V. CALDERON B",
+     "visitante": "CV OVIEDO",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "0-25",
+      "0-25",
+      "0-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12026",
+     "iso": "2025-10-21",
+     "hora": null,
+     "sede": null,
+     "local": "CV OVIEDO",
+     "visitante": "C.V. CALDERON B",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-0",
+      "25-0",
+      "25-0"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11966",
+     "iso": "2025-10-26T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV OVIEDO",
+     "visitante": "AD LA CURTIDORA",
+     "setsLocal": 3,
+     "setsVisitante": 2,
+     "parciales": [
+      "25-20",
+      "21-25",
+      "26-24",
+      "16-25",
+      "15-13"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11970",
+     "iso": "2025-11-09T11:00",
+     "hora": "11:00",
+     "sede": "Polideportivo de Llanes",
+     "local": "AD PLAYAS DE LLANES",
+     "visitante": "CV OVIEDO",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "5-25",
+      "19-25",
+      "16-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11975",
+     "iso": "2025-11-15T16:00",
+     "hora": "16:00",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV OVIEDO",
+     "visitante": "C.V. CALDERON A",
+     "setsLocal": 1,
+     "setsVisitante": 3,
+     "parciales": [
+      "19-25",
+      "21-25",
+      "25-20",
+      "22-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11984",
+     "iso": "2025-11-30T13:00",
+     "hora": "13:00",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV OVIEDO",
+     "visitante": "C.D. CREIMI",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-19",
+      "25-18",
+      "25-20"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11992",
+     "iso": "2025-12-13T19:30",
+     "hora": "19:30",
+     "sede": "Pabellón de La Arena",
+     "local": "CID JOVELLANOS",
+     "visitante": "CV OVIEDO",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-20",
+      "26-24",
+      "25-22"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11993",
+     "iso": "2025-12-21T10:00",
+     "hora": "10:00",
+     "sede": "Colegio Miguel de Cervantes",
+     "local": "CLUB VOLEIBOL LA CALZADA B",
+     "visitante": "CV OVIEDO",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "13-25",
+      "6-25",
+      "11-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12002",
+     "iso": "2026-01-18T10:45",
+     "hora": "10:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV OVIEDO",
+     "visitante": "CLUB VOLEIBOL LA CALZADA A",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-13",
+      "25-23",
+      "25-17"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12004",
+     "iso": "2026-01-25T10:45",
+     "hora": "10:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV OVIEDO",
+     "visitante": "AAA GIJON",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-15",
+      "25-16",
+      "25-20"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12011",
+     "iso": "2026-02-01T12:00",
+     "hora": "12:00",
+     "sede": "POLIDEPORTIVO LOS CANAPÉS",
+     "local": "AD LA CURTIDORA",
+     "visitante": "CV OVIEDO",
+     "setsLocal": 2,
+     "setsVisitante": 3,
+     "parciales": [
+      "25-20",
+      "23-25",
+      "25-20",
+      "20-25",
+      "12-15"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12015",
+     "iso": "2026-02-08T11:00",
+     "hora": "11:00",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV OVIEDO",
+     "visitante": "AD PLAYAS DE LLANES",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-11",
+      "25-11",
+      "25-17"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12020",
+     "iso": "2026-02-21T19:30",
+     "hora": "19:30",
+     "sede": "Pabellón de La Arena",
+     "local": "C.V. CALDERON A",
+     "visitante": "CV OVIEDO",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-21",
+      "25-18",
+      "25-22"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12029",
+     "iso": "2026-03-08T10:00",
+     "hora": "10:00",
+     "sede": "POL. FIGAREDO",
+     "local": "C.D. CREIMI",
+     "visitante": "CV OVIEDO",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "17-25",
+      "20-25",
+      "12-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12037",
+     "iso": "2026-03-15T12:30",
+     "hora": "12:30",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV OVIEDO",
+     "visitante": "CID JOVELLANOS",
+     "setsLocal": 3,
+     "setsVisitante": 1,
+     "parciales": [
+      "25-18",
+      "22-25",
+      "25-15",
+      "25-19"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12038",
+     "iso": "2026-03-22T11:00",
+     "hora": "11:00",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV OVIEDO",
+     "visitante": "CLUB VOLEIBOL LA CALZADA B",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-15",
+      "25-15",
+      "25-12"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-14058",
+     "iso": "2026-04-18T17:00",
+     "hora": "17:00",
+     "sede": "Pabellón de La Arena",
+     "local": "CID JOVELLANOS",
+     "visitante": "CV OVIEDO",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-16",
+      "25-17",
+      "25-23"
+     ],
+     "estado": "Finalizado"
+    }
+   ],
+   "clasificacion": [
+    {
+     "pos": 1,
+     "equipo": "C.V. CALDERON A",
+     "pts": 53,
+     "pj": 18,
+     "sf": 54,
+     "sc": 6,
+     "yo": false
+    },
+    {
+     "pos": 2,
+     "equipo": "CID JOVELLANOS",
+     "pts": 46,
+     "pj": 18,
+     "sf": 49,
+     "sc": 10,
+     "yo": false
+    },
+    {
+     "pos": 3,
+     "equipo": "CV OVIEDO",
+     "pts": 42,
+     "pj": 18,
+     "sf": 46,
+     "sc": 17,
+     "yo": true
+    },
+    {
+     "pos": 4,
+     "equipo": "AD LA CURTIDORA",
+     "pts": 35,
+     "pj": 18,
+     "sf": 41,
+     "sc": 24,
+     "yo": false
+    },
+    {
+     "pos": 5,
+     "equipo": "AAA GIJON",
+     "pts": 33,
+     "pj": 18,
+     "sf": 36,
+     "sc": 25,
+     "yo": false
+    },
+    {
+     "pos": 6,
+     "equipo": "CLUB VOLEIBOL LA CALZADA A",
+     "pts": 25,
+     "pj": 18,
+     "sf": 30,
+     "sc": 32,
+     "yo": false
+    },
+    {
+     "pos": 7,
+     "equipo": "C.D. CREIMI",
+     "pts": 18,
+     "pj": 18,
+     "sf": 19,
+     "sc": 37,
+     "yo": false
+    },
+    {
+     "pos": 8,
+     "equipo": "AD PLAYAS DE LLANES",
+     "pts": 9,
+     "pj": 18,
+     "sf": 11,
+     "sc": 45,
+     "yo": false
+    },
+    {
+     "pos": 9,
+     "equipo": "CLUB VOLEIBOL LA CALZADA B",
+     "pts": 9,
+     "pj": 18,
+     "sf": 10,
+     "sc": 46,
+     "yo": false
+    },
+    {
+     "pos": 10,
+     "equipo": "DESCANSA",
+     "pts": 0,
+     "pj": 18,
+     "sf": 0,
+     "sc": 54,
+     "yo": false
+    }
+   ],
+   "clave": "senior-masculino-segunda-division-masculina-fvbpa",
+   "nombre": "Senior Masculino · 2ª"
+  },
+  {
+   "fuente": "FVBPA",
+   "ente": "FVBPA",
+   "categoria": "Junior",
+   "genero": "Masculino",
+   "division": "Junior Masculino",
+   "grupo": "Fase única",
+   "equipoClub": "C.V. OVIEDO",
+   "url": "https://www.fvbpa.com/editions/177/calendars?tab=full_calendar&edition_group_id=1753&team_id=2511",
+   "partidos": [
+    {
+     "id": "fvbpa-11707",
+     "iso": "2026-04-11T15:45",
+     "hora": "15:45",
+     "sede": "Pab Braulio García",
+     "local": "RGC COVADONGA",
+     "visitante": "C.V. OVIEDO",
+     "setsLocal": 3,
+     "setsVisitante": 2,
+     "parciales": [
+      "14-25",
+      "25-21",
+      "25-14",
+      "23-25",
+      "18-16"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11706",
+     "iso": "2026-04-12T12:00",
+     "hora": "12:00",
+     "sede": "Pab Braulio García",
+     "local": "C.V. OVIEDO",
+     "visitante": "CID JOVELLANOS",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-22",
+      "25-10",
+      "25-21"
+     ],
+     "estado": "Finalizado"
+    }
+   ],
+   "clasificacion": [
+    {
+     "pos": 1,
+     "equipo": "RGC COVADONGA",
+     "pts": 8,
+     "pj": 3,
+     "sf": 9,
+     "sc": 3,
+     "yo": false
+    },
+    {
+     "pos": 2,
+     "equipo": "C.V. OVIEDO",
+     "pts": 7,
+     "pj": 3,
+     "sf": 8,
+     "sc": 3,
+     "yo": true
+    },
+    {
+     "pos": 3,
+     "equipo": "CID JOVELLANOS",
+     "pts": 3,
+     "pj": 3,
+     "sf": 3,
+     "sc": 6,
+     "yo": false
+    },
+    {
+     "pos": 4,
+     "equipo": "AD LA CURTIDORA",
+     "pts": 0,
+     "pj": 3,
+     "sf": 1,
+     "sc": 9,
+     "yo": false
+    }
+   ],
+   "clave": "junior-masculino-junior-masculino-fvbpa",
+   "nombre": "Junior Masculino"
+  },
+  {
+   "fuente": "FVBPA",
+   "ente": "FVBPA",
+   "categoria": "Juvenil",
+   "genero": "Femenino",
+   "division": "Segunda División",
+   "grupo": "Grupo B",
+   "equipoClub": "C.V. OVIEDO",
+   "url": "https://www.fvbpa.com/editions/190/calendars?tab=full_calendar&edition_group_id=1843&team_id=2518",
+   "partidos": [
+    {
+     "id": "fvbpa-12106",
+     "iso": "2025-10-18T19:00",
+     "hora": "19:00",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "C.V. OVIEDO",
+     "visitante": "C.V. 9X18",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-14",
+      "25-12",
+      "25-5"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12110",
+     "iso": "2025-10-25T16:30",
+     "hora": "16:30",
+     "sede": "Colegio Miguel de Cervantes",
+     "local": "C.V. LA CALZADA C",
+     "visitante": "C.V. OVIEDO",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "5-25",
+      "12-25",
+      "6-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12113",
+     "iso": "2025-11-09T11:00",
+     "hora": "11:00",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "C.V. OVIEDO",
+     "visitante": "AD LA CURTIDORA B",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-16",
+      "25-13",
+      "25-18"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12119",
+     "iso": "2025-11-15T16:00",
+     "hora": "16:00",
+     "sede": "Colegio Los Campos de Corvera",
+     "local": "A.D. LOS CAMPOS B",
+     "visitante": "C.V. OVIEDO",
+     "setsLocal": 1,
+     "setsVisitante": 3,
+     "parciales": [
+      "25-18",
+      "12-25",
+      "25-27",
+      "23-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12120",
+     "iso": "2025-11-23T11:00",
+     "hora": "11:00",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "C.V. OVIEDO",
+     "visitante": "C.V. SIERO A",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-16",
+      "25-16",
+      "25-17"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12127",
+     "iso": "2025-11-30T10:00",
+     "hora": "10:00",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "C.V. OVIEDO",
+     "visitante": "C.D. NAVA VOLEY",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-16",
+      "25-19",
+      "25-7"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12129",
+     "iso": "2025-12-13T16:00",
+     "hora": "16:00",
+     "sede": "Polideportivo Noreña",
+     "local": "C.V. NOREÑA B",
+     "visitante": "C.V. OVIEDO",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "5-25",
+      "6-25",
+      "12-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12134",
+     "iso": "2026-01-18T17:00",
+     "hora": "17:00",
+     "sede": "Polideportivo de Llanes",
+     "local": "C.V. 9X18",
+     "visitante": "C.V. OVIEDO",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "16-25",
+      "13-25",
+      "20-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12138",
+     "iso": "2026-01-25T10:45",
+     "hora": "10:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "C.V. OVIEDO",
+     "visitante": "C.V. LA CALZADA C",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-6",
+      "25-9",
+      "25-6"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12147",
+     "iso": "2026-02-08T11:00",
+     "hora": "11:00",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "C.V. OVIEDO",
+     "visitante": "A.D. LOS CAMPOS B",
+     "setsLocal": 3,
+     "setsVisitante": 1,
+     "parciales": [
+      "21-25",
+      "25-16",
+      "25-11",
+      "25-21"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12148",
+     "iso": "2026-02-21T18:00",
+     "hora": "18:00",
+     "sede": "PAB. IES RIO NORA",
+     "local": "C.V. SIERO A",
+     "visitante": "C.V. OVIEDO",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-18",
+      "27-25",
+      "25-14"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12155",
+     "iso": "2026-02-28T17:00",
+     "hora": "17:00",
+     "sede": "POLIDEPORTIVO NAVA",
+     "local": "C.D. NAVA VOLEY",
+     "visitante": "C.V. OVIEDO",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "6-25",
+      "12-25",
+      "15-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12141",
+     "iso": "2026-03-08T12:00",
+     "hora": "12:00",
+     "sede": "POLIDEPORTIVO LOS CANAPÉS",
+     "local": "AD LA CURTIDORA B",
+     "visitante": "C.V. OVIEDO",
+     "setsLocal": 2,
+     "setsVisitante": 3,
+     "parciales": [
+      "25-17",
+      "19-25",
+      "25-21",
+      "20-25",
+      "11-15"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-14078",
+     "iso": "2026-03-28T16:00",
+     "hora": "16:00",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "C.V. OVIEDO",
+     "visitante": "CVCDO LA PAROLACCIA",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-13",
+      "25-14",
+      "25-10"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-14082",
+     "iso": "2026-04-11T19:45",
+     "hora": "19:45",
+     "sede": "POLIDEPORTIVO LOS CANAPÉS",
+     "local": "C.V. OVIEDO",
+     "visitante": "C.V. NOREÑA A",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-7",
+      "25-17",
+      "25-13"
+     ],
+     "estado": "Finalizado"
+    }
+   ],
+   "clasificacion": [
+    {
+     "pos": 1,
+     "equipo": "C.V. OVIEDO",
+     "pts": 38,
+     "pj": 14,
+     "sf": 39,
+     "sc": 7,
+     "yo": true
+    },
+    {
+     "pos": 2,
+     "equipo": "AD LA CURTIDORA B",
+     "pts": 32,
+     "pj": 14,
+     "sf": 36,
+     "sc": 14,
+     "yo": false
+    },
+    {
+     "pos": 3,
+     "equipo": "A.D. LOS CAMPOS B",
+     "pts": 30,
+     "pj": 14,
+     "sf": 34,
+     "sc": 17,
+     "yo": false
+    },
+    {
+     "pos": 4,
+     "equipo": "C.V. 9X18",
+     "pts": 25,
+     "pj": 14,
+     "sf": 30,
+     "sc": 20,
+     "yo": false
+    },
+    {
+     "pos": 5,
+     "equipo": "C.V. SIERO A",
+     "pts": 25,
+     "pj": 14,
+     "sf": 26,
+     "sc": 19,
+     "yo": false
+    },
+    {
+     "pos": 6,
+     "equipo": "C.D. NAVA VOLEY",
+     "pts": 12,
+     "pj": 14,
+     "sf": 14,
+     "sc": 30,
+     "yo": false
+    },
+    {
+     "pos": 7,
+     "equipo": "C.V. LA CALZADA C",
+     "pts": 6,
+     "pj": 14,
+     "sf": 6,
+     "sc": 36,
+     "yo": false
+    },
+    {
+     "pos": 8,
+     "equipo": "C.V. NOREÑA B",
+     "pts": 0,
+     "pj": 14,
+     "sf": 0,
+     "sc": 42,
+     "yo": false
+    }
+   ],
+   "clave": "juvenil-femenino-segunda-division-fvbpa",
+   "nombre": "Juvenil Femenino"
+  },
+  {
+   "fuente": "FVBPA",
+   "ente": "FVBPA",
+   "categoria": "Cadete",
+   "genero": "Femenino",
+   "division": "Primera División (A1)",
+   "grupo": "Grupo A",
+   "equipoClub": "CV OVIEDO A",
+   "url": "https://www.fvbpa.com/editions/183/calendars?tab=full_calendar&edition_group_id=1799&team_id=2441",
+   "partidos": [
+    {
+     "id": "fvbpa-11340",
+     "iso": "2025-10-04T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV OVIEDO A",
+     "visitante": "IES REY PELAYO",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "11-25",
+      "16-25",
+      "13-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11346",
+     "iso": "2025-10-18T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV OVIEDO A",
+     "visitante": "AD CURTIDORA A",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "22-25",
+      "15-25",
+      "20-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11351",
+     "iso": "2025-10-25T11:00",
+     "hora": "11:00",
+     "sede": "COLEGIO INMACULADA",
+     "local": "C. INMACULADA A",
+     "visitante": "CV OVIEDO A",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-10",
+      "25-18",
+      "25-19"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11356",
+     "iso": "2025-11-08T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV OVIEDO A",
+     "visitante": "CLUB VOLEIBOL LA CALZADA A",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-17",
+      "25-12",
+      "27-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11361",
+     "iso": "2025-11-15T13:30",
+     "hora": "13:30",
+     "sede": "Colegio San Ignacio",
+     "local": "C. SAN IGNACIO",
+     "visitante": "CV OVIEDO A",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-8",
+      "25-11",
+      "25-10"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11366",
+     "iso": "2025-11-22T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV OVIEDO A",
+     "visitante": "IES LLANES P",
+     "setsLocal": 3,
+     "setsVisitante": 1,
+     "parciales": [
+      "25-21",
+      "22-25",
+      "25-22",
+      "25-18"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11371",
+     "iso": "2025-11-29T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV OVIEDO A",
+     "visitante": "CLUB VOLEIBOL LA CALZADA B",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-9",
+      "25-19",
+      "25-11"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11378",
+     "iso": "2025-12-13T12:00",
+     "hora": "12:00",
+     "sede": "Colegio Los Campos de Corvera",
+     "local": "A.D. LOS CAMPOS A",
+     "visitante": "CV OVIEDO A",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-7",
+      "25-17",
+      "25-7"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11385",
+     "iso": "2025-12-20T11:30",
+     "hora": "11:30",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV OVIEDO A",
+     "visitante": "RGC COVADONGA B",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-23",
+      "25-21",
+      "25-23"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11392",
+     "iso": "2026-01-10T13:00",
+     "hora": "13:00",
+     "sede": "Pab. Guillermo García",
+     "local": "RGC COVADONGA A",
+     "visitante": "CV OVIEDO A",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-14",
+      "25-14",
+      "25-14"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11399",
+     "iso": "2026-01-17T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV OVIEDO A",
+     "visitante": "CID JOVELLANOS A",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "14-25",
+      "16-25",
+      "9-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11406",
+     "iso": "2026-01-24T12:00",
+     "hora": "12:00",
+     "sede": "Polideportivo Cangas de Onís",
+     "local": "IES REY PELAYO",
+     "visitante": "CV OVIEDO A",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-15",
+      "25-12",
+      "25-23"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11412",
+     "iso": "2026-01-31T12:30",
+     "hora": "12:30",
+     "sede": "POLIDEPORTIVO LOS CANAPÉS",
+     "local": "AD CURTIDORA A",
+     "visitante": "CV OVIEDO A",
+     "setsLocal": 3,
+     "setsVisitante": 1,
+     "parciales": [
+      "25-14",
+      "25-21",
+      "19-25",
+      "25-13"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11417",
+     "iso": "2026-02-07T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV OVIEDO A",
+     "visitante": "C. INMACULADA A",
+     "setsLocal": 3,
+     "setsVisitante": 2,
+     "parciales": [
+      "25-18",
+      "10-25",
+      "25-19",
+      "14-25",
+      "15-9"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11422",
+     "iso": "2026-02-21T10:00",
+     "hora": "10:00",
+     "sede": "Polideportivo Matajove",
+     "local": "CLUB VOLEIBOL LA CALZADA A",
+     "visitante": "CV OVIEDO A",
+     "setsLocal": 1,
+     "setsVisitante": 3,
+     "parciales": [
+      "26-24",
+      "16-25",
+      "12-25",
+      "12-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11427",
+     "iso": "2026-02-28T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV OVIEDO A",
+     "visitante": "C. SAN IGNACIO",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "7-25",
+      "14-25",
+      "17-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11432",
+     "iso": "2026-03-07T10:00",
+     "hora": "10:00",
+     "sede": "Polideportivo de Llanes",
+     "local": "IES LLANES P",
+     "visitante": "CV OVIEDO A",
+     "setsLocal": 3,
+     "setsVisitante": 1,
+     "parciales": [
+      "25-22",
+      "22-25",
+      "25-23",
+      "25-19"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11437",
+     "iso": "2026-03-08T16:00",
+     "hora": "16:00",
+     "sede": "Colegio Miguel de Cervantes",
+     "local": "CLUB VOLEIBOL LA CALZADA B",
+     "visitante": "CV OVIEDO A",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "23-25",
+      "13-25",
+      "20-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11444",
+     "iso": "2026-03-14T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV OVIEDO A",
+     "visitante": "A.D. LOS CAMPOS A",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "10-25",
+      "11-25",
+      "11-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11451",
+     "iso": "2026-03-21T11:30",
+     "hora": "11:30",
+     "sede": "Pab. Guillermo García",
+     "local": "RGC COVADONGA B",
+     "visitante": "CV OVIEDO A",
+     "setsLocal": 3,
+     "setsVisitante": 1,
+     "parciales": [
+      "25-19",
+      "25-18",
+      "23-25",
+      "25-18"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11458",
+     "iso": "2026-03-28T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV OVIEDO A",
+     "visitante": "RGC COVADONGA A",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "10-25",
+      "17-25",
+      "10-25"
+     ],
+     "estado": "Finalizado"
+    }
+   ],
+   "clasificacion": [
+    {
+     "pos": 1,
+     "equipo": "RGC COVADONGA A",
+     "pts": 61,
+     "pj": 22,
+     "sf": 64,
+     "sc": 10,
+     "yo": false
+    },
+    {
+     "pos": 2,
+     "equipo": "A.D. LOS CAMPOS A",
+     "pts": 61,
+     "pj": 22,
+     "sf": 62,
+     "sc": 12,
+     "yo": false
+    },
+    {
+     "pos": 3,
+     "equipo": "C. SAN IGNACIO",
+     "pts": 56,
+     "pj": 22,
+     "sf": 60,
+     "sc": 16,
+     "yo": false
+    },
+    {
+     "pos": 4,
+     "equipo": "CID JOVELLANOS A",
+     "pts": 46,
+     "pj": 22,
+     "sf": 53,
+     "sc": 23,
+     "yo": false
+    },
+    {
+     "pos": 5,
+     "equipo": "IES REY PELAYO",
+     "pts": 39,
+     "pj": 22,
+     "sf": 42,
+     "sc": 31,
+     "yo": false
+    },
+    {
+     "pos": 6,
+     "equipo": "C. INMACULADA A",
+     "pts": 35,
+     "pj": 22,
+     "sf": 41,
+     "sc": 36,
+     "yo": false
+    },
+    {
+     "pos": 7,
+     "equipo": "AD CURTIDORA A",
+     "pts": 35,
+     "pj": 22,
+     "sf": 41,
+     "sc": 36,
+     "yo": false
+    },
+    {
+     "pos": 8,
+     "equipo": "CV OVIEDO A",
+     "pts": 20,
+     "pj": 22,
+     "sf": 24,
+     "sc": 49,
+     "yo": true
+    },
+    {
+     "pos": 9,
+     "equipo": "RGC COVADONGA B",
+     "pts": 19,
+     "pj": 22,
+     "sf": 22,
+     "sc": 50,
+     "yo": false
+    },
+    {
+     "pos": 10,
+     "equipo": "IES LLANES P",
+     "pts": 16,
+     "pj": 22,
+     "sf": 22,
+     "sc": 54,
+     "yo": false
+    },
+    {
+     "pos": 11,
+     "equipo": "CLUB VOLEIBOL LA CALZADA A",
+     "pts": 8,
+     "pj": 22,
+     "sf": 11,
+     "sc": 60,
+     "yo": false
+    },
+    {
+     "pos": 12,
+     "equipo": "CLUB VOLEIBOL LA CALZADA B",
+     "pts": 0,
+     "pj": 22,
+     "sf": 1,
+     "sc": 66,
+     "yo": false
+    }
+   ],
+   "clave": "cadete-femenino-a-primera-division-a1-fvbpa",
+   "nombre": "Cadete Femenino A"
+  },
+  {
+   "fuente": "FVBPA",
+   "ente": "FVBPA",
+   "categoria": "Cadete",
+   "genero": "Femenino",
+   "division": "Segunda División (A2)",
+   "grupo": "Grupo C",
+   "equipoClub": "C.V. OVIEDO B",
+   "url": "https://www.fvbpa.com/editions/184/calendars?tab=full_calendar&edition_group_id=1857&team_id=2572",
+   "partidos": [
+    {
+     "id": "fvbpa-12423",
+     "iso": "2025-11-08T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "C.V. OVIEDO B",
+     "visitante": "C. SAN IGNACIO B",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "13-25",
+      "11-25",
+      "12-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12431",
+     "iso": "2025-11-15T10:00",
+     "hora": "10:00",
+     "sede": "COLEGIO PEÑAMAYOR",
+     "local": "Los Robles Peñamayor - CID JOVELLANOS",
+     "visitante": "C.V. OVIEDO B",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "3-25",
+      "11-25",
+      "14-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12432",
+     "iso": "2025-11-22T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "C.V. OVIEDO B",
+     "visitante": "CLUB NÁUTICO CARREÑO C",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-15",
+      "27-25",
+      "25-11"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12441",
+     "iso": "2025-11-29T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "C.V. OVIEDO B",
+     "visitante": "AD Los Campos C",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-12",
+      "25-16",
+      "25-17"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12443",
+     "iso": "2025-12-13T13:15",
+     "hora": "13:15",
+     "sede": "POLIDEPORTIVO LOS CANAPÉS",
+     "local": "AD LA CURTIDORA B",
+     "visitante": "C.V. OVIEDO B",
+     "setsLocal": 2,
+     "setsVisitante": 3,
+     "parciales": [
+      "25-17",
+      "16-25",
+      "11-25",
+      "25-21",
+      "13-15"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12450",
+     "iso": "2025-12-20T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "C.V. OVIEDO B",
+     "visitante": "AD LA CURTIDORA D",
+     "setsLocal": 3,
+     "setsVisitante": 1,
+     "parciales": [
+      "25-22",
+      "25-23",
+      "14-25",
+      "25-15"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12454",
+     "iso": "2026-01-10T12:30",
+     "hora": "12:30",
+     "sede": "COLEGIO LOYOLA",
+     "local": "Colegio Loyola",
+     "visitante": "C.V. OVIEDO B",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "21-25",
+      "19-25",
+      "20-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12459",
+     "iso": "2026-01-17T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "C.V. OVIEDO B",
+     "visitante": "AD LA CURTIDORA C",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-15",
+      "25-13",
+      "25-20"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12465",
+     "iso": "2026-01-24T10:00",
+     "hora": "10:00",
+     "sede": "Colegio Los Campos de Corvera",
+     "local": "A.D. LOS CAMPOS B",
+     "visitante": "C.V. OVIEDO B",
+     "setsLocal": 3,
+     "setsVisitante": 1,
+     "parciales": [
+      "20-25",
+      "25-20",
+      "25-21",
+      "25-10"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12594",
+     "iso": "2026-01-31T13:15",
+     "hora": "13:15",
+     "sede": "Colegio San Ignacio",
+     "local": "C. SAN IGNACIO B",
+     "visitante": "C.V. OVIEDO B",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-12",
+      "25-22",
+      "25-17"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12602",
+     "iso": "2026-02-07T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "C.V. OVIEDO B",
+     "visitante": "Los Robles Peñamayor - CID JOVELLANOS",
+     "setsLocal": 3,
+     "setsVisitante": 1,
+     "parciales": [
+      "25-8",
+      "24-26",
+      "25-13",
+      "25-15"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12603",
+     "iso": "2026-02-21T12:00",
+     "hora": "12:00",
+     "sede": "PAB. VICENTE LOPEZ CARRIL",
+     "local": "CLUB NÁUTICO CARREÑO C",
+     "visitante": "C.V. OVIEDO B",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "13-25",
+      "9-25",
+      "27-29"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12612",
+     "iso": "2026-02-28T12:00",
+     "hora": "12:00",
+     "sede": "Colegio Los Campos de Corvera",
+     "local": "AD Los Campos C",
+     "visitante": "C.V. OVIEDO B",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "14-25",
+      "11-25",
+      "7-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12614",
+     "iso": "2026-03-07T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "C.V. OVIEDO B",
+     "visitante": "AD LA CURTIDORA B",
+     "setsLocal": 3,
+     "setsVisitante": 2,
+     "parciales": [
+      "25-22",
+      "24-26",
+      "25-16",
+      "19-25",
+      "15-7"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12621",
+     "iso": "2026-03-14T11:15",
+     "hora": "11:15",
+     "sede": "POLIDEPORTIVO LOS CANAPÉS",
+     "local": "AD LA CURTIDORA D",
+     "visitante": "C.V. OVIEDO B",
+     "setsLocal": 2,
+     "setsVisitante": 3,
+     "parciales": [
+      "25-10",
+      "16-25",
+      "25-17",
+      "19-25",
+      "8-15"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12625",
+     "iso": "2026-03-21T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "C.V. OVIEDO B",
+     "visitante": "Colegio Loyola",
+     "setsLocal": 3,
+     "setsVisitante": 2,
+     "parciales": [
+      "11-25",
+      "25-16",
+      "25-22",
+      "20-25",
+      "20-18"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12630",
+     "iso": "2026-03-28T12:30",
+     "hora": "12:30",
+     "sede": "POLIDEPORTIVO LOS CANAPÉS",
+     "local": "AD LA CURTIDORA C",
+     "visitante": "C.V. OVIEDO B",
+     "setsLocal": 2,
+     "setsVisitante": 3,
+     "parciales": [
+      "26-24",
+      "25-21",
+      "21-25",
+      "20-25",
+      "7-15"
+     ],
+     "estado": "Finalizado"
+    }
+   ],
+   "clasificacion": [
+    {
+     "pos": 1,
+     "equipo": "C. SAN IGNACIO B",
+     "pts": 54,
+     "pj": 18,
+     "sf": 54,
+     "sc": 1,
+     "yo": false
+    },
+    {
+     "pos": 2,
+     "equipo": "A.D. LOS CAMPOS B",
+     "pts": 47,
+     "pj": 18,
+     "sf": 49,
+     "sc": 10,
+     "yo": false
+    },
+    {
+     "pos": 3,
+     "equipo": "C.V. OVIEDO B",
+     "pts": 38,
+     "pj": 18,
+     "sf": 45,
+     "sc": 24,
+     "yo": true
+    },
+    {
+     "pos": 4,
+     "equipo": "Colegio Loyola",
+     "pts": 32,
+     "pj": 18,
+     "sf": 37,
+     "sc": 28,
+     "yo": false
+    },
+    {
+     "pos": 5,
+     "equipo": "AD LA CURTIDORA B",
+     "pts": 31,
+     "pj": 18,
+     "sf": 36,
+     "sc": 29,
+     "yo": false
+    },
+    {
+     "pos": 6,
+     "equipo": "AD LA CURTIDORA D",
+     "pts": 24,
+     "pj": 18,
+     "sf": 30,
+     "sc": 35,
+     "yo": false
+    },
+    {
+     "pos": 7,
+     "equipo": "AD LA CURTIDORA C",
+     "pts": 23,
+     "pj": 18,
+     "sf": 28,
+     "sc": 35,
+     "yo": false
+    },
+    {
+     "pos": 8,
+     "equipo": "Los Robles Peñamayor - CID JOVELLANOS",
+     "pts": 11,
+     "pj": 18,
+     "sf": 15,
+     "sc": 47,
+     "yo": false
+    },
+    {
+     "pos": 9,
+     "equipo": "AD Los Campos C",
+     "pts": 6,
+     "pj": 18,
+     "sf": 9,
+     "sc": 50,
+     "yo": false
+    },
+    {
+     "pos": 10,
+     "equipo": "CLUB NÁUTICO CARREÑO C",
+     "pts": 4,
+     "pj": 18,
+     "sf": 8,
+     "sc": 52,
+     "yo": false
+    }
+   ],
+   "clave": "cadete-femenino-b-segunda-division-a2-fvbpa",
+   "nombre": "Cadete Femenino B"
+  },
+  {
+   "fuente": "FVBPA",
+   "ente": "FVBPA",
+   "categoria": "Cadete",
+   "genero": "Masculino",
+   "division": "Primera División (A1)",
+   "grupo": "Grupo A",
+   "equipoClub": "C.V. OVIEDO",
+   "url": "https://www.fvbpa.com/editions/181/calendars?tab=full_calendar&edition_group_id=1852&team_id=2583",
+   "partidos": [
+    {
+     "id": "fvbpa-12312",
+     "iso": "2025-11-15T11:00",
+     "hora": "11:00",
+     "sede": "POL. FIGAREDO",
+     "local": "CD CREIMI",
+     "visitante": "C.V. OVIEDO",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "10-25",
+      "10-25",
+      "10-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12317",
+     "iso": "2025-11-29T13:00",
+     "hora": "13:00",
+     "sede": "Pabellón Universidad Laboral",
+     "local": "CID JOVELLANOS B",
+     "visitante": "C.V. OVIEDO",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "11-25",
+      "6-25",
+      "10-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12315",
+     "iso": "2025-12-01",
+     "hora": null,
+     "sede": null,
+     "local": "C.V. OVIEDO",
+     "visitante": "CD CREIMI",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-0",
+      "25-0",
+      "25-0"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12324",
+     "iso": "2025-12-13T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "C.V. OVIEDO",
+     "visitante": "RGC COVADONGA",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-7",
+      "25-15",
+      "25-11"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12331",
+     "iso": "2026-01-10T10:00",
+     "hora": "10:00",
+     "sede": "Pabellón de La Arena",
+     "local": "CID JOVELLANOS",
+     "visitante": "C.V. OVIEDO",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-18",
+      "25-18",
+      "25-15"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12337",
+     "iso": "2026-01-24T09:40",
+     "hora": "09:40",
+     "sede": "POLIDEPORTIVO LOS CANAPÉS",
+     "local": "AD LA CURTIDORA",
+     "visitante": "C.V. OVIEDO",
+     "setsLocal": 2,
+     "setsVisitante": 3,
+     "parciales": [
+      "14-25",
+      "25-17",
+      "25-22",
+      "18-25",
+      "12-15"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12320",
+     "iso": "2026-02-21T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "C.V. OVIEDO",
+     "visitante": "CID JOVELLANOS B",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-9",
+      "25-11",
+      "25-10"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12327",
+     "iso": "2026-03-07T09:45",
+     "hora": "09:45",
+     "sede": "Pab. Guillermo García",
+     "local": "RGC COVADONGA",
+     "visitante": "C.V. OVIEDO",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "19-25",
+      "18-25",
+      "21-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12334",
+     "iso": "2026-03-21T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "C.V. OVIEDO",
+     "visitante": "CID JOVELLANOS",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "14-25",
+      "17-25",
+      "14-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-14113",
+     "iso": "2026-04-18T12:30",
+     "hora": "12:30",
+     "sede": "Pabellón de La Arena",
+     "local": "C.V. OVIEDO",
+     "visitante": "AD LA CURTIDORA",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "27-25",
+      "25-20",
+      "27-25"
+     ],
+     "estado": "Finalizado"
+    }
+   ],
+   "clasificacion": [
+    {
+     "pos": 1,
+     "equipo": "CID JOVELLANOS",
+     "pts": 30,
+     "pj": 10,
+     "sf": 30,
+     "sc": 0,
+     "yo": false
+    },
+    {
+     "pos": 2,
+     "equipo": "C.V. OVIEDO",
+     "pts": 22,
+     "pj": 10,
+     "sf": 24,
+     "sc": 10,
+     "yo": true
+    },
+    {
+     "pos": 3,
+     "equipo": "AD LA CURTIDORA",
+     "pts": 19,
+     "pj": 10,
+     "sf": 22,
+     "sc": 15,
+     "yo": false
+    },
+    {
+     "pos": 4,
+     "equipo": "RGC COVADONGA",
+     "pts": 13,
+     "pj": 10,
+     "sf": 15,
+     "sc": 18,
+     "yo": false
+    },
+    {
+     "pos": 5,
+     "equipo": "CID JOVELLANOS B",
+     "pts": 6,
+     "pj": 10,
+     "sf": 6,
+     "sc": 24,
+     "yo": false
+    },
+    {
+     "pos": 6,
+     "equipo": "CD CREIMI",
+     "pts": 0,
+     "pj": 10,
+     "sf": 0,
+     "sc": 30,
+     "yo": false
+    }
+   ],
+   "clave": "cadete-masculino-primera-division-a1-fvbpa",
+   "nombre": "Cadete Masculino"
+  },
+  {
+   "fuente": "FVBPA",
+   "ente": "FVBPA",
+   "categoria": "Infantil",
+   "genero": "Femenino",
+   "division": "Primera División (A1)",
+   "grupo": "Grupo A",
+   "equipoClub": "CV OVIEDO A",
+   "url": "https://www.fvbpa.com/editions/185/calendars?tab=full_calendar&edition_group_id=1793&team_id=2454",
+   "partidos": [
+    {
+     "id": "fvbpa-11202",
+     "iso": "2025-10-04T10:30",
+     "hora": "10:30",
+     "sede": "Colegio Los Campos de Corvera",
+     "local": "A.D. LOS CAMPOS A",
+     "visitante": "CV OVIEDO A",
+     "setsLocal": 3,
+     "setsVisitante": 1,
+     "parciales": [
+      "25-14",
+      "19-25",
+      "25-17",
+      "25-23"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11207",
+     "iso": "2025-10-18T10:00",
+     "hora": "10:00",
+     "sede": "Pab. Guillermo García",
+     "local": "RGC COVADONGA A",
+     "visitante": "CV OVIEDO A",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-12",
+      "25-15",
+      "25-10"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11214",
+     "iso": "2025-10-25T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV OVIEDO A",
+     "visitante": "IES REY PELAYO A",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-15",
+      "25-13",
+      "25-19"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11221",
+     "iso": "2025-11-08T13:30",
+     "hora": "13:30",
+     "sede": "Colegio San Ignacio",
+     "local": "C. SAN IGNACIO A",
+     "visitante": "CV OVIEDO A",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-13",
+      "25-16",
+      "25-14"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11228",
+     "iso": "2025-11-15T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV OVIEDO A",
+     "visitante": "CID JOVELLANOS A",
+     "setsLocal": 3,
+     "setsVisitante": 1,
+     "parciales": [
+      "25-16",
+      "25-21",
+      "12-25",
+      "25-16"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11235",
+     "iso": "2025-11-22T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO LOS CANAPÉS",
+     "local": "AD LA CURTIDORA A",
+     "visitante": "CV OVIEDO A",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "19-25",
+      "9-25",
+      "9-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11242",
+     "iso": "2025-11-29T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV OVIEDO A",
+     "visitante": "IES LLANES A",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-16",
+      "25-20",
+      "25-13"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11253",
+     "iso": "2025-12-20T09:30",
+     "hora": "09:30",
+     "sede": "Polideportivo de Llanes",
+     "local": "IES LLANES P",
+     "visitante": "CV OVIEDO A",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "22-25",
+      "22-25",
+      "22-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11258",
+     "iso": "2026-01-10T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV OVIEDO A",
+     "visitante": "C. SAN IGNACIO B",
+     "setsLocal": 3,
+     "setsVisitante": 2,
+     "parciales": [
+      "25-8",
+      "18-25",
+      "17-25",
+      "25-20",
+      "15-13"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11248",
+     "iso": "2026-01-11T11:00",
+     "hora": "11:00",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV OVIEDO A",
+     "visitante": "NAUTICO CARREÑO A",
+     "setsLocal": 3,
+     "setsVisitante": 2,
+     "parciales": [
+      "25-14",
+      "25-14",
+      "19-25",
+      "19-25",
+      "15-13"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11263",
+     "iso": "2026-01-17T11:30",
+     "hora": "11:30",
+     "sede": "COLEGIO INMACULADA",
+     "local": "C. INMACULADA A",
+     "visitante": "CV OVIEDO A",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-17",
+      "25-13",
+      "25-18"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11268",
+     "iso": "2026-01-24T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV OVIEDO A",
+     "visitante": "A.D. LOS CAMPOS A",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "19-25",
+      "21-25",
+      "13-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11273",
+     "iso": "2026-02-01T11:00",
+     "hora": "11:00",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV OVIEDO A",
+     "visitante": "RGC COVADONGA A",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "18-25",
+      "17-25",
+      "7-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11280",
+     "iso": "2026-02-07T11:00",
+     "hora": "11:00",
+     "sede": "Polideportivo Cangas de Onís",
+     "local": "IES REY PELAYO A",
+     "visitante": "CV OVIEDO A",
+     "setsLocal": 1,
+     "setsVisitante": 3,
+     "parciales": [
+      "6-25",
+      "18-25",
+      "25-9",
+      "13-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11287",
+     "iso": "2026-02-21T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV OVIEDO A",
+     "visitante": "C. SAN IGNACIO A",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "15-25",
+      "8-25",
+      "15-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11294",
+     "iso": "2026-02-28T14:00",
+     "hora": "14:00",
+     "sede": "Pabellón de La Arena",
+     "local": "CID JOVELLANOS A",
+     "visitante": "CV OVIEDO A",
+     "setsLocal": 2,
+     "setsVisitante": 3,
+     "parciales": [
+      "25-16",
+      "25-17",
+      "23-25",
+      "23-25",
+      "10-15"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11301",
+     "iso": "2026-03-07T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV OVIEDO A",
+     "visitante": "AD LA CURTIDORA A",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-22",
+      "25-12",
+      "25-17"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11308",
+     "iso": "2026-03-14T12:30",
+     "hora": "12:30",
+     "sede": "Polideportivo de Llanes",
+     "local": "IES LLANES A",
+     "visitante": "CV OVIEDO A",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "12-25",
+      "5-25",
+      "11-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11314",
+     "iso": "2026-03-21T10:00",
+     "hora": "10:00",
+     "sede": "PAB. VICENTE LOPEZ CARRIL",
+     "local": "NAUTICO CARREÑO A",
+     "visitante": "CV OVIEDO A",
+     "setsLocal": 1,
+     "setsVisitante": 3,
+     "parciales": [
+      "16-25",
+      "17-25",
+      "25-17",
+      "13-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11319",
+     "iso": "2026-03-28T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV OVIEDO A",
+     "visitante": "IES LLANES P",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-18",
+      "25-15",
+      "25-17"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-11324",
+     "iso": "2026-04-11T09:45",
+     "hora": "09:45",
+     "sede": "Colegio San Ignacio",
+     "local": "C. SAN IGNACIO B",
+     "visitante": "CV OVIEDO A",
+     "setsLocal": 2,
+     "setsVisitante": 3,
+     "parciales": [
+      "25-23",
+      "25-17",
+      "21-25",
+      "17-25",
+      "13-15"
+     ],
+     "estado": "Finalizado"
+    }
+   ],
+   "clasificacion": [
+    {
+     "pos": 1,
+     "equipo": "C. INMACULADA A",
+     "pts": 63,
+     "pj": 22,
+     "sf": 65,
+     "sc": 8,
+     "yo": false
+    },
+    {
+     "pos": 2,
+     "equipo": "C. SAN IGNACIO A",
+     "pts": 59,
+     "pj": 22,
+     "sf": 61,
+     "sc": 11,
+     "yo": false
+    },
+    {
+     "pos": 3,
+     "equipo": "RGC COVADONGA A",
+     "pts": 56,
+     "pj": 22,
+     "sf": 59,
+     "sc": 14,
+     "yo": false
+    },
+    {
+     "pos": 4,
+     "equipo": "A.D. LOS CAMPOS A",
+     "pts": 44,
+     "pj": 22,
+     "sf": 50,
+     "sc": 27,
+     "yo": false
+    },
+    {
+     "pos": 5,
+     "equipo": "C. SAN IGNACIO B",
+     "pts": 40,
+     "pj": 22,
+     "sf": 47,
+     "sc": 35,
+     "yo": false
+    },
+    {
+     "pos": 6,
+     "equipo": "CV OVIEDO A",
+     "pts": 38,
+     "pj": 22,
+     "sf": 43,
+     "sc": 35,
+     "yo": true
+    },
+    {
+     "pos": 7,
+     "equipo": "CID JOVELLANOS A",
+     "pts": 28,
+     "pj": 22,
+     "sf": 35,
+     "sc": 44,
+     "yo": false
+    },
+    {
+     "pos": 8,
+     "equipo": "NAUTICO CARREÑO A",
+     "pts": 23,
+     "pj": 22,
+     "sf": 31,
+     "sc": 50,
+     "yo": false
+    },
+    {
+     "pos": 9,
+     "equipo": "IES LLANES P",
+     "pts": 23,
+     "pj": 22,
+     "sf": 29,
+     "sc": 47,
+     "yo": false
+    },
+    {
+     "pos": 10,
+     "equipo": "IES REY PELAYO A",
+     "pts": 15,
+     "pj": 22,
+     "sf": 21,
+     "sc": 53,
+     "yo": false
+    },
+    {
+     "pos": 11,
+     "equipo": "IES LLANES A",
+     "pts": 7,
+     "pj": 22,
+     "sf": 9,
+     "sc": 60,
+     "yo": false
+    },
+    {
+     "pos": 12,
+     "equipo": "AD LA CURTIDORA A",
+     "pts": 0,
+     "pj": 22,
+     "sf": 0,
+     "sc": 66,
+     "yo": false
+    }
+   ],
+   "clave": "infantil-femenino-a-primera-division-a1-fvbpa",
+   "nombre": "Infantil Femenino A"
+  },
+  {
+   "fuente": "FVBPA",
+   "ente": "FVBPA",
+   "categoria": "Infantil",
+   "genero": "Femenino",
+   "division": "Segunda División (A2)",
+   "grupo": "Grupo B",
+   "equipoClub": "C.V. OVIEDO B",
+   "url": "https://www.fvbpa.com/editions/186/calendars?tab=full_calendar&edition_group_id=1861&team_id=2574",
+   "partidos": [
+    {
+     "id": "fvbpa-12739",
+     "iso": "2025-11-08T12:00",
+     "hora": "12:00",
+     "sede": "COLEGIO LOYOLA",
+     "local": "COLEGIO LOYOLA",
+     "visitante": "C.V. OVIEDO B",
+     "setsLocal": 1,
+     "setsVisitante": 3,
+     "parciales": [
+      "25-16",
+      "20-26",
+      "15-25",
+      "21-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12743",
+     "iso": "2025-11-15T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "C.V. OVIEDO B",
+     "visitante": "AD LA CURTIDORA C",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-21",
+      "25-18",
+      "26-24"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12747",
+     "iso": "2025-11-22T09:30",
+     "hora": "09:30",
+     "sede": "Colegio San Ignacio",
+     "local": "C. SAN IGNACIO C",
+     "visitante": "C.V. OVIEDO B",
+     "setsLocal": 2,
+     "setsVisitante": 3,
+     "parciales": [
+      "27-25",
+      "25-27",
+      "21-25",
+      "25-21",
+      "9-15"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12751",
+     "iso": "2025-12-13T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "C.V. OVIEDO B",
+     "visitante": "AD LA CURTIDORA D",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-10",
+      "25-9",
+      "25-6"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12755",
+     "iso": "2025-12-20T14:00",
+     "hora": "14:00",
+     "sede": "Colegio Los Campos de Corvera",
+     "local": "AD LOS CAMPOS B",
+     "visitante": "C.V. OVIEDO B",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-23",
+      "25-22",
+      "25-17"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12759",
+     "iso": "2026-01-17T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "C.V. OVIEDO B",
+     "visitante": "C. SAN IGNACIO D",
+     "setsLocal": 1,
+     "setsVisitante": 3,
+     "parciales": [
+      "16-25",
+      "25-20",
+      "18-25",
+      "16-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12763",
+     "iso": "2026-01-24T11:20",
+     "hora": "11:20",
+     "sede": "POLIDEPORTIVO LOS CANAPÉS",
+     "local": "AD LA CURTIDORA B",
+     "visitante": "C.V. OVIEDO B",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "14-25",
+      "17-25",
+      "10-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12767",
+     "iso": "2026-01-31T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "C.V. OVIEDO B",
+     "visitante": "COLEGIO LOYOLA",
+     "setsLocal": 3,
+     "setsVisitante": 2,
+     "parciales": [
+      "17-25",
+      "25-16",
+      "16-25",
+      "25-12",
+      "17-15"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12771",
+     "iso": "2026-02-07T11:45",
+     "hora": "11:45",
+     "sede": "POLIDEPORTIVO LOS CANAPÉS",
+     "local": "AD LA CURTIDORA C",
+     "visitante": "C.V. OVIEDO B",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "13-25",
+      "18-25",
+      "11-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12775",
+     "iso": "2026-02-22T11:00",
+     "hora": "11:00",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "C.V. OVIEDO B",
+     "visitante": "C. SAN IGNACIO C",
+     "setsLocal": 1,
+     "setsVisitante": 3,
+     "parciales": [
+      "20-25",
+      "25-22",
+      "15-25",
+      "20-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12779",
+     "iso": "2026-02-28T11:15",
+     "hora": "11:15",
+     "sede": "POLIDEPORTIVO LOS CANAPÉS",
+     "local": "AD LA CURTIDORA D",
+     "visitante": "C.V. OVIEDO B",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "12-25",
+      "1-25",
+      "9-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12783",
+     "iso": "2026-03-07T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "C.V. OVIEDO B",
+     "visitante": "AD LOS CAMPOS B",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-23",
+      "25-16",
+      "28-26"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12787",
+     "iso": "2026-03-14T09:45",
+     "hora": "09:45",
+     "sede": "Colegio San Ignacio",
+     "local": "C. SAN IGNACIO D",
+     "visitante": "C.V. OVIEDO B",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-16",
+      "25-23",
+      "25-20"
+     ],
+     "estado": "Finalizado"
+    }
+   ],
+   "clasificacion": [
+    {
+     "pos": 1,
+     "equipo": "C. SAN IGNACIO D",
+     "pts": 42,
+     "pj": 14,
+     "sf": 42,
+     "sc": 3,
+     "yo": false
+    },
+    {
+     "pos": 2,
+     "equipo": "C. SAN IGNACIO C",
+     "pts": 33,
+     "pj": 14,
+     "sf": 36,
+     "sc": 13,
+     "yo": false
+    },
+    {
+     "pos": 3,
+     "equipo": "C.V. OVIEDO B",
+     "pts": 28,
+     "pj": 14,
+     "sf": 32,
+     "sc": 17,
+     "yo": true
+    },
+    {
+     "pos": 4,
+     "equipo": "AD LOS CAMPOS B",
+     "pts": 23,
+     "pj": 14,
+     "sf": 26,
+     "sc": 23,
+     "yo": false
+    },
+    {
+     "pos": 5,
+     "equipo": "COLEGIO LOYOLA",
+     "pts": 20,
+     "pj": 14,
+     "sf": 25,
+     "sc": 24,
+     "yo": false
+    },
+    {
+     "pos": 6,
+     "equipo": "AD LA CURTIDORA C",
+     "pts": 16,
+     "pj": 14,
+     "sf": 17,
+     "sc": 30,
+     "yo": false
+    },
+    {
+     "pos": 7,
+     "equipo": "AD LA CURTIDORA B",
+     "pts": 6,
+     "pj": 14,
+     "sf": 10,
+     "sc": 36,
+     "yo": false
+    },
+    {
+     "pos": 8,
+     "equipo": "AD LA CURTIDORA D",
+     "pts": 0,
+     "pj": 14,
+     "sf": 0,
+     "sc": 42,
+     "yo": false
+    }
+   ],
+   "clave": "infantil-femenino-b-segunda-division-a2-fvbpa",
+   "nombre": "Infantil Femenino B"
+  },
+  {
+   "fuente": "FVBPA",
+   "ente": "FVBPA",
+   "categoria": "Infantil",
+   "genero": "Masculino",
+   "division": "Primera División (A1)",
+   "grupo": "Grupo A",
+   "equipoClub": "C.V. OVIEDO",
+   "url": "https://www.fvbpa.com/editions/182/calendars?tab=full_calendar&edition_group_id=1851&team_id=2584",
+   "partidos": [
+    {
+     "id": "fvbpa-12267",
+     "iso": "2025-10-29",
+     "hora": null,
+     "sede": null,
+     "local": "CID JOVELLANOS B",
+     "visitante": "C.V. OVIEDO",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "0-25",
+      "0-25",
+      "0-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12295",
+     "iso": "2025-10-29",
+     "hora": null,
+     "sede": null,
+     "local": "C.V. OVIEDO",
+     "visitante": "CID JOVELLANOS B",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-0",
+      "25-0",
+      "25-0"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12266",
+     "iso": "2025-11-22T14:00",
+     "hora": "14:00",
+     "sede": "Colegio Miguel de Cervantes",
+     "local": "CV LA CALZADA",
+     "visitante": "C.V. OVIEDO",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "7-25",
+      "4-25",
+      "11-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12274",
+     "iso": "2025-12-20T13:30",
+     "hora": "13:30",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "C.V. OVIEDO",
+     "visitante": "IES REY PELAYO",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "0-25",
+      "0-25",
+      "0-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12276",
+     "iso": "2026-01-17T10:00",
+     "hora": "10:00",
+     "sede": "Pabellón de La Arena",
+     "local": "CID JOVELLANOS A",
+     "visitante": "C.V. OVIEDO",
+     "setsLocal": 3,
+     "setsVisitante": 1,
+     "parciales": [
+      "25-18",
+      "20-25",
+      "25-19",
+      "25-21"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12281",
+     "iso": "2026-01-24T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "C.V. OVIEDO",
+     "visitante": "RGC COVADONGA",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-16",
+      "25-9",
+      "25-13"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12294",
+     "iso": "2026-02-21T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "C.V. OVIEDO",
+     "visitante": "CV LA CALZADA",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-6",
+      "25-4",
+      "25-4"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12285",
+     "iso": "2026-02-28T09:45",
+     "hora": "09:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "C.V. OVIEDO",
+     "visitante": "AD LA CURTIDORA",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-11",
+      "25-23",
+      "25-22"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12302",
+     "iso": "2026-03-14T12:30",
+     "hora": "12:30",
+     "sede": "Polideportivo Cangas de Onís",
+     "local": "IES REY PELAYO",
+     "visitante": "C.V. OVIEDO",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "14-25",
+      "11-25",
+      "7-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12304",
+     "iso": "2026-03-20T18:00",
+     "hora": "18:00",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "C.V. OVIEDO",
+     "visitante": "CID JOVELLANOS A",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "20-25",
+      "18-25",
+      "23-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-12257",
+     "iso": "2026-03-22T10:30",
+     "hora": "10:30",
+     "sede": "POLIDEPORTIVO LOS CANAPÉS",
+     "local": "AD LA CURTIDORA",
+     "visitante": "C.V. OVIEDO",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "25-27",
+      "14-25",
+      "22-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-14121",
+     "iso": "2026-04-25T12:00",
+     "hora": "12:00",
+     "sede": "Pabellón de La Arena",
+     "local": "C.V. OVIEDO",
+     "visitante": "AD LA CURTIDORA",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-20",
+      "25-16",
+      "25-13"
+     ],
+     "estado": "Finalizado"
+    }
+   ],
+   "clasificacion": [
+    {
+     "pos": 1,
+     "equipo": "CID JOVELLANOS A",
+     "pts": 42,
+     "pj": 14,
+     "sf": 42,
+     "sc": 1,
+     "yo": false
+    },
+    {
+     "pos": 2,
+     "equipo": "C.V. OVIEDO",
+     "pts": 33,
+     "pj": 14,
+     "sf": 34,
+     "sc": 9,
+     "yo": true
+    },
+    {
+     "pos": 3,
+     "equipo": "AD LA CURTIDORA",
+     "pts": 30,
+     "pj": 14,
+     "sf": 30,
+     "sc": 13,
+     "yo": false
+    },
+    {
+     "pos": 4,
+     "equipo": "RGC COVADONGA",
+     "pts": 24,
+     "pj": 14,
+     "sf": 25,
+     "sc": 18,
+     "yo": false
+    },
+    {
+     "pos": 5,
+     "equipo": "IES REY PELAYO",
+     "pts": 21,
+     "pj": 14,
+     "sf": 21,
+     "sc": 21,
+     "yo": false
+    },
+    {
+     "pos": 6,
+     "equipo": "CV LA CALZADA",
+     "pts": 12,
+     "pj": 14,
+     "sf": 12,
+     "sc": 30,
+     "yo": false
+    },
+    {
+     "pos": 7,
+     "equipo": "CID JOVELLANOS B",
+     "pts": 6,
+     "pj": 14,
+     "sf": 6,
+     "sc": 36,
+     "yo": false
+    },
+    {
+     "pos": 8,
+     "equipo": "DESCANSA",
+     "pts": 0,
+     "pj": 14,
+     "sf": 0,
+     "sc": 42,
+     "yo": false
+    }
+   ],
+   "clave": "infantil-masculino-primera-division-a1-fvbpa",
+   "nombre": "Infantil Masculino"
+  },
+  {
+   "fuente": "FVBPA",
+   "ente": "FVBPA",
+   "categoria": "Alevín",
+   "genero": "Femenino",
+   "division": "Clasificatoria Campeonato De España Alevín",
+   "grupo": "Grupo A",
+   "equipoClub": "CV OVIEDO",
+   "url": "https://www.fvbpa.com/editions/195/calendars?tab=full_calendar&edition_group_id=1890&team_id=2738",
+   "partidos": [
+    {
+     "id": "fvbpa-13994",
+     "iso": "2025-11-30T10:45",
+     "hora": "10:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV OVIEDO",
+     "visitante": "AD LOS CAMPOS",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "6-25",
+      "9-25",
+      "8-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-13999",
+     "iso": "2025-12-14T11:30",
+     "hora": "11:30",
+     "sede": "COLEGIO INMACULADA",
+     "local": "CDV INMACULADA",
+     "visitante": "CV OVIEDO",
+     "setsLocal": 2,
+     "setsVisitante": 1,
+     "parciales": [
+      "25-5",
+      "23-25",
+      "25-11"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-14007",
+     "iso": "2026-01-25T10:45",
+     "hora": "10:45",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV OVIEDO",
+     "visitante": "CV LA CALZADA A",
+     "setsLocal": 1,
+     "setsVisitante": 2,
+     "parciales": [
+      "25-21",
+      "12-25",
+      "21-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-14010",
+     "iso": "2026-02-01T11:00",
+     "hora": "11:00",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV OVIEDO",
+     "visitante": "RGC COVADONGA A",
+     "setsLocal": 0,
+     "setsVisitante": 3,
+     "parciales": [
+      "6-25",
+      "7-25",
+      "15-25"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-13996",
+     "iso": "2026-02-22T12:00",
+     "hora": "12:00",
+     "sede": "Colegio Los Campos de Corvera",
+     "local": "AD LOS CAMPOS",
+     "visitante": "CV OVIEDO",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-1",
+      "25-11",
+      "25-11"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-14001",
+     "iso": "2026-03-08T11:00",
+     "hora": "11:00",
+     "sede": "POLIDEPORTIVO JOSÉ MANUEL FUENTE",
+     "local": "CV OVIEDO",
+     "visitante": "CDV INMACULADA",
+     "setsLocal": 2,
+     "setsVisitante": 1,
+     "parciales": [
+      "25-15",
+      "13-25",
+      "25-20"
+     ],
+     "estado": "Finalizado"
+    },
+    {
+     "id": "fvbpa-14009",
+     "iso": "2026-04-12T12:15",
+     "hora": "12:15",
+     "sede": "Colegio Miguel de Cervantes",
+     "local": "CV LA CALZADA A",
+     "visitante": "CV OVIEDO",
+     "setsLocal": 3,
+     "setsVisitante": 0,
+     "parciales": [
+      "25-11",
+      "25-7",
+      "25-14"
+     ],
+     "estado": "Finalizado"
+    }
+   ],
+   "clasificacion": [],
+   "clave": "alevin-femenino-clasificatoria-campeonato-de-espana-alevin-fvbpa",
+   "nombre": "Alevín Femenino"
+  }
+ ]
+}
