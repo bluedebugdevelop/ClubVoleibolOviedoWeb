@@ -104,6 +104,7 @@ function clasificacion(pagina) {
       // "1. Sestao" (el logo va como <img>, que texto() ya ha quitado)
       const m = /^\s*(\d+)\.\s*(.+?)\s*$/.exec(c[0] ?? '')
       if (!m) return null
+      if (!esRivalReal(m[2])) return null
       const n = (i) => (c[i] == null || c[i] === '' ? null : Number(c[i]))
       return {
         pos: Number(m[1]),

@@ -1,5 +1,5 @@
 {
- "generado": "2026-07-29T16:27:44.724Z",
+ "generado": "2026-07-29T16:37:37.314Z",
  "temporada": "2025/26",
  "fuentes": {
   "FVBPA": "https://www.fvbpa.com",
@@ -1371,15 +1371,6 @@
      "pj": 18,
      "sf": 10,
      "sc": 46,
-     "yo": false
-    },
-    {
-     "pos": 10,
-     "equipo": "DESCANSA",
-     "pts": 0,
-     "pj": 18,
-     "sf": 0,
-     "sc": 54,
      "yo": false
     }
    ],
@@ -3935,15 +3926,6 @@
      "pj": 14,
      "sf": 6,
      "sc": 36,
-     "yo": false
-    },
-    {
-     "pos": 8,
-     "equipo": "DESCANSA",
-     "pts": 0,
-     "pj": 14,
-     "sf": 0,
-     "sc": 42,
      "yo": false
     }
    ],

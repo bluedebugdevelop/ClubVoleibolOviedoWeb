@@ -35,9 +35,12 @@ const MESES = {
 const html = (url) => bajar(url, { charset: 'utf-8' })
 
 /**
- * Las jornadas impares llevan un "partido" contra DESCANSA: es el descanso del
- * equipo que se queda sin rival, no un encuentro. La federación le pone hasta
- * un 3-0, así que si no se filtra sale en la web como una victoria inventada.
+ * DESCANSA no es un equipo: es el hueco que deja el que descansa en los grupos
+ * con un número impar de participantes. La federación lo trata como si jugara
+ * —le apunta un 3-0 en el calendario y hasta le abre fila en la clasificación,
+ * con 0 puntos y todos los sets en contra—, así que hay que descartarlo en los
+ * dos sitios o la web enseña victorias inventadas y un último clasificado que
+ * no existe.
  */
 export function esRivalReal(nombre) {
   return !/^\s*(descansa|descanso|libre|bye|sin\s+rival)\s*$/i.test(String(nombre))
@@ -170,6 +173,7 @@ function clasificacion(pagina) {
         if (esEntero(celdas[i])) { iPos = i; break }
       }
       if (iPos < 0) return null
+      if (!esRivalReal(celdas[iEquipo])) return null
 
       const n = (i) => (i < 0 || celdas[i] == null || celdas[i] === '' ? null : Number(celdas[i]))
       return {
