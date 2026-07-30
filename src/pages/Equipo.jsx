@@ -5,7 +5,6 @@ import JoinCta from '../components/JoinCta'
 import Sponsors from '../components/Sponsors'
 import NoEncontrado from './NoEncontrado'
 import { equipos } from '../data/contenido'
-import { fixturesDeFicha } from '../data/competicion'
 
 export default function Equipo() {
   const { slug } = useParams()
@@ -32,57 +31,18 @@ export default function Equipo() {
           quitó a propósito el 2026-07-29: los datos siguen en `equipo.stats`
           por si vuelve, pero ninguna página los pinta. */}
 
-      <section className="sec">
-        <div className="layout">
-          <div>
-            <SectionHead title="Calendario y resultados" />
-            <div className="fixtures">
-              {/* datos reales de la federación; si aún no los hay, los de la ficha */}
-              {fixturesDeFicha(slug, equipo.fixtures).map((f) => (
-                <div className="fix" key={f.id}>
-                  <span className="d">
-                    {f.diaSemana}
-                    <b>{f.dia}</b>
-                    {f.mes}
-                  </span>
-                  <span className="t">
-                    {f.rival}
-                    <span>{f.detalle}</span>
-                  </span>
-                  {f.resultado ? (
-                    <span className={`r ${f.tipo}`}>
-                      {f.resultado}
-                      {f.parciales?.length > 0 && <i>{f.parciales.join('  ')}</i>}
-                    </span>
-                  ) : (
-                    <span className="r next">Próximo</span>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
+      {/* El calendario y los resultados del equipo se quitaron de la ficha el
+          2026-07-30 (decisión de Adrián): están todos en /calendario, donde
+          además se pueden filtrar por ida y vuelta. */}
 
-          <div className="side">
-            <h3>Cuerpo técnico</h3>
-            <div className="staff">
-              {equipo.staff.map((s) => (
-                <div key={s.nombre}>
-                  <span className="av">{s.iniciales}</span>
-                  <span>
-                    <b>{s.nombre}</b>
-                    <i>{s.rol}</i>
-                  </span>
-                </div>
-              ))}
+      <section className="sec">
+        <div className="ficha-datos">
+          {equipo.datos.map((d) => (
+            <div key={d.label}>
+              <span>{d.label}</span>
+              <b>{d.valor}</b>
             </div>
-            <h3 style={{ borderTop: '1px solid var(--line)' }}>Datos</h3>
-            {equipo.datos.map((d) => (
-              <div className="row" key={d.label}>
-                <span>{d.label}</span>
-                <b>{d.valor}</b>
-              </div>
-            ))}
-          </div>
+          ))}
         </div>
       </section>
 
@@ -105,9 +65,29 @@ export default function Equipo() {
               </div>
             ))}
           </div>
+
+          {/* Mismas tarjetas que la plantilla: el cuerpo técnico es parte del
+              equipo, así que se presenta igual. En el hueco de la foto van las
+              iniciales, que es lo que hay hasta que existan los retratos. */}
+          <div className="sechead" style={{ marginTop: 38 }}>
+            <h2>Cuerpo técnico</h2>
+            <span className="rule"></span>
+            <span style={{ fontSize: 13, color: 'var(--dim)' }}>{equipo.staff.length} personas</span>
+          </div>
+          <div className="squad">
+            {equipo.staff.map((s) => (
+              <div className="pl" key={s.nombre}>
+                <div className="ph">
+                  <span>{s.iniciales}</span>
+                </div>
+                <b>{s.nombre}</b>
+                <i>{s.rol}</i>
+              </div>
+            ))}
+          </div>
+
           <p style={{ marginTop: 20, fontSize: 13.5, color: 'var(--dim)' }}>
-            Los recuadros son marcadores: en cuanto haya fotos individuales de los jugadores, entran aquí sin tocar
-            nada más.
+            Los recuadros son marcadores: en cuanto haya fotos individuales, entran aquí sin tocar nada más.
           </p>
         </section>
       </div>

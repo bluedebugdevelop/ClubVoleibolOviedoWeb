@@ -169,16 +169,19 @@ export default function Calendario() {
                         {p.rival}
                         <span>{p.detalle}</span>
                       </span>
+                      {/* Los parciales van en su propia columna, a la izquierda
+                          del marcador, y el marcador en una de ancho fijo. Antes
+                          compartían celda y el marcador se movía de sitio según
+                          si el partido había durado 3, 4 o 5 sets. */}
+                      <span className="sets">
+                        {p.parciales?.length > 0
+                          && p.parciales.map((s, i) => <b key={i}>{s}</b>)}
+                        {!p.resultado && p.retransmite && <em>Se retransmite ▸</em>}
+                      </span>
                       {p.resultado ? (
-                        <span className={`r ${p.tipo}`}>
-                          {p.resultado}
-                          {p.parciales?.length > 0 && <i>{p.parciales.join('  ')}</i>}
-                        </span>
+                        <span className={`r ${p.tipo}`}>{p.resultado}</span>
                       ) : (
-                        <span>
-                          <span className="r next">{p.local ? 'Local' : 'Visitante'}</span>
-                          {p.retransmite && <span className="r tv">Se retransmite ▸</span>}
-                        </span>
+                        <span className="r next">{p.local ? 'Local' : 'Visitante'}</span>
                       )}
                     </div>
                   ))}
