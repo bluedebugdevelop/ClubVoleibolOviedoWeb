@@ -499,19 +499,19 @@ footer .legal a:hover{color:#fff}
 .round > h3::after{content:"";flex:1;height:1px;background:var(--line)}
 
 /* 4 columnas —fecha · competición · partido · marcador— y los parciales en una
-   segunda línea debajo del enfrentamiento.
+   segunda línea, pegados al borde derecho: caen justo debajo del marcador.
 
-   El marcador va en columna de ancho FIJO pegada a la derecha, así que queda
-   alineado en todas las filas: antes compartía celda con los parciales y un 3-2
-   (cinco tanteos) lo empujaba de sitio. Y los parciales van debajo, no en una
-   columna propia, porque ahí les cabe cualquier número de sets sin robarle
-   ancho al nombre de los equipos, que es lo que se lee primero. */
+   El marcador vive en una columna de ancho FIJO, así que queda alineado en
+   todas las filas dure el partido 3, 4 o 5 sets. Los parciales NO comparten esa
+   columna —ahí la empujarían y se perdería la alineación, que es lo que pasaba
+   antes— sino que ocupan una fila propia que termina en el mismo borde. */
 .fixtures.wide .fix{grid-template-columns:78px 128px minmax(0,1fr) 92px;row-gap:7px}
 .fixtures.wide .fix .d{grid-column:1;grid-row:1}
 .fixtures.wide .fix .who{grid-column:2;grid-row:1}
 .fixtures.wide .fix .t{grid-column:3;grid-row:1}
 .fixtures.wide .fix .r{grid-column:4;grid-row:1}
-.fixtures.wide .fix .sets{grid-column:3;grid-row:2}
+/* de la columna del partido hasta el final, y alineados a la derecha */
+.fixtures.wide .fix .sets{grid-column:3 / -1;grid-row:2;justify-content:flex-end}
 .fix .sets{display:flex;flex-wrap:wrap;gap:5px}
 /* sin parciales la segunda línea no existe y la fila no crece. Va DESPUÉS del
    display:flex de arriba: con la misma especificidad, gana la última. */
