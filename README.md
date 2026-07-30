@@ -78,6 +78,14 @@ cuenta `bluedebugdevelop`:
 Sin eso el scraper se ejecuta pero no puede commitear, y el workflow falla al
 hacer push.
 
+> ⚠️ **La RFEVB no siempre responde desde GitHub Actions.** El 29/07/2026 la
+> ejecución automática no consiguió datos de `esvoley.es`/`intranet.rfevb.com`
+> (la FVBPA sí), y guardó un JSON sin los dos equipos nacionales. Desde
+> entonces el scraper **se niega a escribir** si una fuente que antes daba
+> equipos vuelve vacía: conserva los datos anteriores y el workflow falla, para
+> que se vea. Si eso pasa, basta con ejecutar `npm run datos` en local (desde
+> casa la RFEVB sí responde) y commitear.
+
 Detalles de la programación:
 
 - GitHub ejecuta los cron en **UTC** y no conoce el horario de verano, así que

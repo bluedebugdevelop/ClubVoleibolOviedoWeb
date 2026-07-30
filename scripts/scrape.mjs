@@ -184,6 +184,40 @@ async function main() {
     return
   }
 
+  // Si una fuente que antes daba equipos ahora no da ninguno, NO se escribe.
+  //
+  // Pasó de verdad el 2026-07-29: desde GitHub Actions la RFEVB no respondió, y
+  // como el resto sí, se guardó un JSON sin los dos equipos nacionales. Encima
+  // al desaparecer estos volvió a colarse la copia atrasada que la FVBPA tiene
+  // de la liga nacional. Un fallo de red de una fuente no puede empeorar los
+  // datos que ya estaban bien: mejor dejar los de ayer y que el workflow falle
+  // a la vista.
+  const porFuente = (lista) => {
+    const n = {}
+    for (const e of lista) n[e.ente] = (n[e.ente] ?? 0) + 1
+    return n
+  }
+  const ahora = porFuente(equipos)
+
+  let previo = null
+  try {
+    previo = JSON.parse(await readFile(DESTINO, 'utf-8'))
+  } catch {
+    // no había JSON previo: primera ejecución, nada que comparar
+  }
+
+  if (previo?.equipos?.length) {
+    const antes = porFuente(previo.equipos)
+    const caidas = Object.keys(antes).filter((f) => !ahora[f])
+    if (caidas.length) {
+      log(`\n!! ${caidas.join(' y ')} no ha devuelto ni un equipo, y antes sí tenía.`)
+      log('   Se conserva el JSON anterior para no empeorar los datos.')
+      log(`   Antes: ${JSON.stringify(antes)} · ahora: ${JSON.stringify(ahora)}`)
+      process.exitCode = 1
+      return
+    }
+  }
+
   const salida = {
     generado: new Date().toISOString(),
     temporada: t.etiqueta,
@@ -203,18 +237,13 @@ async function main() {
     return
   }
 
-  // Si el resultado es claramente peor que lo que ya había, no lo pisamos:
-  // más vale enseñar datos de ayer que media web vacía por un fallo puntual.
-  try {
-    const previo = JSON.parse(await readFile(DESTINO, 'utf-8'))
-    if (previo.equipos?.length > equipos.length * 2) {
-      log(`\n!! Antes había ${previo.equipos.length} equipos y ahora solo ${equipos.length}.`)
-      log('   Parece un fallo de las federaciones: se conserva el JSON anterior.')
-      process.exitCode = 1
-      return
-    }
-  } catch {
-    // no había JSON previo: primera ejecución
+  // Y si el recuento cae en picado sin que ninguna fuente se haya ido del todo,
+  // tampoco: más vale enseñar los datos de ayer que media web vacía.
+  if (previo?.equipos?.length > equipos.length * 2) {
+    log(`\n!! Antes había ${previo.equipos.length} equipos y ahora solo ${equipos.length}.`)
+    log('   Parece un fallo de las federaciones: se conserva el JSON anterior.')
+    process.exitCode = 1
+    return
   }
 
   await writeFile(DESTINO, `${JSON.stringify(salida, null, 1)}\n`, 'utf-8')
