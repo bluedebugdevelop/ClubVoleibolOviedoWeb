@@ -119,14 +119,18 @@ function Privacidad() {
             <li><span>Qué se pide</span><b>{t.datos}</b></li>
             <li><span>Para qué</span><b>{t.finalidad}</b></li>
             <li><span>Con qué legitimación</span><b>{t.base}</b></li>
+            <li><span>Dónde va a parar</span><b>{t.gestion}</b></li>
             <li><span>Cuánto se conserva</span><b>{t.conservacion}</b></li>
           </ul>
         </div>
       ))}
 
       <p className="legal-nota">
-        <b>Importante:</b> el club no guarda estos datos en ninguna base de datos. Lo que se escribe en el
-        formulario se envía por correo electrónico a la dirección del club y ahí se queda, en su buzón.
+        <b>Sobre la inscripción:</b> el formulario de inscripción no está en esta web, sino en Google Forms. Al
+        abrirlo sales de este sitio y pasas a uno de Google, que puede pedirte iniciar sesión y trata tus datos
+        también según su propia{' '}
+        <a href="https://policies.google.com/privacy" target="_blank" rel="noreferrer">política de privacidad</a>.
+        Si prefieres no usarlo, puedes apuntarte por teléfono o por correo escribiendo a {CORREO}.
       </p>
 
       <h3>Formulario de contacto</h3>

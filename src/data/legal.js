@@ -58,6 +58,13 @@ export const terceros = [
       'Solo se carga en la página de Contacto. Al mostrarse, Google recibe la dirección IP y puede instalar cookies propias en el navegador.',
     pais: 'Estados Unidos',
   },
+  {
+    nombre: 'Google (Forms)',
+    papel: 'Formulario de inscripción',
+    detalle:
+      'El formulario de inscripción está alojado en Google Forms, fuera de esta web, y las respuestas se guardan en la cuenta de Google del club. Solo interviene si decides abrirlo y rellenarlo.',
+    pais: 'Estados Unidos',
+  },
 ]
 
 /**
@@ -68,14 +75,16 @@ export const tratamientos = [
   {
     id: 'inscripciones',
     titulo: 'Formulario de inscripción',
-    donde: '/inscripciones',
+    donde: 'Google Forms',
     datos:
-      'Nombre y apellidos del jugador o jugadora, fecha de nacimiento, nombre del padre, madre o tutor, teléfono, correo electrónico, equipo de interés, posición y los comentarios que se quieran añadir.',
+      'Los que pida el formulario del club: normalmente el nombre del jugador o jugadora, su fecha de nacimiento, los datos de contacto del padre, madre o tutor y el equipo de interés.',
     finalidad:
       'Ponerse en contacto con la familia y asignar el equipo que corresponde por año de nacimiento y nivel.',
-    base: 'El consentimiento que se marca en el propio formulario.',
+    base: 'El consentimiento de quien rellena el formulario.',
+    gestion:
+      'Este formulario no está en esta web: se rellena en Google Forms y las respuestas quedan guardadas en la cuenta de Google del club. Desde aquí solo se enlaza.',
     conservacion:
-      'El correo se conserva mientras se gestiona la solicitud y, si acaba en inscripción, mientras dure la relación con el club.',
+      'Mientras se gestiona la solicitud y, si acaba en inscripción, mientras dure la relación con el club.',
   },
   {
     id: 'patrocinio',
@@ -85,6 +94,8 @@ export const tratamientos = [
       'Nombre de la empresa, persona de contacto, teléfono, correo electrónico, web y el mensaje que se escriba.',
     finalidad: 'Responder a la propuesta de patrocinio y poder hablarla.',
     base: 'El interés legítimo en atender una solicitud comercial hecha por la propia empresa.',
+    gestion:
+      'No se guarda en ninguna base de datos: lo que se escribe se envía por correo electrónico al buzón del club y ahí se queda.',
     conservacion: 'Mientras dure la conversación y, si hay acuerdo, mientras dure el patrocinio.',
   },
 ]

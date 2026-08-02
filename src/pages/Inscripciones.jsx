@@ -121,21 +121,24 @@ export default function Inscripciones() {
       <section className="sec" id="formulario">
         <SectionHead title="Formulario de inscripción" />
 
-        {/* Las inscripciones pasan al Google Form del club (reunión con Vitor,
-            30-07-2026). En cuanto se pegue su URL en `formularioInscripcionUrl`
-            este bloque sustituye al formulario propio, sin tocar nada más. */}
+        {/* Las inscripciones se hacen en el Google Form del club (02-08-2026).
+            Se enlaza, no se incrusta: el formulario pide iniciar sesión en
+            Google y esa pantalla no funciona dentro de un <iframe>. Ver la nota
+            de `formularioInscripcionUrl` en contenido.js. */}
         {formularioInscripcionUrl ? (
           <div className="form-externo">
             <p>
-              La inscripción se hace en el formulario del club. Se abre en una pestaña nueva y, al enviarlo, nos
-              llega directamente.
+              La inscripción se hace en el formulario del club, alojado en Google. Se abre en una pestaña nueva y,
+              al enviarlo, la solicitud nos llega directamente.
             </p>
             <a className="btn solid" href={formularioInscripcionUrl} target="_blank" rel="noreferrer">
               Abrir el formulario de inscripción →
             </a>
             <p className="letra-pequena">
-              ¿Prefieres hacerlo por teléfono? Llama al{' '}
-              <a href={`tel:+34${club.telefono.replace(/\s/g, '')}`}>{club.telefono}</a> y te apuntamos igual.
+              El formulario puede pedirte que inicies sesión con una cuenta de Google. Si no tienes o prefieres no
+              usarla, llámanos al{' '}
+              <a href={`tel:+34${club.telefono.replace(/\s/g, '')}`}>{club.telefono}</a> o escríbenos a{' '}
+              <a href={`mailto:${club.email}`}>{club.email}</a> y te apuntamos igual.
             </p>
           </div>
         ) : (

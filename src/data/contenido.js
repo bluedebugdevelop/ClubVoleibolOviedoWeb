@@ -300,17 +300,19 @@ export const canteraFacts = [
 ]
 
 // ---------------------------------------------------------------------------
-// Formulario de inscripción.
+// Formulario de inscripción: el Google Form del club (02-08-2026).
 //
-// PENDIENTE (reunión con Vitor, 30-07-2026): las inscripciones pasan a hacerse
-// con el Google Form del club. En cuanto se pegue aquí su URL, la página deja
-// de enseñar el formulario propio y manda al de Google; hasta entonces sigue
-// funcionando el de siempre, que envía el correo con `api/inscripcion.js`.
+// La web solo ENLAZA al formulario, no lo incrusta. A propósito: hoy el
+// formulario pide iniciar sesión en Google, y una pantalla de login de Google
+// dentro de un <iframe> no funciona —Google lo bloquea—, así que incrustarlo
+// dejaría la página muerta. Si algún día se abre a cualquiera sin cuenta, se
+// puede incrustar sin tocar nada más que la plantilla de Inscripciones.
 //
-// Cuando se active, `api/inscripcion.js` y su clave de Resend dejan de hacer
-// falta para inscripciones (el contacto sí las sigue usando).
+// Poniendo esto a null vuelve el formulario propio de la web, que sigue
+// entero y manda el correo con `api/inscripcion.js`.
 // ---------------------------------------------------------------------------
-export const formularioInscripcionUrl = null
+export const formularioInscripcionUrl =
+  'https://docs.google.com/forms/d/e/1FAIpQLSd08Q58zffO-cBGtb6iNxANuPfB5QyQ1YQVxlNLjd5RJXHBPg/viewform'
 
 // Opciones del desplegable del formulario de inscripción. Son los nombres
 // reales de los equipos: no se calcula la categoría por año de nacimiento
