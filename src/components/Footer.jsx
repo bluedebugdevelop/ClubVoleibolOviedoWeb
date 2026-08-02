@@ -11,6 +11,7 @@ export default function Footer() {
           <b>Equipos</b>
           <Link to="/equipos/superliga-2-masculino">Superliga 2 Masculino</Link>
           <Link to="/equipos/primera-nacional-femenina">Primera Nacional Femenina</Link>
+          <Link to="/equipos/senior-masculino">Sénior Masculino</Link>
           <Link to="/cantera">Cantera</Link>
           <Link to="/cantera">Todos los equipos</Link>
         </div>

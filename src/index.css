@@ -409,7 +409,9 @@ footer .legal a:hover{color:#fff}
    columna lateral que había junto al calendario: al quitar el calendario de la
    ficha, la barra lateral se quedaba sin nada al lado. Ahora es una tira de
    cuatro casillas a lo ancho, debajo de la cabecera. */
-.ficha-datos{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);background:#fff}
+/* auto-fit: la tira se reparte sola tenga el equipo 3 datos o 4 */
+.ficha-datos{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  border:1px solid var(--line);background:#fff}
 .ficha-datos div{padding:16px 20px;border-left:1px solid var(--line)}
 .ficha-datos div:first-child{border-left:0}
 .ficha-datos span{display:block;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:11.5px;
@@ -579,6 +581,45 @@ footer .legal a:hover{color:#fff}
 .facts .row:last-child{border-bottom:0}
 .facts .row span{color:var(--dim)}
 .facts .row b{font-weight:600;text-align:right}
+/* segunda línea de una fila: qué incluye una cuota, por ejemplo */
+.facts .row span i.detalle{display:block;font-style:normal;font-size:12.5px;margin-top:3px;opacity:.8}
+
+/* -------- cantera (Cantera.jsx) -------- */
+.sede{border:1px solid var(--line);border-left:4px solid var(--blue);padding:20px 24px;background:#fff}
+.sede h3{margin:0;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:22px;
+  text-transform:uppercase;letter-spacing:.02em}
+.sede .dir{margin:4px 0 12px;font-size:14px;color:var(--dim)}
+.sede p{margin:0;font-size:15.5px;line-height:1.65;color:#3d4b5a}
+.sede .mas{display:inline-block;margin-top:14px;font-family:"Barlow Condensed",sans-serif;font-weight:700;
+  font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);text-decoration:none}
+.sede .mas:hover{text-decoration:underline}
+
+.como-va{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+.como-va h3{margin:0 0 8px;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:19px;
+  text-transform:uppercase;letter-spacing:.03em}
+.como-va p{margin:0;font-size:15.5px;line-height:1.65;color:#3d4b5a}
+
+/* la tabla de horarios puede no caber en el móvil: se desplaza ella sola en vez
+   de romper el ancho de la página */
+.tabla-horarios{overflow-x:auto}
+.tabla-horarios .table{min-width:520px}
+
+/* -------- palmarés (QuienesSomos.jsx) -------- */
+.palmares{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.pal{display:flex;gap:18px;align-items:baseline;border:1px solid var(--line);padding:16px 20px;background:#fff}
+.pal b{font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:26px;color:var(--blue);line-height:1}
+.pal h3{margin:0;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:18px;text-transform:uppercase}
+.pal p{margin:3px 0 0;font-size:14px;color:var(--dim)}
+
+/* -------- inscripción por formulario externo (Inscripciones.jsx) -------- */
+.form-externo{border:1px solid var(--line);background:var(--tint);padding:30px 32px}
+.form-externo p{margin:0 0 18px;font-size:16px;color:#3d4b5a;max-width:62ch}
+.form-externo .letra-pequena{margin:18px 0 0}
+
+@media(max-width:860px){
+  .como-va{grid-template-columns:1fr;gap:20px}
+  .palmares{grid-template-columns:1fr}
+}
 @media(max-width:900px){ .intro-cols{grid-template-columns:1fr} }
 
 /* -------- noticias (Noticias.jsx) -------- */
@@ -692,6 +733,37 @@ footer .legal a:hover{color:#fff}
 
 .shopnote{border:1px solid var(--line);background:var(--tint);padding:20px 24px;font-size:14.5px;color:var(--dim);margin-top:30px}
 .shopnote b{color:var(--ink)}
+
+/* -------- dato pendiente (Pendiente.jsx) --------
+   Se usa donde el club aún no ha dado el contenido (palmarés, horarios de
+   cantera, cuotas, plantillas). Va en ámbar y con etiqueta, para que se lea
+   como "esto llega pronto" y no como una página rota. */
+.pendiente{display:flex;gap:16px;align-items:flex-start;border:1px solid #e6d3a3;
+  background:#fdf6e3;padding:20px 22px}
+.pendiente .etq{flex:none;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:11.5px;
+  letter-spacing:.16em;text-transform:uppercase;color:#6b4e07;background:#f6e4b8;
+  border-radius:99px;padding:5px 12px;margin-top:2px}
+.pendiente b{display:block;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:19px;
+  text-transform:uppercase;letter-spacing:.02em;color:#6b4e07}
+.pendiente p{margin:6px 0 0;font-size:14.5px;color:#7a5f16}
+.pendiente p.via{margin-top:9px;font-size:13.5px}
+.pendiente a{color:#6b4e07;font-weight:600}
+@media(max-width:560px){
+  .pendiente{flex-direction:column;gap:10px;padding:16px 18px}
+}
+
+/* -------- tienda cerrada (Tienda.jsx) --------
+   Cartel de «Próximamente» mientras no estén cerrados productos y precios. Las
+   fichas y las fotos siguen en el código: se reactiva con `tiendaAbierta`. */
+.proximamente{border:1px solid var(--line);background:var(--tint);text-align:center;padding:64px 28px}
+.proximamente .etq{display:inline-block;font-family:"Barlow Condensed",sans-serif;font-weight:700;
+  font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--blue);
+  border:1px solid var(--blue);border-radius:99px;padding:6px 16px}
+.proximamente h2{margin:18px 0 0;font-family:"Barlow Condensed",sans-serif;font-weight:700;
+  font-size:clamp(30px,5vw,44px);text-transform:uppercase;line-height:1}
+.proximamente p{margin:14px auto 0;max-width:56ch;color:var(--dim);font-size:15.5px}
+.proximamente .btn{margin-top:26px}
+@media(max-width:560px){ .proximamente{padding:44px 20px} }
 
 /* -------- ficha de producto (Producto.jsx) -------- */
 .ficha-prod{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:52px;align-items:start}

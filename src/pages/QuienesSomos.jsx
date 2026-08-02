@@ -3,7 +3,8 @@ import PageHead from '../components/PageHead'
 import SectionHead from '../components/SectionHead'
 import JoinCta from '../components/JoinCta'
 import Sponsors from '../components/Sponsors'
-import { club, hitos, valores } from '../data/contenido'
+import Pendiente from '../components/Pendiente'
+import { club, hitos, palmares, valores } from '../data/contenido'
 
 export default function QuienesSomos() {
   return (
@@ -50,6 +51,31 @@ export default function QuienesSomos() {
           </div>
         </section>
       </div>
+
+      <section className="sec">
+        <SectionHead title="Palmarés" />
+        {palmares.length > 0 ? (
+          <div className="palmares">
+            {palmares.map((p) => (
+              <div className="pal" key={`${p.anio}-${p.titulo}-${p.categoria}`}>
+                <b>{p.anio}</b>
+                <div>
+                  <h3>{p.titulo}</h3>
+                  <p>
+                    {p.categoria}
+                    {p.puesto && <span> · {p.puesto}</span>}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <Pendiente titulo="El palmarés todavía no está publicado">
+            Estamos recopilando los campeonatos de España y los resultados a nivel nacional del club, con su
+            categoría y su año, para contarlos como se merecen.
+          </Pendiente>
+        )}
+      </section>
 
       <section className="sec">
         <SectionHead title="Nuestros valores" />

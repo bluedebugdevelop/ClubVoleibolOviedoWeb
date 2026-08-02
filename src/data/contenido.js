@@ -199,6 +199,44 @@ export const equipos = {
       text: 'La Primera Nacional Femenina busca jugadoras durante todo septiembre. Ven un día a entrenar y lo hablamos.',
     },
   },
+
+  // El segundo equipo sénior masculino. Existía pero no estaba en la web: solo
+  // salía en el desplegable del formulario de inscripción (reunión con Vitor,
+  // 30-07-2026). NO es el de Superliga 2: juega la Segunda División asturiana y
+  // es la continuación natural de la cantera para quien sale del Júnior.
+  //
+  // PENDIENTE: plantilla, cuerpo técnico y una foto propia del equipo. Mientras
+  // `squad` y `staff` estén vacíos, la ficha enseña el aviso de "pendiente" en
+  // lugar de esas secciones. La cabecera usa una foto genérica de juego.
+  'senior-masculino': {
+    slug: 'senior-masculino',
+    nombre: 'Sénior Masculino',
+    crumb: 'Sénior Masculino',
+    kicker: 'Segunda División · Liga Asturiana · Temporada 2026/27',
+    sub: 'El segundo equipo sénior del club: donde siguen jugando los que salen del júnior y quien se incorpora ya de mayor. Compite en la Segunda División asturiana.',
+    headerImg: '/media/plancha.jpg',
+    headerFoco: 'center 40%',
+    stats: [],
+    fixtures: [],
+    staff: [],
+    datos: [
+      { label: 'Competición', valor: 'Segunda División' },
+      { label: 'Grupo', valor: 'A' },
+      { label: 'Sede', valor: 'Pol. J. M. Fuente' },
+      { label: 'Federación', valor: 'FVBPA' },
+    ],
+    squad: [],
+    gallery: [
+      { src: '/media/bloqueo.jpg', alt: 'Bloqueo en un partido del club' },
+      { src: '/media/defensa.jpg', alt: 'Defensa en un partido del club' },
+      { src: '/media/pista-azul.jpg', alt: 'Partido en el pabellón' },
+      { src: '/media/celebracion-manos.jpg', alt: 'Celebración de un punto' },
+    ],
+    join: {
+      title: '¿Quieres jugar con nosotros?',
+      text: 'El sénior masculino admite jugadores durante toda la temporada. Escríbenos y te decimos cuándo entrena.',
+    },
+  },
 }
 
 // ---------------------------------------------------------------------------
@@ -225,6 +263,32 @@ export const cifrasCantera = [
   { n: '35', label: 'Años de club' },
 ]
 
+// ---------------------------------------------------------------------------
+// Cantera: dónde, cuándo y cuánto.
+//
+// Es lo que de verdad pregunta una familia antes de apuntar a un hijo, y hasta
+// ahora la página no lo contaba (reunión con Vitor, 30-07-2026).
+//
+// PENDIENTE: horarios por categoría y cuotas. Mientras estén vacíos, la página
+// enseña el aviso de "pendiente" en su sitio en vez de dejar el hueco o poner
+// datos inventados. Formato de cada uno:
+//   canteraHorarios: { categoria: 'Alevín', dias: 'Martes y jueves',
+//                      hora: '17:30 – 19:00', sede: 'Pol. José Manuel Fuente' }
+//   canteraCuotas:   { concepto: 'Cuota anual', importe: '250 €',
+//                      detalle: 'Incluye ficha federativa y equipación' }
+// ---------------------------------------------------------------------------
+export const canteraHorarios = []
+export const canteraCuotas = []
+
+// Lo que sí sabemos seguro y no depende de nadie
+export const canteraSedes = [
+  {
+    nombre: 'Polideportivo José Manuel Fuente',
+    direccion: 'Colloto, Oviedo',
+    detalle: 'Pista homologada para competición nacional. Aquí entrenan y compiten los once equipos del club.',
+  },
+]
+
 export const canteraFacts = [
   { label: 'Dónde', valor: 'Pol. José Manuel Fuente, Colloto, Oviedo' },
   { label: 'Cuándo', valor: 'Tardes, entre semana' },
@@ -234,6 +298,19 @@ export const canteraFacts = [
   { label: 'Inscripción', valor: 'Abierta todo el año' },
   { label: 'Cuota', valor: 'Por confirmar' },
 ]
+
+// ---------------------------------------------------------------------------
+// Formulario de inscripción.
+//
+// PENDIENTE (reunión con Vitor, 30-07-2026): las inscripciones pasan a hacerse
+// con el Google Form del club. En cuanto se pegue aquí su URL, la página deja
+// de enseñar el formulario propio y manda al de Google; hasta entonces sigue
+// funcionando el de siempre, que envía el correo con `api/inscripcion.js`.
+//
+// Cuando se active, `api/inscripcion.js` y su clave de Resend dejan de hacer
+// falta para inscripciones (el contacto sí las sigue usando).
+// ---------------------------------------------------------------------------
+export const formularioInscripcionUrl = null
 
 // Opciones del desplegable del formulario de inscripción. Son los nombres
 // reales de los equipos: no se calcula la categoría por año de nacimiento
@@ -507,6 +584,17 @@ export const hitos = [
   { anio: '2026', texto: 'El equipo masculino asciende a Superliga 2. El club supera los 240 canteranos y los 6.700 seguidores en redes sociales.' },
 ]
 
+// ---------------------------------------------------------------------------
+// Palmarés — campeonatos de España y resultados a nivel nacional.
+//
+// PENDIENTE (reunión con Vitor, 30-07-2026): falta la lista real. Hasta que
+// llegue, la sección de Quiénes somos enseña el aviso de "pendiente" en vez de
+// inventarse títulos. Para publicarlo basta con rellenar este array:
+//   { anio: '2018', titulo: 'Campeonato de España', categoria: 'Cadete femenino',
+//     puesto: 'Subcampeonas' }
+// ---------------------------------------------------------------------------
+export const palmares = []
+
 export const valores = [
   { titulo: 'Formación', texto: 'El deporte como escuela: disciplina, esfuerzo y trabajo en equipo desde alevín.' },
   { titulo: 'Cantera propia', texto: 'La mayoría de jugadores del primer equipo se han formado en el club.' },
@@ -652,6 +740,15 @@ export const patrocinadoresActuales = [
 // `img` es la foto de portada (packshot de estudio) y `galeria` las de ambiente
 // de la ficha `/tienda/:slug`. Las tres de galería salen del propio packshot,
 // así que el producto es el mismo en todas.
+// ---------------------------------------------------------------------------
+// La tienda está CERRADA hasta que estén cerrados productos y precios (reunión
+// con Vitor, 30-07-2026). No se ha borrado nada: los productos, las fotos y la
+// ficha de cada uno siguen aquí abajo y se reactivan poniendo esto en `true`.
+// Mientras tanto /tienda enseña el cartel de «Próximamente» y las fichas
+// sueltas (/tienda/lo-que-sea) devuelven a /tienda.
+// ---------------------------------------------------------------------------
+export const tiendaAbierta = false
+
 export const productos = [
   {
     id: 'prod-1',

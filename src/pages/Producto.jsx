@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, Navigate, useParams } from 'react-router-dom'
 import PageHead from '../components/PageHead'
 import NoEncontrado from './NoEncontrado'
-import { club, productos } from '../data/contenido'
+import { club, productos, tiendaAbierta } from '../data/contenido'
 
 /* Ficha de un producto: galería a la izquierda, descripción y precio a la
    derecha. No hay carrito ni pasarela de pago (decisión de Diego): el cierre
@@ -16,6 +16,10 @@ export default function Producto() {
   // los pies al entrar.
   const fotos = producto ? [producto.img, ...(producto.galeria ?? [])] : []
   const [activa, setActiva] = useState(0)
+
+  // Con la tienda cerrada las fichas sueltas no deben quedar accesibles por URL:
+  // se devuelve a /tienda, que es donde está el cartel de «Próximamente».
+  if (!tiendaAbierta) return <Navigate to="/tienda" replace />
 
   if (!producto) return <NoEncontrado />
 

@@ -2,7 +2,12 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import PageHead from '../components/PageHead'
 import SectionHead from '../components/SectionHead'
-import { club, opcionesInscripcion, posicionesInscripcion } from '../data/contenido'
+import {
+  club,
+  formularioInscripcionUrl,
+  opcionesInscripcion,
+  posicionesInscripcion,
+} from '../data/contenido'
 
 const VACIO = {
   jugador: '',
@@ -86,11 +91,15 @@ export default function Inscripciones() {
             <p>Te decimos qué día y a qué hora entrena su grupo, y viene a conocer al equipo. Solo hace falta
               ropa cómoda y ganas de moverse.</p>
           </div>
+          {/* Antes ponía «si engancha, se completa la inscripción». Se quitó el
+              30-07-2026: daba a entender que hay un periodo de prueba y que uno
+              se queda solo si le gusta, y eso no es así. Se habla luego, caso
+              por caso, con la familia. */}
           <div className="step">
             <div className="num">3</div>
             <h3>Formalización</h3>
-            <p>Si engancha, se completa la inscripción y la ficha federativa, y ya forma parte del club para toda
-              la temporada.</p>
+            <p>Se completa la inscripción y la ficha federativa, y ya forma parte del club para toda la
+              temporada.</p>
           </div>
         </div>
       </section>
@@ -112,6 +121,24 @@ export default function Inscripciones() {
       <section className="sec" id="formulario">
         <SectionHead title="Formulario de inscripción" />
 
+        {/* Las inscripciones pasan al Google Form del club (reunión con Vitor,
+            30-07-2026). En cuanto se pegue su URL en `formularioInscripcionUrl`
+            este bloque sustituye al formulario propio, sin tocar nada más. */}
+        {formularioInscripcionUrl ? (
+          <div className="form-externo">
+            <p>
+              La inscripción se hace en el formulario del club. Se abre en una pestaña nueva y, al enviarlo, nos
+              llega directamente.
+            </p>
+            <a className="btn solid" href={formularioInscripcionUrl} target="_blank" rel="noreferrer">
+              Abrir el formulario de inscripción →
+            </a>
+            <p className="letra-pequena">
+              ¿Prefieres hacerlo por teléfono? Llama al{' '}
+              <a href={`tel:+34${club.telefono.replace(/\s/g, '')}`}>{club.telefono}</a> y te apuntamos igual.
+            </p>
+          </div>
+        ) : (
         <form className="form inscripcion" onSubmit={envia}>
           {estado === 'ok' && (
             <div className="notice bien">
@@ -214,6 +241,7 @@ export default function Inscripciones() {
             inscripción.
           </p>
         </form>
+        )}
       </section>
     </>
   )
