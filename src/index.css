@@ -129,7 +129,13 @@ h1{font-family:"Barlow Condensed",sans-serif;font-weight:800;text-transform:uppe
 h1 em{font-style:normal;display:block;color:var(--blue-light)}
 .lede{margin:26px 0 0;max-width:46ch;color:#dbe8f6;font-size:17px;line-height:1.6}
 .btns{display:flex;gap:12px;margin-top:34px;flex-wrap:wrap}
-.btn{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:15px;letter-spacing:.14em;
+/* inline-block y no inline: el botón es un <a>, y en inline el relleno vertical
+   no empuja la línea —se derrama sobre el texto de al lado— ni valen los
+   márgenes de arriba. Dentro de un `.btns` flex no se notaba, porque el flex ya
+   lo convierte en bloque; suelto en una columna de texto se montaba encima del
+   párrafo siguiente (pasaba en la ficha de producto y en la tienda cerrada). */
+.btn{display:inline-block;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:15px;
+  letter-spacing:.14em;
   text-transform:uppercase;padding:16px 30px;text-decoration:none;background:#fff;color:var(--ink);transition:.15s}
 .btn:hover{background:#dbeeff}
 .btn.ghost{background:transparent;border:1.5px solid rgba(255,255,255,.45);color:#fff}
@@ -780,9 +786,8 @@ footer .legal a:hover{color:#fff}
 .ficha-prod-texto .precio-grande{font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:40px;
   line-height:1;color:var(--ink);margin-bottom:18px}
 .ficha-prod-texto p{color:var(--dim);line-height:1.65;margin:0 0 14px;max-width:56ch}
-/* `.btn` es un <a> sin display propio: fuera de un `.btns` flex no ocupa alto y
-   se montaba encima de la lista de detalles */
-.ficha-prod-texto .btn{display:inline-block;margin-top:22px}
+/* el display ya lo pone `.btn`; aquí solo hace falta separarlo del texto */
+.ficha-prod-texto .btn{margin-top:22px}
 .nota-pago{font-size:13.5px;margin:18px 0 0;color:var(--dim);line-height:1.6;max-width:52ch}
 .detalles{list-style:none;padding:0;margin:22px 0 4px;border-top:1px solid var(--line)}
 .detalles li{border-bottom:1px solid var(--line);padding:11px 0;font-size:14.5px;color:var(--dim);
