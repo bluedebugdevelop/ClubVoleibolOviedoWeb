@@ -17,6 +17,7 @@ import Tienda from './pages/Tienda'
 import Producto from './pages/Producto'
 import Inscripciones from './pages/Inscripciones'
 import Contacto from './pages/Contacto'
+import Legal from './pages/Legal'
 import NoEncontrado from './pages/NoEncontrado'
 
 function ScrollToTop() {
@@ -48,6 +49,10 @@ function App() {
         <Route path="/tienda/:slug" element={<Producto />} />
         <Route path="/inscripciones" element={<Inscripciones />} />
         <Route path="/contacto" element={<Contacto />} />
+        {/* los tres documentos legales comparten componente; ver Legal.jsx */}
+        <Route path="/aviso-legal" element={<Legal doc="aviso-legal" />} />
+        <Route path="/privacidad" element={<Legal doc="privacidad" />} />
+        <Route path="/cookies" element={<Legal doc="cookies" />} />
         <Route path="*" element={<NoEncontrado />} />
       </Routes>
       <Footer />

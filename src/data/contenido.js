@@ -8,7 +8,7 @@ export const club = {
   nombre: 'Club Voleibol Oviedo',
   nombreCorto: 'CV Oviedo',
   fundacion: 1991,
-  email: 'cvopatrocinadores@gmail.com',
+  email: 'info@clubvoleiboloviedo.com',
   telefono: '669 900 085',
   sede: 'Polideportivo José Manuel Fuente, Colloto, Oviedo',
   sedeCorta: 'Pol. José Manuel Fuente',

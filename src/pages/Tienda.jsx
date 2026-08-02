@@ -28,14 +28,7 @@ export default function Tienda() {
           <div className="proximamente">
             <span className="etq">Próximamente</span>
             <h2>La tienda abre pronto</h2>
-            <p>
-              Estamos cerrando los productos y los precios de la temporada 26/27: sudaderas, camisetas, gorras y
-              accesorios con los colores del club. En cuanto esté todo listo, se abre aquí mismo.
-            </p>
-            <p>
-              Mientras tanto, si quieres algo en concreto escríbenos a{' '}
-              <a href={`mailto:${club.email}`}>{club.email}</a> y te decimos cómo conseguirlo.
-            </p>
+            <p>Estamos trabajando en ella. Si necesitas algo, escríbenos.</p>
             <Link className="btn solid" to="/contacto">Contactar con el club →</Link>
           </div>
         ) : (

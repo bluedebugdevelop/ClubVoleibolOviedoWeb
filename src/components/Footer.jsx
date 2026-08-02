@@ -41,10 +41,9 @@ export default function Footer() {
       <div className="legal">
         <div>
           <span>© 2026 {club.nombre}</span>
-          {/* PENDIENTE: páginas legales (aviso legal, privacidad, cookies) */}
-          <a href="#">Aviso legal</a>
-          <a href="#">Privacidad</a>
-          <a href="#">Cookies</a>
+          <Link to="/aviso-legal">Aviso legal</Link>
+          <Link to="/privacidad">Privacidad</Link>
+          <Link to="/cookies">Cookies</Link>
         </div>
       </div>
     </footer>

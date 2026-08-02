@@ -16,7 +16,7 @@
 // una solicitud en silencio.
 // ==========================================================================
 
-const CORREO_CLUB = 'cvopatrocinadores@gmail.com'
+const CORREO_CLUB = 'info@clubvoleiboloviedo.com'
 
 /* Solo lo imprescindible para poder llamar a la familia y asignar grupo. Ni DNI
    ni datos médicos: eso se hace en persona al formalizar la ficha federativa. */

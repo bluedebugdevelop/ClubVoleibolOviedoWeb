@@ -16,7 +16,7 @@
 // el teléfono y el correo del club. Nunca se pierde una solicitud en silencio.
 // ==========================================================================
 
-const CORREO_CLUB = 'cvopatrocinadores@gmail.com'
+const CORREO_CLUB = 'info@clubvoleiboloviedo.com'
 
 const CAMPOS = ['empresa', 'contacto', 'telefono', 'email', 'web', 'mensaje']
 const OBLIGATORIOS = ['empresa', 'contacto', 'email']
