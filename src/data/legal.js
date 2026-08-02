@@ -10,19 +10,23 @@
 export const legalActualizado = '2 de agosto de 2026'
 
 // ---------------------------------------------------------------------------
-// Identificación del titular.
+// Identificación del titular (art. 10 LSSI-CE).
 //
-// PENDIENTE: el CIF, el domicilio social y el número de registro del club en el
-// Registro de Entidades Deportivas del Principado de Asturias. La Ley de
-// Servicios de la Sociedad de la Información (art. 10 LSSI-CE) obliga a que
-// estos datos figuren en el aviso legal, así que mientras falten la página los
-// enseña como pendientes en vez de callarlos.
+// Sacado de la tarjeta de identificación fiscal de la AEAT y del certificado de
+// inscripción del Principado (02-08-2026). La denominación es la registral
+// completa; en el resto de la web el club se llama "Club Voleibol Oviedo" a
+// secas, que es su nombre de uso.
+//
+// A propósito NO se publica el NIF del presidente, aunque venga en el
+// certificado del registro: es un dato personal de un tercero, no lo exige el
+// aviso legal y no tiene por qué estar en una web abierta.
 // ---------------------------------------------------------------------------
 export const titular = {
-  denominacion: 'Club Voleibol Oviedo',
-  cif: null,
-  domicilio: null,
-  registro: null,
+  denominacion: 'Club Deportivo Básico «Club Voleibol Oviedo»',
+  cif: 'G33341678',
+  domicilio: 'Calle Alfredo Blanco, 12, planta baja · 33011 Oviedo (Asturias)',
+  registro:
+    'Inscrito en la Sección 2ª del Registro de Entidades Deportivas del Principado de Asturias con el número 381, conforme al Decreto 24/98, de 13 de junio.',
 }
 
 /**
