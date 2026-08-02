@@ -580,35 +580,9 @@ footer .legal a:hover{color:#fff}
 }
 
 /* -------- cantera (Cantera.jsx) -------- */
-.intro-cols{display:grid;grid-template-columns:1.2fr 1fr;gap:44px;align-items:start;margin-bottom:12px}
-.intro-cols p{margin:0 0 14px;font-size:16.5px;line-height:1.7;color:#3d4b5a}
-.facts{border:1px solid var(--line)}
-.facts .row{display:flex;justify-content:space-between;gap:16px;padding:14px 20px;border-bottom:1px solid var(--line);font-size:14.5px}
-.facts .row:last-child{border-bottom:0}
-.facts .row span{color:var(--dim)}
-.facts .row b{font-weight:600;text-align:right}
-/* segunda línea de una fila: qué incluye una cuota, por ejemplo */
-.facts .row span i.detalle{display:block;font-style:normal;font-size:12.5px;margin-top:3px;opacity:.8}
-
-/* -------- cantera (Cantera.jsx) -------- */
-.sede{border:1px solid var(--line);border-left:4px solid var(--blue);padding:20px 24px;background:#fff}
-.sede h3{margin:0;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:22px;
-  text-transform:uppercase;letter-spacing:.02em}
-.sede .dir{margin:4px 0 12px;font-size:14px;color:var(--dim)}
-.sede p{margin:0;font-size:15.5px;line-height:1.65;color:#3d4b5a}
-.sede .mas{display:inline-block;margin-top:14px;font-family:"Barlow Condensed",sans-serif;font-weight:700;
-  font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);text-decoration:none}
-.sede .mas:hover{text-decoration:underline}
-
-.como-va{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
-.como-va h3{margin:0 0 8px;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:19px;
-  text-transform:uppercase;letter-spacing:.03em}
-.como-va p{margin:0;font-size:15.5px;line-height:1.65;color:#3d4b5a}
-
-/* la tabla de horarios puede no caber en el móvil: se desplaza ella sola en vez
-   de romper el ancho de la página */
-.tabla-horarios{overflow-x:auto}
-.tabla-horarios .table{min-width:520px}
+/* Aquí vivían `.intro-cols`, `.facts`, `.sede`, `.como-va` y `.tabla-horarios`,
+   que solo usaba la página de Cantera. Se retiraron el 02-08-2026 al dejar esa
+   página únicamente con los equipos. Están en el historial de git. */
 
 /* -------- palmarés (QuienesSomos.jsx) -------- */
 .palmares{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
@@ -926,7 +900,6 @@ footer .legal a:hover{color:#fff}
    corrige lo que a 390-600px no cabía o quedaba desproporcionado.
    ========================================================================== */
 @media(max-width:700px){
-  .facts .row{padding-left:16px;padding-right:16px;font-size:13.5px}
   .fix{padding:13px 14px;gap:12px}
   .fix .d b{font-size:19px}
   .fix .t{font-size:17px}

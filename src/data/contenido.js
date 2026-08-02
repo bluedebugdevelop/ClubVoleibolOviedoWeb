@@ -266,12 +266,13 @@ export const cifrasCantera = [
 // ---------------------------------------------------------------------------
 // Cantera: dónde, cuándo y cuánto.
 //
-// Es lo que de verdad pregunta una familia antes de apuntar a un hijo, y hasta
-// ahora la página no lo contaba (reunión con Vitor, 30-07-2026).
+// SIN USAR desde el 02-08-2026: la página de Cantera se dejó únicamente con los
+// equipos, así que ni estas listas ni `canteraSedes`, `canteraFacts` o
+// `cifrasCantera` se pintan en ningún sitio. Se conservan porque son la forma
+// que tendrían los datos el día que la sección vuelva; si se decide que no
+// vuelve, se pueden borrar sin tocar nada más.
 //
-// PENDIENTE: horarios por categoría y cuotas. Mientras estén vacíos, la página
-// enseña el aviso de "pendiente" en su sitio en vez de dejar el hueco o poner
-// datos inventados. Formato de cada uno:
+// Formato de cada uno:
 //   canteraHorarios: { categoria: 'Alevín', dias: 'Martes y jueves',
 //                      hora: '17:30 – 19:00', sede: 'Pol. José Manuel Fuente' }
 //   canteraCuotas:   { concepto: 'Cuota anual', importe: '250 €',
