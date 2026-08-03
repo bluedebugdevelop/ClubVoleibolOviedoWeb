@@ -58,7 +58,7 @@ export const equiposDestacados = [
     categoria: 'Base y formación',
     img: '/media/equipos/cadete-femenino-a.jpg',
     alt: 'Equipos de cantera del CV Oviedo',
-    resumen: '10 equipos · 240 deportistas',
+    resumen: '11 equipos · 240 deportistas',
     href: '/cantera',
   },
 ]
@@ -224,7 +224,10 @@ export const equiposCantera = [
   { nombre: 'Infantil Masculino', categoria: 'Sub-13', img: '/media/equipos/infantil-masculino.jpg', alt: 'Equipo infantil masculino del CV Oviedo', liga: 'Liga Asturiana' },
   { nombre: 'Infantil Femenino A', categoria: 'Sub-13', img: '/media/equipos/infantil-femenino-a.jpg', alt: 'Equipo infantil femenino A del CV Oviedo', liga: 'Liga Asturiana' },
   { nombre: 'Infantil Femenino B', categoria: 'Sub-13', img: '/media/equipos/infantil-femenino-b.jpg', alt: 'Equipo infantil femenino B del CV Oviedo', liga: 'Liga Asturiana' },
-  { nombre: 'Alevín Federado', categoria: 'Sub-11', img: '/media/equipos/alevin.jpg', alt: 'Equipo alevín federado del CV Oviedo', liga: 'Liga Asturiana' },
+  // Dos equipos alevines, con la misma A/B que cadete e infantil. El segundo
+  // todavía no tiene foto propia: se reutiliza la del alevín hasta que la haya.
+  { nombre: 'Alevín Federado A', categoria: 'Sub-11', img: '/media/equipos/alevin.jpg', alt: 'Equipo alevín federado A del CV Oviedo', liga: 'Liga Asturiana' },
+  { nombre: 'Alevín Federado B', categoria: 'Sub-11', img: '/media/equipos/alevin.jpg', alt: 'Equipo alevín federado B del CV Oviedo', liga: 'Liga Asturiana' },
 ]
 
 // DATOS DE MUESTRA — cifras de la sección Cantera
