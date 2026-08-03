@@ -27,7 +27,7 @@ export const club = {
 export const cifrasClub = [
   { n: '1991', label: 'Año de fundación' },
   { n: '240', label: 'Canteranos' },
-  { n: '11', label: 'Equipos federados' },
+  { n: '13', label: 'Equipos federados' },
   { n: '+6.700', label: 'Seguidores en redes' },
 ]
 
@@ -262,7 +262,7 @@ export const canteraSedes = [
   {
     nombre: 'Polideportivo José Manuel Fuente',
     direccion: 'Colloto, Oviedo',
-    detalle: 'Pista homologada para competición nacional. Aquí entrenan y compiten los once equipos del club.',
+    detalle: 'Pista homologada para competición nacional. Aquí entrenan y compiten los trece equipos del club.',
   },
 ]
 
@@ -577,7 +577,7 @@ export const palmares = []
 export const valores = [
   { titulo: 'Formación', texto: 'El deporte como escuela: disciplina, esfuerzo y trabajo en equipo desde alevín.' },
   { titulo: 'Cantera propia', texto: 'La mayoría de jugadores del primer equipo se han formado en el club.' },
-  { titulo: 'Un solo club', texto: 'Mismo pabellón y misma camiseta para los 11 equipos, del alevín al sénior.' },
+  { titulo: 'Un solo club', texto: 'Mismo pabellón y misma camiseta para los 13 equipos, del alevín al sénior.' },
   { titulo: 'Comunidad', texto: 'Más de 240 familias y un proyecto que crece cada temporada.' },
 ]
 
@@ -592,7 +592,7 @@ export const valores = [
 export const alcanceClub = [
   { n: '+6.700', label: 'Seguidores en redes' },
   { n: '240', label: 'Familias en el club' },
-  { n: '11', label: 'Equipos federados' },
+  { n: '13', label: 'Equipos federados' },
   { n: '20+', label: 'Partidos retransmitidos al año' },
 ]
 
@@ -636,7 +636,7 @@ export const nivelesPatrocinio = [
     nombre: 'Oro',
     precio: 'Precio por confirmar',
     incluye: [
-      'Logo en la camiseta de partido de los 11 equipos',
+      'Logo en la camiseta de partido de los 13 equipos',
       'Banner propio en el pabellón José Manuel Fuente',
       'Mención en todas las retransmisiones de YouTube',
       'Publicación mensual dedicada en redes sociales',

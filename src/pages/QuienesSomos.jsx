@@ -13,7 +13,7 @@ export default function QuienesSomos() {
         crumbs={<><Link to="/">Inicio</Link> · Quiénes somos</>}
         kicker={`Desde ${club.fundacion}`}
         title="Quiénes somos"
-        sub="35 años de voleibol en Oviedo: de un único equipo sénior a un club con 11 equipos federados y 240 canteranos."
+        sub="35 años de voleibol en Oviedo: de un único equipo sénior a un club con 13 equipos federados y 240 canteranos."
         bg="/media/celebracion-punto.jpg"
         foco="center 55%"
       />
@@ -23,7 +23,7 @@ export default function QuienesSomos() {
         <div className="historia">
           <p>
             El Club Voleibol Oviedo nació en {club.fundacion} con un solo equipo sénior masculino. Desde entonces
-            no ha dejado de crecer: hoy es un club con 11 equipos federados, desde alevín hasta las dos plantillas
+            no ha dejado de crecer: hoy es un club con 13 equipos federados, desde alevín hasta las dos plantillas
             que compiten en categoría nacional, Superliga 2 Masculino y Primera Nacional Femenina.
           </p>
           <p>
@@ -99,7 +99,7 @@ export default function QuienesSomos() {
                 homologada para competición nacional, graderío y vestuarios propios para los equipos visitantes.
               </p>
               <p>
-                Los 11 equipos del club comparten la misma instalación, con horarios repartidos entre tarde y
+                Los 13 equipos del club comparten la misma instalación, con horarios repartidos entre tarde y
                 noche de lunes a viernes, y competición la mayoría de los fines de semana.
               </p>
             </div>

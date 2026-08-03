@@ -14,7 +14,7 @@ export default function Noticias() {
         crumbs={<><Link to="/">Inicio</Link> · Noticias</>}
         kicker="Actualidad del club"
         title="Noticias"
-        sub="Lo último de los 11 equipos del CV Oviedo: resultados, fichajes, pretemporada y vida de club."
+        sub="Lo último de los 13 equipos del CV Oviedo: resultados, fichajes, pretemporada y vida de club."
         bg="/media/hero-remate.jpg"
         foco="center 38%"
       />
