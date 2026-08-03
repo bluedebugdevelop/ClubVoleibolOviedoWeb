@@ -9,7 +9,10 @@ export const club = {
   nombreCorto: 'CV Oviedo',
   fundacion: 1991,
   email: 'info@clubvoleiboloviedo.com',
-  telefono: '669 900 085',
+  // El teléfono del club NO se publica en la web (decisión del 03-08-2026): se
+  // quitó del pie, de contacto, de los avisos de los formularios y del aviso
+  // legal. Ojo: los campos "teléfono" de los formularios son otra cosa, ahí lo
+  // escribe quien se apunta y siguen en su sitio.
   sede: 'Polideportivo José Manuel Fuente, Colloto, Oviedo',
   sedeCorta: 'Pol. José Manuel Fuente',
   localidad: 'Colloto, Oviedo',
@@ -25,7 +28,7 @@ export const cifrasClub = [
   { n: '1991', label: 'Año de fundación' },
   { n: '240', label: 'Canteranos' },
   { n: '11', label: 'Equipos federados' },
-  { n: '6.717', label: 'Seguidores en redes' },
+  { n: '+6.700', label: 'Seguidores en redes' },
 ]
 
 // ---------------------------------------------------------------------------
@@ -55,7 +58,7 @@ export const equiposDestacados = [
     categoria: 'Base y formación',
     img: '/media/equipos/cadete-femenino-a.jpg',
     alt: 'Equipos de cantera del CV Oviedo',
-    resumen: '9 equipos · 240 deportistas',
+    resumen: '10 equipos · 240 deportistas',
     href: '/cantera',
   },
 ]
@@ -200,49 +203,19 @@ export const equipos = {
     },
   },
 
-  // El segundo equipo sénior masculino. Existía pero no estaba en la web: solo
-  // salía en el desplegable del formulario de inscripción (reunión con Vitor,
-  // 30-07-2026). NO es el de Superliga 2: juega la Segunda División asturiana y
-  // es la continuación natural de la cantera para quien sale del Júnior.
-  //
-  // PENDIENTE: plantilla, cuerpo técnico y una foto propia del equipo. Mientras
-  // `squad` y `staff` estén vacíos, la ficha enseña el aviso de "pendiente" en
-  // lugar de esas secciones. La cabecera usa una foto genérica de juego.
-  'senior-masculino': {
-    slug: 'senior-masculino',
-    nombre: 'Sénior Masculino',
-    crumb: 'Sénior Masculino',
-    kicker: 'Segunda División · Liga Asturiana · Temporada 2026/27',
-    sub: 'El segundo equipo sénior del club: donde siguen jugando los que salen del júnior y quien se incorpora ya de mayor. Compite en la Segunda División asturiana.',
-    headerImg: '/media/plancha.jpg',
-    headerFoco: 'center 40%',
-    stats: [],
-    fixtures: [],
-    staff: [],
-    datos: [
-      { label: 'Competición', valor: 'Segunda División' },
-      { label: 'Grupo', valor: 'A' },
-      { label: 'Sede', valor: 'Pol. J. M. Fuente' },
-      { label: 'Federación', valor: 'FVBPA' },
-    ],
-    squad: [],
-    gallery: [
-      { src: '/media/bloqueo.jpg', alt: 'Bloqueo en un partido del club' },
-      { src: '/media/defensa.jpg', alt: 'Defensa en un partido del club' },
-      { src: '/media/pista-azul.jpg', alt: 'Partido en el pabellón' },
-      { src: '/media/celebracion-manos.jpg', alt: 'Celebración de un punto' },
-    ],
-    join: {
-      title: '¿Quieres jugar con nosotros?',
-      text: 'El sénior masculino admite jugadores durante toda la temporada. Escríbenos y te decimos cuándo entrena.',
-    },
-  },
+  // El segundo equipo sénior masculino NO tiene ficha propia aquí: se decidió
+  // el 03-08-2026 que su sitio es la página de Cantera, con el resto de equipos
+  // de base, porque es la continuación natural para quien sale del júnior. Está
+  // el primero de `equiposCantera`, justo aquí abajo.
 }
 
 // ---------------------------------------------------------------------------
-// Cantera — los nueve equipos de base (Cantera.jsx) — DATOS DE MUESTRA
+// Cantera — los diez equipos de base (Cantera.jsx) — DATOS DE MUESTRA
 // ---------------------------------------------------------------------------
 export const equiposCantera = [
+  // No es el de Superliga 2: es el segundo equipo sénior, donde siguen jugando
+  // los que salen del júnior. Sin foto propia todavía, va una de juego.
+  { nombre: 'Sénior Masculino', categoria: 'Sénior', img: '/media/plancha.jpg', alt: 'Segundo equipo sénior masculino del CV Oviedo', liga: 'Segunda División · FVBPA' },
   { nombre: 'Júnior Masculino', categoria: 'Sub-19', img: '/media/equipos/junior-masculino.jpg', alt: 'Equipo júnior masculino del CV Oviedo', liga: 'Liga Asturiana' },
   { nombre: 'Juvenil Femenino', categoria: 'Sub-17', img: '/media/equipos/juvenil-femenino.jpg', alt: 'Equipo juvenil femenino del CV Oviedo', liga: 'Liga Asturiana' },
   { nombre: 'Cadete Masculino', categoria: 'Sub-15', img: '/media/equipos/cadete-masculino.jpg', alt: 'Equipo cadete masculino del CV Oviedo', liga: 'Liga Asturiana' },
@@ -610,11 +583,11 @@ export const valores = [
 // ---------------------------------------------------------------------------
 // `alcanceClub` lo usa /patrocinar (la página que SÍ busca patrocinadores).
 // /patrocinadores solo enseña las marcas que ya están.
-// OJO: "6.717 seguidores en redes" va siempre sin desglosar por plataforma —
+// OJO: los seguidores en redes van siempre como "+6.700", sin la cifra exacta
 // el total incluye los de X, que no aparece enlazada en la web.
 // PENDIENTE DE CONFIRMAR con el club: la cifra de partidos retransmitidos.
 export const alcanceClub = [
-  { n: '6.717', label: 'Seguidores en redes' },
+  { n: '+6.700', label: 'Seguidores en redes' },
   { n: '240', label: 'Familias en el club' },
   { n: '11', label: 'Equipos federados' },
   { n: '20+', label: 'Partidos retransmitidos al año' },

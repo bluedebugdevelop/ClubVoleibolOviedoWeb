@@ -11,7 +11,6 @@ export default function Footer() {
           <b>Equipos</b>
           <Link to="/equipos/superliga-2-masculino">Superliga 2 Masculino</Link>
           <Link to="/equipos/primera-nacional-femenina">Primera Nacional Femenina</Link>
-          <Link to="/equipos/senior-masculino">Sénior Masculino</Link>
           <Link to="/cantera">Cantera</Link>
           <Link to="/cantera">Todos los equipos</Link>
         </div>
@@ -27,7 +26,7 @@ export default function Footer() {
         <div className="col">
           <b>Contacto</b>
           <p>{club.email}</p>
-          <p>{club.telefono}</p>
+          {/* el teléfono no se publica en la web (03-08-2026) */}
           <p>{club.sedeCorta}<br />{club.localidad}</p>
         </div>
         <div className="col">
@@ -44,6 +43,9 @@ export default function Footer() {
           <Link to="/aviso-legal">Aviso legal</Link>
           <Link to="/privacidad">Privacidad</Link>
           <Link to="/cookies">Cookies</Link>
+          {/* PENDIENTE de confirmar: si el crédito lleva enlace a la web de
+              BlueDebug, se cambia el <span> por un <a> y ya está. */}
+          <span className="credito">Web desarrollada por <b>BlueDebug</b></span>
         </div>
       </div>
     </footer>

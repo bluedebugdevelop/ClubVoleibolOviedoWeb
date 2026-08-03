@@ -20,13 +20,13 @@ export default function Cantera() {
         }
         kicker="Base y formación · Temporada 2026/27"
         title="Cantera"
-        sub="Nueve equipos federados, desde alevín hasta júnior. Aquí es donde empieza todo el que hoy juega en el primer equipo."
+        sub="Diez equipos federados, desde alevín hasta el segundo sénior. Aquí es donde empieza todo el que hoy juega en el primer equipo."
         bg="/media/bloqueo.jpg"
         foco="center 45%"
       />
 
       <section className="sec">
-        <SectionHead title="Los nueve equipos" link="/calendario" linkText="Calendario y resultados →" />
+        <SectionHead title="Los diez equipos" link="/calendario" linkText="Calendario y resultados →" />
         <div className="teams all">
           {equiposCantera.map((eq) => (
             <div className="team" key={eq.nombre}>

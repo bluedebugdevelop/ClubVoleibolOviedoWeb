@@ -23,13 +23,14 @@ export default function Tienda() {
         {/* La tienda está cerrada hasta que estén cerrados productos y precios
             (reunión con Vitor, 30-07-2026). No se ha borrado nada: los
             productos y sus fichas siguen en contenido.js y vuelven poniendo
-            `tiendaAbierta` en true. */}
+            `tiendaAbierta` en true.
+
+            Cerrada se enseña solo el cartel: sin filtros, sin productos y sin
+            pedir que contacten con el club (03-08-2026). */}
         {!tiendaAbierta ? (
           <div className="proximamente">
             <span className="etq">Próximamente</span>
             <h2>La tienda abre pronto</h2>
-            <p>Estamos trabajando en ella. Si necesitas algo, escríbenos.</p>
-            <Link className="btn solid" to="/contacto">Contactar con el club →</Link>
           </div>
         ) : (
           <>

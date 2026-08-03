@@ -39,9 +39,9 @@ const redes = [
 const equipos = [
   { to: '/equipos/superliga-2-masculino', texto: 'Superliga 2 Masculino' },
   { to: '/equipos/primera-nacional-femenina', texto: 'Primera Nacional Femenina' },
-  // el segundo equipo sénior masculino: existía pero no estaba enlazado en
-  // ningún sitio (reunión con Vitor, 30-07-2026)
-  { to: '/equipos/senior-masculino', texto: 'Sénior Masculino' },
+  // El segundo equipo sénior masculino NO va aquí: es la continuación de la
+  // cantera para quien sale del júnior, así que vive en /cantera con el resto
+  // de equipos de base (03-08-2026).
   { to: '/cantera', texto: 'Cantera' },
 ]
 

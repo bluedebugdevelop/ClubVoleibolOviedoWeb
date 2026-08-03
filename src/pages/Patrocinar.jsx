@@ -98,10 +98,9 @@ export default function Patrocinar() {
             </ul>
           </div>
         </section>
-        <p className="note">
-          No hay paquetes cerrados ni tarifas publicadas: cada acuerdo se ajusta a lo que busca la marca y a lo que
-          el club puede dar. Escríbenos y lo vemos sin compromiso.
-        </p>
+        {/* Aquí iba «No hay paquetes cerrados ni tarifas publicadas…». Se quitó
+            el 03-08-2026: los niveles y los precios van en el dossier, no en la
+            web. El bloque cierra con la lista de contrapartidas. */}
       </div>
 
       <section className="sec">
@@ -137,8 +136,7 @@ export default function Patrocinar() {
           {estado === 'sinConectar' && (
             <div className="notice aviso">
               <b>El envío automático todavía no está activado.</b> Para no hacerte perder el tiempo: escríbenos a{' '}
-              <a href={`mailto:${club.email}`}>{club.email}</a> o llama al{' '}
-              <a href={`tel:+34${club.telefono.replace(/\s/g, '')}`}>{club.telefono}</a> y lo hablamos igual.
+              <a href={`mailto:${club.email}`}>{club.email}</a> y lo hablamos igual.
             </div>
           )}
           {estado === 'error' && (
@@ -208,7 +206,7 @@ export default function Patrocinar() {
 
           <p className="letra-pequena">
             * Campos obligatorios. También puedes escribir directamente a{' '}
-            <a href={`mailto:${club.email}`}>{club.email}</a> o llamar al {club.telefono}.
+            <a href={`mailto:${club.email}`}>{club.email}</a>.
           </p>
         </form>
       </section>

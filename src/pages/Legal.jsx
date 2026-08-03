@@ -26,8 +26,9 @@ function Identificacion() {
         {titular.domicilio && <li><span>Domicilio social</span><b>{titular.domicilio}</b></li>}
         {titular.registro && <li><span>Registro</span><b>{titular.registro}</b></li>}
         <li><span>Sede deportiva</span><b>{club.sede}</b></li>
+        {/* sin teléfono: no se publica en la web, y el correo basta como medio
+            de contacto directo a efectos del art. 10 LSSI-CE */}
         <li><span>Correo electrónico</span><b>{club.email}</b></li>
-        <li><span>Teléfono</span><b>{club.telefono}</b></li>
       </ul>
       {faltan && (
         <Pendiente titulo="Faltan los datos de registro del club" contacto={false}>
@@ -137,7 +138,7 @@ function Privacidad() {
       <p>
         El formulario de la página de <Link to="/contacto">contacto</Link> todavía <b>no está conectado</b>: al
         pulsar «enviar» no sale ningún dato del navegador ni llega nada al club. Para escribirnos de verdad, usa
-        el correo {CORREO} o el teléfono {club.telefono}.
+        el correo {CORREO}.
       </p>
 
       <h2>3. Datos de menores de edad</h2>

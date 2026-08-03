@@ -18,7 +18,7 @@ export default function Contacto() {
         crumbs={<><Link to="/">Inicio</Link> · Contacto</>}
         kicker="Estamos en Colloto"
         title="Contacto"
-        sub="Para patrocinios, prensa o cualquier duda sobre el club, puedes escribirnos, llamarnos o venir a vernos entrenar."
+        sub="Para patrocinios, prensa o cualquier duda sobre el club, puedes escribirnos o venir a vernos entrenar."
         bg="/media/pista-azul.jpg"
         foco="center 38%"
       />
@@ -37,15 +37,8 @@ export default function Contacto() {
                 <span>{club.sede}</span>
               </span>
             </div>
-            <div className="row">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.68 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.32 1.85.55 2.81.68A2 2 0 0 1 22 16.92z" />
-              </svg>
-              <span>
-                <b>Teléfono</b>
-                <span>{club.telefono}</span>
-              </span>
-            </div>
+            {/* la fila del teléfono se quitó el 03-08-2026: el número no se
+                publica en la web, el contacto es por correo */}
             <div className="row">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M4 4h16v16H4z" />
