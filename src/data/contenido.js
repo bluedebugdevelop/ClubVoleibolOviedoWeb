@@ -564,15 +564,48 @@ export const hitos = [
 ]
 
 // ---------------------------------------------------------------------------
-// Palmarés — campeonatos de España y resultados a nivel nacional.
+// Palmarés del club.
 //
-// PENDIENTE (reunión con Vitor, 30-07-2026): falta la lista real. Hasta que
-// llegue, la sección de Quiénes somos enseña el aviso de "pendiente" en vez de
-// inventarse títulos. Para publicarlo basta con rellenar este array:
-//   { anio: '2018', titulo: 'Campeonato de España', categoria: 'Cadete femenino',
-//     puesto: 'Subcampeonas' }
+// INCOMPLETO a propósito: el club va pasando los datos por tandas y falta buena
+// parte. La sección lo dice en voz alta al final, para que no parezca que esto
+// es todo lo que hay. Se van añadiendo entradas aquí y la página se ordena y se
+// pinta sola.
+//
+// OJO con «Sénior Masculino»: aquí es SIEMPRE el primer equipo (el de Superliga
+// 2), no el segundo sénior que sale en la página de Cantera con ese mismo
+// nombre. Lo aclaró Adrián el 03-08-2026.
+//
+// `ambito` decide el color de la etiqueta: 'España' para lo estatal y
+// 'Asturias' para lo autonómico. `destacado` reserva el oro para los títulos
+// de campeón de España, que son los que de verdad mandan en un palmarés.
 // ---------------------------------------------------------------------------
-export const palmares = []
+export const palmares = [
+  { temporada: '2026/27', equipo: 'Sénior Masculino', logro: 'Ascenso a Superliga 2', ambito: 'España' },
+  {
+    temporada: '2025/26',
+    equipo: 'Infantil Masculino',
+    disciplina: 'Vóley playa',
+    logro: 'Campeón del Circuito Asturiano',
+    ambito: 'Asturias',
+  },
+  {
+    temporada: '2022/23',
+    equipo: 'Juvenil Masculino',
+    logro: 'Clasificación para el Campeonato de España',
+    ambito: 'España',
+  },
+  { temporada: '2021/22', equipo: 'Sénior Masculino', logro: 'Ascenso a Primera Nacional', ambito: 'España' },
+  { temporada: '2019/20', equipo: 'Cadete Femenino', logro: 'Subcampeón de Asturias', ambito: 'Asturias' },
+  {
+    temporada: '2019',
+    equipo: 'Cadete Masculino',
+    disciplina: 'Vóley playa',
+    logro: 'Campeón de España por clubes',
+    lugar: 'Dumbría (A Coruña)',
+    ambito: 'España',
+    destacado: true,
+  },
+]
 
 export const valores = [
   { titulo: 'Formación', texto: 'El deporte como escuela: disciplina, esfuerzo y trabajo en equipo desde alevín.' },

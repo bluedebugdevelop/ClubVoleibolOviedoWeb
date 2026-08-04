@@ -55,20 +55,33 @@ export default function QuienesSomos() {
       <section className="sec">
         <SectionHead title="Palmarés" />
         {palmares.length > 0 ? (
-          <div className="palmares">
-            {palmares.map((p) => (
-              <div className="pal" key={`${p.anio}-${p.titulo}-${p.categoria}`}>
-                <b>{p.anio}</b>
-                <div>
-                  <h3>{p.titulo}</h3>
-                  <p>
-                    {p.categoria}
-                    {p.puesto && <span> · {p.puesto}</span>}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+          <>
+            <ol className="palmares">
+              {palmares.map((p) => (
+                <li
+                  className={`pal${p.destacado ? ' oro' : ''}`}
+                  key={`${p.temporada}-${p.equipo}-${p.logro}`}
+                >
+                  <span className="temp">{p.temporada}</span>
+                  <span className="cuerpo">
+                    <b>{p.logro}</b>
+                    <span className="eq">
+                      {p.equipo}
+                      {p.disciplina && <i>{p.disciplina}</i>}
+                      {p.lugar && <i>{p.lugar}</i>}
+                    </span>
+                  </span>
+                  <span className={`ambito ${p.ambito === 'España' ? 'es' : 'as'}`}>{p.ambito}</span>
+                </li>
+              ))}
+            </ol>
+            {/* El club va pasando el palmarés por tandas: se dice, para que no
+                parezca que esto es todo lo que ha ganado en 35 años. */}
+            <p className="palmares-nota">
+              Seguimos recopilando el resto del palmarés del club. Si echas algo en falta,{' '}
+              <Link to="/contacto">cuéntanoslo</Link>.
+            </p>
+          </>
         ) : (
           <Pendiente titulo="El palmarés todavía no está publicado">
             Estamos recopilando los campeonatos de España y los resultados a nivel nacional del club, con su

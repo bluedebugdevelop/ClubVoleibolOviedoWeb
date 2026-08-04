@@ -589,12 +589,45 @@ footer .legal .credito b{color:#b9cbe0;font-weight:600}
    que solo usaba la página de Cantera. Se retiraron el 02-08-2026 al dejar esa
    página únicamente con los equipos. Están en el historial de git. */
 
-/* -------- palmarés (QuienesSomos.jsx) -------- */
-.palmares{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-.pal{display:flex;gap:18px;align-items:baseline;border:1px solid var(--line);padding:16px 20px;background:#fff}
-.pal b{font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:26px;color:var(--blue);line-height:1}
-.pal h3{margin:0;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:18px;text-transform:uppercase}
-.pal p{margin:3px 0 0;font-size:14px;color:var(--dim)}
+/* -------- palmarés (QuienesSomos.jsx) --------
+   Una fila por logro, no tarjetas sueltas: un palmarés se lee de arriba abajo y
+   así las temporadas quedan en columna, alineadas. El logro es lo que manda en
+   la fila; el equipo y el resto van debajo, en pequeño. */
+.palmares{list-style:none;margin:0;padding:0;border:1px solid var(--line);background:#fff}
+.pal{display:grid;grid-template-columns:110px minmax(0,1fr) auto;gap:22px;align-items:center;
+  padding:20px 24px;border-bottom:1px solid var(--line);position:relative}
+.pal:last-child{border-bottom:0}
+.pal .temp{font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:24px;letter-spacing:.01em;
+  color:var(--blue);line-height:1;font-variant-numeric:tabular-nums}
+.pal .cuerpo b{display:block;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:21px;
+  text-transform:uppercase;letter-spacing:.01em;line-height:1.15}
+.pal .eq{display:block;margin-top:5px;font-size:14px;color:var(--dim)}
+/* disciplina y sede: separadas del equipo con un punto, sin llenar de comas */
+.pal .eq i{font-style:normal}
+.pal .eq i::before{content:" · "}
+
+/* de qué ámbito es el logro, de un vistazo */
+.pal .ambito{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:11.5px;letter-spacing:.16em;
+  text-transform:uppercase;padding:5px 12px;border-radius:99px;white-space:nowrap}
+.pal .ambito.es{background:#fdeaeb;color:#c00812}
+.pal .ambito.as{background:var(--tint);color:var(--blue)}
+
+/* el oro se reserva a los títulos de campeón de España */
+.pal.oro{background:linear-gradient(90deg,#fffaf0,#fff 60%)}
+.pal.oro::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:#c9a227}
+.pal.oro .temp{color:#a6851f}
+.pal.oro .ambito.es{background:#f6ebc8;color:#7a6115}
+
+.palmares-nota{margin:16px 0 0;font-size:13.5px;color:var(--dim)}
+.palmares-nota a{color:var(--blue);font-weight:600}
+
+@media(max-width:640px){
+  .pal{grid-template-columns:1fr auto;gap:6px 14px;padding:16px 18px}
+  .pal .temp{grid-column:1;grid-row:1;font-size:19px}
+  .pal .ambito{grid-column:2;grid-row:1;justify-self:end}
+  .pal .cuerpo{grid-column:1 / -1;grid-row:2}
+  .pal .cuerpo b{font-size:18px}
+}
 
 /* -------- páginas legales (Legal.jsx) --------
    Columna de lectura estrecha: son textos largos y a ancho completo no se
