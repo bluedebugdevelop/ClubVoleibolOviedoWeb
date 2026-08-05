@@ -579,6 +579,8 @@ export const hitos = [
 // 'Asturias' para lo autonómico. `destacado` reserva el oro para los títulos
 // de campeón de España, que son los que de verdad mandan en un palmarés.
 // ---------------------------------------------------------------------------
+// No hace falta ordenarlas: la página las coloca sola de la más reciente a la
+// más antigua. Al añadir una nueva, basta con pegarla donde sea.
 export const palmares = [
   { temporada: '2026/27', equipo: 'Sénior Masculino', logro: 'Ascenso a Superliga 2', ambito: 'España' },
   {
@@ -594,6 +596,7 @@ export const palmares = [
     logro: 'Clasificación para el Campeonato de España',
     ambito: 'España',
   },
+  { temporada: '2022', equipo: 'Sénior Femenino', logro: 'Ascenso a Superliga 2 Femenina', ambito: 'España' },
   { temporada: '2021/22', equipo: 'Sénior Masculino', logro: 'Ascenso a Primera Nacional', ambito: 'España' },
   { temporada: '2019/20', equipo: 'Cadete Femenino', logro: 'Subcampeón de Asturias', ambito: 'Asturias' },
   {
@@ -604,6 +607,32 @@ export const palmares = [
     lugar: 'Dumbría (A Coruña)',
     ambito: 'España',
     destacado: true,
+  },
+  {
+    temporada: '2018',
+    equipo: 'Cadete Femenino',
+    disciplina: 'Vóley playa',
+    logro: 'Campeonas de España',
+    lugar: 'Ézaro (A Coruña)',
+    ambito: 'España',
+    destacado: true,
+  },
+  {
+    // PENDIENTE: falta saber si fue el masculino o el femenino
+    temporada: '2017',
+    equipo: 'Infantil',
+    disciplina: 'Vóley playa',
+    logro: 'Terceros de España',
+    ambito: 'España',
+  },
+  {
+    // PENDIENTE: falta el puesto. Se deja como participación porque es lo único
+    // que consta; si quedaron en un puesto concreto, se cambia el `logro`.
+    temporada: '2016',
+    equipo: 'Infantil Femenino',
+    logro: 'Participación en el Campeonato de España por clubes',
+    lugar: 'Lorca (Murcia)',
+    ambito: 'España',
   },
 ]
 

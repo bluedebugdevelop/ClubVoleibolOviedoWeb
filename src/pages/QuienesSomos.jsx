@@ -6,6 +6,14 @@ import Sponsors from '../components/Sponsors'
 import Pendiente from '../components/Pendiente'
 import { club, hitos, palmares, valores } from '../data/contenido'
 
+/* El palmarés se ordena aquí, de lo más reciente a lo más antiguo, en vez de
+   pedir que la lista venga colocada: se va completando por tandas y a mano se
+   acababa metiendo alguna fuera de sitio. Se mira el primer año de la
+   temporada, así «2019/20» y «2019» caen juntos, y los empates respetan el
+   orden en que están escritas. */
+const anio = (p) => Number(/\d{4}/.exec(p.temporada)?.[0] ?? 0)
+const porFecha = [...palmares].sort((a, b) => anio(b) - anio(a))
+
 export default function QuienesSomos() {
   return (
     <>
@@ -57,7 +65,7 @@ export default function QuienesSomos() {
         {palmares.length > 0 ? (
           <>
             <ol className="palmares">
-              {palmares.map((p) => (
+              {porFecha.map((p) => (
                 <li
                   className={`pal${p.destacado ? ' oro' : ''}`}
                   key={`${p.temporada}-${p.equipo}-${p.logro}`}
