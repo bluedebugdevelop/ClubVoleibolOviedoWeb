@@ -85,10 +85,7 @@ export default function QuienesSomos() {
             </ol>
             {/* El club va pasando el palmarés por tandas: se dice, para que no
                 parezca que esto es todo lo que ha ganado en 35 años. */}
-            <p className="palmares-nota">
-              Seguimos recopilando el resto del palmarés del club. Si echas algo en falta,{' '}
-              <Link to="/contacto">cuéntanoslo</Link>.
-            </p>
+            <p className="palmares-nota">Seguimos recopilando el resto del palmarés del club.</p>
           </>
         ) : (
           <Pendiente titulo="El palmarés todavía no está publicado">
