@@ -242,11 +242,62 @@ export const equiposCantera = [
 // Fichas de los equipos de cantera
 //
 // No se escriben a mano: se generan de `equiposCantera` para que un equipo
-// nuevo tenga ficha con solo añadirlo a la lista de arriba. Van sin plantilla
-// ni cuerpo técnico a propósito —todavía no los tenemos—; la ficha ya enseña
-// el aviso de "pendiente" cuando vienen vacíos, así que la página no queda
-// coja. Cuando lleguen los nombres reales, se rellenan aquí.
+// nuevo tenga ficha con solo añadirlo a la lista de arriba.
+//
+// La plantilla y el cuerpo técnico salen con los mismos huecos de muestra que
+// los dos equipos nacionales —dorsal, "Nombre Apellido" y posición, con la
+// interrogación en el sitio de la foto—: así se ve la ficha montada aunque no
+// tengamos los nombres. Cuando lleguen los reales se sustituyen aquí.
 // ---------------------------------------------------------------------------
+
+// Dorsales con los huecos de siempre (falta el 4, el 6…), como en el masculino:
+// una lista del 1 al 12 seguida canta a relleno.
+const DORSALES_MUESTRA = [1, 2, 3, 5, 8, 10, 11, 13, 14, 15, 17, 21]
+
+// La posición se escribe distinto según el equipo. Cuando el nombre no dice el
+// género —Alevín, por ejemplo, que es mixto— se usa la forma con barra, que es
+// la misma que ya emplea el desplegable del formulario de inscripción.
+const POSICIONES = {
+  m: ['Colocador', 'Receptor', 'Central', 'Opuesto', 'Líbero'],
+  f: ['Colocadora', 'Receptora', 'Central', 'Opuesta', 'Líbero'],
+  x: ['Colocador/a', 'Receptor/a', 'Central', 'Opuesto/a', 'Líbero'],
+}
+
+// Reparto de posiciones a lo largo del equipo: dos colocadores, tres receptores,
+// tres centrales, dos opuestos y dos líberos. Es el reparto normal de un equipo
+// de voleibol, no un orden al azar.
+const REPARTO = [0, 1, 2, 3, 4, 1, 2, 0, 3, 1, 2, 4]
+
+const generoDe = (nombre) => {
+  if (nombre.includes('Femenino')) return 'f'
+  if (nombre.includes('Masculino')) return 'm'
+  return 'x'
+}
+
+const plantillaMuestra = (nombre) => {
+  const posiciones = POSICIONES[generoDe(nombre)]
+  return DORSALES_MUESTRA.map((numero, i) => ({
+    numero,
+    nombre: 'Nombre Apellido',
+    posicion: posiciones[REPARTO[i]],
+  }))
+}
+
+const TECNICOS = {
+  m: [
+    { iniciales: 'EC', nombre: 'Nombre del entrenador', rol: 'Primer entrenador' },
+    { iniciales: 'SG', nombre: 'Nombre del ayudante', rol: 'Segundo entrenador' },
+  ],
+  f: [
+    { iniciales: 'EC', nombre: 'Nombre de la entrenadora', rol: 'Primera entrenadora' },
+    { iniciales: 'SG', nombre: 'Nombre de la ayudante', rol: 'Segunda entrenadora' },
+  ],
+  x: [
+    { iniciales: 'EC', nombre: 'Nombre del entrenador/a', rol: 'Primer entrenador/a' },
+    { iniciales: 'SG', nombre: 'Nombre del ayudante', rol: 'Segundo entrenador/a' },
+  ],
+}
+
 const fichaDeCantera = (eq) => ({
   slug: eq.slug,
   nombre: eq.nombre,
@@ -263,8 +314,8 @@ const fichaDeCantera = (eq) => ({
     { label: 'Sede', valor: club.sedeCorta },
     { label: 'Temporada', valor: '2026/27' },
   ],
-  squad: [],
-  staff: [],
+  squad: plantillaMuestra(eq.nombre),
+  staff: TECNICOS[generoDe(eq.nombre)],
   gallery: [],
   join: {
     title: `¿Quieres jugar en el ${eq.nombre}?`,
