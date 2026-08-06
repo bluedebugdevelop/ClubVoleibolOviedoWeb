@@ -308,6 +308,11 @@ const fichaDeCantera = (eq) => ({
   sub: `Equipo ${eq.categoria.toLowerCase()} del club. Entrena y compite en el ${club.sedeCorta}, en ${club.localidad}.`,
   headerImg: eq.img,
   headerFoco: 'center 40%',
+  // Las fotos de equipo van enteras: son casi cuadradas —alguna incluso más
+  // alta que ancha— y en una banda 3,5:1 el recorte se comía dos tercios del
+  // alto, así que solo se veían las caras. Las de acción (el Sénior Masculino
+  // todavía usa una) sí son apaisadas y se recortan bien, que para eso están.
+  headerEntera: eq.img.startsWith('/media/equipos/'),
   datos: [
     { label: 'Competición', valor: eq.liga },
     { label: 'Categoría', valor: eq.categoria },
