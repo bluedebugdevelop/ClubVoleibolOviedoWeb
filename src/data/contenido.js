@@ -306,13 +306,19 @@ const fichaDeCantera = (eq) => ({
   padre: { to: '/cantera', label: 'Cantera' },
   kicker: `${eq.liga} · ${eq.categoria} · Temporada 2026/27`,
   sub: `Equipo ${eq.categoria.toLowerCase()} del club. Entrena y compite en el ${club.sedeCorta}, en ${club.localidad}.`,
-  headerImg: eq.img,
-  headerFoco: 'center 40%',
-  // Las fotos de equipo van enteras: son casi cuadradas —alguna incluso más
-  // alta que ancha— y en una banda 3,5:1 el recorte se comía dos tercios del
-  // alto, así que solo se veían las caras. Las de acción (el Sénior Masculino
-  // todavía usa una) sí son apaisadas y se recortan bien, que para eso están.
-  headerEntera: eq.img.startsWith('/media/equipos/'),
+  // La cabecera no es la misma foto que la tarjeta: es una versión apaisada que
+  // genera `scripts/cabeceras.ps1` recortando la franja donde está la gente y
+  // ensanchándola con los bordes fundidos en el azul de la banda. Puesta la
+  // foto original, que es casi cuadrada, la banda la ampliaba tanto que solo
+  // se veían las caras. Las fotos de acción —el Sénior Masculino todavía usa
+  // una— ya son apaisadas y entran bien tal cual.
+  headerImg: eq.img.startsWith('/media/equipos/')
+    ? eq.img.replace(/\.jpg$/, '-cabecera.jpg')
+    : eq.img,
+  // Tirando hacia arriba: la banda mantiene el alto y crece de ancho, así que
+  // cuanto mayor es la pantalla más recorta por arriba y por abajo. Con un 12%
+  // las cabezas de la fila de atrás siguen dentro incluso en un monitor ancho.
+  headerFoco: 'center 12%',
   datos: [
     { label: 'Competición', valor: eq.liga },
     { label: 'Categoría', valor: eq.categoria },

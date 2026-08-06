@@ -3,18 +3,16 @@
    los torsos: por eso cada página dice a qué altura está lo que hay que ver.
    Se mide en % de la altura de la foto original, no de la banda.
 
-   `entera` es para las fotos que NO se pueden recortar: las de equipo de la
-   cantera son casi cuadradas, y estirarlas a una banda 3,5:1 deja fuera dos
-   tercios del alto —solo se ven las caras—. Con `entera` la foto se mete
-   completa y el hueco de los lados lo cubre el azul de la banda, que ya está
-   detrás. Ahí `foco` no pinta nada: no se recorta, así que no hay que elegir
-   qué parte se ve. */
-export default function PageHead({ crumbs, kicker, title, sub, bg, foco = 'center', entera = false }) {
+   Ojo: la foto que se pasa aquí tiene que ser apaisada. Una foto de equipo
+   normal, casi cuadrada, la amplía tanto que se queda en un primer plano de
+   las caras, y no hay `foco` que lo arregle. Para eso están las versiones
+   `-cabecera` que genera `scripts/cabeceras.ps1`. */
+export default function PageHead({ crumbs, kicker, title, sub, bg, foco = 'center' }) {
   return (
     <div className="phead">
       {bg && (
-        <div className={entera ? 'bg entera' : 'bg'}>
-          <img src={bg} alt="" style={{ objectPosition: entera ? 'center' : foco }} />
+        <div className="bg">
+          <img src={bg} alt="" style={{ objectPosition: foco }} />
         </div>
       )}
       <div className="in">

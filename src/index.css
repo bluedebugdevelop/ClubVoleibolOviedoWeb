@@ -265,18 +265,10 @@ footer .legal .credito b{color:#b9cbe0;font-weight:600}
 .phead{background:var(--ink);color:#fff;position:relative;overflow:hidden}
 .phead .bg{position:absolute;inset:0;opacity:.3}
 .phead .bg img{width:100%;height:100%;object-fit:cover}
-/* foto entera, sin recortar: la de equipo de la cantera es casi cuadrada y con
-   `cover` se queda en un primer plano de las caras. Se mete completa, a todo el
-   alto de la banda, y los lados los tapa el azul que ya hay detrás.
-
-   `width:auto` es la clave: así la caja de la <img> es exactamente la foto y no
-   la banda entera. Si se deja al 100% con `contain`, la foto queda flotando
-   dentro de una caja mucho más ancha y el degradado de abajo cae en el hueco
-   vacío, sin tocarla. Con la caja pegada a la foto, el degradado sí funde sus
-   dos cantos con el fondo y no se ve el borde recto. */
-.phead .bg.entera img{width:auto;max-width:100%;height:100%;margin:0 auto;display:block;object-fit:contain;
-  -webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);
-  mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent)}
+/* Las fotos de esta banda van siempre apaisadas y con los cantos ya fundidos en
+   el azul: las de equipo se preparan con `scripts/cabeceras.ps1`. El fundido va
+   en la propia imagen, no aquí, porque `cover` recorta y una máscara en CSS no
+   sabe dónde acaba la foto una vez recortada. */
 /* la banda se hace más alta de lo que pide el texto: cuanto más apaisada, más
    brutal es el recorte de la foto de fondo y menos se ve de lo que hay dentro */
 .phead .in{position:relative;max-width:var(--wrap);margin:0 auto;padding:76px var(--pad) 84px}

@@ -30,7 +30,6 @@ export default function Equipo() {
         sub={equipo.sub}
         bg={equipo.headerImg}
         foco={equipo.headerFoco}
-        entera={equipo.headerEntera}
       />
 
       {/* La fila de cifras (jugadores · clasificación · victorias · puntos) se
