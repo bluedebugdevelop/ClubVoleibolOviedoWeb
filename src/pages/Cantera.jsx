@@ -41,8 +41,11 @@ export default function Cantera() {
       <section className="sec">
         <SectionHead title={`Los ${cuantos} equipos`} link="/calendario" linkText="Calendario y resultados →" />
         <div className="teams all">
+          {/* Cada tarjeta lleva a la ficha del equipo, igual que las dos de
+              categoría nacional en la portada. La clase `.team` ya viene
+              preparada para ser un enlace (display:block, sin subrayado). */}
           {equiposCantera.map((eq) => (
-            <div className="team" key={eq.nombre}>
+            <Link className="team" key={eq.slug} to={`/equipos/${eq.slug}`}>
               <div className="ph">
                 <img src={eq.img} alt={eq.alt} />
               </div>
@@ -52,7 +55,7 @@ export default function Cantera() {
                 <h3>{eq.nombre}</h3>
                 <p>{eq.liga}</p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>

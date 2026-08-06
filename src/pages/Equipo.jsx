@@ -13,12 +13,16 @@ export default function Equipo() {
 
   if (!equipo) return <NoEncontrado />
 
+  /* Los dos equipos nacionales cuelgan de la portada; los de base, de Cantera,
+     que es de donde se llega a ellos. Sin `padre` se queda como estaba. */
+  const padre = equipo.padre ?? { to: '/', label: 'Equipos' }
+
   return (
     <>
       <PageHead
         crumbs={
           <>
-            <Link to="/">Inicio</Link> · <Link to="/">Equipos</Link> · {equipo.crumb}
+            <Link to="/">Inicio</Link> · <Link to={padre.to}>{padre.label}</Link> · {equipo.crumb}
           </>
         }
         kicker={equipo.kicker}
@@ -111,16 +115,21 @@ export default function Equipo() {
         </section>
       </div>
 
-      <section className="sec">
-        <SectionHead title="Galería" link="/noticias" linkText="Ver todas →" />
-        <div className="gallery">
-          {equipo.gallery.map((g) => (
-            <div key={g.src}>
-              <img src={g.src} alt={g.alt} />
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* Sin fotos no se pinta la sección: una rejilla vacía bajo el titular
+          "Galería" queda peor que no tenerla. Los equipos de cantera entran
+          así hasta que haya fotos suyas. */}
+      {equipo.gallery.length > 0 && (
+        <section className="sec">
+          <SectionHead title="Galería" link="/noticias" linkText="Ver todas →" />
+          <div className="gallery">
+            {equipo.gallery.map((g) => (
+              <div key={g.src}>
+                <img src={g.src} alt={g.alt} />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       <JoinCta title={equipo.join.title} text={equipo.join.text} />
 

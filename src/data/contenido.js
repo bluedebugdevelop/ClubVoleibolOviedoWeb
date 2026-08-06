@@ -65,8 +65,12 @@ export const equiposDestacados = [
 
 // ---------------------------------------------------------------------------
 // Fichas completas de equipo (Equipo.jsx) — DATOS DE MUESTRA
+//
+// Aquí solo van los dos equipos nacionales, que llevan ficha escrita a mano.
+// Las de cantera se generan más abajo a partir de `equiposCantera` y se juntan
+// con estas en el `equipos` que exporta el fichero.
 // ---------------------------------------------------------------------------
-export const equipos = {
+const fichasNacionales = {
   'superliga-2-masculino': {
     slug: 'superliga-2-masculino',
     nombre: 'Superliga 2 Masculino',
@@ -210,25 +214,68 @@ export const equipos = {
 }
 
 // ---------------------------------------------------------------------------
-// Cantera — los diez equipos de base (Cantera.jsx) — DATOS DE MUESTRA
+// Cantera — los equipos de base (Cantera.jsx) — DATOS DE MUESTRA
+//
+// El `slug` es la dirección de su ficha (/equipos/<slug>), así que no se toca a
+// la ligera: cambiarlo rompe los enlaces que ya estén por ahí compartidos.
 // ---------------------------------------------------------------------------
 export const equiposCantera = [
   // No es el de Superliga 2: es el segundo equipo sénior, donde siguen jugando
   // los que salen del júnior. Sin foto propia todavía, va una de juego.
-  { nombre: 'Sénior Masculino', categoria: 'Sénior', img: '/media/plancha.jpg', alt: 'Segundo equipo sénior masculino del CV Oviedo', liga: 'Segunda División · FVBPA' },
-  { nombre: 'Júnior Masculino', categoria: 'Sub-19', img: '/media/equipos/junior-masculino.jpg', alt: 'Equipo júnior masculino del CV Oviedo', liga: 'Liga Asturiana' },
-  { nombre: 'Juvenil Femenino', categoria: 'Sub-17', img: '/media/equipos/juvenil-femenino.jpg', alt: 'Equipo juvenil femenino del CV Oviedo', liga: 'Liga Asturiana' },
-  { nombre: 'Cadete Masculino', categoria: 'Sub-15', img: '/media/equipos/cadete-masculino.jpg', alt: 'Equipo cadete masculino del CV Oviedo', liga: 'Liga Asturiana' },
-  { nombre: 'Cadete Femenino A', categoria: 'Sub-15', img: '/media/equipos/cadete-femenino-a.jpg', alt: 'Equipo cadete femenino A del CV Oviedo', liga: 'Liga Asturiana' },
-  { nombre: 'Cadete Femenino B', categoria: 'Sub-15', img: '/media/equipos/cadete-femenino-b.jpg', alt: 'Equipo cadete femenino B del CV Oviedo', liga: 'Liga Asturiana' },
-  { nombre: 'Infantil Masculino', categoria: 'Sub-13', img: '/media/equipos/infantil-masculino.jpg', alt: 'Equipo infantil masculino del CV Oviedo', liga: 'Liga Asturiana' },
-  { nombre: 'Infantil Femenino A', categoria: 'Sub-13', img: '/media/equipos/infantil-femenino-a.jpg', alt: 'Equipo infantil femenino A del CV Oviedo', liga: 'Liga Asturiana' },
-  { nombre: 'Infantil Femenino B', categoria: 'Sub-13', img: '/media/equipos/infantil-femenino-b.jpg', alt: 'Equipo infantil femenino B del CV Oviedo', liga: 'Liga Asturiana' },
-  // Dos equipos alevines, con la misma A/B que cadete e infantil. El segundo
-  // todavía no tiene foto propia: se reutiliza la del alevín hasta que la haya.
-  { nombre: 'Alevín Federado A', categoria: 'Sub-11', img: '/media/equipos/alevin.jpg', alt: 'Equipo alevín federado A del CV Oviedo', liga: 'Liga Asturiana' },
-  { nombre: 'Alevín Federado B', categoria: 'Sub-11', img: '/media/equipos/alevin.jpg', alt: 'Equipo alevín federado B del CV Oviedo', liga: 'Liga Asturiana' },
+  { slug: 'senior-masculino', nombre: 'Sénior Masculino', categoria: 'Sénior', img: '/media/plancha.jpg', alt: 'Segundo equipo sénior masculino del CV Oviedo', liga: 'Segunda División · FVBPA' },
+  { slug: 'junior-masculino', nombre: 'Júnior Masculino', categoria: 'Sub-19', img: '/media/equipos/junior-masculino.jpg', alt: 'Equipo júnior masculino del CV Oviedo', liga: 'Liga Asturiana' },
+  { slug: 'juvenil-femenino', nombre: 'Juvenil Femenino', categoria: 'Sub-17', img: '/media/equipos/juvenil-femenino.jpg', alt: 'Equipo juvenil femenino del CV Oviedo', liga: 'Liga Asturiana' },
+  { slug: 'cadete-masculino', nombre: 'Cadete Masculino', categoria: 'Sub-15', img: '/media/equipos/cadete-masculino.jpg', alt: 'Equipo cadete masculino del CV Oviedo', liga: 'Liga Asturiana' },
+  { slug: 'cadete-femenino-a', nombre: 'Cadete Femenino A', categoria: 'Sub-15', img: '/media/equipos/cadete-femenino-a.jpg', alt: 'Equipo cadete femenino A del CV Oviedo', liga: 'Liga Asturiana' },
+  { slug: 'cadete-femenino-b', nombre: 'Cadete Femenino B', categoria: 'Sub-15', img: '/media/equipos/cadete-femenino-b.jpg', alt: 'Equipo cadete femenino B del CV Oviedo', liga: 'Liga Asturiana' },
+  { slug: 'infantil-masculino', nombre: 'Infantil Masculino', categoria: 'Sub-13', img: '/media/equipos/infantil-masculino.jpg', alt: 'Equipo infantil masculino del CV Oviedo', liga: 'Liga Asturiana' },
+  { slug: 'infantil-femenino-a', nombre: 'Infantil Femenino A', categoria: 'Sub-13', img: '/media/equipos/infantil-femenino-a.jpg', alt: 'Equipo infantil femenino A del CV Oviedo', liga: 'Liga Asturiana' },
+  { slug: 'infantil-femenino-b', nombre: 'Infantil Femenino B', categoria: 'Sub-13', img: '/media/equipos/infantil-femenino-b.jpg', alt: 'Equipo infantil femenino B del CV Oviedo', liga: 'Liga Asturiana' },
+  // Alevín NO lleva A/B como cadete e infantil (corregido el 07-08-2026): son
+  // dos equipos distintos, el federado y el que no compite en liga. El segundo
+  // no tiene foto propia todavía: se reutiliza la del alevín hasta que la haya.
+  { slug: 'alevin-federado', nombre: 'Alevín Federado', categoria: 'Sub-11', img: '/media/equipos/alevin.jpg', alt: 'Equipo alevín federado del CV Oviedo', liga: 'Liga Asturiana' },
+  { slug: 'alevin', nombre: 'Alevín', categoria: 'Sub-11', img: '/media/equipos/alevin.jpg', alt: 'Equipo alevín del CV Oviedo', liga: 'Liga Asturiana' },
 ]
+
+// ---------------------------------------------------------------------------
+// Fichas de los equipos de cantera
+//
+// No se escriben a mano: se generan de `equiposCantera` para que un equipo
+// nuevo tenga ficha con solo añadirlo a la lista de arriba. Van sin plantilla
+// ni cuerpo técnico a propósito —todavía no los tenemos—; la ficha ya enseña
+// el aviso de "pendiente" cuando vienen vacíos, así que la página no queda
+// coja. Cuando lleguen los nombres reales, se rellenan aquí.
+// ---------------------------------------------------------------------------
+const fichaDeCantera = (eq) => ({
+  slug: eq.slug,
+  nombre: eq.nombre,
+  crumb: eq.nombre,
+  // migas de pan: estos equipos cuelgan de Cantera, no de la portada
+  padre: { to: '/cantera', label: 'Cantera' },
+  kicker: `${eq.liga} · ${eq.categoria} · Temporada 2026/27`,
+  sub: `Equipo ${eq.categoria.toLowerCase()} del club. Entrena y compite en el ${club.sedeCorta}, en ${club.localidad}.`,
+  headerImg: eq.img,
+  headerFoco: 'center 40%',
+  datos: [
+    { label: 'Competición', valor: eq.liga },
+    { label: 'Categoría', valor: eq.categoria },
+    { label: 'Sede', valor: club.sedeCorta },
+    { label: 'Temporada', valor: '2026/27' },
+  ],
+  squad: [],
+  staff: [],
+  gallery: [],
+  join: {
+    title: `¿Quieres jugar en el ${eq.nombre}?`,
+    text: 'Rellena el formulario de inscripción y te decimos qué día y a qué hora entrena el grupo.',
+  },
+})
+
+export const equipos = {
+  ...fichasNacionales,
+  ...Object.fromEntries(equiposCantera.map((eq) => [eq.slug, fichaDeCantera(eq)])),
+}
 
 // DATOS DE MUESTRA — cifras de la sección Cantera
 export const cifrasCantera = [
