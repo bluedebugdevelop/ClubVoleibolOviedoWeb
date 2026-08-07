@@ -3,7 +3,7 @@ import PageHead from '../components/PageHead'
 import SectionHead from '../components/SectionHead'
 import JoinCta from '../components/JoinCta'
 import Sponsors from '../components/Sponsors'
-import { noticias, galeriaNoticias } from '../data/contenido'
+import { noticias } from '../data/contenido'
 
 export default function Noticias() {
   const [destacada, ...resto] = noticias
@@ -53,19 +53,6 @@ export default function Noticias() {
           ))}
         </div>
       </section>
-
-      <div className="band">
-        <section className="sec">
-          <SectionHead title="Galería" />
-          <div className="gallery">
-            {galeriaNoticias.map((g) => (
-              <div key={g.src}>
-                <img src={g.src} alt={g.alt} />
-              </div>
-            ))}
-          </div>
-        </section>
-      </div>
 
       <JoinCta
         title="¿Te apuntas?"

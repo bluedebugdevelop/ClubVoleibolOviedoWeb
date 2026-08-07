@@ -128,12 +128,6 @@ const fichasNacionales = {
       { numero: 17, nombre: 'Nombre Apellido', posicion: 'Central' },
       { numero: 21, nombre: 'Nombre Apellido', posicion: 'Líbero' },
     ],
-    gallery: [
-      { src: '/media/hero-remate.jpg', alt: 'Remate del sénior masculino' },
-      { src: '/media/hero-saque.jpg', alt: 'Saque en salto' },
-      { src: '/media/pista-azul.jpg', alt: 'Partido en el pabellón' },
-      { src: '/media/equipo-masc.jpg', alt: 'Foto de equipo' },
-    ],
     join: {
       title: '¿Quieres jugar con nosotros?',
       text: 'El Superliga 2 Masculino busca jugadores durante todo septiembre. Ven un día a entrenar y lo hablamos.',
@@ -194,12 +188,6 @@ const fichasNacionales = {
       { numero: 18, nombre: 'Nombre Apellido', posicion: 'Central' },
       { numero: 19, nombre: 'Nombre Apellido', posicion: 'Opuesta' },
       { numero: 20, nombre: 'Nombre Apellido', posicion: 'Colocadora' },
-    ],
-    gallery: [
-      { src: '/media/celebracion.jpg', alt: 'Celebración del sénior femenino' },
-      { src: '/media/accion-vert.jpg', alt: 'Jugada del sénior femenino' },
-      { src: '/media/pista-azul.jpg', alt: 'Partido en el pabellón' },
-      { src: '/media/equipo-fem.jpg', alt: 'Foto de equipo' },
     ],
     join: {
       title: '¿Quieres jugar con nosotras?',
@@ -327,7 +315,6 @@ const fichaDeCantera = (eq) => ({
   ],
   squad: plantillaMuestra(eq.nombre),
   staff: TECNICOS[generoDe(eq.nombre)],
-  gallery: [],
   join: {
     title: `¿Quieres jugar en el ${eq.nombre}?`,
     text: 'Rellena el formulario de inscripción y te decimos qué día y a qué hora entrena el grupo.',
@@ -643,20 +630,6 @@ export const noticias = [
     resumen: 'El equipo femenino debuta en pretemporada con un amistoso ante el CV Siero.',
     img: '/media/celebracion-manos.jpg',
   },
-]
-
-// galería de fotos reutilizada al final de Noticias.jsx — DATOS DE MUESTRA
-// Solo fotos de juego o de celebración. Las fotos de equipo posadas se quedan
-// en el apartado de equipos.
-export const galeriaNoticias = [
-  { src: '/media/hero-remate.jpg', alt: 'Remate del sénior masculino' },
-  { src: '/media/hero-saque.jpg', alt: 'Saque en salto' },
-  { src: '/media/pista-azul.jpg', alt: 'Bloqueo en la red' },
-  { src: '/media/celebracion.jpg', alt: 'Celebración del sénior femenino' },
-  { src: '/media/accion-vert.jpg', alt: 'Jugada de ataque' },
-  { src: '/media/plancha.jpg', alt: 'Plancha en defensa' },
-  { src: '/media/recepcion.jpg', alt: 'Recepción del saque' },
-  { src: '/media/celebracion-punto.jpg', alt: 'Celebración de un punto' },
 ]
 
 // ---------------------------------------------------------------------------

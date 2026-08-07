@@ -1,6 +1,5 @@
 import { Link, useParams } from 'react-router-dom'
 import PageHead from '../components/PageHead'
-import SectionHead from '../components/SectionHead'
 import JoinCta from '../components/JoinCta'
 import Sponsors from '../components/Sponsors'
 import NoEncontrado from './NoEncontrado'
@@ -114,22 +113,6 @@ export default function Equipo() {
           )}
         </section>
       </div>
-
-      {/* Sin fotos no se pinta la sección: una rejilla vacía bajo el titular
-          "Galería" queda peor que no tenerla. Los equipos de cantera entran
-          así hasta que haya fotos suyas. */}
-      {equipo.gallery.length > 0 && (
-        <section className="sec">
-          <SectionHead title="Galería" link="/noticias" linkText="Ver todas →" />
-          <div className="gallery">
-            {equipo.gallery.map((g) => (
-              <div key={g.src}>
-                <img src={g.src} alt={g.alt} />
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
 
       <JoinCta title={equipo.join.title} text={equipo.join.text} />
 

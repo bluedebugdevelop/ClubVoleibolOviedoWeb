@@ -444,16 +444,8 @@ footer .legal .credito b{color:#b9cbe0;font-weight:600}
   .ficha-datos b{font-size:17px}
 }
 
-/* la galería no enlaza a ningún sitio (no hay visor de fotos), así que las
-   miniaturas son <div>, no <a>; el hover de zoom se mantiene igual */
-.gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.gallery div{overflow:hidden;display:block}
-.gallery img{width:100%;aspect-ratio:4/3;object-fit:cover;transition:.4s}
-.gallery div:hover img{transform:scale(1.06)}
-
 @media(max-width:900px){
   .squad{grid-template-columns:repeat(3,1fr)}
-  .gallery{grid-template-columns:1fr 1fr}
 }
 
 /* -------- calendario (Calendario.jsx) --------
