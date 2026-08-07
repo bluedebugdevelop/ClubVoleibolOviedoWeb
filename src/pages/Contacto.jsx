@@ -46,7 +46,19 @@ export default function Contacto() {
               </svg>
               <span>
                 <b>Email</b>
-                <span>{club.email}</span>
+                <span><a href={`mailto:${club.email}`}>{club.email}</a></span>
+              </span>
+            </div>
+            {/* buzón aparte para las empresas (07-08-2026): quien escribe por
+                patrocinio no debe acabar en el correo general */}
+            <div className="row">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M4 4h16v16H4z" />
+                <path d="m4 6 8 7 8-7" />
+              </svg>
+              <span>
+                <b>Patrocinio</b>
+                <span><a href={`mailto:${club.emailPatrocinio}`}>{club.emailPatrocinio}</a></span>
               </span>
             </div>
           </div>

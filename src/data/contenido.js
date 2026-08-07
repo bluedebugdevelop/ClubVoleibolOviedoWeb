@@ -8,7 +8,11 @@ export const club = {
   nombre: 'Club Voleibol Oviedo',
   nombreCorto: 'CV Oviedo',
   fundacion: 1991,
+  // Dos buzones (07-08-2026): el general para todo, y uno aparte solo para
+  // patrocinio. Todo lo que cuelgue de /patrocinar —avisos del formulario,
+  // enlaces de "escríbenos"— usa `emailPatrocinio`; el resto del sitio, `email`.
   email: 'info@clubvoleiboloviedo.com',
+  emailPatrocinio: 'patrocinadores@clubvoleiboloviedo.com',
   // El teléfono del club NO se publica en la web (decisión del 03-08-2026): se
   // quitó del pie, de contacto, de los avisos de los formularios y del aviso
   // legal. Ojo: los campos "teléfono" de los formularios son otra cosa, ahí lo

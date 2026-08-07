@@ -4,19 +4,19 @@
 // Gemela de `inscripcion.js`: función serverless de Vercel que NO guarda nada,
 // solo manda por email al club lo que llega del formulario de /patrocinar.
 //
-// Usa las mismas variables de entorno que las inscripciones:
+// Comparte la clave de Resend con las inscripciones, pero NO el destino:
 //   RESEND_API_KEY      clave de https://resend.com
-//   INSCRIPCIONES_TO    a dónde llegan (por defecto, el correo del club)
+//   PATROCINIO_TO       a dónde llegan (por defecto, el buzón de patrocinio)
 //   INSCRIPCIONES_FROM  remitente; de un dominio verificado en Resend
-// Se reutilizan a propósito: es el mismo buzón y no tiene sentido pedirle a
-// Diego que configure dos claves. Si algún día los patrocinios tienen que ir a
-// otra dirección, `PATROCINIO_TO` la pisa.
+// La clave se reutiliza a propósito: no tiene sentido pedirle a Diego que
+// configure dos. El buzón sí es distinto — patrocinio va a su propia dirección
+// (07-08-2026), no al general.
 //
 // Sin RESEND_API_KEY responde 503 con `configurado: false` y la página enseña
-// el teléfono y el correo del club. Nunca se pierde una solicitud en silencio.
+// el correo de patrocinio. Nunca se pierde una solicitud en silencio.
 // ==========================================================================
 
-const CORREO_CLUB = 'info@clubvoleiboloviedo.com'
+const CORREO_PATROCINIO = 'patrocinadores@clubvoleiboloviedo.com'
 
 const CAMPOS = ['empresa', 'contacto', 'telefono', 'email', 'web', 'mensaje']
 const OBLIGATORIOS = ['empresa', 'contacto', 'email']
@@ -85,7 +85,9 @@ export default async function handler(req, res) {
     })
   }
 
-  const destino = process.env.PATROCINIO_TO || process.env.INSCRIPCIONES_TO || CORREO_CLUB
+  // Ya NO cae en INSCRIPCIONES_TO: si el buzón de patrocinio no está declarado
+  // se usa el suyo, no el de las inscripciones de cantera.
+  const destino = process.env.PATROCINIO_TO || CORREO_PATROCINIO
   const remitente = process.env.INSCRIPCIONES_FROM || 'CV Oviedo <onboarding@resend.dev>'
 
   const filas = [

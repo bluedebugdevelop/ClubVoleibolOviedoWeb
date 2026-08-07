@@ -12,8 +12,8 @@
 //   INSCRIPCIONES_FROM  remitente; tiene que ser de un dominio verificado en Resend
 //
 // Sin RESEND_API_KEY la función responde 503 con `configurado: false` y la
-// página enseña el teléfono y el correo del club en su lugar. Nunca se pierde
-// una solicitud en silencio.
+// página enseña el correo del club en su lugar. Nunca se pierde una solicitud
+// en silencio.
 // ==========================================================================
 
 const CORREO_CLUB = 'info@clubvoleiboloviedo.com'

@@ -26,6 +26,9 @@ export default function Footer() {
         <div className="col">
           <b>Contacto</b>
           <p>{club.email}</p>
+          {/* el de patrocinio va aparte y etiquetado: si van los dos correos
+              seguidos y sin etiqueta, una empresa escribe al que sea */}
+          <p>Patrocinio: {club.emailPatrocinio}</p>
           {/* el teléfono no se publica en la web (03-08-2026) */}
           <p>{club.sedeCorta}<br />{club.localidad}</p>
         </div>

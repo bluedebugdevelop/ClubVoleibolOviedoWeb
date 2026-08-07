@@ -8,7 +8,10 @@ import { club, alcanceClub, porQuePatrocinar, contrapartidas, patrocinadoresActu
 /* Esta es la página que SÍ busca patrocinadores: la de /patrocinadores solo
    enseña las marcas que ya están. Aquí NO van precios ni niveles (decisión de
    Diego, 2026-07-29): se explica el club, qué se puede ofrecer, y lo concreto
-   se habla por email o por teléfono. */
+   se habla por email.
+
+   Ojo con el correo: esta página usa `club.emailPatrocinio`, no `club.email`.
+   Es el único sitio del sitio que escribe al buzón de patrocinio. */
 
 const VACIO = {
   empresa: '',
@@ -136,13 +139,13 @@ export default function Patrocinar() {
           {estado === 'sinConectar' && (
             <div className="notice aviso">
               <b>El envío automático todavía no está activado.</b> Para no hacerte perder el tiempo: escríbenos a{' '}
-              <a href={`mailto:${club.email}`}>{club.email}</a> y lo hablamos igual.
+              <a href={`mailto:${club.emailPatrocinio}`}>{club.emailPatrocinio}</a> y lo hablamos igual.
             </div>
           )}
           {estado === 'error' && (
             <div className="notice aviso">
               No hemos podido enviar la solicitud. Inténtalo de nuevo en un momento o escríbenos a{' '}
-              <a href={`mailto:${club.email}`}>{club.email}</a>.
+              <a href={`mailto:${club.emailPatrocinio}`}>{club.emailPatrocinio}</a>.
             </div>
           )}
 
@@ -206,7 +209,7 @@ export default function Patrocinar() {
 
           <p className="letra-pequena">
             * Campos obligatorios. También puedes escribir directamente a{' '}
-            <a href={`mailto:${club.email}`}>{club.email}</a>.
+            <a href={`mailto:${club.emailPatrocinio}`}>{club.emailPatrocinio}</a>.
           </p>
         </form>
       </section>

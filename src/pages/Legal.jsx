@@ -131,7 +131,7 @@ function Privacidad() {
         abrirlo sales de este sitio y pasas a uno de Google, que puede pedirte iniciar sesión y trata tus datos
         también según su propia{' '}
         <a href="https://policies.google.com/privacy" target="_blank" rel="noreferrer">política de privacidad</a>.
-        Si prefieres no usarlo, puedes apuntarte por teléfono o por correo escribiendo a {CORREO}.
+        Si prefieres no usarlo, puedes apuntarte por correo escribiendo a {CORREO}.
       </p>
 
       <h3>Formulario de contacto</h3>
