@@ -14,6 +14,32 @@ import { club, hitos, palmares, valores } from '../data/contenido'
 const anio = (p) => Number(/\d{4}/.exec(p.temporada)?.[0] ?? 0)
 const porFecha = [...palmares].sort((a, b) => anio(b) - anio(a))
 
+/* Camino de hitos. Tres por fila; las filas impares (la 2ª, la 4ª…) se
+   recorren al revés, que es lo que hace el zigzag. Como la fila de vuelta
+   termina en la misma columna en la que empezó la de ida, el paso de una fila
+   a la siguiente es una recta vertical y no hay curvas que dibujar.
+
+   La última fila puede quedar a medias: se coloca igual y el camino
+   sencillamente se acaba donde se acabe. */
+const COLS = 3
+
+const casilla = (i) => {
+  const fila = Math.floor(i / COLS)
+  const puesto = i % COLS
+  // fila par: de izquierda a derecha; fila impar: de vuelta
+  const columna = fila % 2 === 0 ? puesto : COLS - 1 - puesto
+  return { gridColumn: columna + 1, gridRow: fila + 1 }
+}
+
+/* Qué tramo de camino sale de cada hito: hacia el lado que toque, hacia abajo
+   si cierra la fila, o ninguno si es el último. El CSS solo pinta lo que diga
+   este atributo. */
+const enlace = (i, total) => {
+  if (i === total - 1) return 'fin'
+  if (i % COLS === COLS - 1) return 'baja'
+  return Math.floor(i / COLS) % 2 === 0 ? 'der' : 'izq'
+}
+
 export default function QuienesSomos() {
   return (
     <>
@@ -49,14 +75,27 @@ export default function QuienesSomos() {
       <div className="band">
         <section className="sec">
           <SectionHead title="Hitos del club" />
-          <div className="timeline">
-            {hitos.map((h) => (
-              <div className="tl-item" key={h.anio}>
-                <b>{h.anio}</b>
+          {/* Camino en zigzag, no una lista vertical (decisión de Diego,
+              07-08-2026): la fila de ida va de izquierda a derecha, la de
+              vuelta al revés, y entre filas el camino baja en recta porque
+              ambas acaban y empiezan en la misma columna.
+
+              La casilla se calcula aquí y no en el CSS a propósito: con
+              `nth-child` haría falta una regla por fila y se rompería en
+              cuanto se añadiera un hito. Así aguanta cualquier número. */}
+          <ol className="camino">
+            {hitos.map((h, i) => (
+              <li className="hito" key={h.anio} style={casilla(i)} data-enlace={enlace(i, hitos.length)}>
+                <span className="hito-anio">{h.anio}</span>
                 <p>{h.texto}</p>
-              </div>
+                {/* La bajada de fila va aquí, DESPUÉS del texto y en el flujo
+                    normal, no como pseudoelemento absoluto: así arranca donde
+                    acaba el párrafo y estira hasta el borde de la casilla. En
+                    absoluto salía del año y le cruzaba el texto por la mitad. */}
+                {enlace(i, hitos.length) === 'baja' && <span className="hito-baja" />}
+              </li>
             ))}
-          </div>
+          </ol>
         </section>
       </div>
 

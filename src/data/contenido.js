@@ -640,13 +640,30 @@ export const noticias = [
 // Quiénes somos — hitos CONFIRMADOS POR EL CLUB (2026-07-29). No son datos de
 // muestra: no cambiarlos sin preguntar. El ascenso a Superliga 2 es de 2026,
 // no de 2021 como decía antes.
+//
+// Los cinco deportivos los eligió Diego uno a uno (07-08-2026): los tres del
+// Campeonato de España de vóley playa y los tres ascensos. NO es "todo lo de
+// ámbito nacional" —de ser así entrarían también la clasificación del Juvenil
+// de 2022/23 y la participación del Infantil Femenino de 2016, que se quedan
+// solo en el palmarés—. Si se añade uno nuevo, preguntar antes.
+//
+// El orden es cronológico y la página lo pinta como un camino en zigzag: al
+// añadir o quitar un hito cambia dónde gira el camino. Con nueve salen tres
+// filas de tres, que es como está medido.
+//
+// Los textos van a UNA frase. La página los pinta en una columna estrecha
+// dentro del camino; dos frases desbordan la fila y descuadran el zigzag.
 // ---------------------------------------------------------------------------
 export const hitos = [
-  { anio: '1991', texto: 'Fundación del Club Voleibol Oviedo, con un único equipo sénior masculino.' },
-  { anio: '1998', texto: 'Se crea la sección femenina del club.' },
-  { anio: '2006', texto: 'El club se traslada al Polideportivo José Manuel Fuente, en Colloto, su sede actual.' },
-  { anio: '2014', texto: 'Se amplía la cantera hasta cubrir todas las categorías, de alevín a júnior.' },
-  { anio: '2026', texto: 'El equipo masculino asciende a Superliga 2. El club supera los 240 canteranos y los 6.700 seguidores en redes sociales.' },
+  { anio: '1991', texto: 'Nace el club, con un único equipo sénior masculino.' },
+  { anio: '1998', texto: 'Se crea la sección femenina.' },
+  { anio: '2006', texto: 'El club se muda al Polideportivo José Manuel Fuente, en Colloto, su sede desde entonces.' },
+  { anio: '2014', texto: 'La cantera pasa a cubrir todas las categorías, de alevín a júnior.' },
+  { anio: '2017', texto: 'El Infantil Masculino queda tercero de España en vóley playa.' },
+  { anio: '2018', texto: 'El Cadete Femenino se proclama campeón de España de vóley playa, en Ézaro.' },
+  { anio: '2019', texto: 'El Cadete Masculino gana el Campeonato de España de vóley playa por clubes, en Dumbría.' },
+  { anio: '2022', texto: 'Doble ascenso: el sénior masculino sube a Primera Nacional y el femenino, a Superliga 2.' },
+  { anio: '2026', texto: 'El sénior masculino asciende a Superliga 2.' },
 ]
 
 // ---------------------------------------------------------------------------
@@ -704,9 +721,9 @@ export const palmares = [
     destacado: true,
   },
   {
-    // PENDIENTE: falta saber si fue el masculino o el femenino
+    // Era el masculino; lo confirmó Diego el 07-08-2026.
     temporada: '2017',
-    equipo: 'Infantil',
+    equipo: 'Infantil Masculino',
     disciplina: 'Vóley playa',
     logro: 'Terceros de España',
     ambito: 'España',
