@@ -717,75 +717,115 @@ footer .legal .credito b{color:#b9cbe0;font-weight:600}
 .historia{max-width:74ch}
 .historia p{font-size:16.5px;line-height:1.75;color:#3d4b5a;margin:0 0 16px}
 
-/* Hitos: camino en zigzag ---------------------------------------------------
-   Tres por fila. Las filas van alternando sentido —la 1ª de izquierda a
-   derecha, la 2ª de vuelta— así que el camino baja SIEMPRE por la misma
-   columna en la que acabó la fila anterior, y el enlace entre filas es una
-   recta vertical en vez de una curva que haya que dibujar.
+/* Hitos: el camino -----------------------------------------------------------
+   Un solo trazo que serpentea de 1991 a 2026, con un balón en cada año y la
+   ficha arriba o abajo según toque. La forma de la curva y la colocación de
+   cada parada las decide QuienesSomos.jsx (ver RUTA allí); aquí solo se pinta.
 
-   La casilla de cada hito (`grid-column`/`grid-row`) y el tipo de enlace
-   (`data-enlace`) los calcula QuienesSomos.jsx, no el CSS: con `nth-child`
-   haría falta una regla por fila y se rompería al añadir un hito. Aquí solo
-   se pintan los tramos.
-
-   Sin `gap`: el aire lo pone el padding de cada hito. Con gap, la recta
-   vertical se cortaría en el hueco entre filas.
+   La caja lleva `aspect-ratio`, que llega en el style desde el JSX: así el alto
+   acompaña al ancho y los porcentajes de cada parada siguen cayendo donde toca.
    -------------------------------------------------------------------------- */
 .camino{
-  /* --nodo es el alto de la pastilla del año; el camino corre por su mitad */
-  --nodo:42px;
-  --carril:calc(var(--nodo) / 2);
-  --trazo:#a3c3e6;
-  list-style:none;margin:0;padding:0;
-  display:grid;grid-template-columns:repeat(3,1fr);
+  --trazo:#8fb8e2;
+  /* Hueco entre el punto del camino y la ficha. Antes salía de la mitad del
+     balón; sin balón (08-08-2026) es un número propio, y va holgado porque
+     Diego pidió el texto más separado de las huellas. */
+  --hueco:40px;
+  position:relative;width:100%;
+  /* El texto de las fichas encoge con la caja. Sin esto, al estrechar la
+     ventana la caja mengua pero las letras no, y las fichas se comen el
+     camino. El tope de arriba es el tamaño de lectura normal. */
+  font-size:clamp(12.5px,1.14vw,16px);
 }
-/* Columna flex para que la bajada de fila (.hito-baja) pueda estirarse con
-   `flex:1` desde el final del texto hasta el borde de la casilla. */
-.hito{position:relative;min-width:0;padding:0 26px;text-align:center;display:flex;flex-direction:column;align-items:center}
+.camino-trazo{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.camino-trazo path{fill:none;stroke-linecap:round;stroke-linejoin:round}
 
-/* Tramo horizontal: del centro de esta pastilla al de la siguiente. El 100%
-   se mide sobre la casilla, que es la caja de posicionamiento, así que cae
-   justo en el centro de la de al lado. */
-.hito[data-enlace="der"]::after,
-.hito[data-enlace="izq"]::after{content:"";position:absolute;top:var(--carril);width:100%;border-top:2px dashed var(--trazo)}
-.hito[data-enlace="der"]::after{left:50%}
-.hito[data-enlace="izq"]::after{right:50%}
+/* --- tratamiento «pista»: la banda pintada del campo ---------------------- */
+/* Dos trazos superpuestos: el ancho hace el filo azul y el estrecho el blanco
+   de dentro. El orden importa — el blanco va después, encima. */
+.camino[data-estilo="pista"] .pista-filo{stroke:#6ea6da;stroke-width:16}
+.camino[data-estilo="pista"] .pista-centro{stroke:var(--white);stroke-width:10.5}
 
-/* Fin de fila: baja hasta el borde de la casilla y la fila siguiente arranca
-   justo ahí, así que su pastilla recoge la línea. `flex:1` la estira sin
-   importar lo que ocupe el texto de encima.
+/* --- tratamiento «pisadas» ------------------------------------------------ */
+/* La guía va muy tenue a propósito: solo está para coser el recorrido cuando
+   las huellas se separan. Subiéndole opacidad vuelve a mandar la línea y las
+   pisadas pasan a ser adorno. */
+.camino[data-estilo="pisadas"] .guia{stroke:var(--trazo);stroke-width:3;opacity:.28}
+/* Con el selector a secas (`.pisada path`) las huellas salían invisibles: la
+   regla de arriba `.camino-trazo path{fill:none}` tiene más especificidad y
+   les quitaba el relleno. Las huellas se pintan de relleno, no de trazo, así
+   que hay que ganarle. */
+.camino-trazo .pisada{opacity:.9}
+.camino-trazo .pisada path,.camino-trazo .pisada ellipse{fill:var(--trazo);stroke:none}
 
-   Sin padding-bottom en .hito a propósito: el hueco entre filas lo hace esta
-   línea, que es justo lo que se quiere ver. Con padding, la línea acababa
-   antes del borde y quedaba un trozo suelto sin llegar a la fila siguiente. */
-.hito-baja{flex:1;min-height:54px;width:0;margin-top:18px;border-left:2px dashed var(--trazo)}
+/* --- el camino se dibuja al bajar ---------------------------------------- */
+/* Con `animation-timeline: view()` no hay JavaScript ni listener de scroll: lo
+   lleva el navegador. El estado BASE es el camino entero dibujado, y la
+   animación solo se monta encima donde se soporta; así, en un navegador que no
+   lo entienda o con «reducir movimiento» activado, se ve completo desde el
+   principio en vez de no verse nada. */
+.camino{view-timeline-name:--camino;view-timeline-axis:block}
+.avanza{stroke-dasharray:var(--largo);stroke-dashoffset:0}
 
-.hito-anio{
-  position:relative;z-index:1;   /* por encima del trazo */
-  display:inline-flex;align-items:center;justify-content:center;
-  height:var(--nodo);min-width:86px;padding:0 18px;
-  background:var(--blue);color:var(--white);border-radius:99px;
-  font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:23px;letter-spacing:.02em;
-  transition:transform .18s ease, background .18s ease;
+@supports (animation-timeline:view()){
+  @media (prefers-reduced-motion:no-preference){
+    /* La guía va por delante del rastro: cose el recorrido antes de que se pise,
+       igual que se ve el camino antes de recorrerlo. */
+    .avanza{animation:cvo-dibuja linear both;animation-timeline:--camino;animation-range:cover 14% cover 70%}
+    /* Cada huella se estampa cuando su punto del camino llega a media pantalla,
+       así que el rastro avanza al ritmo al que se baja: una pisada detrás de
+       otra, como quien camina.
+
+       Los números salen de la geometría, no de probar a ojo. El recorrido de
+       `cover` mide alto de ventana + alto de la sección; una huella que está a
+       `py` del principio de la sección cruza los dos tercios de la pantalla en
+       (py + 0,35 · alto de ventana) / ese total. Con esta caja da 21% para la
+       primera y 65% para la última, y como el índice de la huella avanza con el
+       camino, repartir linealmente entre esos dos valores las deja cayendo
+       donde toca. Antes iban de 4% a 54%: el rastro se terminaba de pintar con
+       media sección todavía por bajar.
+
+       El tramo de cada una es cortísimo (2,5%) para que aparezca de golpe, como
+       una pisada, y no con un fundido lento. */
+    .camino-trazo .pisada{opacity:0;animation:cvo-pisa linear both;animation-timeline:--camino;
+            animation-range:cover calc(21% + var(--t) * .44%) cover calc(23.5% + var(--t) * .44%)}
+  }
 }
-.hito:hover .hito-anio{transform:translateY(-3px);background:var(--blue-dark)}
-.hito p{margin:14px auto 0;font-size:14.5px;line-height:1.6;color:var(--dim);max-width:32ch}
+@keyframes cvo-dibuja{from{stroke-dashoffset:var(--largo)}to{stroke-dashoffset:0}}
+@keyframes cvo-pisa{from{opacity:0}to{opacity:.9}}
+.camino > ol{list-style:none;margin:0;padding:0}
 
-@media(prefers-reduced-motion:reduce){ .hito:hover .hito-anio{transform:none} }
+/* Cada parada se ancla por su centro en el punto del camino. */
+.parada{position:absolute;transform:translate(-50%,-50%);width:0;height:0}
 
-/* Por debajo de 900px las tres columnas dejan unos 160px de texto por hito y
-   el zigzag no se lee: se vuelve a la lista vertical de siempre, con la línea
-   enhebrando las pastillas. Los `!important` son para pisar el
-   `grid-column`/`grid-row` que el JSX escribe en el style de cada hito. */
-@media(max-width:900px){
-  .camino{grid-template-columns:1fr}
-  .hito{grid-column:1 !important;grid-row:auto !important;align-items:flex-start;text-align:left;padding:0 0 22px}
-  .hito[data-enlace]::after,.hito-baja{display:none}
-  /* Vertical de toda la vida. 43px = mitad de la pastilla (min-width 86px):
-     todos los años tienen cuatro cifras, así que miden lo mismo y la línea
-     sale recta. El texto se aparta a 60px para no comérsela. */
-  .hito:not(:last-child)::before{content:"";position:absolute;left:43px;top:var(--carril);bottom:0;margin-left:-1px;border-left:2px dashed var(--trazo)}
-  .hito p{margin:10px 0 0 60px;max-width:60ch}
+/* La ficha cuelga del punto del camino hacia arriba o hacia abajo. El ancho va
+   en `em` para que encoja junto con la letra y no se descuadre el hueco
+   reservado. */
+.ficha{position:absolute;left:50%;transform:translateX(-50%);width:17.5em;text-align:center}
+.parada[data-lado="abajo"] .ficha{top:var(--hueco)}
+.parada[data-lado="arriba"] .ficha{bottom:var(--hueco)}
+.ficha b{display:block;font-family:"Barlow Condensed",sans-serif;font-weight:800;
+         font-size:1.9em;line-height:1.1;color:var(--blue)}
+.ficha p{margin:.45em 0 0;font-size:1.06em;line-height:1.55;color:var(--dim)}
+
+/* Lista de respaldo: solo por debajo del corte, ver más abajo. */
+.camino-lista{display:none}
+
+/* Por debajo de 1080px el camino deja las fichas tan juntas que se tocan, que
+   es justo lo que no puede pasar. Se cambia por la lista vertical de siempre.
+   No es el mismo corte que el resto del sitio (700/900) a propósito: lo que
+   manda aquí es cuándo dejan de caber las nueve fichas, no la barra. */
+@media(max-width:1080px){
+  .camino{display:none}
+  .camino-lista{display:block;list-style:none;margin:0;padding:0 0 0 26px;
+                border-left:3px solid var(--trazo)}
+  .camino-lista li{position:relative;padding:0 0 26px}
+  .camino-lista li:last-child{padding-bottom:0}
+  .camino-lista li::before{content:"";position:absolute;left:-33px;top:6px;
+    width:13px;height:13px;border-radius:99px;background:var(--white);border:2.5px solid var(--blue)}
+  .camino-lista b{display:block;font-family:"Barlow Condensed",sans-serif;font-weight:800;
+                  font-size:23px;line-height:1;color:var(--blue)}
+  .camino-lista p{margin:7px 0 0;font-size:15px;line-height:1.6;color:var(--dim);max-width:62ch}
 }
 
 .values{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
