@@ -3,7 +3,15 @@ import SectionHead from '../components/SectionHead'
 import Stats from '../components/Stats'
 import JoinCta from '../components/JoinCta'
 import Sponsors from '../components/Sponsors'
-import { club, cifrasClub, equiposDestacados, noticias, retransmisiones } from '../data/contenido'
+import {
+  club,
+  cifrasClub,
+  equiposDestacados,
+  noticias,
+  retransmisiones,
+  estadoPreinscripcion,
+  textoPreinscripcion,
+} from '../data/contenido'
 
 export default function Inicio() {
   const destacadas = noticias.slice(0, 2)
@@ -20,9 +28,11 @@ export default function Inicio() {
           <h1>
             Club Voleibol<em>Oviedo</em>
           </h1>
+          {/* Texto dictado por el club el 08-08-2026: no reescribir. */}
           <p className="lede">
-            Aquí se entrena, se compite y se hace equipo. Del alevín que aprende a sacar por abajo al sénior que
-            juega en categoría nacional, en el mismo pabellón y con la misma camiseta.
+            Aquí se entrena, se compite y se construyen personas. Desde la cantera hasta la Superliga 2, todos
+            compartimos el mismo pabellón, la misma camiseta y los mismos valores. Porque en el Club Voleibol
+            Oviedo no solo formamos jugadores: formamos equipos, amistades y futuro.
           </p>
           <div className="btns">
             <a className="btn" href="#equipos">Ver equipos</a>
@@ -120,7 +130,7 @@ export default function Inicio() {
       <JoinCta
         id="apuntate"
         title="¿Te apuntas?"
-        text="Inscripciones abiertas para la temporada 26/27, desde los 8 años. Rellena el formulario y te decimos con qué equipo entrena."
+        text={textoPreinscripcion[estadoPreinscripcion()]}
       />
 
       {/* ─────────── patrocinadores ─────────── */}

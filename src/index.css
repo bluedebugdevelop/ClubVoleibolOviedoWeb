@@ -232,6 +232,8 @@ h1 em{font-style:normal;display:block;color:var(--blue-light)}
 .sponsors img{height:38px;opacity:.55;filter:grayscale(1);
   transition:opacity .2s,filter .2s,transform .22s cubic-bezier(.22,.68,.3,1.1)}
 .sponsors a:hover img{opacity:1;filter:none;transform:scale(1.08)}
+/* patrocinador del que aún no sabemos la web: se pinta el logo, pero sin enlace */
+.sponsors .sin-enlace{display:inline-flex}
 .sponsors .more{margin-left:auto;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:13px;
   letter-spacing:.16em;text-transform:uppercase;color:var(--blue);text-decoration:none}
 
@@ -813,7 +815,12 @@ footer .legal .credito b{color:#b9cbe0;font-weight:600}
 .aro{width:190px;height:190px;margin:0 auto;border-radius:50%;background:#fff;border:1.5px solid var(--line);
   display:grid;place-content:center;
   transition:border-color .28s,box-shadow .28s,transform .28s cubic-bezier(.22,.68,.3,1.1)}
-.aro img{width:106px;height:106px;object-fit:contain;
+/* El hueco del logo NO es cuadrado (08-08-2026): la mayoría de los logos de
+   patrocinador son apaisados —«Funerarias | Reunidas», «Centro Fisan»— y
+   dentro de un cuadrado de 106px se quedaban en una tira de 30px de alto.
+   Con una caja ancha y baja llenan el círculo, y los verticales siguen sin
+   desbordar porque manda el alto. */
+.aro img{width:auto;height:auto;max-width:152px;max-height:100px;object-fit:contain;
   transition:transform .32s cubic-bezier(.22,.68,.3,1.2)}
 .marca:hover .aro{border-color:var(--marca);transform:translateY(-4px);
   box-shadow:0 0 0 7px var(--marca-glow),0 20px 38px -20px var(--marca)}
@@ -825,8 +832,11 @@ footer .legal .credito b{color:#b9cbe0;font-weight:600}
 
 /* ficha de un patrocinador */
 .ficha-marca{display:grid;grid-template-columns:230px 1fr;gap:48px;align-items:start}
+.pie-patrocinio{margin:56px auto 0;max-width:62ch;text-align:center;color:var(--dim);font-size:15px;
+  line-height:1.6}
+.pie-patrocinio a{color:var(--blue);font-weight:600}
 .ficha-marca .aro.grande{width:230px;height:230px}
-.ficha-marca .aro.grande img{width:128px;height:128px}
+.ficha-marca .aro.grande img{max-width:184px;max-height:120px}
 .ficha-texto p{margin:0 0 16px;font-size:16.5px;line-height:1.75;color:#3d4b5a;max-width:66ch}
 .ficha-texto .web{display:inline-block;margin-top:10px;background:var(--marca);color:#fff;border-radius:10px;
   letter-spacing:.06em;text-transform:none;font-size:16px}
@@ -957,6 +967,11 @@ footer .legal .credito b{color:#b9cbe0;font-weight:600}
 .form select:focus{outline:none;border-color:var(--blue)}
 .form input[type="date"]{min-height:43px}
 
+/* Caja base del aviso. Hasta el 08-08-2026 solo existía dentro de `.form`, y el
+   aviso de la ventana de preinscripción vive fuera de ningún formulario: sin
+   esto salía como un párrafo suelto, sin caja. */
+.notice{border:1px solid var(--line);background:#fff;padding:14px 18px;margin:0 auto 22px;
+  max-width:62ch;font-size:14.5px;line-height:1.55}
 .notice.bien{border-color:#1a8a4c;background:#eaf7ef;color:#155e35}
 .notice.aviso{border-color:#d8a41a;background:#fdf6e3;color:#6b4e07}
 .notice a{color:inherit;font-weight:600}
@@ -1038,9 +1053,9 @@ footer .legal .credito b{color:#b9cbe0;font-weight:600}
   /* patrocinadores */
   .marcas{gap:34px 20px}
   .aro{width:160px;height:160px}
-  .aro img{width:88px;height:88px}
+  .aro img{max-width:128px;max-height:84px}
   .ficha-marca .aro.grande{width:186px;height:186px}
-  .ficha-marca .aro.grande img{width:104px;height:104px}
+  .ficha-marca .aro.grande img{max-width:148px;max-height:96px}
   .marca b{font-size:20px;margin-top:16px}
   .ficha-texto p{font-size:15.5px}
 

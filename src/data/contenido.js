@@ -11,8 +11,12 @@ export const club = {
   // Dos buzones (07-08-2026): el general para todo, y uno aparte solo para
   // patrocinio. Todo lo que cuelgue de /patrocinar —avisos del formulario,
   // enlaces de "escríbenos"— usa `emailPatrocinio`; el resto del sitio, `email`.
+  //
+  // OJO (08-08-2026): el buzón de patrocinio pasa de `patrocinadores@` a
+  // `cvopatrocinadores@` porque así lo pidió el club por correo. Los 54
+  // borradores de la campaña de captación siguen firmados con `patrocinadores@`.
   email: 'info@clubvoleiboloviedo.com',
-  emailPatrocinio: 'patrocinadores@clubvoleiboloviedo.com',
+  emailPatrocinio: 'cvopatrocinadores@clubvoleiboloviedo.com',
   // El teléfono del club NO se publica en la web (decisión del 03-08-2026): se
   // quitó del pie, de contacto, de los avisos de los formularios y del aviso
   // legal. Ojo: los campos "teléfono" de los formularios son otra cosa, ahí lo
@@ -391,6 +395,37 @@ export const canteraFacts = [
 export const formularioInscripcionUrl =
   'https://docs.google.com/forms/d/e/1FAIpQLSd08Q58zffO-cBGtb6iNxANuPfB5QyQ1YQVxlNLjd5RJXHBPg/viewform'
 
+// ---------------------------------------------------------------------------
+// Preinscripción (08-08-2026).
+//
+// La inscripción NO está abierta todo el año: hay una ventana de preinscripción
+// del 10 al 25 de agosto. Fuera de esa ventana la web no invita a rellenar el
+// formulario, avisa de cuándo abre (o de que ya cerró) y deja el correo del club.
+//
+// Las fechas son las únicas dos líneas que hay que tocar cada temporada.
+// ---------------------------------------------------------------------------
+export const preinscripcion = {
+  abre: '2026-08-10',
+  cierra: '2026-08-25', // incluido: cuenta el día entero
+  texto: 'del 10 al 25 de agosto',
+  url: formularioInscripcionUrl,
+}
+
+/** 'antes' · 'abierta' · 'cerrada' — se calcula en cada carga, sin tocar nada. */
+export function estadoPreinscripcion(hoy = new Date()) {
+  const dia = `${hoy.getFullYear()}-${String(hoy.getMonth() + 1).padStart(2, '0')}-${String(hoy.getDate()).padStart(2, '0')}`
+  if (dia < preinscripcion.abre) return 'antes'
+  if (dia > preinscripcion.cierra) return 'cerrada'
+  return 'abierta'
+}
+
+/** Frase para las llamadas a inscripción repartidas por el sitio. */
+export const textoPreinscripcion = {
+  antes: `La preinscripción para la temporada 26/27 se abre ${preinscripcion.texto}. Desde los 8 años.`,
+  abierta: `Preinscripción abierta para la temporada 26/27, ${preinscripcion.texto}. Desde los 8 años.`,
+  cerrada: 'La preinscripción de la temporada 26/27 ya está cerrada. Escríbenos y te contamos si queda hueco.',
+}
+
 // Opciones del desplegable del formulario de inscripción. Son los nombres
 // reales de los equipos: no se calcula la categoría por año de nacimiento
 // porque las bandas de edad las fija la federación y las asigna el club.
@@ -581,9 +616,9 @@ export const noticias = [
   {
     id: 'n2',
     categoria: 'Cantera',
-    fecha: '4 sep 2026',
-    titulo: 'Abiertas las inscripciones para la 26/27',
-    resumen: 'Desde alevín hasta juvenil. El formulario está abierto en la web.',
+    fecha: '10 ago 2026',
+    titulo: 'Abierta la preinscripción para la 26/27',
+    resumen: 'Desde alevín hasta juvenil. El plazo es del 10 al 25 de agosto y el formulario está en la web.',
     img: '/media/bloqueo.jpg',
   },
   {
@@ -834,7 +869,89 @@ export const nivelesPatrocinio = [
 // Bluedebug (`src/app/layout.tsx`) y de su ficha de producto de VBStats
 // (`src/data/apps.ts`). Los colores son los de cada marca, y se usan solo para
 // el brillo del aro al pasar por encima; `glow` es ese mismo color en rgba.
+// Los logos los mandó el club el 08-08-2026 y están procesados en
+// `public/media/patrocinadores/`: fondo blanco quitado y márgenes recortados,
+// para que llenen el círculo de la ficha y la banda de portada.
+//
+// `web` es la página propia de cada marca (se abre en pestaña nueva). Los que
+// tienen `parrafos` llevan además ficha en /patrocinadores/:slug; los que no,
+// enlazan directamente fuera. PENDIENTE: Reformas Precisión y La Sidrería de
+// Güelita no tienen web conocida, así que su logo se pinta sin enlace hasta que
+// el club pase la dirección.
 export const patrocinadoresActuales = [
+  {
+    slug: 'geff',
+    nombre: 'GEFF',
+    logo: '/media/patrocinadores/geff.png',
+    tagline: 'Equipaciones deportivas personalizadas',
+    web: 'https://geffsport.com/',
+    webTexto: 'geffsport.com',
+    color: '#111111',
+    glow: 'rgba(17,17,17,.18)',
+    descripcion: 'Fabricante de equipaciones deportivas personalizadas por sublimación.',
+  },
+  {
+    slug: 'imq-asturias',
+    nombre: 'IMQ Asturias',
+    logo: '/media/patrocinadores/imq-asturias.png',
+    tagline: 'El seguro de salud de Asturias',
+    web: 'https://www.imqasturias.es/',
+    webTexto: 'imqasturias.es',
+    color: '#3aaa35',
+    glow: 'rgba(58,170,53,.22)',
+    descripcion: 'Seguros de salud con cuadro médico propio en Asturias.',
+  },
+  {
+    slug: 'funerarias-reunidas',
+    nombre: 'Funerarias Reunidas',
+    logo: '/media/patrocinadores/funerarias-reunidas.png',
+    tagline: 'Servicios funerarios en Asturias',
+    web: 'https://funerariasreunidas.com/',
+    webTexto: 'funerariasreunidas.com',
+    color: '#1f4b3a',
+    glow: 'rgba(31,75,58,.22)',
+    descripcion: 'Servicios funerarios y tanatorios en Asturias.',
+  },
+  {
+    slug: 'palacio-de-garana',
+    nombre: 'Palacio de Garaña',
+    logo: '/media/patrocinadores/palacio-de-garana.png',
+    tagline: 'Hotel, camping y restaurante en Llanes',
+    web: 'https://www.palaciodegarana.com/',
+    webTexto: 'palaciodegarana.com',
+    color: '#1c5f9e',
+    glow: 'rgba(28,95,158,.22)',
+    descripcion: 'Hotel, camping, restaurante y piscina bar en Garaña de Pría, Llanes.',
+  },
+  {
+    slug: 'centro-fisan',
+    nombre: 'Centro Fisan',
+    logo: '/media/patrocinadores/centro-fisan.png',
+    tagline: 'Fisioterapia y salud',
+    web: 'https://centrofisan.es/',
+    webTexto: 'centrofisan.es',
+    color: '#2b9cd8',
+    glow: 'rgba(43,156,216,.22)',
+    descripcion: 'Centro de fisioterapia y salud: fisioterapia, entrenamiento personal y pilates.',
+  },
+  {
+    slug: 'reformas-precision',
+    nombre: 'Reformas Precisión',
+    logo: '/media/patrocinadores/reformas-precision.png',
+    tagline: 'Reformas y rehabilitación',
+    color: '#2b3573',
+    glow: 'rgba(43,53,115,.22)',
+    descripcion: 'Empresa de reformas.',
+  },
+  {
+    slug: 'sidreria-guelita',
+    nombre: 'La Sidrería de Güelita',
+    logo: '/media/patrocinadores/sidreria-guelita.png',
+    tagline: 'Sidrería y cocina asturiana',
+    color: '#b5651d',
+    glow: 'rgba(181,101,29,.22)',
+    descripcion: 'Sidrería de cocina asturiana.',
+  },
   {
     slug: 'bluedebug',
     nombre: 'Bluedebug',
@@ -866,6 +983,21 @@ export const patrocinadoresActuales = [
     ],
   },
 ]
+
+/** Solo tienen ficha propia en /patrocinadores/:slug los que traen texto escrito. */
+export const tieneFicha = (marca) => Array.isArray(marca.parrafos) && marca.parrafos.length > 0
+
+/**
+ * A dónde lleva el logo de un patrocinador:
+ *   - ficha interna, si tiene texto escrito
+ *   - su propia web en pestaña nueva, si no
+ *   - a ningún sitio, si aún no sabemos su web
+ */
+export function enlaceDePatrocinador(marca) {
+  if (tieneFicha(marca)) return { to: `/patrocinadores/${marca.slug}` }
+  if (marca.web) return { href: marca.web, target: '_blank', rel: 'noopener noreferrer' }
+  return null
+}
 
 // ---------------------------------------------------------------------------
 // Tienda — DATOS DE MUESTRA (precios de muestra)

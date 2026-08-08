@@ -7,6 +7,8 @@ import {
   formularioInscripcionUrl,
   opcionesInscripcion,
   posicionesInscripcion,
+  preinscripcion,
+  estadoPreinscripcion,
 } from '../data/contenido'
 
 const VACIO = {
@@ -22,6 +24,7 @@ const VACIO = {
 }
 
 export default function Inscripciones() {
+  const ventana = estadoPreinscripcion()
   const [datos, setDatos] = useState(VACIO)
   const [consentimiento, setConsentimiento] = useState(false)
   const [estado, setEstado] = useState('inicial') // inicial · enviando · ok · sinConectar · error
@@ -68,10 +71,10 @@ export default function Inscripciones() {
   return (
     <>
       <PageHead
-        crumbs={<><Link to="/">Inicio</Link> · Inscripciones</>}
+        crumbs={<><Link to="/">Inicio</Link> · Preinscripción</>}
         kicker="Temporada 2026/27"
-        title="Inscripciones"
-        sub="Apúntate al CV Oviedo para la temporada 2026/27."
+        title="Preinscripción"
+        sub={`La inscripción no está abierta todo el año: la preinscripción para la temporada 2026/27 es ${preinscripcion.texto}.`}
         bg="/media/hero-saque.jpg"
         foco="center 54%"
       />
@@ -82,17 +85,55 @@ export default function Inscripciones() {
 
           Las inscripciones se hacen en el Google Form del club: se ENLAZA, no
           se incrusta, porque pide iniciar sesión en Google y esa pantalla no
-          funciona dentro de un <iframe>. Ver `formularioInscripcionUrl`. */}
+          funciona dentro de un <iframe>. Ver `formularioInscripcionUrl`.
+
+          Desde el 08-08-2026 el enlace solo se enseña DENTRO de la ventana de
+          preinscripción (`preinscripcion` en contenido.js). Fuera de ella se
+          avisa de cuándo abre o de que ya cerró, y se deja el correo del club:
+          la fecha manda, no hay que acordarse de tapar el botón. */}
       <section className="sec" id="formulario">
         {formularioInscripcionUrl ? (
           <div className="form-externo">
-            <a className="btn solid grande" href={formularioInscripcionUrl} target="_blank" rel="noreferrer">
-              Abrir el formulario de inscripción →
-            </a>
-            <p className="letra-pequena">
-              Puede pedirte iniciar sesión con una cuenta de Google. Si prefieres no usarla, escríbenos a{' '}
-              <a href={`mailto:${club.email}`}>{club.email}</a> y te apuntamos igual.
-            </p>
+            {ventana === 'abierta' && (
+              <>
+                <p className="notice bien">
+                  <b>Preinscripción abierta {preinscripcion.texto}.</b> Rellena el formulario y nos ponemos en
+                  contacto contigo.
+                </p>
+                <a className="btn solid grande" href={preinscripcion.url} target="_blank" rel="noreferrer">
+                  Abrir la preinscripción →
+                </a>
+                <p className="letra-pequena">
+                  Puede pedirte iniciar sesión con una cuenta de Google. Si prefieres no usarla, escríbenos a{' '}
+                  <a href={`mailto:${club.email}`}>{club.email}</a> y te apuntamos igual.
+                </p>
+              </>
+            )}
+
+            {ventana === 'antes' && (
+              <>
+                <p className="notice aviso">
+                  <b>La preinscripción todavía no está abierta.</b> Se abre el 10 de agosto y se cierra el 25.
+                  Vuelve esos días y el formulario estará aquí mismo.
+                </p>
+                <p className="letra-pequena">
+                  Si quieres que te avisemos cuando abra, escríbenos a{' '}
+                  <a href={`mailto:${club.email}`}>{club.email}</a>.
+                </p>
+              </>
+            )}
+
+            {ventana === 'cerrada' && (
+              <>
+                <p className="notice aviso">
+                  <b>La preinscripción está cerrada.</b> El plazo fue {preinscripcion.texto}.
+                </p>
+                <p className="letra-pequena">
+                  Escríbenos a <a href={`mailto:${club.email}`}>{club.email}</a> y te decimos si queda hueco en
+                  algún equipo.
+                </p>
+              </>
+            )}
           </div>
         ) : (
           <FormularioPropio
@@ -112,7 +153,7 @@ export default function Inscripciones() {
           <div className="steps">
             <div className="step">
               <div className="num">1</div>
-              <h3>Rellena el formulario</h3>
+              <h3>Rellena la preinscripción</h3>
               <p>Nos cuentas la edad y el nombre del futuro jugador o jugadora, y te asignamos el equipo que le
                 corresponde por año de nacimiento y nivel.</p>
             </div>

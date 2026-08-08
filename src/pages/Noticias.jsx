@@ -3,7 +3,7 @@ import PageHead from '../components/PageHead'
 import SectionHead from '../components/SectionHead'
 import JoinCta from '../components/JoinCta'
 import Sponsors from '../components/Sponsors'
-import { noticias } from '../data/contenido'
+import { noticias, estadoPreinscripcion, textoPreinscripcion } from '../data/contenido'
 
 export default function Noticias() {
   const [destacada, ...resto] = noticias
@@ -56,7 +56,7 @@ export default function Noticias() {
 
       <JoinCta
         title="¿Te apuntas?"
-        text="Inscripciones abiertas para la temporada 26/27, desde los 8 años. Rellena el formulario y te decimos con qué equipo entrena."
+        text={textoPreinscripcion[estadoPreinscripcion()]}
       />
 
       <Sponsors />
