@@ -1,0 +1,77 @@
+<!doctype html>
+<!--
+  Cabecera de la ficha de VBStats (/patrocinadores/vbstats).
+
+  La banda de `PageHead` es muy apaisada y se pinta al 30% de opacidad sobre el
+  azul marino del club, así que aquí no vale una captura suelta: se compone una
+  escena con tres pantallas de la app, inclinadas y escalonadas, sobre ese mismo
+  azul. Van a la DERECHA porque el título y el texto de la cabecera caen a la
+  izquierda; así no se pisan.
+
+  Las capturas son de la propia app: salen de `bluedebug/public/vbstats`, que es
+  el repo de quien la hace. Nada bajado de internet.
+
+  Se renderiza con Chrome sin ventana, como los mapas de liga:
+
+    & "C:\Program Files\Google\Chrome\Application\chrome.exe" --headless `
+      --disable-gpu --hide-scrollbars --force-device-scale-factor=1 `
+      --window-size=2000,540 --default-background-color=00000000 `
+      --screenshot="..\..\public\media\patrocinadores\vbstats-cabecera.png" `
+      "vbstats.html"
+-->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<style>
+  /* --ink de index.css. Tiene que ser EXACTAMENTE este, o se ve el corte
+     entre la imagen y el fondo de la banda. */
+  :root{ --ink:#082139; --magenta:#e91e8c }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;width:2000px;height:540px;overflow:hidden}
+  body{background:var(--ink);position:relative}
+
+  /* Halo magenta de la marca: da color al azul sin tapar nada. */
+  .halo{position:absolute;width:1500px;height:1100px;right:-180px;top:-300px;
+    background:radial-gradient(closest-side,rgba(233,30,140,.55),rgba(233,30,140,0));
+    filter:blur(10px)}
+  .halo.dos{width:900px;height:700px;right:640px;top:180px;
+    background:radial-gradient(closest-side,rgba(124,196,247,.28),rgba(124,196,247,0))}
+
+  .escena{position:absolute;inset:0;display:flex;align-items:center;justify-content:flex-end;
+    gap:54px;padding-right:150px}
+
+  /* Cada móvil: marco oscuro con la captura dentro y un filo claro que hace de
+     brillo del cristal. */
+  /* Alto holgado a propósito: la banda de la web recorta por arriba y por abajo
+     (es más apaisada que esta imagen), así que los móviles tienen que caber
+     enteros con aire, no llegar justos a los cantos. */
+  .movil{width:205px;height:410px;border-radius:28px;padding:7px;flex:none;
+    background:linear-gradient(160deg,#3a4a5e,#0d1a28 45%);
+    box-shadow:0 44px 80px -30px rgba(0,0,0,.75),0 0 0 1px rgba(255,255,255,.10) inset}
+  .movil img{width:100%;height:100%;object-fit:cover;object-position:top center;
+    border-radius:22px;display:block}
+  /* Escalonados: el del medio sube y los de fuera bajan, girados hacia fuera. */
+  .movil.a{transform:rotate(-7deg) translateY(26px)}
+  .movil.b{transform:rotate(-2deg) translateY(-18px) scale(1.07);z-index:2}
+  .movil.c{transform:rotate(5deg) translateY(30px)}
+
+  /* Los dos cantos verticales fundidos en el azul, como en `cabeceras.ps1`:
+     sin esto se ve el borde recto de la escena. */
+  .fundido{position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(90deg,var(--ink) 14%,rgba(8,33,57,.55) 34%,rgba(8,33,57,0) 52%),
+               linear-gradient(270deg,var(--ink) 1%,rgba(8,33,57,0) 12%),
+               linear-gradient(0deg,var(--ink) 0%,rgba(8,33,57,0) 16%),
+               linear-gradient(180deg,var(--ink) 0%,rgba(8,33,57,0) 14%)}
+</style>
+</head>
+<body>
+  <div class="halo"></div>
+  <div class="halo dos"></div>
+  <div class="escena">
+    <div class="movil a"><img src="11.jpeg" alt=""></div>
+    <div class="movil b"><img src="14.jpeg" alt=""></div>
+    <div class="movil c"><img src="6.jpeg" alt=""></div>
+  </div>
+  <div class="fundido"></div>
+</body>
+</html>

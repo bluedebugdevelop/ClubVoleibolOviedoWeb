@@ -25,6 +25,8 @@ export default function Patrocinador() {
         kicker="Patrocinador del club"
         title={marca.nombre}
         sub={marca.tagline}
+        bg={marca.foto}
+        foco={marca.foco}
       />
 
       <section className="sec">

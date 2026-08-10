@@ -885,6 +885,13 @@ export const nivelesPatrocinio = [
 // club pase la dirección. La ficha ya aguanta marcas sin `web`: el botón solo se
 // pinta si la hay.
 //
+// `foto` es la imagen de la banda azul de la cabecera de la ficha, igual que la
+// foto de equipo en /equipos/:slug. Va al 30% de opacidad sobre el azul marino,
+// así que tiene que ser apaisada (unos 3,7:1) y con los cantos ya fundidos en
+// ese azul. Las de Bluedebug y VBStats se componen con
+// `scripts/cabeceras-marca/preparar.ps1` a partir de capturas de sus propias
+// apps. Sin `foto` la banda se queda lisa, como estaba.
+//
 // EL ORDEN DEL ARRAY MANDA: es el que se pinta en la banda de portada, en
 // /patrocinadores y en /patrocinar, sin reordenar en ningún sitio. Bluedebug y
 // VBStats van siempre las dos primeras (Diego, 10-08-2026); al añadir marcas
@@ -894,6 +901,7 @@ export const patrocinadoresActuales = [
     slug: 'bluedebug',
     nombre: 'Bluedebug',
     logo: '/media/bluedebug-logo.png',
+    foto: '/media/patrocinadores/bluedebug-cabecera.png',
     tagline: 'Automatización y transformación digital',
     web: 'https://bluedebug.com',
     webTexto: 'bluedebug.com',
@@ -909,6 +917,7 @@ export const patrocinadoresActuales = [
     slug: 'vbstats',
     nombre: 'VBStats',
     logo: '/media/vbstats-logo.png',
+    foto: '/media/patrocinadores/vbstats-cabecera.png',
     tagline: 'Estadísticas de voleibol en tiempo real',
     web: 'https://bluedebug.com/portfolio/vbstats',
     webTexto: 'bluedebug.com/portfolio/vbstats',

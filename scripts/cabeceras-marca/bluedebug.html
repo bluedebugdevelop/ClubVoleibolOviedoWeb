@@ -1,0 +1,74 @@
+<!doctype html>
+<!--
+  Cabecera de la ficha de Bluedebug (/patrocinadores/bluedebug).
+
+  Mismo molde que `vbstats.html` —tres móviles inclinados a la derecha, sobre el
+  azul marino de la banda y con los cantos fundidos—, pero enseñando TRES
+  productos distintos: AlignMe, DreamLeague y VBStats. Es lo que hace un estudio
+  de desarrollo, y así la ficha no acaba siendo un calco de la de VBStats.
+
+  Las capturas salen de `bluedebug/public`, el repo de la propia Bluedebug.
+
+  Dos recortes a propósito:
+    · el `margin-top` negativo se come la barra de estado del móvil (hora,
+      cobertura, batería), que en una cabecera canta muchísimo;
+    · DreamLeague se queda solo con la parte de arriba, porque más abajo salen
+      los escudos de equipos de LaLiga y esos no pintan nada en la web del club.
+
+  Se renderiza igual que el otro:
+
+    & "C:\Program Files\Google\Chrome\Application\chrome.exe" --headless `
+      --disable-gpu --hide-scrollbars --force-device-scale-factor=1 `
+      --window-size=2000,540 `
+      --screenshot="..\..\public\media\patrocinadores\bluedebug-cabecera.png" `
+      "bluedebug.html"
+-->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<style>
+  :root{ --ink:#082139; --bd:#0892d0 }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;width:2000px;height:540px;overflow:hidden}
+  body{background:var(--ink);position:relative}
+
+  /* Halo con el azul de Bluedebug, no con el magenta de VBStats. */
+  .halo{position:absolute;width:1500px;height:1100px;right:-180px;top:-300px;
+    background:radial-gradient(closest-side,rgba(8,146,208,.55),rgba(8,146,208,0));
+    filter:blur(10px)}
+  .halo.dos{width:900px;height:700px;right:640px;top:180px;
+    background:radial-gradient(closest-side,rgba(124,196,247,.26),rgba(124,196,247,0))}
+
+  .escena{position:absolute;inset:0;display:flex;align-items:center;justify-content:flex-end;
+    gap:54px;padding-right:150px}
+
+  .movil{width:205px;height:410px;border-radius:28px;padding:7px;flex:none;overflow:hidden;
+    background:linear-gradient(160deg,#3a4a5e,#0d1a28 45%);
+    box-shadow:0 44px 80px -30px rgba(0,0,0,.75),0 0 0 1px rgba(255,255,255,.10) inset}
+  /* Las capturas llegan ya recortadas por `preparar.ps1` —sin barra de estado
+     ni barra de navegación—, así que aquí basta con encajarlas por arriba. */
+  .movil .pantalla{width:100%;height:100%;border-radius:22px;overflow:hidden}
+  .movil img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
+
+  .movil.a{transform:rotate(-7deg) translateY(26px)}
+  .movil.b{transform:rotate(-2deg) translateY(-18px) scale(1.07);z-index:2}
+  .movil.c{transform:rotate(5deg) translateY(30px)}
+
+  .fundido{position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(90deg,var(--ink) 14%,rgba(8,33,57,.55) 34%,rgba(8,33,57,0) 52%),
+               linear-gradient(270deg,var(--ink) 1%,rgba(8,33,57,0) 12%),
+               linear-gradient(0deg,var(--ink) 0%,rgba(8,33,57,0) 16%),
+               linear-gradient(180deg,var(--ink) 0%,rgba(8,33,57,0) 14%)}
+</style>
+</head>
+<body>
+  <div class="halo"></div>
+  <div class="halo dos"></div>
+  <div class="escena">
+    <div class="movil a"><div class="pantalla"><img src="dreamleague-recorte.jpg" alt=""></div></div>
+    <div class="movil b"><div class="pantalla"><img src="alignme-recorte.jpg" alt=""></div></div>
+    <div class="movil c"><div class="pantalla"><img src="vbstats-inicio.jpeg" alt=""></div></div>
+  </div>
+  <div class="fundido"></div>
+</body>
+</html>
