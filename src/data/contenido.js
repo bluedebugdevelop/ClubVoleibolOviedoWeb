@@ -865,19 +865,25 @@ export const nivelesPatrocinio = [
   },
 ]
 
-// Patrocinadores del club. El copy NO es inventado: sale de la propia web de
-// Bluedebug (`src/app/layout.tsx`) y de su ficha de producto de VBStats
-// (`src/data/apps.ts`). Los colores son los de cada marca, y se usan solo para
-// el brillo del aro al pasar por encima; `glow` es ese mismo color en rgba.
-// Los logos los mandó el club el 08-08-2026 y están procesados en
-// `public/media/patrocinadores/`: fondo blanco quitado y márgenes recortados,
-// para que llenen el círculo de la ficha y la banda de portada.
+// Patrocinadores del club. El copy NO es inventado: cada ficha se escribió
+// leyendo la web de la propia marca (geffsport.com, imqasturias.es,
+// funerariasreunidas.com, palaciodegarana.com, centrofisan.es) y, en el caso de
+// Bluedebug y VBStats, su `src/app/layout.tsx` y su `src/data/apps.ts`. Los
+// colores son los de cada marca, y se usan solo para el brillo del aro al pasar
+// por encima; `glow` es ese mismo color en rgba. Los logos los mandó el club el
+// 08-08-2026 y están procesados en `public/media/patrocinadores/`: fondo blanco
+// quitado y márgenes recortados, para que llenen el círculo de la ficha y la
+// banda de portada.
 //
 // `web` es la página propia de cada marca (se abre en pestaña nueva). Los que
 // tienen `parrafos` llevan además ficha en /patrocinadores/:slug; los que no,
-// enlazan directamente fuera. PENDIENTE: Reformas Precisión y La Sidrería de
-// Güelita no tienen web conocida, así que su logo se pinta sin enlace hasta que
-// el club pase la dirección.
+// enlazan directamente fuera. La Sidrería de Güelita no tiene web, así que su
+// `web` apunta al Instagram: se confirmó que es la suya porque la foto de perfil
+// es el mismo dibujo que el logo que mandó el club. PENDIENTE (10-08-2026):
+// Reformas Precisión sigue sin web ni datos verificables —buscada y sin rastro
+// en internet—, así que se queda sin ficha y con el logo sin enlace hasta que el
+// club pase la dirección. La ficha ya aguanta marcas sin `web`: el botón solo se
+// pinta si la hay.
 export const patrocinadoresActuales = [
   {
     slug: 'geff',
@@ -889,6 +895,10 @@ export const patrocinadoresActuales = [
     color: '#111111',
     glow: 'rgba(17,17,17,.18)',
     descripcion: 'Fabricante de equipaciones deportivas personalizadas por sublimación.',
+    parrafos: [
+      'GEFF es una fábrica española de equipaciones deportivas personalizadas. Nació en 2010, forma parte del grupo Stampa Team y su planta de 2.000 m² es una de las mayores de Europa dedicadas a la personalización textil por sublimación.',
+      'Fabrica ropa de juego para clubes de voleibol, baloncesto, rugby y otros deportes, con el diseño incluido y plazos de entrega de unos quince días laborables. Distribuye en Europa, Estados Unidos y Oriente Medio, y monta una tienda online para cada club, para que las familias hagan sus pedidos directamente.',
+    ],
   },
   {
     slug: 'imq-asturias',
@@ -900,6 +910,10 @@ export const patrocinadoresActuales = [
     color: '#3aaa35',
     glow: 'rgba(58,170,53,.22)',
     descripcion: 'Seguros de salud con cuadro médico propio en Asturias.',
+    parrafos: [
+      'IMQ Asturias es una aseguradora de salud cien por cien asturiana. La fundó en 1954 un grupo de médicos de la región —de ahí su nombre, Igualatorio Médico-Quirúrgico y de Especialidades de Asturias— para atender a los colectivos que entonces quedaban fuera de la Seguridad Social.',
+      'Hoy es una de las entidades de referencia del seguro médico en el Principado, con cuadro médico propio, oficinas en Oviedo y Gijón y pólizas que cubren especialidades, medios de diagnóstico, fisioterapia, psicología y hospitalización. Su app permite consultar el cuadro médico, pedir cita y hacer telemedicina.',
+    ],
   },
   {
     slug: 'funerarias-reunidas',
@@ -911,6 +925,10 @@ export const patrocinadoresActuales = [
     color: '#1f4b3a',
     glow: 'rgba(31,75,58,.22)',
     descripcion: 'Servicios funerarios y tanatorios en Asturias.',
+    parrafos: [
+      'Funerarias Reunidas es una empresa asturiana de servicios funerarios de origen familiar. Nació de la unión de varias funerarias pequeñas y lleva consolidándose en el Principado desde 1979, hasta convertirse en una de las referencias del sector en la región.',
+      'Tiene las oficinas centrales en Oviedo y gestiona los tanatorios de Los Arenales, en la propia ciudad, y Puente Nora, en Lugones. Las instalaciones de Los Arenales, levantadas en 1982 junto al cementerio de El Salvador, cuentan con diecisiete salas de velatorio, capilla, cafetería-restaurante, floristería propia y crematorio. Atienden las veinticuatro horas.',
+    ],
   },
   {
     slug: 'palacio-de-garana',
@@ -922,6 +940,10 @@ export const patrocinadoresActuales = [
     color: '#1c5f9e',
     glow: 'rgba(28,95,158,.22)',
     descripcion: 'Hotel, camping, restaurante y piscina bar en Garaña de Pría, Llanes.',
+    parrafos: [
+      'El Palacio de Garaña es un complejo turístico en Garaña de Pría, concejo de Llanes, montado sobre la antigua finca de los marqueses de Argüelles. Conserva la fachada del palacio de 1881, restaurado y reconvertido en hotel de dieciocho habitaciones.',
+      'En la misma finca reúne hotel, camping, restaurante y piscina, a poco más de un kilómetro de la playa de Guadamía y de los bufones de Pría, y a un paso de Ribadesella y los Picos de Europa. El restaurante abre en temporada y trabaja cocina asturiana de casa: cachopo, pote, fabada y los quesos de Pría.',
+    ],
   },
   {
     slug: 'centro-fisan',
@@ -933,6 +955,10 @@ export const patrocinadoresActuales = [
     color: '#2b9cd8',
     glow: 'rgba(43,156,216,.22)',
     descripcion: 'Centro de fisioterapia y salud: fisioterapia, entrenamiento personal y pilates.',
+    parrafos: [
+      'Centro Fisan es un centro de fisioterapia y salud de Pola de Siero. Empezó en 2011 como la clínica de la fisioterapeuta Sandra Villa y en 2019 se mudó a unas instalaciones nuevas y más grandes, ya con un equipo de varios fisioterapeutas que atiende cada caso desde distintas especialidades.',
+      'Su base es la terapia manual, apoyada en tecnología cuando el caso lo pide: INDIBA, ondas de choque, punción seca, electroestimulación y ecografía. Además de la consulta de fisioterapia trabaja readaptación deportiva, suelo pélvico, fisioterapia pediátrica, osteopatía, entrenamiento personal y clases de pilates.',
+    ],
   },
   {
     slug: 'reformas-precision',
@@ -948,9 +974,15 @@ export const patrocinadoresActuales = [
     nombre: 'La Sidrería de Güelita',
     logo: '/media/patrocinadores/sidreria-guelita.png',
     tagline: 'Sidrería y cocina asturiana',
+    web: 'https://www.instagram.com/lasidreriadeguelita/',
+    webTexto: '@lasidreriadeguelita',
     color: '#b5651d',
     glow: 'rgba(181,101,29,.22)',
-    descripcion: 'Sidrería de cocina asturiana.',
+    descripcion: 'Sidrería de cocina asturiana en Los Campos, Corvera. Cachopo, sidra escanciada y comida de casa.',
+    parrafos: [
+      'La Sidrería de Güelita es una sidrería asturiana de Los Campos, en el concejo de Corvera. Cocina de casa, sidra escanciada y, por encima de todo, cachopo: presume de haber ganado el mejor cachopo de Asturias en 2021 y el premio al cachopo más popular del mundo en 2022.',
+      'Está en la calle Carmen Sarmiento, y al comedor le suma menús de domingo con música en vivo y reparto a domicilio en la zona de Avilés. No tiene web: lo suyo lo cuenta en Instagram.',
+    ],
   },
   {
     slug: 'bluedebug',

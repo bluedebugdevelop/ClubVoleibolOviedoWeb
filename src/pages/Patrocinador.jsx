@@ -1,7 +1,7 @@
 import { Link, useParams } from 'react-router-dom'
 import PageHead from '../components/PageHead'
 import NoEncontrado from './NoEncontrado'
-import { patrocinadoresActuales } from '../data/contenido'
+import { patrocinadoresActuales, tieneFicha } from '../data/contenido'
 
 /* Ficha de un patrocinador: quién es, qué hace y su web. Sin nada de vender
    patrocinio — eso no vive en esta parte del sitio. */
@@ -9,7 +9,8 @@ export default function Patrocinador() {
   const { slug } = useParams()
   const marca = patrocinadoresActuales.find((p) => p.slug === slug)
 
-  if (!marca) return <NoEncontrado />
+  // Sin texto escrito no hay ficha que enseñar: la marca existe, pero su URL no.
+  if (!marca || !tieneFicha(marca)) return <NoEncontrado />
 
   const tokens = { '--marca': marca.color, '--marca-glow': marca.glow }
 
@@ -37,9 +38,11 @@ export default function Patrocinador() {
               <p key={t.slice(0, 40)}>{t}</p>
             ))}
 
-            <a className="btn solid web" href={marca.web} target="_blank" rel="noopener noreferrer">
-              {marca.webTexto} ↗
-            </a>
+            {marca.web && (
+              <a className="btn solid web" href={marca.web} target="_blank" rel="noopener noreferrer">
+                {marca.webTexto} ↗
+              </a>
+            )}
           </div>
         </div>
 
