@@ -681,45 +681,37 @@ footer .legal .credito b{color:#b9cbe0;font-weight:600}
 .form-externo .letra-pequena{margin:20px auto 0;max-width:56ch}
 
 /* El botón es lo único que se pide hacer en esta página, así que se le da
-   cuerpo: el azul del club en degradado, un brillo diagonal que lo barre al
-   pasar por encima y la flecha que avanza sola. Esquinas a escuadra, como el
-   resto del sitio — de cartel, no de interfaz. Todo el movimiento es transform
-   y opacity (nunca ancho ni alto, que obligan a recalcular la página) y se
-   apaga entero con `prefers-reduced-motion`.
+   cuerpo: el azul del club en degradado, sombra que lo despega del fondo y la
+   flecha que avanza sola al pasar por encima. Esquinas redondeadas (Diego,
+   10-08-2026) — es la excepción del sitio, que va a escuadra. Hubo un brillo
+   que lo barría; se quitó, no gustaba.
+   Todo el movimiento es transform (nunca ancho ni alto, que obligan a
+   recalcular la página) y se apaga entero con `prefers-reduced-motion`.
    Ojo: el `background` hay que repetirlo en :hover porque si no gana el de
    `.btn.solid:hover`, que es igual de específico, y se lleva el degradado. */
-.btn.grande{position:relative;overflow:hidden;
-  display:inline-flex;align-items:center;justify-content:center;gap:16px;
-  font-size:20px;padding:24px 52px;letter-spacing:.1em;
+.btn.grande{display:inline-flex;align-items:center;justify-content:center;gap:16px;
+  font-size:20px;padding:24px 52px;letter-spacing:.1em;border-radius:14px;
   background:linear-gradient(180deg,#1e6fd0,var(--blue) 52%,var(--blue-dark));
   box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 20px 38px -18px rgba(21,96,189,.85);
   transition:transform .2s cubic-bezier(.2,.7,.3,1),box-shadow .2s ease}
-.btn.grande .txt,.btn.grande .flecha{position:relative;z-index:2}
 .btn.grande .flecha{transition:transform .2s cubic-bezier(.2,.7,.3,1)}
-
-/* el brillo: una banda inclinada, más ancha que el botón, que lo cruza entera */
-.btn.grande::before{content:"";position:absolute;inset:-2px -45%;z-index:1;pointer-events:none;
-  background:linear-gradient(100deg,transparent 45.5%,rgba(255,255,255,.52) 50%,transparent 54.5%);
-  transform:translateX(-62%);opacity:0;transition:transform .6s ease,opacity .2s ease}
 
 .btn.grande:hover,.btn.grande:focus-visible{transform:translateY(-3px);
   background:linear-gradient(180deg,#2278dd,#1966c8 52%,var(--blue-dark));
   box-shadow:inset 0 1px 0 rgba(255,255,255,.34),0 26px 44px -18px rgba(21,96,189,.95)}
-.btn.grande:hover::before,.btn.grande:focus-visible::before{transform:translateX(62%);opacity:1}
 .btn.grande:hover .flecha,.btn.grande:focus-visible .flecha{transform:translateX(7px)}
 .btn.grande:focus-visible{outline:3px solid var(--blue-dark);outline-offset:4px}
 .btn.grande:active{transform:translateY(0);
   box-shadow:inset 0 2px 7px rgba(0,0,0,.24),0 10px 20px -14px rgba(21,96,189,.9)}
 
 @media(prefers-reduced-motion:reduce){
-  .btn.grande,.btn.grande::before,.btn.grande .flecha{transition:none}
+  .btn.grande,.btn.grande .flecha{transition:none}
   .btn.grande:hover,.btn.grande:focus-visible,.btn.grande:active{transform:none}
   .btn.grande:hover .flecha,.btn.grande:focus-visible .flecha{transform:none}
-  .btn.grande:hover::before,.btn.grande:focus-visible::before{opacity:0}
 }
 @media(max-width:560px){
   .form-externo{padding:34px 20px}
-  .btn.grande{font-size:16px;padding:20px 26px;letter-spacing:.08em;gap:12px}
+  .btn.grande{font-size:16px;padding:20px 26px;letter-spacing:.08em;gap:12px;border-radius:12px}
 }
 
 @media(max-width:860px){

@@ -100,11 +100,10 @@ export default function Inscripciones() {
                   <b>Preinscripción abierta {preinscripcion.texto}.</b> Rellena el formulario y nos ponemos en
                   contacto contigo.
                 </p>
-                {/* El texto va en spans para que quede por encima del brillo que
-                    barre el botón al pasar por encima, y para que la flecha
-                    pueda avanzar sola. La flecha es decorativa: no se lee. */}
+                {/* La flecha va en su propio span para poder avanzar sola al
+                    pasar por encima. Es decorativa: no se lee. */}
                 <a className="btn solid grande" href={preinscripcion.url} target="_blank" rel="noreferrer">
-                  <span className="txt">Abrir la preinscripción</span>
+                  Abrir la preinscripción
                   <span className="flecha" aria-hidden="true">→</span>
                 </a>
               </>
