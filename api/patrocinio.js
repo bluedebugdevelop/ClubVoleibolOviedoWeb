@@ -16,7 +16,11 @@
 // el correo de patrocinio. Nunca se pierde una solicitud en silencio.
 // ==========================================================================
 
-const CORREO_PATROCINIO = 'patrocinadores@clubvoleiboloviedo.com'
+// OJO con el "cvo" del principio: es `cvopatrocinadores@`, no `patrocinadores@`.
+// Hasta el 12-08-2026 aquí faltaba y las solicitudes se habrían ido a una
+// dirección que no existe. Es el mismo buzón que enseña la web en
+// `club.emailPatrocinio`; si se cambia uno, hay que cambiar el otro.
+const CORREO_PATROCINIO = 'cvopatrocinadores@clubvoleiboloviedo.com'
 
 const CAMPOS = ['empresa', 'contacto', 'telefono', 'email', 'web', 'mensaje']
 const OBLIGATORIOS = ['empresa', 'contacto', 'email']
@@ -88,7 +92,8 @@ export default async function handler(req, res) {
   // Ya NO cae en INSCRIPCIONES_TO: si el buzón de patrocinio no está declarado
   // se usa el suyo, no el de las inscripciones de cantera.
   const destino = process.env.PATROCINIO_TO || CORREO_PATROCINIO
-  const remitente = process.env.INSCRIPCIONES_FROM || 'CV Oviedo <onboarding@resend.dev>'
+  const remitente =
+    process.env.MAIL_FROM || process.env.INSCRIPCIONES_FROM || 'CV Oviedo <onboarding@resend.dev>'
 
   const filas = [
     ['Empresa', datos.empresa],

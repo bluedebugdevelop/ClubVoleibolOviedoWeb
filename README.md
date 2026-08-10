@@ -1,28 +1,50 @@
 # Web del Club Voleibol Oviedo
 
-Sitio del club en React + Vite. Se despliega en Vercel desde `main`.
-
-> **Antes de commitear: identidad de git.** El proyecto está en Vercel bajo la
-> cuenta `bluedebugdevelop` con **plan Hobby**, y ese plan solo despliega los
-> commits cuyo autor es el dueño de la cuenta. Un commit firmado con cualquier
-> otro correo deja el despliegue *Blocked* ("Vercel user not found"). Al clonar,
-> configura en el repo:
->
-> ```bash
-> git config user.name  "bluedebugdevelop"
-> git config user.email "256811162+bluedebugdevelop@users.noreply.github.com"
-> ```
->
-> Es `git config` sin `--global`: solo afecta a este repositorio. Para dejar
-> constancia de quién escribió cada cosa, usa `Co-Authored-By:` en el mensaje.
+Sitio del club en React + Vite. Se despliega en **Railway** desde `main`.
+`server.js` (Express) sirve `dist/` y monta los tres endpoints de `api/`.
 
 ```bash
 npm install
-npm run dev      # servidor de desarrollo
+npm run dev      # front (Vite). Pasa /api por proxy a localhost:3000
+npm run dev:api  # servidor Express, para probar los formularios en local
 npm run build    # build de producción
+npm run start    # lo que ejecuta Railway
 npm run lint     # oxlint
 npm run datos    # actualiza los datos de competición (ver abajo)
 ```
+
+## Formularios y correo
+
+Los tres formularios de la web mandan un correo y **no guardan nada**:
+
+| Formulario | Endpoint | A dónde llega |
+| --- | --- | --- |
+| Contacto | `/api/contacto` | `CONTACTO_TO` · por defecto el buzón de patrocinio |
+| Patrocinio | `/api/patrocinio` | `PATROCINIO_TO` · por defecto `cvopatrocinadores@` |
+| Inscripción | `/api/inscripcion` | `INSCRIPCIONES_TO` · por defecto `info@` |
+
+> El de inscripción **no se usa hoy**: las preinscripciones van al Google Form
+> del club. El código sigue entero y vuelve poniendo `formularioInscripcionUrl`
+> a `null` en `contenido.js`.
+
+### Variables de entorno (Railway → Variables)
+
+| Variable | Obligatoria | Para qué |
+| --- | --- | --- |
+| `RESEND_API_KEY` | **Sí** | Clave de [resend.com](https://resend.com). Sin ella los formularios responden 503 y la web enseña el correo del club en su lugar. |
+| `MAIL_FROM` | **Sí** | Remitente, p. ej. `CV Oviedo <web@clubvoleiboloviedo.com>`. Tiene que ser de un dominio **verificado en Resend**. |
+| `CONTACTO_TO` | No | Destino del formulario de contacto. |
+| `PATROCINIO_TO` | No | Destino del de patrocinio. |
+| `INSCRIPCIONES_TO` | No | Destino del de inscripción. |
+
+**El dominio hay que verificarlo en Resend.** Sin verificar, el único remitente
+que acepta es `onboarding@resend.dev`, y ese solo puede escribir a la dirección
+del titular de la cuenta de Resend: a `cvopatrocinadores@…` no llegaría nada.
+Verificar es entrar en Resend → Domains → Add Domain y copiar los registros DNS
+(SPF, DKIM y DMARC) donde esté el dominio.
+
+`INSCRIPCIONES_FROM` sigue valiendo como nombre antiguo de `MAIL_FROM`, por si
+ya estuviera puesta.
 
 ## Datos de competición
 

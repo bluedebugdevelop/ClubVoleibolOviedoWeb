@@ -90,7 +90,8 @@ export default async function handler(req, res) {
   }
 
   const destino = process.env.INSCRIPCIONES_TO || CORREO_CLUB
-  const remitente = process.env.INSCRIPCIONES_FROM || 'CV Oviedo <onboarding@resend.dev>'
+  const remitente =
+    process.env.MAIL_FROM || process.env.INSCRIPCIONES_FROM || 'CV Oviedo <onboarding@resend.dev>'
 
   const filas = [
     ['Jugador/a', datos.jugador],

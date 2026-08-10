@@ -9,8 +9,9 @@ import { legalActualizado, terceros, titular, tratamientos } from '../data/legal
    un formulario, hay que repasar los tres.
 
    Los textos describen lo que la web hace HOY, no una plantilla genérica:
-   qué formularios envían datos (inscripciones y patrocinio), cuál no envía
-   nada (contacto), y qué terceros intervienen. Ver src/data/legal.js. */
+   qué formularios envían datos y qué terceros intervienen. Desde el 12-08-2026
+   los tres envían: el de contacto también, que antes no. Ver
+   src/data/legal.js. */
 
 const CORREO = (
   <a href={`mailto:${club.email}`}>{club.email}</a>
@@ -132,13 +133,6 @@ function Privacidad() {
         también según su propia{' '}
         <a href="https://policies.google.com/privacy" target="_blank" rel="noreferrer">política de privacidad</a>.
         Si prefieres no usarlo, puedes apuntarte por correo escribiendo a {CORREO}.
-      </p>
-
-      <h3>Formulario de contacto</h3>
-      <p>
-        El formulario de la página de <Link to="/contacto">contacto</Link> todavía <b>no está conectado</b>: al
-        pulsar «enviar» no sale ningún dato del navegador ni llega nada al club. Para escribirnos de verdad, usa
-        el correo {CORREO}.
       </p>
 
       <h2>3. Datos de menores de edad</h2>

@@ -24,6 +24,7 @@ import { fileURLToPath } from 'node:url'
 
 import inscripcion from './api/inscripcion.js'
 import patrocinio from './api/patrocinio.js'
+import contacto from './api/contacto.js'
 
 const raiz = path.dirname(fileURLToPath(import.meta.url))
 const dist = path.join(raiz, 'dist')
@@ -56,6 +57,7 @@ app.use(express.json({ limit: '32kb' }))
 // en vez de acabar cayendo en el index.html de abajo.
 app.all('/api/inscripcion', inscripcion)
 app.all('/api/patrocinio', patrocinio)
+app.all('/api/contacto', contacto)
 
 // Vite mete el hash en el nombre de cada asset, así que se pueden cachear para
 // siempre. El resto (favicon, imágenes de public/) con el valor por defecto.

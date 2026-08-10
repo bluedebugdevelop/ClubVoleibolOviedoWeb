@@ -4,12 +4,53 @@ import PageHead from '../components/PageHead'
 import SectionHead from '../components/SectionHead'
 import { club } from '../data/contenido'
 
-export default function Contacto() {
-  const [enviado, setEnviado] = useState(false)
+const VACIO = {
+  nombre: '',
+  email: '',
+  mensaje: '',
+  web: '', // trampa para robots: oculta, una persona nunca la rellena
+}
 
-  function handleSubmit(e) {
+export default function Contacto() {
+  const [datos, setDatos] = useState(VACIO)
+  const [consentimiento, setConsentimiento] = useState(false)
+  const [estado, setEstado] = useState('inicial') // inicial · enviando · ok · sinConectar · error
+
+  function cambia(e) {
+    const { name, value } = e.target
+    setDatos((d) => ({ ...d, [name]: value }))
+  }
+
+  /* Hasta el 12-08-2026 esto no enviaba nada: solo ponía un aviso diciendo que
+     no estaba conectado. Ahora va a `/api/contacto`, con el mismo trato que los
+     otros dos formularios — incluida la comprobación de que la respuesta es
+     JSON: si el endpoint no estuviera desplegado, el servidor devolvería el
+     index.html con estado 200 y diríamos «enviado» sin haber enviado nada. */
+  async function handleSubmit(e) {
     e.preventDefault()
-    setEnviado(true)
+    setEstado('enviando')
+    try {
+      const r = await fetch('/api/contacto', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...datos, consentimiento }),
+      })
+      const esJson = (r.headers.get('content-type') || '').includes('application/json')
+      const cuerpo = esJson ? await r.json().catch(() => ({})) : {}
+
+      if (r.ok && cuerpo.ok === true) {
+        setDatos(VACIO)
+        setConsentimiento(false)
+        setEstado('ok')
+      } else if (!esJson || r.status === 404 || cuerpo.configurado === false) {
+        setEstado('sinConectar')
+      } else {
+        setEstado('error')
+      }
+    } catch (err) {
+      console.error('No se pudo contactar con /api/contacto:', err.message)
+      setEstado('sinConectar')
+    }
   }
 
   return (
@@ -78,25 +119,58 @@ export default function Contacto() {
         <section className="sec">
           <SectionHead title="Escríbenos" />
           <form className="form" onSubmit={handleSubmit}>
-            {enviado && (
-              <div className="notice">
-                Gracias por escribir. Este formulario todavía no está conectado a ningún envío automático: por
-                ahora, escribe directamente a {club.email}.
+            {estado === 'ok' && (
+              <div className="notice bien">
+                <b>Mensaje enviado.</b> Te respondemos en cuanto podamos.
               </div>
             )}
+            {estado === 'sinConectar' && (
+              <div className="notice aviso">
+                <b>El envío automático no está disponible ahora mismo.</b> Para no hacerte perder el tiempo:
+                escríbenos directamente a <a href={`mailto:${club.email}`}>{club.email}</a>.
+              </div>
+            )}
+            {estado === 'error' && (
+              <div className="notice aviso">
+                No hemos podido enviar el mensaje. Inténtalo de nuevo en un momento o escríbenos a{' '}
+                <a href={`mailto:${club.email}`}>{club.email}</a>.
+              </div>
+            )}
+
             <div className="field">
-              <label htmlFor="nombre">Nombre</label>
-              <input id="nombre" name="nombre" type="text" required />
+              <label htmlFor="nombre">Nombre *</label>
+              <input id="nombre" name="nombre" type="text" value={datos.nombre} onChange={cambia}
+                autoComplete="name" required />
             </div>
             <div className="field">
-              <label htmlFor="email">Email</label>
-              <input id="email" name="email" type="email" required />
+              <label htmlFor="email">Email *</label>
+              <input id="email" name="email" type="email" value={datos.email} onChange={cambia}
+                autoComplete="email" required />
             </div>
             <div className="field">
-              <label htmlFor="mensaje">Mensaje</label>
-              <textarea id="mensaje" name="mensaje" required />
+              <label htmlFor="mensaje">Mensaje *</label>
+              <textarea id="mensaje" name="mensaje" value={datos.mensaje} onChange={cambia} required />
             </div>
-            <button className="btn solid" type="submit">Enviar mensaje →</button>
+
+            {/* trampa para robots: fuera de pantalla y fuera del tabulador */}
+            <div className="trampa" aria-hidden="true">
+              <label htmlFor="web">No rellenes este campo</label>
+              <input id="web" name="web" type="text" tabIndex={-1} autoComplete="off"
+                value={datos.web} onChange={cambia} />
+            </div>
+
+            <label className="consent">
+              <input type="checkbox" checked={consentimiento} required
+                onChange={(e) => setConsentimiento(e.target.checked)} />
+              <span>
+                Autorizo al Club Voleibol Oviedo a usar estos datos para responderme. No se usan para nada más ni
+                se ceden a terceros. *
+              </span>
+            </label>
+
+            <button className="btn solid" type="submit" disabled={estado === 'enviando'}>
+              {estado === 'enviando' ? 'Enviando…' : 'Enviar mensaje →'}
+            </button>
           </form>
         </section>
       </div>

@@ -91,6 +91,20 @@ export const tratamientos = [
       'Mientras se gestiona la solicitud y, si acaba en inscripción, mientras dure la relación con el club.',
   },
   {
+    // Conectado el 12-08-2026. Hasta esa fecha no enviaba nada, y la política
+    // lo decía expresamente; ahora sí manda correo, así que pasa a ser un
+    // tratamiento más.
+    id: 'contacto',
+    titulo: 'Formulario de contacto',
+    donde: '/contacto',
+    datos: 'Nombre, correo electrónico y el mensaje que se escriba.',
+    finalidad: 'Responder a la consulta.',
+    base: 'El consentimiento que se marca en el propio formulario.',
+    gestion:
+      'No se guarda en ninguna base de datos: el mensaje se envía por correo electrónico al buzón del club y ahí se queda.',
+    conservacion: 'Mientras se responde y lo que dure la conversación.',
+  },
+  {
     id: 'patrocinio',
     titulo: 'Formulario de patrocinio',
     donde: '/patrocinar',
