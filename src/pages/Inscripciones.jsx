@@ -100,13 +100,13 @@ export default function Inscripciones() {
                   <b>Preinscripción abierta {preinscripcion.texto}.</b> Rellena el formulario y nos ponemos en
                   contacto contigo.
                 </p>
+                {/* El texto va en spans para que quede por encima del brillo que
+                    barre el botón al pasar por encima, y para que la flecha
+                    pueda avanzar sola. La flecha es decorativa: no se lee. */}
                 <a className="btn solid grande" href={preinscripcion.url} target="_blank" rel="noreferrer">
-                  Abrir la preinscripción →
+                  <span className="txt">Abrir la preinscripción</span>
+                  <span className="flecha" aria-hidden="true">→</span>
                 </a>
-                <p className="letra-pequena">
-                  Puede pedirte iniciar sesión con una cuenta de Google. Si prefieres no usarla, escríbenos a{' '}
-                  <a href={`mailto:${club.email}`}>{club.email}</a> y te apuntamos igual.
-                </p>
               </>
             )}
 
