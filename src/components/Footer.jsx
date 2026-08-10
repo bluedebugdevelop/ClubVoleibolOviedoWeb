@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import Crest from './Crest'
+import { redes } from './redes'
 import { club } from '../data/contenido'
 
 export default function Footer() {
@@ -34,10 +35,11 @@ export default function Footer() {
         </div>
         <div className="col">
           <b>Síguenos</b>
-          {/* PENDIENTE: enlaces reales a las redes sociales del club */}
-          <a href="#">Instagram</a>
-          <a href="#">Facebook</a>
-          <a href="#">YouTube</a>
+          {/* misma lista que la barra de arriba: sale de `club.redes`, así que
+              no hay que acordarse de tocar los dos sitios al añadir una red */}
+          {redes.map((r) => (
+            <a key={r.clave} href={r.href} target="_blank" rel="noreferrer">{r.nombre}</a>
+          ))}
         </div>
       </div>
       <div className="legal">

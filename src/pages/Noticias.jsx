@@ -34,24 +34,30 @@ export default function Noticias() {
           </div>
         </Link>
 
-        <SectionHead title="Más noticias" />
-        <div className="news-grid">
-          {resto.map((n) => (
-            <Link className="card" to="/noticias" key={n.id}>
-              <div className="ph">
-                <img src={n.img} alt={n.titulo} />
-              </div>
-              <div className="in">
-                <div className="meta">
-                  <b>{n.categoria}</b>
-                  <span>{n.fecha}</span>
-                </div>
-                <h3>{n.titulo}</h3>
-                <p>{n.resumen}</p>
-              </div>
-            </Link>
-          ))}
-        </div>
+        {/* con una sola noticia no hay "más": el titular «Más noticias» y su
+            rejilla vacía dejaban un hueco raro debajo de la destacada */}
+        {resto.length > 0 && (
+          <>
+            <SectionHead title="Más noticias" />
+            <div className="news-grid">
+              {resto.map((n) => (
+                <Link className="card" to="/noticias" key={n.id}>
+                  <div className="ph">
+                    <img src={n.img} alt={n.titulo} />
+                  </div>
+                  <div className="in">
+                    <div className="meta">
+                      <b>{n.categoria}</b>
+                      <span>{n.fecha}</span>
+                    </div>
+                    <h3>{n.titulo}</h3>
+                    <p>{n.resumen}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </>
+        )}
       </section>
 
       <JoinCta

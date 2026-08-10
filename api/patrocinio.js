@@ -16,11 +16,10 @@
 // el correo de patrocinio. Nunca se pierde una solicitud en silencio.
 // ==========================================================================
 
-// OJO con el "cvo" del principio: es `cvopatrocinadores@`, no `patrocinadores@`.
-// Hasta el 12-08-2026 aquí faltaba y las solicitudes se habrían ido a una
-// dirección que no existe. Es el mismo buzón que enseña la web en
-// `club.emailPatrocinio`; si se cambia uno, hay que cambiar el otro.
-const CORREO_PATROCINIO = 'cvopatrocinadores@clubvoleiboloviedo.com'
+// `patrocinadores@`, sin "cvo" delante (confirmado el 13-08-2026). Es el mismo
+// buzón que enseña la web en `club.emailPatrocinio`: si se cambia uno, hay que
+// cambiar el otro.
+const CORREO_PATROCINIO = 'patrocinadores@clubvoleiboloviedo.com'
 
 const CAMPOS = ['empresa', 'contacto', 'telefono', 'email', 'web', 'mensaje']
 const OBLIGATORIOS = ['empresa', 'contacto', 'email']

@@ -20,7 +20,7 @@
 // correo del club. Nunca se pierde un mensaje en silencio.
 // ==========================================================================
 
-const CORREO_DESTINO = 'cvopatrocinadores@clubvoleiboloviedo.com'
+const CORREO_DESTINO = 'patrocinadores@clubvoleiboloviedo.com'
 
 const CAMPOS = ['nombre', 'email', 'mensaje']
 const OBLIGATORIOS = ['nombre', 'email', 'mensaje']

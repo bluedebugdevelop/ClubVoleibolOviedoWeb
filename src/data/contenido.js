@@ -12,11 +12,11 @@ export const club = {
   // patrocinio. Todo lo que cuelgue de /patrocinar —avisos del formulario,
   // enlaces de "escríbenos"— usa `emailPatrocinio`; el resto del sitio, `email`.
   //
-  // OJO (08-08-2026): el buzón de patrocinio pasa de `patrocinadores@` a
-  // `cvopatrocinadores@` porque así lo pidió el club por correo. Los 54
-  // borradores de la campaña de captación siguen firmados con `patrocinadores@`.
+  // El de patrocinio es `patrocinadores@`, SIN "cvo" delante. Estuvo unos días
+  // como `cvopatrocinadores@` por un malentendido y se corrigió el 13-08-2026.
+  // Tiene que coincidir con el destino de `api/patrocinio.js`.
   email: 'info@clubvoleiboloviedo.com',
-  emailPatrocinio: 'cvopatrocinadores@clubvoleiboloviedo.com',
+  emailPatrocinio: 'patrocinadores@clubvoleiboloviedo.com',
   // El teléfono del club NO se publica en la web (decisión del 03-08-2026): se
   // quitó del pie, de contacto, de los avisos de los formularios y del aviso
   // legal. Ojo: los campos "teléfono" de los formularios son otra cosa, ahí lo
@@ -24,10 +24,15 @@ export const club = {
   sede: 'Polideportivo José Manuel Fuente, Colloto, Oviedo',
   sedeCorta: 'Pol. José Manuel Fuente',
   localidad: 'Colloto, Oviedo',
+  // Enlaces reales de las redes del club (13-08-2026). Antes eran '#'.
+  //
+  // Los pintan `Nav.jsx` y `Footer.jsx` recorriendo este objeto: lo que no esté
+  // aquí no sale. YouTube se quitó porque el club no ha dado su canal; para
+  // devolverlo basta con añadir `youtube: 'https://…'` y aparece solo en los
+  // dos sitios, con su icono.
   redes: {
-    instagram: '#',
-    facebook: '#',
-    youtube: '#',
+    instagram: 'https://www.instagram.com/clubvoleiboloviedo/',
+    facebook: 'https://www.facebook.com/voleiboloviedo?locale=es_ES',
   },
 }
 
@@ -601,73 +606,18 @@ export const retransmisiones = [
 // Noticias — DATOS DE MUESTRA
 // ---------------------------------------------------------------------------
 export const noticias = [
-  {
-    id: 'n1',
-    destacada: true,
-    categoria: 'Superliga 2 Masculino',
-    fecha: '12 sep 2026',
-    titulo: 'Arranca la pretemporada con doble sesión',
-    resumen: 'El grupo se incorpora al completo tras las vacaciones y encara seis semanas de preparación antes del inicio de la Superliga 2.',
-    // NO puede ser hero-remate.jpg: es la foto de fondo de la propia página de
-    // noticias y salía repetida justo debajo de sí misma. Tampoco fotos de
-    // equipo: esas van solo en el apartado de equipos.
-    img: '/media/defensa.jpg',
-  },
+  // Solo se publica la preinscripción (13-08-2026). Las otras siete eran datos
+  // de muestra y se retiraron: mejor una noticia de verdad que ocho inventadas.
+  // Al añadir más, la primera del array es la destacada y el resto van a la
+  // rejilla de abajo.
   {
     id: 'n2',
+    destacada: true,
     categoria: 'Cantera',
     fecha: '10 ago 2026',
     titulo: 'Abierta la preinscripción para la 26/27',
     resumen: 'Desde alevín hasta juvenil. El plazo es del 10 al 25 de agosto y el formulario está en la web.',
     img: '/media/bloqueo.jpg',
-  },
-  {
-    id: 'n3',
-    categoria: 'Primera Nacional Femenina',
-    fecha: '2 sep 2026',
-    titulo: 'Fichaje para la zona de ataque',
-    resumen: 'El equipo femenino refuerza la plantilla de cara a una temporada con el objetivo puesto en el ascenso.',
-    img: '/media/celebracion.jpg',
-  },
-  {
-    id: 'n4',
-    categoria: 'Club',
-    fecha: '28 ago 2026',
-    titulo: 'Nuevo acuerdo de patrocinio con VBStats',
-    resumen: 'El club incorpora estadísticas en tiempo real a todos sus partidos de competición nacional.',
-    img: '/media/pista-azul.jpg',
-  },
-  {
-    id: 'n5',
-    categoria: 'Superliga 2 Masculino',
-    fecha: '20 ago 2026',
-    titulo: 'Presentación de la plantilla 26/27',
-    resumen: 'El primer equipo masculino se presentó ante la afición con un entrenamiento abierto en el José Manuel Fuente.',
-    img: '/media/hero-saque.jpg',
-  },
-  {
-    id: 'n6',
-    categoria: 'Cantera',
-    fecha: '15 ago 2026',
-    titulo: 'Vuelven los entrenamientos de tecnificación',
-    resumen: 'Un mes de trabajo técnico para los equipos de cadete e infantil antes del arranque liguero.',
-    img: '/media/recepcion.jpg',
-  },
-  {
-    id: 'n7',
-    categoria: 'Club',
-    fecha: '3 ago 2026',
-    titulo: 'El club supera los 6.700 seguidores en redes',
-    resumen: 'La comunidad del CV Oviedo sigue creciendo temporada tras temporada.',
-    img: '/media/accion-vert.jpg',
-  },
-  {
-    id: 'n8',
-    categoria: 'Primera Nacional Femenina',
-    fecha: '22 jul 2026',
-    titulo: 'Pretemporada femenina: primer amistoso',
-    resumen: 'El equipo femenino debuta en pretemporada con un amistoso ante el CV Siero.',
-    img: '/media/celebracion-manos.jpg',
   },
 ]
 
