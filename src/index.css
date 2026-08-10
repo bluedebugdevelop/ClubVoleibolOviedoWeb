@@ -754,8 +754,11 @@ footer .legal .credito b{color:#b9cbe0;font-weight:600}
   --trazo:#8fb8e2;
   /* Hueco entre el punto del camino y la ficha. Antes salía de la mitad del
      balón; sin balón (08-08-2026) es un número propio, y va holgado porque
-     Diego pidió el texto más separado de las huellas. */
-  --hueco:40px;
+     Diego pidió el texto más separado de las huellas. Subido de 40 a 54 el
+     10-08-2026: a 40 los textos se leían pegados al rastro. Las paradas que
+     necesitan más —o que se quedan en los 40 de antes— lo mandan por `style`
+     desde QuienesSomos.jsx; ver `hueco` en RUTA. */
+  --hueco:54px;
   position:relative;width:100%;
   /* El texto de las fichas encoge con la caja. Sin esto, al estrechar la
      ventana la caja mengua pero las letras no, y las fichas se comen el

@@ -37,6 +37,13 @@ const VB = { w: 1240, h: 1180 }
 /* Puntos por los que pasa el camino, en orden. Los que llevan `hito` son un
    año y se marcan con balón; el resto solo dan forma —son los que hacen la
    panza de las curvas y los dos giros de los extremos—. */
+/* `hueco` es la separación entre el punto del camino y su ficha, en píxeles.
+   Solo se pone donde hay que apartarse de lo normal (`--hueco` en el CSS).
+   Medido el 10-08-2026 con la curva ya pintada: casi todas las fichas se
+   quedaban a 38-40 px del trazo, pero 2019 caía a 19 y 2014 a 31, porque por
+   ahí la curva se les acerca de lado. Diego dio por buenas 2022 y 2026, así
+   que esas dos se quedan con el hueco de antes y las demás se separan. */
+const HUECO_ORIGINAL = 40
 const RUTA = [
   { x: 20, y: 120 },                          // entra por arriba a la izquierda
   { x: 150, y: 215, hito: 0, lado: 'abajo' },   // 1991 · valle
@@ -48,7 +55,7 @@ const RUTA = [
   { x: 1160, y: 270 },                        // giro de la derecha
   { x: 1200, y: 430 },
   { x: 1150, y: 560 },
-  { x: 930, y: 585, hito: 3, lado: 'arriba' },  // 2014 · cresta
+  { x: 930, y: 585, hito: 3, lado: 'arriba', hueco: 64 },  // 2014 · cresta
   { x: 790, y: 640 },
   { x: 650, y: 665, hito: 4, lado: 'abajo' },   // 2017 · valle
   { x: 500, y: 625 },
@@ -56,11 +63,11 @@ const RUTA = [
   { x: 150, y: 640 },
   { x: 55, y: 780 },                          // giro de la izquierda
   { x: 110, y: 910 },
-  { x: 330, y: 955, hito: 6, lado: 'arriba' },  // 2019 · cresta
+  { x: 330, y: 955, hito: 6, lado: 'arriba', hueco: 76 },  // 2019 · cresta
   { x: 490, y: 1010 },
-  { x: 640, y: 1035, hito: 7, lado: 'abajo' },  // 2022 · valle
+  { x: 640, y: 1035, hito: 7, lado: 'abajo', hueco: HUECO_ORIGINAL },  // 2022 · valle
   { x: 820, y: 990 },
-  { x: 980, y: 940, hito: 8, lado: 'arriba' },  // 2026 · cresta
+  { x: 980, y: 940, hito: 8, lado: 'arriba', hueco: HUECO_ORIGINAL },  // 2026 · cresta
   { x: 1160, y: 1010 },                       // y sale por abajo a la derecha
 ]
 
@@ -287,7 +294,11 @@ export default function QuienesSomos() {
                     key={h.anio}
                     className="parada"
                     data-lado={p.lado}
-                    style={{ left: pc(p.x, VB.w), top: pc(p.y, VB.h) }}
+                    style={{
+                      left: pc(p.x, VB.w),
+                      top: pc(p.y, VB.h),
+                      ...(p.hueco ? { '--hueco': `${p.hueco}px` } : null),
+                    }}
                   >
                     <div className="ficha">
                       <b>{h.anio}</b>
