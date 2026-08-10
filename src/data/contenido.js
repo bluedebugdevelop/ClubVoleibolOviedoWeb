@@ -884,7 +884,42 @@ export const nivelesPatrocinio = [
 // en internet—, así que se queda sin ficha y con el logo sin enlace hasta que el
 // club pase la dirección. La ficha ya aguanta marcas sin `web`: el botón solo se
 // pinta si la hay.
+//
+// EL ORDEN DEL ARRAY MANDA: es el que se pinta en la banda de portada, en
+// /patrocinadores y en /patrocinar, sin reordenar en ningún sitio. Bluedebug y
+// VBStats van siempre las dos primeras (Diego, 10-08-2026); al añadir marcas
+// nuevas, van detrás.
 export const patrocinadoresActuales = [
+  {
+    slug: 'bluedebug',
+    nombre: 'Bluedebug',
+    logo: '/media/bluedebug-logo.png',
+    tagline: 'Automatización y transformación digital',
+    web: 'https://bluedebug.com',
+    webTexto: 'bluedebug.com',
+    color: '#0892d0',
+    glow: 'rgba(8,146,208,.22)',
+    descripcion: 'Estudio de desarrollo y automatización. Diseña y construye apps móviles y web a medida para empresas y clubes deportivos.',
+    parrafos: [
+      'Bluedebug es un estudio de desarrollo y automatización. Elimina tareas manuales y optimiza los procesos de sus clientes para que puedan centrarse en hacer crecer su negocio.',
+      'Trabaja con pymes, startups y clubes deportivos, construyendo software a medida: aplicaciones móviles, web y automatizaciones internas. Del CV Oviedo es, además, quien mantiene esta web.',
+    ],
+  },
+  {
+    slug: 'vbstats',
+    nombre: 'VBStats',
+    logo: '/media/vbstats-logo.png',
+    tagline: 'Estadísticas de voleibol en tiempo real',
+    web: 'https://bluedebug.com/portfolio/vbstats',
+    webTexto: 'bluedebug.com/portfolio/vbstats',
+    color: '#e91e8c',
+    glow: 'rgba(233,30,140,.22)',
+    descripcion: 'App de estadísticas de voleibol en tiempo real. Registro por jugador y por set, con informes automáticos al acabar el partido.',
+    parrafos: [
+      'VBStats es una aplicación móvil que permite a entrenadores y cuerpos técnicos registrar y analizar estadísticas de partidos de voleibol en tiempo real. Cada acción —ataque, recepción, bloqueo, saque o defensa— se registra por jugador y por set, y genera informes automáticos al terminar el partido.',
+      'La interfaz está pensada para usarse durante el juego con una sola mano, con botones grandes y respuesta táctil inmediata. Los datos se sincronizan en la nube y se pueden exportar para analizarlos después.',
+    ],
+  },
   {
     slug: 'geff',
     nombre: 'GEFF',
@@ -982,36 +1017,6 @@ export const patrocinadoresActuales = [
     parrafos: [
       'La Sidrería de Güelita es una sidrería asturiana de Los Campos, en el concejo de Corvera. Cocina de casa, sidra escanciada y, por encima de todo, cachopo: presume de haber ganado el mejor cachopo de Asturias en 2021 y el premio al cachopo más popular del mundo en 2022.',
       'Está en la calle Carmen Sarmiento, y al comedor le suma menús de domingo con música en vivo y reparto a domicilio en la zona de Avilés. No tiene web: lo suyo lo cuenta en Instagram.',
-    ],
-  },
-  {
-    slug: 'bluedebug',
-    nombre: 'Bluedebug',
-    logo: '/media/bluedebug-logo.png',
-    tagline: 'Automatización y transformación digital',
-    web: 'https://bluedebug.com',
-    webTexto: 'bluedebug.com',
-    color: '#0892d0',
-    glow: 'rgba(8,146,208,.22)',
-    descripcion: 'Estudio de desarrollo y automatización. Diseña y construye apps móviles y web a medida para empresas y clubes deportivos.',
-    parrafos: [
-      'Bluedebug es un estudio de desarrollo y automatización. Elimina tareas manuales y optimiza los procesos de sus clientes para que puedan centrarse en hacer crecer su negocio.',
-      'Trabaja con pymes, startups y clubes deportivos, construyendo software a medida: aplicaciones móviles, web y automatizaciones internas. Del CV Oviedo es, además, quien mantiene esta web.',
-    ],
-  },
-  {
-    slug: 'vbstats',
-    nombre: 'VBStats',
-    logo: '/media/vbstats-logo.png',
-    tagline: 'Estadísticas de voleibol en tiempo real',
-    web: 'https://bluedebug.com/portfolio/vbstats',
-    webTexto: 'bluedebug.com/portfolio/vbstats',
-    color: '#e91e8c',
-    glow: 'rgba(233,30,140,.22)',
-    descripcion: 'App de estadísticas de voleibol en tiempo real. Registro por jugador y por set, con informes automáticos al acabar el partido.',
-    parrafos: [
-      'VBStats es una aplicación móvil que permite a entrenadores y cuerpos técnicos registrar y analizar estadísticas de partidos de voleibol en tiempo real. Cada acción —ataque, recepción, bloqueo, saque o defensa— se registra por jugador y por set, y genera informes automáticos al terminar el partido.',
-      'La interfaz está pensada para usarse durante el juego con una sola mano, con botones grandes y respuesta táctil inmediata. Los datos se sincronizan en la nube y se pueden exportar para analizarlos después.',
     ],
   },
 ]
