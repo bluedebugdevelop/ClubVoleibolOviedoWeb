@@ -67,6 +67,69 @@ foreach ($r in $recortes) {
   Write-Host ("recortado {0}: {1}x{2}" -f $r.a, $ancho, $alto)
 }
 
+# --- cabeceras hechas de una foto ------------------------------------------
+# Las marcas que tienen foto propia no necesitan escena: basta con recortar la
+# foto a la proporcion de la banda y oscurecer la izquierda, que es por donde
+# cae el titulo. El resto lo hace la web, que la pinta al 30% sobre el azul.
+#
+# `foco` es la altura de la foto que queda centrada en el recorte, en tanto por
+# uno: 0 = arriba del todo, 0,5 = el centro, 1 = abajo. Sirve para no cortar
+# cabezas ni dejar fuera el edificio.
+$ANCHO_BANDA = 2000
+$ALTO_BANDA  = 540
+$AZUL = [System.Drawing.Color]::FromArgb(8, 33, 57)
+
+$fotos = @(
+  @{ de = 'fisan-interior.jpg';    a = 'centro-fisan-cabecera.jpg';       foco = 0.45 }
+  @{ de = 'garana-exterior.jpg';   a = 'palacio-de-garana-cabecera.jpg';  foco = 0.50 }
+  @{ de = 'reunidas-arenales.jpg'; a = 'funerarias-reunidas-cabecera.jpg';foco = 0.55 }
+  @{ de = 'imq-esencial.jpg';      a = 'imq-asturias-cabecera.jpg';       foco = 0.50 }
+)
+# Guelita no esta en esta lista: sus fotos son de Instagram, 640 px y casi
+# cuadradas, y a sangre en una banda de 3,7:1 se quedan en un primer plano
+# irreconocible. Va como escena, con la foto de tarjeta (ver mas abajo).
+
+foreach ($f in $fotos) {
+  $origen  = [IO.Path]::Combine($aqui, 'fuentes', [string]$f.de)
+  $destino = [IO.Path]::Combine($salida, [string]$f.a)
+
+  $img = [System.Drawing.Image]::FromFile($origen)
+  # recorte "cover": se escala por el lado que falte y se centra segun `foco`
+  $escala = [Math]::Max($ANCHO_BANDA / $img.Width, $ALTO_BANDA / $img.Height)
+  $w = $img.Width * $escala
+  $h = $img.Height * $escala
+  $x = ($ANCHO_BANDA - $w) / 2
+  $y = ($ALTO_BANDA - $h) * $f.foco
+
+  $dst = New-Object System.Drawing.Bitmap($ANCHO_BANDA, $ALTO_BANDA)
+  $g   = [System.Drawing.Graphics]::FromImage($dst)
+  try {
+    $g.InterpolationMode  = 'HighQualityBicubic'
+    $g.PixelOffsetMode    = 'HighQuality'
+    $g.SmoothingMode      = 'AntiAlias'
+    $g.DrawImage($img, [float]$x, [float]$y, [float]$w, [float]$h)
+
+    # Velo azul por la izquierda: ahi va el titulo de la ficha y sin esto la
+    # foto compite con las letras.
+    # Ojo: el rectangulo de la BROCHA va un pixel mas ancho por cada lado que el
+    # que se pinta. Si son el mismo, GDI+ repite el degradado en el ultimo pixel
+    # y deja una raya vertical justo donde termina.
+    $ancho   = [int]($ANCHO_BANDA * 0.62)
+    $rectBrocha = New-Object System.Drawing.Rectangle(-1, -1, ($ancho + 2), ($ALTO_BANDA + 2))
+    $brocha  = New-Object System.Drawing.Drawing2D.LinearGradientBrush(
+      $rectBrocha,
+      [System.Drawing.Color]::FromArgb(215, $AZUL.R, $AZUL.G, $AZUL.B),
+      [System.Drawing.Color]::FromArgb(0,   $AZUL.R, $AZUL.G, $AZUL.B),
+      [System.Drawing.Drawing2D.LinearGradientMode]::Horizontal)
+    $g.FillRectangle($brocha, (New-Object System.Drawing.Rectangle(0, 0, $ancho, $ALTO_BANDA)))
+    $brocha.Dispose()
+  } finally { $g.Dispose(); $img.Dispose() }
+
+  $dst.Save($destino, [System.Drawing.Imaging.ImageFormat]::Jpeg)
+  $dst.Dispose()
+  Write-Host ("cabecera {0}" -f $f.a)
+}
+
 # --- render de las dos escenas ---------------------------------------------
 $chrome = @(
   "C:\Program Files\Google\Chrome\Application\chrome.exe"
@@ -74,7 +137,7 @@ $chrome = @(
 ) | Where-Object { Test-Path $_ } | Select-Object -First 1
 if (-not $chrome) { throw 'No encuentro Chrome para renderizar las cabeceras.' }
 
-foreach ($marca in @('vbstats', 'bluedebug')) {
+foreach ($marca in @('vbstats', 'bluedebug', 'sidreria-guelita')) {
   $png = Join-Path $salida "$marca-cabecera.png"
   & $chrome --headless --disable-gpu --hide-scrollbars --force-device-scale-factor=1 `
     --window-size=2000,540 --screenshot="$png" ("file:///" + ((Join-Path $aqui "$marca.html") -replace '\\','/'))

@@ -934,8 +934,12 @@ export const patrocinadoresActuales = [
     nombre: 'GEFF',
     logo: '/media/patrocinadores/geff.png',
     tagline: 'Equipaciones deportivas personalizadas',
-    web: 'https://geffsport.com/',
-    webTexto: 'geffsport.com',
+    // OJO (10-08-2026): se quitó el enlace a geffsport.com. El dominio caducó y
+    // ahora es una página de aparcamiento de Sedo con un cartel de «en venta»;
+    // geff.biz redirige ahí y geff.eu (el que da su LinkedIn) no resuelve. Un
+    // botón del club llevando a eso es peor que no tener botón. Volver a
+    // ponerlo cuando el club confirme su dirección buena. Sin web tampoco hay
+    // de dónde sacarles foto de cabecera.
     color: '#111111',
     glow: 'rgba(17,17,17,.18)',
     descripcion: 'Fabricante de equipaciones deportivas personalizadas por sublimación.',
@@ -948,6 +952,7 @@ export const patrocinadoresActuales = [
     slug: 'imq-asturias',
     nombre: 'IMQ Asturias',
     logo: '/media/patrocinadores/imq-asturias.png',
+    foto: '/media/patrocinadores/imq-asturias-cabecera.jpg',
     tagline: 'El seguro de salud de Asturias',
     web: 'https://www.imqasturias.es/',
     webTexto: 'imqasturias.es',
@@ -963,6 +968,7 @@ export const patrocinadoresActuales = [
     slug: 'funerarias-reunidas',
     nombre: 'Funerarias Reunidas',
     logo: '/media/patrocinadores/funerarias-reunidas.png',
+    foto: '/media/patrocinadores/funerarias-reunidas-cabecera.jpg',
     tagline: 'Servicios funerarios en Asturias',
     web: 'https://funerariasreunidas.com/',
     webTexto: 'funerariasreunidas.com',
@@ -978,6 +984,7 @@ export const patrocinadoresActuales = [
     slug: 'palacio-de-garana',
     nombre: 'Palacio de Garaña',
     logo: '/media/patrocinadores/palacio-de-garana.png',
+    foto: '/media/patrocinadores/palacio-de-garana-cabecera.jpg',
     tagline: 'Hotel, camping y restaurante en Llanes',
     web: 'https://www.palaciodegarana.com/',
     webTexto: 'palaciodegarana.com',
@@ -993,6 +1000,7 @@ export const patrocinadoresActuales = [
     slug: 'centro-fisan',
     nombre: 'Centro Fisan',
     logo: '/media/patrocinadores/centro-fisan.png',
+    foto: '/media/patrocinadores/centro-fisan-cabecera.jpg',
     tagline: 'Fisioterapia y salud',
     web: 'https://centrofisan.es/',
     webTexto: 'centrofisan.es',
@@ -1017,6 +1025,7 @@ export const patrocinadoresActuales = [
     slug: 'sidreria-guelita',
     nombre: 'La Sidrería de Güelita',
     logo: '/media/patrocinadores/sidreria-guelita.png',
+    foto: '/media/patrocinadores/sidreria-guelita-cabecera.png',
     tagline: 'Sidrería y cocina asturiana',
     web: 'https://www.instagram.com/lasidreriadeguelita/',
     webTexto: '@lasidreriadeguelita',

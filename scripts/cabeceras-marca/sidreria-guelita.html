@@ -1,0 +1,51 @@
+<!doctype html>
+<!--
+  Cabecera de la ficha de La Sidrería de Güelita (/patrocinadores/sidreria-guelita).
+
+  A diferencia de Fisan, Garaña, Reunidas e IMQ —que tienen fotos apaisadas y
+  grandes, y van a sangre—, de Güelita solo hay lo que sube a Instagram: 640 px
+  y casi cuadradas. Estiradas a una banda de 3,7:1 se quedan en un primer plano
+  irreconocible, así que la foto va como una tarjeta inclinada sobre el azul, al
+  estilo de las escenas de VBStats y Bluedebug.
+
+  Se renderiza desde `preparar.ps1` junto con las demás.
+-->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<style>
+  :root{ --ink:#082139; --sidra:#b5651d }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;width:2000px;height:540px;overflow:hidden}
+  body{background:var(--ink);position:relative}
+
+  .halo{position:absolute;width:1400px;height:1000px;right:-140px;top:-260px;
+    background:radial-gradient(closest-side,rgba(181,101,29,.55),rgba(181,101,29,0));
+    filter:blur(10px)}
+  .halo.dos{width:800px;height:620px;right:700px;top:200px;
+    background:radial-gradient(closest-side,rgba(214,160,90,.22),rgba(214,160,90,0))}
+
+  .escena{position:absolute;inset:0;display:flex;align-items:center;justify-content:flex-end;
+    padding-right:190px}
+
+  /* Tarjeta tipo foto revelada: filo claro, sombra larga y un giro pequeño. */
+  .tarjeta{width:640px;height:430px;padding:14px;background:#f3ece2;transform:rotate(-3deg);
+    box-shadow:0 46px 80px -28px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.14) inset}
+  .tarjeta img{width:100%;height:100%;object-fit:cover;display:block}
+
+  .fundido{position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(90deg,var(--ink) 16%,rgba(8,33,57,.55) 36%,rgba(8,33,57,0) 54%),
+               linear-gradient(270deg,var(--ink) 1%,rgba(8,33,57,0) 10%),
+               linear-gradient(0deg,var(--ink) 0%,rgba(8,33,57,0) 14%),
+               linear-gradient(180deg,var(--ink) 0%,rgba(8,33,57,0) 12%)}
+</style>
+</head>
+<body>
+  <div class="halo"></div>
+  <div class="halo dos"></div>
+  <div class="escena">
+    <div class="tarjeta"><img src="fuentes/guelita-1.jpg" alt=""></div>
+  </div>
+  <div class="fundido"></div>
+</body>
+</html>
