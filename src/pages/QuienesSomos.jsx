@@ -360,21 +360,6 @@ export default function QuienesSomos() {
         )}
       </section>
 
-      {/* Las dos fotos que eligió Diego (11-08-2026). Son verticales, así que no
-          valen de cabecera —la banda deja ver menos del 16% del alto— y aquí van
-          en pareja, a lo alto y sin recortar la parte del salto. La femenina
-          lleva la marca de agua de Javier Bárcena: es su crédito, no se toca. */}
-      <section className="sec">
-        <div className="duo-vertical">
-          <figure>
-            <img src="/media/remate-femenino.jpg" alt="Remate del equipo femenino del CV Oviedo" />
-          </figure>
-          <figure>
-            <img src="/media/remate-masculino.jpg" alt="Remate del equipo masculino del CV Oviedo" />
-          </figure>
-        </div>
-      </section>
-
       <section className="sec">
         <SectionHead title="Nuestros valores" />
         <div className="values">
