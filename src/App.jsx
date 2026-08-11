@@ -9,6 +9,7 @@ import Equipo from './pages/Equipo'
 import Cantera from './pages/Cantera'
 import Calendario from './pages/Calendario'
 import Noticias from './pages/Noticias'
+import Noticia from './pages/Noticia'
 import QuienesSomos from './pages/QuienesSomos'
 import Patrocinadores from './pages/Patrocinadores'
 import Patrocinador from './pages/Patrocinador'
@@ -40,6 +41,7 @@ function App() {
         <Route path="/cantera" element={<Cantera />} />
         <Route path="/calendario" element={<Calendario />} />
         <Route path="/noticias" element={<Noticias />} />
+        <Route path="/noticias/:slug" element={<Noticia />} />
         <Route path="/quienes-somos" element={<QuienesSomos />} />
         <Route path="/patrocinadores" element={<Patrocinadores />} />
         <Route path="/patrocinadores/:slug" element={<Patrocinador />} />

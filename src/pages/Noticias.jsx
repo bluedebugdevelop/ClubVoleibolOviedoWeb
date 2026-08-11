@@ -3,7 +3,7 @@ import PageHead from '../components/PageHead'
 import SectionHead from '../components/SectionHead'
 import JoinCta from '../components/JoinCta'
 import Sponsors from '../components/Sponsors'
-import { noticias, estadoPreinscripcion, textoPreinscripcion } from '../data/contenido'
+import { noticias, enlaceNoticia, estadoPreinscripcion, textoPreinscripcion } from '../data/contenido'
 
 export default function Noticias() {
   const [destacada, ...resto] = noticias
@@ -20,7 +20,7 @@ export default function Noticias() {
       />
 
       <section className="sec">
-        <Link className="destacada" to="/noticias">
+        <Link className="destacada" to={enlaceNoticia(destacada)}>
           <div className="ph">
             <img src={destacada.img} alt={destacada.titulo} />
           </div>
@@ -41,7 +41,7 @@ export default function Noticias() {
             <SectionHead title="Más noticias" />
             <div className="news-grid">
               {resto.map((n) => (
-                <Link className="card" to="/noticias" key={n.id}>
+                <Link className="card" to={enlaceNoticia(n)} key={n.id}>
                   <div className="ph">
                     <img src={n.img} alt={n.titulo} />
                   </div>

@@ -8,6 +8,7 @@ import {
   cifrasClub,
   equiposDestacados,
   noticias,
+  enlaceNoticia,
   retransmisiones,
   estadoPreinscripcion,
   textoPreinscripcion,
@@ -86,7 +87,7 @@ export default function Inicio() {
           <div className="cols">
             <div className="news">
               {destacadas.map((n) => (
-                <Link key={n.id} className="card" to="/noticias">
+                <Link key={n.id} className="card" to={enlaceNoticia(n)}>
                   <div className="ph">
                     <img src={n.img} alt={n.titulo} />
                   </div>

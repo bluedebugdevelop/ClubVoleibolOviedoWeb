@@ -738,6 +738,32 @@ footer .legal .credito b{color:#b9cbe0;font-weight:600}
 }
 @media(max-width:600px){ .news-grid{grid-template-columns:1fr} }
 
+/* Desde el 11-08-2026 la destacada lleva de verdad a la ficha de la noticia, así
+   que se comporta como las tarjetas: se levanta y la foto se acerca. Antes
+   enlazaba a la propia página de noticias y no se movía — parecía un bloque. */
+.destacada{transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease}
+.destacada:hover{border-color:var(--blue);box-shadow:0 18px 34px -24px rgba(8,33,57,.5);transform:translateY(-3px)}
+.destacada .ph img{transition:transform .3s ease}
+.destacada:hover .ph img{transform:scale(1.04)}
+@media(prefers-reduced-motion:reduce){
+  .destacada,.destacada .ph img{transition:border-color .18s ease}
+  .destacada:hover{transform:none}
+  .destacada:hover .ph img{transform:none}
+}
+
+/* -------- ficha de una noticia (Noticia.jsx) -------- */
+.articulo{max-width:70ch}
+.articulo .fecha{margin:0 0 22px;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:13px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.articulo p{margin:0 0 16px;font-size:16.5px;line-height:1.75;color:#3d4b5a}
+/* El bloque del formulario se separa del texto con una línea: es la acción de
+   la noticia, no un párrafo más. `.notice` viene centrado por defecto (`margin:
+   0 auto`) y aquí va alineado con el texto. */
+.articulo-cta{margin:40px 0 0;padding:30px 0 0;border-top:1px solid var(--line)}
+.articulo-cta .notice{margin-left:0;margin-right:0;max-width:none}
+.articulo-cta .letra-pequena{margin-top:18px}
+.articulo-cta .letra-pequena a{color:var(--blue);font-weight:600}
+
 /* -------- quiénes somos (QuienesSomos.jsx) -------- */
 .historia{max-width:74ch}
 .historia p{font-size:16.5px;line-height:1.75;color:#3d4b5a;margin:0 0 16px}

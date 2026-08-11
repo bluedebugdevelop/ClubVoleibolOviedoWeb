@@ -603,7 +603,16 @@ export const retransmisiones = [
 ]
 
 // ---------------------------------------------------------------------------
-// Noticias — DATOS DE MUESTRA
+// Noticias
+//
+// Cada noticia se abre en su propia página, `/noticias/<slug>` (Noticia.jsx).
+// Para que sea clicable necesita `slug` y `cuerpo`; sin `cuerpo` la ficha cae a
+// 404, igual que hacen las fichas de patrocinador sin texto.
+//
+// `cta: 'preinscripcion'` le cuelga al final el bloque del formulario, que se
+// pinta según la ventana de fechas (`preinscripcion`): con el plazo cerrado no
+// enseña el botón, avisa. Así la noticia no se queda invitando a rellenar un
+// formulario fuera de plazo aunque nadie la toque.
 // ---------------------------------------------------------------------------
 export const noticias = [
   // Solo se publica la preinscripción (13-08-2026). Las otras siete eran datos
@@ -612,14 +621,28 @@ export const noticias = [
   // rejilla de abajo.
   {
     id: 'n2',
+    slug: 'preinscripcion-26-27',
     destacada: true,
     categoria: 'Cantera',
     fecha: '10 ago 2026',
     titulo: 'Abierta la preinscripción para la 26/27',
     resumen: 'Desde alevín hasta juvenil. El plazo es del 10 al 25 de agosto y el formulario está en la web.',
     img: '/media/bloqueo.jpg',
+    foco: 'center 42%',
+    cuerpo: [
+      `Ya está abierta la preinscripción para la temporada 2026/27. El plazo es ${preinscripcion.texto} y entran chicos y chicas desde los 8 años, de alevín a juvenil.`,
+      'Preinscribirse no compromete a nada: es decirnos que os interesa. Con esos datos asignamos el equipo que le toca por año de nacimiento y nivel, y os decimos qué día y a qué hora entrena su grupo.',
+      'No hace falta haber jugado antes al voleibol. Para el primer entrenamiento basta con ropa cómoda, calzado deportivo y una botella de agua; el material lo pone el club.',
+    ],
+    cta: 'preinscripcion',
   },
 ]
+
+/** A dónde lleva una tarjeta de noticia. Sin ficha escrita se queda en el
+ *  listado, que es lo que hacía antes: nunca deja un enlace roto. */
+export function enlaceNoticia(n) {
+  return n && n.slug && n.cuerpo ? `/noticias/${n.slug}` : '/noticias'
+}
 
 // ---------------------------------------------------------------------------
 // Quiénes somos — hitos CONFIRMADOS POR EL CLUB (2026-07-29). No son datos de
