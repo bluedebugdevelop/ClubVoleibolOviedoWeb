@@ -104,8 +104,8 @@ export default function Calendario() {
         kicker={temporadaDatos ? `Temporada ${temporadaDatos}` : 'Temporada 2026/27'}
         title="Calendario y resultados"
         sub="Todos los partidos del club, equipo por equipo. Los que se retransmiten llevan el enlace al canal de YouTube."
-        bg="/media/pista-azul.jpg"
-        foco="center 62%"
+        bg="/media/defensa.jpg"
+        foco="center 45%"
       />
 
       <section className="sec">

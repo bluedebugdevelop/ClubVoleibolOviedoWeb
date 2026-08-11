@@ -69,7 +69,10 @@ export const equiposDestacados = [
     slug: 'cantera',
     nombre: 'Cantera',
     categoria: 'Base y formación',
-    img: '/media/equipos/cadete-femenino-a.jpg',
+    // Ni cadete-femenino-a.jpg ni cantera.jpg: son la misma foto del Cadete
+    // Femenino A con dos recortes, y ese equipo ya sale en su propia ficha. El
+    // acceso a la cantera es de todos, así que va una de juego.
+    img: '/media/celebracion.jpg',
     alt: 'Equipos de cantera del CV Oviedo',
     resumen: '11 equipos · 240 deportistas',
     href: '/cantera',
@@ -223,7 +226,7 @@ const fichasNacionales = {
 export const equiposCantera = [
   // No es el de Superliga 2: es el segundo equipo sénior, donde siguen jugando
   // los que salen del júnior. Sin foto propia todavía, va una de juego.
-  { slug: 'senior-masculino', nombre: 'Sénior Masculino', categoria: 'Sénior', img: '/media/plancha.jpg', alt: 'Segundo equipo sénior masculino del CV Oviedo', liga: 'Segunda División · FVBPA' },
+  { slug: 'senior-masculino', nombre: 'Sénior Masculino', categoria: 'Sénior', img: '/media/colocacion.jpg', alt: 'Segundo equipo sénior masculino del CV Oviedo', liga: 'Segunda División · FVBPA' },
   { slug: 'junior-masculino', nombre: 'Júnior Masculino', categoria: 'Sub-19', img: '/media/equipos/junior-masculino.jpg', alt: 'Equipo júnior masculino del CV Oviedo', liga: 'Liga Asturiana' },
   { slug: 'juvenil-femenino', nombre: 'Juvenil Femenino', categoria: 'Sub-17', img: '/media/equipos/juvenil-femenino.jpg', alt: 'Equipo juvenil femenino del CV Oviedo', liga: 'Liga Asturiana' },
   { slug: 'cadete-masculino', nombre: 'Cadete Masculino', categoria: 'Sub-15', img: '/media/equipos/cadete-masculino.jpg', alt: 'Equipo cadete masculino del CV Oviedo', liga: 'Liga Asturiana' },
@@ -236,7 +239,11 @@ export const equiposCantera = [
   // dos equipos distintos, el federado y el que no compite en liga. El segundo
   // no tiene foto propia todavía: se reutiliza la del alevín hasta que la haya.
   { slug: 'alevin-federado', nombre: 'Alevín Federado', categoria: 'Sub-11', img: '/media/equipos/alevin.jpg', alt: 'Equipo alevín federado del CV Oviedo', liga: 'Liga Asturiana' },
-  { slug: 'alevin', nombre: 'Alevín', categoria: 'Sub-11', img: '/media/equipos/alevin.jpg', alt: 'Equipo alevín del CV Oviedo', liga: 'Liga Asturiana' },
+  // El Alevín y el Alevín Federado son dos equipos distintos, y la única foto de
+  // grupo que hay es la del federado. Antes se repetía en los dos, que es tanto
+  // como poner a un equipo la foto de otro: hasta que Diego mande la suya, va
+  // una de juego. Mismo criterio que el Sénior Masculino.
+  { slug: 'alevin', nombre: 'Alevín', categoria: 'Sub-11', img: '/media/remate.jpg', alt: 'Equipo alevín del CV Oviedo', liga: 'Liga Asturiana' },
 ]
 
 // ---------------------------------------------------------------------------
@@ -319,7 +326,9 @@ const fichaDeCantera = (eq) => ({
   // Tirando hacia arriba: la banda mantiene el alto y crece de ancho, así que
   // cuanto mayor es la pantalla más recorta por arriba y por abajo. Con un 12%
   // las cabezas de la fila de atrás siguen dentro incluso en un monitor ancho.
-  headerFoco: 'center 12%',
+  // Ese 12% vale para las fotos de grupo; en una de juego deja la banda en el
+  // techo del pabellón, así que esas se encuadran por el centro.
+  headerFoco: eq.img.startsWith('/media/equipos/') ? 'center 12%' : 'center 45%',
   datos: [
     { label: 'Competición', valor: eq.liga },
     { label: 'Categoría', valor: eq.categoria },
@@ -627,8 +636,10 @@ export const noticias = [
     fecha: '10 ago 2026',
     titulo: 'Abierta la preinscripción para la 26/27',
     resumen: 'Desde alevín hasta juvenil. El plazo es del 10 al 25 de agosto y el formulario está en la web.',
-    img: '/media/bloqueo.jpg',
-    foco: 'center 42%',
+    // bloqueo.jpg no: es la cabecera de /cantera y la noticia va justo de eso,
+    // así que se veían las dos seguidas
+    img: '/media/ataque.jpg',
+    foco: 'center 46%',
     cuerpo: [
       `Ya está abierta la preinscripción para la temporada 2026/27. El plazo es ${preinscripcion.texto} y entran chicos y chicas desde los 8 años, de alevín a juvenil.`,
       'Preinscribirse no compromete a nada: es decirnos que os interesa. Con esos datos asignamos el equipo que le toca por año de nacimiento y nivel, y os decimos qué día y a qué hora entrena su grupo.',

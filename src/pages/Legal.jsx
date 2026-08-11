@@ -278,8 +278,8 @@ export default function Legal({ doc }) {
         kicker={`Actualizado el ${legalActualizado}`}
         title={titulo}
         sub={sub}
-        bg="/media/pista-azul.jpg"
-        foco="center 50%"
+        bg="/media/bloqueo-noche.jpg"
+        foco="center 48%"
       />
 
       <section className="sec">

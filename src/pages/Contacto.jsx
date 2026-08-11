@@ -60,8 +60,8 @@ export default function Contacto() {
         kicker="Estamos en Colloto"
         title="Contacto"
         sub="Para patrocinios, prensa o cualquier duda sobre el club, puedes escribirnos o venir a vernos entrenar."
-        bg="/media/pista-azul.jpg"
-        foco="center 38%"
+        bg="/media/bloqueo-doble.jpg"
+        foco="center 42%"
       />
 
       <section className="sec">
