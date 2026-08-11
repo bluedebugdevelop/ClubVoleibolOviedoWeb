@@ -84,6 +84,12 @@ $fotos = @(
   @{ de = 'garana-exterior.jpg';   a = 'palacio-de-garana-cabecera.jpg';  foco = 0.50 }
   @{ de = 'reunidas-arenales.jpg'; a = 'funerarias-reunidas-cabecera.jpg';foco = 0.55 }
   @{ de = 'imq-esencial.jpg';      a = 'imq-asturias-cabecera.jpg';       foco = 0.50 }
+  # 0,40 y no 0,50: deja la cara de la nina en el centro de la banda, que es lo
+  # que Diego pidio ver. Ojo con el fichero de origen: la foto que munozdental.es
+  # sirve en su portada ya viene recortada por WordPress ("cropped-...") y deja
+  # la cara pegada al borde de abajo. Esta es la ORIGINAL (2048x1363), la misma
+  # ruta sin el prefijo.
+  @{ de = 'munoz-odontopediatria.jpg'; a = 'clinica-dental-miguel-munoz-cabecera.jpg'; foco = 0.40 }
 )
 # Guelita no esta en esta lista: sus fotos son de Instagram, 640 px y casi
 # cuadradas, y a sangre en una banda de 3,7:1 se quedan en un primer plano
