@@ -1,5 +1,5 @@
 // ==========================================================================
-// Contenido editable de la web: noticias y patrocinadores.
+// Contenido editable de la web: noticias, patrocinadores y equipos.
 //
 // GET /api/contenido — público, sin permisos. Lo pide el navegador al cargar.
 //
@@ -12,32 +12,32 @@
 // de quedarse sin noticias.
 // ==========================================================================
 
-import { leer } from './_almacen.js'
+import { leer, LISTAS } from './_almacen.js'
 
 // Se importa una vez al arrancar: son datos estáticos, no cambian en caliente.
-const { noticias: noticiasBase, patrocinadoresActuales: patrocinadoresBase } = await import(
-  '../src/data/contenido.js'
-)
+const estatico = await import('../src/data/contenido.js')
+
+const BASE = {
+  noticias: estatico.noticias,
+  patrocinadores: estatico.patrocinadoresActuales,
+  equipos: estatico.equiposSemilla,
+}
 
 export function contenidoActual() {
   const guardado = leer()
-  return {
-    noticias: guardado.noticias.length ? guardado.noticias : noticiasBase,
-    patrocinadores: guardado.patrocinadores.length ? guardado.patrocinadores : patrocinadoresBase,
+  const salida = { origen: {} }
+  for (const k of LISTAS) {
+    const propio = guardado[k].length > 0
+    salida[k] = propio ? guardado[k] : BASE[k]
     // le dice al panel si lo que está viendo ya es suyo o todavía la semilla
-    origen: {
-      noticias: guardado.noticias.length ? 'panel' : 'semilla',
-      patrocinadores: guardado.patrocinadores.length ? 'panel' : 'semilla',
-    },
+    salida.origen[k] = propio ? 'panel' : 'semilla'
   }
+  return salida
 }
 
 /** Las listas de partida, para cuando el panel edita por primera vez. */
 export function semilla() {
-  return {
-    noticias: JSON.parse(JSON.stringify(noticiasBase)),
-    patrocinadores: JSON.parse(JSON.stringify(patrocinadoresBase)),
-  }
+  return JSON.parse(JSON.stringify(Object.fromEntries(LISTAS.map((k) => [k, BASE[k]]))))
 }
 
 export default function handler(req, res) {

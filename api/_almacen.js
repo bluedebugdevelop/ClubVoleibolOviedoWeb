@@ -6,7 +6,8 @@
 // desplegar. Para que el club los edite desde el panel tienen que ser datos que
 // se lean en caliente, y eso pide un sitio donde escribirlos.
 //
-// Ese sitio es un fichero JSON más una carpeta de imágenes, dentro de:
+// Ese mismo sitio guarda hoy tres listas —noticias, patrocinadores y equipos—
+// en un fichero JSON, más una carpeta de imágenes, dentro de:
 //
 //   DATOS_DIR  si está declarada
 //   /data      si existe  → es donde Railway monta un Volume
@@ -17,8 +18,8 @@
 // función `esPersistente()` avisa de eso y el panel lo enseña en rojo, para que
 // nadie escriba veinte noticias y las pierda.
 //
-// No hay base de datos a propósito: son dos listas de unas pocas decenas de
-// elementos que se leen enteras. Un JSON es más fácil de copiar, de mirar a
+// No hay base de datos a propósito: son unas pocas decenas de elementos que se
+// leen enteros. Un JSON es más fácil de copiar, de mirar a
 // mano y de restaurar que una tabla.
 // ==========================================================================
 
@@ -49,19 +50,20 @@ function asegurarCarpetas() {
   fs.mkdirSync(SUBIDAS, { recursive: true })
 }
 
-const VACIO = { noticias: [], patrocinadores: [] }
+// Las listas que el panel sabe editar. Añadir una aquí es lo único que hay que
+// tocar en el almacén: el resto del fichero ya trabaja sobre esta constante.
+export const LISTAS = ['noticias', 'patrocinadores', 'equipos']
 
 export function leer() {
   try {
     const crudo = fs.readFileSync(FICHERO, 'utf-8')
     const datos = JSON.parse(crudo)
-    return {
-      noticias: Array.isArray(datos.noticias) ? datos.noticias : [],
-      patrocinadores: Array.isArray(datos.patrocinadores) ? datos.patrocinadores : [],
-    }
+    return Object.fromEntries(
+      LISTAS.map((k) => [k, Array.isArray(datos[k]) ? datos[k] : []]),
+    )
   } catch {
     // todavía no hay nada escrito: es lo normal la primera vez
-    return { ...VACIO }
+    return Object.fromEntries(LISTAS.map((k) => [k, []]))
   }
 }
 

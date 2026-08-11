@@ -1249,9 +1249,12 @@ footer .legal .credito b{color:#b9cbe0;font-weight:600}
 .panel-campo textarea{resize:vertical;line-height:1.6}
 
 .panel-imagen{display:flex;gap:14px;align-items:flex-start}
-.panel-imagen img{width:120px;height:80px;object-fit:contain;background:#fff;
-  border:1px solid var(--line);border-radius:6px;padding:6px}
-.panel-imagen .hueco{width:120px;height:80px;display:grid;place-content:center;border:1px dashed var(--line);
+/* La vista previa se enseña con la MISMA proporción que tendrá en la web (le
+   llega por `style`), para que se vea de un vistazo si el recorte cuadra. */
+.panel-imagen img{width:140px;object-fit:cover;background:#fff;
+  border:1px solid var(--line);border-radius:6px}
+.panel-imagen img.entero{object-fit:contain;padding:6px}
+.panel-imagen .hueco{width:140px;display:grid;place-content:center;border:1px dashed var(--line);
   border-radius:6px;font-size:12px;color:var(--dim);text-align:center}
 .panel-imagen > div{display:flex;flex-direction:column;gap:8px;align-items:flex-start;font-size:13px}
 .panel-imagen em{font-style:normal;color:var(--dim)}
@@ -1261,4 +1264,103 @@ footer .legal .credito b{color:#b9cbe0;font-weight:600}
   .panel-campos{grid-template-columns:1fr}
   .panel-tabs{margin-left:0;order:3;width:100%}
   .panel-tabs button{flex:1}
+}
+
+/* ==========================================================================
+   Acceso del club: candado de la barra, pantalla de entrada y recortador
+   ========================================================================== */
+
+/* Candado de la barra de navegación. Va apagado a propósito: es para las dos
+   personas que publican, no para quien viene a ver el calendario. */
+.acceso-panel{display:grid;place-content:center;width:30px;height:30px;color:var(--dim);
+  opacity:.45;transition:opacity .15s,color .15s}
+.acceso-panel:hover{opacity:1;color:var(--blue)}
+.acceso-panel.active{opacity:1;color:var(--blue)}
+
+.entrar{min-height:100vh;display:grid;place-items:center;padding:40px var(--pad);background:var(--tint)}
+.entrar-caja{width:100%;max-width:380px;background:#fff;border:1px solid var(--line);
+  padding:34px 32px 30px;display:flex;flex-direction:column;gap:14px}
+.entrar-caja h1{font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:28px;
+  text-transform:uppercase;letter-spacing:.02em;margin:0}
+.entrar-caja > p{margin:-8px 0 6px;font-size:14px;color:var(--dim);line-height:1.55}
+.entrar-caja label{display:flex;flex-direction:column;gap:5px}
+.entrar-caja label span{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:12px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.entrar-caja input{width:100%;border:1px solid var(--line);padding:11px 12px;font-family:inherit;
+  font-size:15px;color:var(--ink);border-radius:6px;background:#fff}
+.entrar-caja input:focus{outline:none;border-color:var(--blue)}
+.entrar-caja .panel-btn{margin-top:6px;width:100%;padding:12px}
+.entrar-error{margin:0;padding:11px 14px;border:1px solid #b3261e;background:#fdeceb;color:#8c1d18;
+  font-size:14px;line-height:1.5}
+.entrar-volver{display:block;text-align:center;font-size:13px;color:var(--dim);margin-top:4px}
+.entrar-volver:hover{color:var(--blue)}
+
+/* ---- casilla de sí/no ---- */
+.panel-casilla label{display:flex;align-items:center;gap:9px;cursor:pointer}
+.panel-casilla input{width:17px;height:17px;accent-color:var(--blue);cursor:pointer;flex:none}
+.panel-casilla b{font-size:14.5px;font-weight:600}
+.panel-casilla em{display:block;font-style:normal;font-size:13px;color:var(--dim);margin:5px 0 0 26px;
+  line-height:1.5}
+
+/* ---- sublistas de un equipo (datos, plantilla, cuerpo técnico) ---- */
+.panel-filas{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.panel-fila{display:flex;gap:6px;width:100%}
+.panel-fila input{border:1px solid var(--line);padding:8px 10px;font-family:inherit;font-size:14px;
+  border-radius:6px;background:#fff;color:var(--ink);min-width:0}
+.panel-fila input:focus{outline:none;border-color:var(--blue)}
+/* col-0 es el dorsal: ancho fijo y estrecho, que son dos cifras */
+.panel-fila .col-0{flex:none;width:56px;text-align:center}
+.panel-fila .col-1{flex:1}
+.panel-fila .col-2{flex:2}
+.panel-fila button{flex:none;width:32px;border:1px solid var(--line);background:#fff;color:var(--dim);
+  cursor:pointer;border-radius:6px;font-size:13px}
+.panel-fila button:hover{border-color:#b3261e;color:#b3261e}
+.panel-filas > .panel-btn{margin-top:2px;padding:7px 14px}
+
+/* ---- recortador ---- */
+.recorte-fondo{position:fixed;inset:0;z-index:80;background:rgba(6,20,35,.72);
+  display:grid;place-items:center;padding:20px;overflow:auto}
+.recorte{background:#fff;max-width:640px;width:100%;padding:24px;display:flex;
+  flex-direction:column;gap:14px;align-items:center}
+.recorte header{width:100%;display:flex;flex-direction:column;gap:3px;
+  border-bottom:1px solid var(--line);padding-bottom:12px}
+.recorte header b{font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:19px;
+  text-transform:uppercase;letter-spacing:.03em}
+.recorte header span{font-size:13px;color:var(--dim);line-height:1.5}
+
+/* El marco es la ventana por la que se ve la foto: lo de dentro es exactamente
+   lo que se sube. `touch-action:none` para que en el móvil arrastrar mueva la
+   foto en vez de desplazar la página por detrás. */
+.recorte-hueco{width:100%;display:flex;justify-content:center}
+.recorte-marco{position:relative;overflow:hidden;background:var(--ink);
+  cursor:grab;touch-action:none;max-width:100%;border:1px solid var(--line)}
+.recorte-marco:active{cursor:grabbing}
+.recorte-marco img{position:absolute;top:0;left:0;transform-origin:0 0;
+  max-width:none;user-select:none;-webkit-user-drag:none}
+/* el logo no se recorta: se enseña entero sobre un damero, que es como se ve la
+   transparencia en cualquier editor y se entiende sin explicar nada */
+.recorte-marco.entero{cursor:default;background-color:#fff;background-size:16px 16px;
+  background-position:0 0,0 8px,8px -8px,-8px 0;
+  background-image:linear-gradient(45deg,#eef2f6 25%,transparent 25%),
+    linear-gradient(-45deg,#eef2f6 25%,transparent 25%),
+    linear-gradient(45deg,transparent 75%,#eef2f6 75%),
+    linear-gradient(-45deg,transparent 75%,#eef2f6 75%)}
+.recorte-marco.entero img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:10px}
+
+.recorte-zoom{display:flex;align-items:center;gap:12px;width:100%;max-width:420px}
+.recorte-zoom span{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:12px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--dim);flex:none}
+.recorte-zoom input{flex:1;accent-color:var(--blue)}
+.recorte-pista{margin:0;font-size:13px;color:var(--dim);text-align:center;line-height:1.5}
+.recorte-aviso{margin:0;padding:10px 14px;border:1px solid #e6d3a3;background:#fdf6e3;color:#6b4e07;
+  font-size:13.5px;line-height:1.5;text-align:center}
+.recorte-error{margin:0;padding:10px 14px;border:1px solid #b3261e;background:#fdeceb;color:#8c1d18;
+  font-size:13.5px;width:100%}
+.recorte-botones{display:flex;gap:10px;justify-content:flex-end;width:100%;
+  border-top:1px solid var(--line);padding-top:14px}
+
+@media(max-width:760px){
+  .recorte{padding:16px}
+  .recorte-botones{flex-direction:column-reverse}
+  .recorte-botones .panel-btn{width:100%}
 }

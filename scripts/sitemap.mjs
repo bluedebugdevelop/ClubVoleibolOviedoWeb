@@ -15,7 +15,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import {
-  equipos,
+  equiposSemilla,
   noticias,
   patrocinadoresActuales,
   tieneFicha,
@@ -47,7 +47,10 @@ const rutas = [...estaticas]
 
 // Un equipo por ficha: son las páginas que buscan los padres ("cadete femenino
 // oviedo") y las que más tráfico de cola larga traen.
-for (const slug of Object.keys(equipos)) rutas.push([`/equipos/${slug}`, 0.7])
+// Los equipos que dé de alta el panel no salen aquí: el sitemap se genera al
+// construir, y en ese momento solo existe la semilla. Los buscadores llegan a
+// ellos igual desde /cantera y la portada.
+for (const eq of equiposSemilla) rutas.push([`/equipos/${eq.slug}`, 0.7])
 
 // Solo las noticias con cuerpo: las demás no tienen página propia, el enlace
 // se queda en el listado (ver `enlaceNoticia`).

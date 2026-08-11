@@ -1,11 +1,12 @@
 // ==========================================================================
 // API del panel de administración.
 //
-//   POST /api/panel/entrar          { acceso }  → deja la cookie firmada
+//   POST /api/panel/entrar          { usuario, clave } → deja la cookie firmada
 //   GET  /api/panel/sesion                      → quién soy y estado del disco
 //   POST /api/panel/salir                       → borra la cookie
 //   PUT  /api/panel/noticias        { noticias }
 //   PUT  /api/panel/patrocinadores  { patrocinadores }
+//   PUT  /api/panel/equipos         { equipos }
 //   POST /api/panel/imagen          (bytes de la imagen) → { ruta }
 //
 // Todo lo que no sea `entrar` exige cookie válida. Y lo que llega se pasa por
@@ -13,7 +14,9 @@
 // que no se guarda un objeto tal cual venga del navegador.
 //
 // Las respuestas cuando no hay permiso son 404, no 401: quien husmee no debe
-// poder distinguir "esto existe pero no puedes" de "esto no existe".
+// poder distinguir "esto existe pero no puedes" de "esto no existe". La única
+// excepción es el propio `entrar`, que sí distingue "credenciales mal" de
+// "estás bloqueado": quien está escribiendo su contraseña necesita saberlo.
 // ==========================================================================
 
 import {
@@ -22,10 +25,23 @@ import {
   escribir,
   guardarImagen,
   leer,
+  LISTAS,
   TAMANO_MAXIMO,
   TIPOS_ACEPTADOS,
 } from './_almacen.js'
-import { borrarCookie, configurado, ponerCookie, quienEs, sesion } from './_acceso.js'
+import {
+  apuntaFallo,
+  bloqueadoHasta,
+  borrarCookie,
+  configurado,
+  credencialesValidas,
+  MAX_INTENTOS,
+  olvidaFallos,
+  ponerCookie,
+  quienLlama,
+  sesion,
+  usuario,
+} from './_acceso.js'
 import { semilla } from './contenido.js'
 
 const LIMITE_TEXTO = 400
@@ -97,31 +113,80 @@ function limpiaPatrocinador(p, i) {
   }
 }
 
+/* Un equipo lleva dentro TODO lo suyo: lo de la tarjeta (nombre, foto,
+   categoría) y lo de su ficha (cabecera, datos, plantilla, cuerpo técnico).
+   Las sublistas se recortan a un tamaño sensato para que un envío raro no deje
+   una ficha con diez mil jugadores. */
+const limpiaPareja = (d) => ({ label: texto(d?.label, 60), valor: texto(d?.valor, 120) })
+
+const limpiaJugador = (j) => ({
+  // el dorsal es texto a propósito: hay equipos de base sin dorsal asignado
+  numero: texto(j?.numero ?? '', 4),
+  nombre: texto(j?.nombre, 80),
+  posicion: texto(j?.posicion, 40),
+})
+
+const limpiaTecnico = (t) => ({ nombre: texto(t?.nombre, 80), rol: texto(t?.rol, 60) })
+
+const lista = (v, limpia, tope) =>
+  Array.isArray(v) ? v.map(limpia).filter((x) => Object.values(x).some(Boolean)).slice(0, tope) : []
+
+function limpiaEquipo(e, i) {
+  const nombre = texto(e.nombre, 80)
+  return {
+    slug: slugificar(e.slug || nombre) || `equipo-${i}`,
+    // solo dos sitios donde puede colgar una ficha; cualquier otra cosa, cantera
+    zona: e.zona === 'nacional' ? 'nacional' : 'cantera',
+    enPortada: e.enPortada === true,
+    nombre,
+    categoria: texto(e.categoria, 60),
+    liga: texto(e.liga, 80),
+    img: rutaImagen(e.img),
+    // sin texto alternativo escrito se pone uno: la foto tiene que ser legible
+    // para un lector de pantalla aunque al club se le olvide rellenarlo
+    alt: texto(e.alt, 160) || (nombre ? `Equipo ${nombre} del CV Oviedo` : ''),
+    resumen: texto(e.resumen, 120),
+    crumb: texto(e.crumb, 80) || nombre,
+    kicker: texto(e.kicker, 140),
+    sub: texto(e.sub, 400),
+    headerImg: rutaImagen(e.headerImg),
+    headerFoco: foco(e.headerFoco),
+    datos: lista(e.datos, limpiaPareja, 8),
+    squad: lista(e.squad, limpiaJugador, 40),
+    staff: lista(e.staff, limpiaTecnico, 12),
+    join: {
+      title: texto(e.join?.title, 120),
+      text: texto(e.join?.text, 400),
+    },
+  }
+}
+
+// Todos los campos de cualquier lista que guardan la ruta de una imagen.
+const CAMPOS_IMAGEN = ['img', 'logo', 'foto', 'headerImg']
+
+function rutasUsadas(estado, soloSubidas) {
+  const salida = new Set()
+  for (const clave of LISTAS) {
+    for (const el of estado[clave] || []) {
+      for (const campo of CAMPOS_IMAGEN) {
+        const r = el[campo]
+        if (r && (!soloSubidas || r.startsWith('/subidas/'))) salida.add(r)
+      }
+    }
+  }
+  return salida
+}
+
 /**
  * Borra las imágenes subidas que ya no usa nadie.
  *
- * Se hace DESPUÉS de guardar y mirando las dos listas a la vez: si solo se
+ * Se hace DESPUÉS de guardar y mirando TODAS las listas a la vez: si solo se
  * mirara la que se está editando, cambiar una noticia borraría la foto de un
- * patrocinador que apuntase al mismo fichero.
+ * patrocinador o de un equipo que apuntase al mismo fichero.
  */
 function limpiarHuerfanas(antes, despues) {
-  const usadas = new Set()
-  for (const lista of [despues.noticias, despues.patrocinadores]) {
-    for (const el of lista) {
-      for (const campo of ['img', 'logo', 'foto']) {
-        if (el[campo]) usadas.add(el[campo])
-      }
-    }
-  }
-  const previas = new Set()
-  for (const lista of [antes.noticias, antes.patrocinadores]) {
-    for (const el of lista) {
-      for (const campo of ['img', 'logo', 'foto']) {
-        if (el[campo]?.startsWith('/subidas/')) previas.add(el[campo])
-      }
-    }
-  }
-  for (const ruta of previas) {
+  const usadas = rutasUsadas(despues, false)
+  for (const ruta of rutasUsadas(antes, true)) {
     if (!usadas.has(ruta)) borrarImagen(ruta)
   }
 }
@@ -130,10 +195,15 @@ function limpiarHuerfanas(antes, despues) {
 function estadoActual() {
   const guardado = leer()
   const base = semilla()
-  return {
-    noticias: guardado.noticias.length ? guardado.noticias : base.noticias,
-    patrocinadores: guardado.patrocinadores.length ? guardado.patrocinadores : base.patrocinadores,
-  }
+  return Object.fromEntries(
+    LISTAS.map((k) => [k, guardado[k].length ? guardado[k] : base[k]]),
+  )
+}
+
+const LIMPIADORES = {
+  noticias: limpiaNoticia,
+  patrocinadores: limpiaPatrocinador,
+  equipos: limpiaEquipo,
 }
 
 export default async function handler(req, res) {
@@ -142,28 +212,51 @@ export default async function handler(req, res) {
   const seguro = req.protocol === 'https' || req.headers['x-forwarded-proto'] === 'https'
 
   if (!configurado()) {
-    // Sin PANEL_ACCESOS y PANEL_SECRETO el panel no existe.
+    // Sin PANEL_CLAVE_HASH y PANEL_SECRETO el panel no existe.
     return res.status(404).json({ ok: false, error: 'No encontrado' })
   }
 
   // ---- entrar: lo único que no pide cookie ----
   if (accion === 'entrar') {
     if (req.method !== 'POST') return res.status(404).json({ ok: false })
-    const cuerpo = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {})
-    const nombre = quienEs(texto(cuerpo.acceso, 200))
-    if (!nombre) {
-      console.warn('Panel: intento de acceso con token no válido')
-      // se tarda un poco a propósito, para que probar tokens a lo bruto salga caro
-      await new Promise((r) => setTimeout(r, 700))
-      return res.status(404).json({ ok: false, error: 'No encontrado' })
+
+    const ip = quienLlama(req)
+    const espera = bloqueadoHasta(ip)
+    if (espera > 0) {
+      const minutos = Math.ceil(espera / 60000)
+      return res.status(429).json({
+        ok: false,
+        error:
+          `Demasiados intentos fallidos (${MAX_INTENTOS}). ` +
+          `Vuelve a probar dentro de ${minutos} min.`,
+      })
     }
-    ponerCookie(res, nombre, seguro)
-    console.log(`Panel: entra ${nombre}`)
-    return res.status(200).json({ ok: true, nombre })
+
+    const cuerpo = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {})
+
+    if (!credencialesValidas(cuerpo.usuario, cuerpo.clave)) {
+      const quedan = apuntaFallo(ip)
+      console.warn(`Panel: acceso fallido desde ${ip} (quedan ${Math.max(0, quedan)} intentos)`)
+      return res.status(401).json({
+        ok: false,
+        error: 'Usuario o contraseña incorrectos.',
+        // solo se avisa cuando ya quedan pocos: antes es ruido
+        quedan: quedan <= 2 ? Math.max(0, quedan) : undefined,
+      })
+    }
+
+    olvidaFallos(ip)
+    ponerCookie(res, usuario(), seguro)
+    console.log(`Panel: entra ${usuario()} desde ${ip}`)
+    return res.status(200).json({ ok: true, nombre: usuario() })
   }
 
+  /* 401, no 404: ahora el panel se anuncia con un candado en la barra, así que
+     esconderlo ya no aporta nada y confundir "no existe" con "no has entrado"
+     solo complica el mensaje que ve quien está usándolo. El 404 se reserva para
+     cuando el panel NO está montado (arriba), que entonces sí es verdad. */
   const quien = sesion(req)
-  if (!quien) return res.status(404).json({ ok: false, error: 'No encontrado' })
+  if (!quien) return res.status(401).json({ ok: false, error: 'Hay que iniciar sesión.' })
 
   if (accion === 'salir') {
     borrarCookie(res)
@@ -201,7 +294,7 @@ export default async function handler(req, res) {
   }
 
   // ---- guardar listas ----
-  if (accion === 'noticias' || accion === 'patrocinadores') {
+  if (LISTAS.includes(accion)) {
     if (req.method !== 'PUT') return res.status(405).json({ ok: false, error: 'Solo PUT' })
     const cuerpo = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {})
     const entrada = cuerpo[accion]
@@ -213,8 +306,7 @@ export default async function handler(req, res) {
     }
 
     const antes = estadoActual()
-    const limpia = accion === 'noticias' ? limpiaNoticia : limpiaPatrocinador
-    const despues = { ...antes, [accion]: entrada.map(limpia) }
+    const despues = { ...antes, [accion]: entrada.map(LIMPIADORES[accion]) }
 
     try {
       escribir(despues)

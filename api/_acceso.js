@@ -1,49 +1,41 @@
 // ==========================================================================
 // Quién puede tocar el panel.
 //
-// El club no quiere pantalla de inicio de sesión en la web: se le da acceso a
-// dos o tres personas "a mano" y punto. Eso se hace así:
+// Una sola cuenta de administración, con usuario y contraseña:
 //
-//   1. Cada persona tiene su propio token, en la variable PANEL_ACCESOS:
-//        PANEL_ACCESOS="adrian:t0k3n-largo,diego:otro-t0k3n,vitor:otro-mas"
-//   2. Se le pasa UNA vez su enlace:  https://…/panel?acceso=t0k3n-largo
-//   3. El servidor comprueba el token, deja una cookie firmada de 90 días y
-//      quita el token de la URL. A partir de ahí entra en /panel y ya está.
+//   PANEL_USUARIO=admin
+//   PANEL_CLAVE_HASH=scrypt$<sal en base64url>$<hash en base64url>
+//   PANEL_SECRETO=<cadena larga y aleatoria, para firmar la cookie>
 //
-// Por qué un token por persona y no una clave común: se puede quitar el acceso
-// a uno solo (borrando su línea) sin cambiarle el enlace a los demás, y en el
-// registro del servidor queda quién publicó cada cosa.
+// La contraseña NO se guarda en ningún sitio, ni siquiera en las variables de
+// Railway: lo que se guarda es su huella scrypt, de la que no se puede volver
+// atrás. El hash se genera con `node scripts/clave.mjs` (ver ese fichero).
 //
-// La cookie va firmada con HMAC usando PANEL_SECRETO, es HttpOnly (el
+// scrypt y no SHA: está pensado a propósito para ser lento y comer memoria, así
+// que probar millones de contraseñas sale carísimo. Node lo trae de serie, no
+// hace falta ninguna dependencia.
+//
+// La cookie de sesión va firmada con HMAC usando PANEL_SECRETO, es HttpOnly (el
 // JavaScript de la página no puede leerla) y SameSite=Strict (no viaja desde
-// otra web, lo que corta los ataques de tipo CSRF).
+// otra web, lo que corta los ataques de tipo CSRF). Dura 30 días.
 //
-// AVISO honesto: sin pantalla de login, quien consiga el enlace entra. No hay
-// segundo factor ni contraseña que recordar. Es la contrapartida de lo que se
-// pidió; si algún día se filtra un token, se cambia esa línea de PANEL_ACCESOS
-// y ese acceso muere.
+// Cambiar PANEL_SECRETO cierra la sesión en todos los dispositivos a la vez:
+// es la forma de echar a alguien que se dejó la sesión abierta en un ordenador
+// que no controlamos.
 // ==========================================================================
 
 import crypto from 'node:crypto'
 
 const COOKIE = 'cvo_panel'
-const DIAS = 90
+const DIAS = 30
 
-/** [{ nombre, token }] a partir de PANEL_ACCESOS. */
-export function accesos() {
-  return (process.env.PANEL_ACCESOS || '')
-    .split(',')
-    .map((par) => par.trim())
-    .filter(Boolean)
-    .map((par) => {
-      const i = par.indexOf(':')
-      if (i < 0) return null
-      const nombre = par.slice(0, i).trim()
-      const token = par.slice(i + 1).trim()
-      return nombre && token ? { nombre, token } : null
-    })
-    .filter(Boolean)
-}
+// Parámetros de scrypt. N=2^15 tarda ~100 ms por intento en un servidor
+// modesto: ni se nota al entrar, y hace inviable probar a lo bruto.
+const SCRYPT = { N: 32768, r: 8, p: 1, keylen: 64, maxmem: 64 * 1024 * 1024 }
+
+export const usuario = () => (process.env.PANEL_USUARIO || 'admin').trim()
+
+const claveHash = () => (process.env.PANEL_CLAVE_HASH || '').trim()
 
 function secreto() {
   // Sin secreto propio no se firma nada: es preferible que el panel quede
@@ -51,8 +43,9 @@ function secreto() {
   return process.env.PANEL_SECRETO || ''
 }
 
+/** ¿Está el panel montado? Sin las tres variables, no existe. */
 export function configurado() {
-  return accesos().length > 0 && secreto().length >= 16
+  return /^scrypt\$[\w-]+\$[\w-]+$/.test(claveHash()) && secreto().length >= 16
 }
 
 /** Comparación en tiempo constante: no filtra cuántos caracteres se acertaron. */
@@ -63,13 +56,39 @@ function iguales(a, b) {
   return crypto.timingSafeEqual(A, B)
 }
 
-/** ¿A quién corresponde este token? `null` si a nadie. */
-export function quienEs(token) {
-  if (!token) return null
-  for (const a of accesos()) {
-    if (iguales(a.token, token)) return a.nombre
+/** Huella de una contraseña, en el formato que se guarda en PANEL_CLAVE_HASH. */
+export function hashear(clave, sal = crypto.randomBytes(16)) {
+  const hash = crypto.scryptSync(clave.normalize('NFKC'), sal, SCRYPT.keylen, SCRYPT)
+  return `scrypt$${sal.toString('base64url')}$${hash.toString('base64url')}`
+}
+
+/**
+ * ¿Son correctos usuario y contraseña?
+ *
+ * Se comprueban SIEMPRE los dos, aunque el usuario ya falle: si se saliera
+ * antes, un atacante notaría por lo que tarda cuándo ha acertado el usuario.
+ */
+export function credencialesValidas(nombre, clave) {
+  if (!configurado()) return false
+  const [, sal64] = claveHash().split('$')
+
+  let sal
+  try {
+    sal = Buffer.from(sal64, 'base64url')
+  } catch {
+    return false
   }
-  return null
+
+  let calculado
+  try {
+    calculado = hashear(String(clave ?? ''), sal)
+  } catch {
+    return false
+  }
+
+  const claveOk = iguales(calculado, claveHash())
+  const usuarioOk = iguales(String(nombre ?? '').trim().toLowerCase(), usuario().toLowerCase())
+  return claveOk && usuarioOk
 }
 
 function firma(datos) {
@@ -91,9 +110,8 @@ export function leerCookie(valor) {
   if (!iguales(sello, firma(`${nombre64}.${caduca}`))) return null
   if (Number(caduca) < Date.now()) return null
   const nombre = Buffer.from(nombre64, 'base64url').toString()
-  // que siga en la lista: al borrar a alguien de PANEL_ACCESOS su cookie deja
-  // de valer al momento, sin esperar a que caduque
-  return accesos().some((a) => a.nombre === nombre) ? nombre : null
+  // si se cambia PANEL_USUARIO, las cookies del anterior dejan de valer
+  return nombre.toLowerCase() === usuario().toLowerCase() ? nombre : null
 }
 
 /** Cookies de la petición, sin dependencias extra. */
@@ -129,4 +147,51 @@ export function borrarCookie(res) {
   res.setHeader('Set-Cookie', `${COOKIE}=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0`)
 }
 
-export { COOKIE }
+// --------------------------------------------------------------------------
+// Freno contra la fuerza bruta.
+//
+// Ahora el usuario es adivinable ("admin"), así que lo único que separa a un
+// atacante del panel es la contraseña. Se cuenta cuántas veces falla cada IP y
+// se le va cerrando la puerta: cinco intentos seguidos y a esperar.
+//
+// Vive en memoria, no en disco: al reiniciar el servidor se olvida. Es lo justo
+// para un sitio de un club, y evita montar una base de datos para esto. Si
+// alguien reinicia el servidor a voluntad para saltárselo, ya tiene acceso a
+// cosas peores que el panel.
+// --------------------------------------------------------------------------
+const intentos = new Map()
+const MAX_INTENTOS = 5
+const CASTIGO = 15 * 60 * 1000 // 15 minutos
+
+export function quienLlama(req) {
+  // Railway va detrás de un proxy, así que la IP real viene en la cabecera.
+  const reenviada = (req.headers['x-forwarded-for'] || '').split(',')[0].trim()
+  return reenviada || req.socket?.remoteAddress || 'desconocida'
+}
+
+/** Milisegundos que le quedan de castigo a esta IP; 0 si puede intentarlo. */
+export function bloqueadoHasta(ip) {
+  const r = intentos.get(ip)
+  if (!r || r.fallos < MAX_INTENTOS) return 0
+  return Math.max(0, r.hasta - Date.now())
+}
+
+export function apuntaFallo(ip) {
+  const r = intentos.get(ip) || { fallos: 0, hasta: 0 }
+  r.fallos += 1
+  r.hasta = Date.now() + CASTIGO
+  intentos.set(ip, r)
+
+  // Limpieza perezosa: sin esto el Map crecería sin fin con IPs de paso.
+  if (intentos.size > 500) {
+    const ahora = Date.now()
+    for (const [k, v] of intentos) if (v.hasta < ahora) intentos.delete(k)
+  }
+  return MAX_INTENTOS - r.fallos
+}
+
+export function olvidaFallos(ip) {
+  intentos.delete(ip)
+}
+
+export { COOKIE, MAX_INTENTOS }

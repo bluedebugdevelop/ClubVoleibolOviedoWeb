@@ -3,7 +3,7 @@ import PageHead from '../components/PageHead'
 import SectionHead from '../components/SectionHead'
 import JoinCta from '../components/JoinCta'
 import Sponsors from '../components/Sponsors'
-import { equiposCantera } from '../data/contenido'
+import { useEquipos } from '../data/contenidoContexto'
 
 /* La página se quedó solo con los equipos (decisión de Adrián, 02-08-2026).
    Antes llevaba también las cifras de la cantera, la sede, los horarios por
@@ -21,6 +21,7 @@ const NUMEROS = [
 const enLetra = (n) => NUMEROS[n] ?? String(n)
 
 export default function Cantera() {
+  const equiposCantera = useEquipos().filter((eq) => eq.zona === 'cantera')
   const cuantos = enLetra(equiposCantera.length)
 
   return (

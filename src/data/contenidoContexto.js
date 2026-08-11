@@ -1,5 +1,9 @@
 import { createContext, useContext } from 'react'
-import { noticias as noticiasBase, patrocinadoresActuales as patrocinadoresBase } from './contenido'
+import {
+  noticias as noticiasBase,
+  patrocinadoresActuales as patrocinadoresBase,
+  equiposSemilla as equiposBase,
+} from './contenido'
 
 /* El contexto y sus hooks, separados del proveedor (`ProveedorContenido.jsx`)
    porque un fichero que exporta un componente Y otras cosas rompe el fast
@@ -11,6 +15,7 @@ import { noticias as noticiasBase, patrocinadoresActuales as patrocinadoresBase 
 export const ContenidoContexto = createContext({
   noticias: noticiasBase,
   patrocinadores: patrocinadoresBase,
+  equipos: equiposBase,
   cargando: false,
 })
 
@@ -24,4 +29,8 @@ export function useNoticias() {
 
 export function usePatrocinadores() {
   return useContenido().patrocinadores
+}
+
+export function useEquipos() {
+  return useContenido().equipos
 }

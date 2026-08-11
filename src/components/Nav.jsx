@@ -21,6 +21,21 @@ const secciones = [
   { to: '/tienda', texto: 'Tienda' },
 ]
 
+/* Acceso al panel del club. Discreto a propósito: un candado pequeño, en gris,
+   al lado de las redes. No lleva texto porque no es para el visitante — quien
+   tiene que entrar ya sabe lo que es, y al resto no le dice nada.
+   La página de destino pide usuario y contraseña; esto solo es la puerta. */
+function Candado() {
+  return (
+    <NavLink className="acceso-panel" to="/panel" aria-label="Acceso del club" title="Acceso del club">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <rect x="4" y="10.5" width="16" height="11" rx="2" />
+        <path d="M8 10.5V7a4 4 0 0 1 8 0v3.5" />
+      </svg>
+    </NavLink>
+  )
+}
+
 export default function Nav() {
   const [abierto, setAbierto] = useState(false)
   const { pathname } = useLocation()
@@ -70,6 +85,7 @@ export default function Nav() {
               <a key={r.clave} href={r.href} target="_blank" rel="noreferrer" aria-label={r.nombre}>{r.icono}</a>
             ))}
           </div>
+          <Candado />
           <NavLink className="btn-cta alt" to="/patrocinar">Patrocinar</NavLink>
           <NavLink className="btn-cta" to="/inscripciones">Apúntate</NavLink>
 
@@ -111,6 +127,9 @@ export default function Nav() {
               {redes.map((r) => (
                 <a key={r.clave} href={r.href} target="_blank" rel="noreferrer" aria-label={r.nombre}>{r.icono}</a>
               ))}
+              {/* en el móvil las redes y el candado comparten fila: el candado
+                  se distingue por ir en gris y sin círculo alrededor */}
+              <Candado />
             </div>
           </nav>
         </>

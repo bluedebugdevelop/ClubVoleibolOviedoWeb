@@ -7,13 +7,13 @@ import Sponsors from '../components/Sponsors'
 import {
   club,
   cifrasClub,
-  equiposDestacados,
+  destacadosDe,
   enlaceNoticia,
   retransmisiones,
   estadoPreinscripcion,
   textoPreinscripcion,
 } from '../data/contenido'
-import { useNoticias } from '../data/contenidoContexto'
+import { useNoticias, useEquipos } from '../data/contenidoContexto'
 
 export default function Inicio() {
   /* La portada no lleva PageHead (tiene su propio hero), así que pide el
@@ -28,6 +28,8 @@ export default function Inicio() {
   })
 
   const destacadas = useNoticias().slice(0, 2)
+  // los equipos marcados para portada, con el acceso a Cantera al final
+  const destacados = destacadosDe(useEquipos())
 
   return (
     <>
@@ -76,7 +78,7 @@ export default function Inicio() {
       <section className="sec" id="equipos">
         <SectionHead title="Nuestros equipos" link="/calendario" linkText="Calendario y resultados →" />
         <div className="teams">
-          {equiposDestacados.map((eq) => (
+          {destacados.map((eq) => (
             <Link key={eq.nombre} className="team" to={eq.href ?? `/equipos/${eq.slug}`}>
               <div className="ph">
                 <img src={eq.img} alt={eq.alt} />

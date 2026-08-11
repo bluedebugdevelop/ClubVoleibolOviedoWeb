@@ -44,8 +44,30 @@ export const cifrasClub = [
   { n: '+6.700', label: 'Seguidores en redes' },
 ]
 
+/**
+ * La tercera tarjeta de portada NO es un equipo: es la puerta a /cantera. Por
+ * eso no se edita desde el panel y vive aquí aparte — el panel gestiona equipos,
+ * y esto es un acceso a una sección.
+ */
+export const tarjetaCantera = {
+  slug: 'cantera',
+  nombre: 'Cantera',
+  categoria: 'Base y formación',
+  // Ni cadete-femenino-a.jpg ni cantera.jpg: son la misma foto del Cadete
+  // Femenino A con dos recortes, y ese equipo ya sale en su propia ficha. El
+  // acceso a la cantera es de todos, así que va una de juego.
+  img: '/media/celebracion.jpg',
+  alt: 'Equipos de cantera del CV Oviedo',
+  resumen: '11 equipos · 240 deportistas',
+  href: '/cantera',
+}
+
 // ---------------------------------------------------------------------------
-// Equipos principales (los tres accesos de portada)
+// Equipos principales (los accesos de portada)
+//
+// Esta lista es SEMILLA: manda mientras el panel no haya guardado equipos. En
+// cuanto lo hace, la portada pinta los que tengan `enPortada` en `equiposSemilla`
+// (más abajo), que es lo mismo pero editable.
 // ---------------------------------------------------------------------------
 export const equiposDestacados = [
   {
@@ -65,19 +87,9 @@ export const equiposDestacados = [
     resumen: '16 jugadoras · Grupo A',
     href: '/equipos/primera-nacional-femenina',
   },
-  {
-    slug: 'cantera',
-    nombre: 'Cantera',
-    categoria: 'Base y formación',
-    // Ni cadete-femenino-a.jpg ni cantera.jpg: son la misma foto del Cadete
-    // Femenino A con dos recortes, y ese equipo ya sale en su propia ficha. El
-    // acceso a la cantera es de todos, así que va una de juego.
-    img: '/media/celebracion.jpg',
-    alt: 'Equipos de cantera del CV Oviedo',
-    resumen: '11 equipos · 240 deportistas',
-    href: '/cantera',
-  },
+  tarjetaCantera,
 ]
+
 
 // ---------------------------------------------------------------------------
 // Fichas completas de equipo (Equipo.jsx) — DATOS DE MUESTRA
@@ -342,10 +354,81 @@ const fichaDeCantera = (eq) => ({
   },
 })
 
-export const equipos = {
-  ...fichasNacionales,
-  ...Object.fromEntries(equiposCantera.map((eq) => [eq.slug, fichaDeCantera(eq)])),
+// ---------------------------------------------------------------------------
+// La lista de equipos que edita el panel.
+//
+// Un equipo es UN objeto con todo dentro: lo que sale en la tarjeta (nombre,
+// foto, categoría) y lo que sale en su ficha (cabecera, datos, plantilla,
+// cuerpo técnico). Antes estaba repartido en tres sitios —`equiposDestacados`
+// para la portada, `equiposCantera` para las tarjetas y `fichasNacionales` /
+// `fichaDeCantera` para las fichas—, y para dar de alta un equipo desde el panel
+// hay que poder tocarlo todo desde un único formulario.
+//
+// Las fichas de cantera se siguen generando con `fichaDeCantera`, pero AQUÍ,
+// una sola vez, al construir la semilla. Lo que se guarda es el resultado ya
+// escrito, así que el club puede corregir cualquier texto autogenerado en vez
+// de quedar atado a la plantilla.
+//
+//   zona: 'nacional' → ficha colgando de la portada
+//   zona: 'cantera'  → ficha colgando de /cantera y tarjeta en esa página
+//   enPortada        → además sale entre los accesos de la portada
+// ---------------------------------------------------------------------------
+const unificar = (base, ficha, zona, enPortada) => ({
+  slug: base.slug,
+  zona,
+  enPortada,
+  nombre: base.nombre,
+  categoria: base.categoria,
+  liga: base.liga || '',
+  img: base.img,
+  alt: base.alt,
+  resumen: base.resumen || '',
+  crumb: ficha.crumb,
+  kicker: ficha.kicker,
+  sub: ficha.sub,
+  headerImg: ficha.headerImg,
+  headerFoco: ficha.headerFoco,
+  datos: ficha.datos,
+  squad: ficha.squad,
+  staff: ficha.staff,
+  join: ficha.join,
+})
+
+export const equiposSemilla = [
+  ...equiposDestacados
+    // la tarjeta de Cantera no es un equipo y no tiene ficha que unificar
+    .filter((e) => fichasNacionales[e.slug])
+    .map((e) => unificar(e, fichasNacionales[e.slug], 'nacional', true)),
+  ...equiposCantera.map((e) => unificar(e, fichaDeCantera(e), 'cantera', false)),
+]
+
+/**
+ * Los accesos de la portada: los equipos marcados, y Cantera siempre al final.
+ *
+ * El «11 equipos» de esa última tarjeta se cuenta aquí en vez de escribirlo a
+ * mano: si el club da de alta un equipo de base desde el panel, la portada se
+ * entera sola. Los deportistas sí van a mano, que eso no se deduce de nada.
+ */
+export const destacadosDe = (lista) => {
+  const base = lista.filter((e) => e.zona === 'cantera').length
+  return [
+    ...lista.filter((e) => e.enPortada),
+    { ...tarjetaCantera, resumen: `${base} equipos · ${cifrasCantera[1]?.n ?? '240'} deportistas` },
+  ]
 }
+
+/** Las migas de pan de la ficha dependen de dónde cuelga el equipo. */
+export const padreDe = (equipo) =>
+  equipo.zona === 'cantera' ? { to: '/cantera', label: 'Cantera' } : { to: '/', label: 'Equipos' }
+
+/** Iniciales para el hueco de la foto del cuerpo técnico. */
+export const inicialesDe = (nombre = '') =>
+  nombre
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((t) => t[0]?.toUpperCase() || '')
+    .join('')
 
 // DATOS DE MUESTRA — cifras de la sección Cantera
 export const cifrasCantera = [

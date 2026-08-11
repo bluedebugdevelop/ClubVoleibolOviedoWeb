@@ -4,17 +4,18 @@ import JoinCta from '../components/JoinCta'
 import Sponsors from '../components/Sponsors'
 import NoEncontrado from './NoEncontrado'
 import Pendiente from '../components/Pendiente'
-import { equipos } from '../data/contenido'
+import { padreDe, inicialesDe } from '../data/contenido'
+import { useEquipos } from '../data/contenidoContexto'
 
 export default function Equipo() {
   const { slug } = useParams()
-  const equipo = equipos[slug]
+  const equipo = useEquipos().find((eq) => eq.slug === slug)
 
   if (!equipo) return <NoEncontrado />
 
-  /* Los dos equipos nacionales cuelgan de la portada; los de base, de Cantera,
-     que es de donde se llega a ellos. Sin `padre` se queda como estaba. */
-  const padre = equipo.padre ?? { to: '/', label: 'Equipos' }
+  /* Los equipos nacionales cuelgan de la portada; los de base, de Cantera,
+     que es de donde se llega a ellos. */
+  const padre = padreDe(equipo)
 
   return (
     <>
@@ -93,7 +94,7 @@ export default function Equipo() {
               {equipo.staff.map((s) => (
                 <div className="pl" key={s.nombre}>
                   <div className="ph">
-                    <span>{s.iniciales}</span>
+                    <span>{s.iniciales || inicialesDe(s.nombre)}</span>
                   </div>
                   <b>{s.nombre}</b>
                   <i>{s.rol}</i>
