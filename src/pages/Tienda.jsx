@@ -2,8 +2,10 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import PageHead from '../components/PageHead'
 import { club, productos, categoriasTienda, tiendaAbierta } from '../data/contenido'
+import { useFoto } from '../data/contenidoContexto'
 
 export default function Tienda() {
+  const foto = useFoto('tienda')
   const [categoria, setCategoria] = useState('Todos')
 
   const visibles = categoria === 'Todos' ? productos : productos.filter((p) => p.categoria === categoria)
@@ -15,7 +17,7 @@ export default function Tienda() {
         kicker="Equipación y merchandising"
         title="Tienda"
         sub="Ropa y accesorios oficiales del Club Voleibol Oviedo."
-        bg="/media/recepcion.jpg"
+        bg={foto}
         foco="center 60%"
       />
 

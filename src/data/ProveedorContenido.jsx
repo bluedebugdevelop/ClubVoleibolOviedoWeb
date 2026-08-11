@@ -5,11 +5,17 @@ import {
   patrocinadoresActuales as patrocinadoresBase,
   equiposSemilla as equiposBase,
 } from './contenido'
+import { fotosSemilla } from './fotosSitio'
 
 // Cada lista con su respaldo: si la API no la trae o viene vacía, se queda la
 // de `contenido.js`. Se declara fuera del componente para que no se rehaga en
 // cada render y el `useEffect` no dependa de un objeto nuevo cada vez.
-const BASE = { noticias: noticiasBase, patrocinadores: patrocinadoresBase, equipos: equiposBase }
+const BASE = {
+  noticias: noticiasBase,
+  patrocinadores: patrocinadoresBase,
+  equipos: equiposBase,
+  fotos: fotosSemilla(),
+}
 
 /* ---------------------------------------------------------------------------
    Noticias, patrocinadores y equipos, que ahora son EDITABLES desde /panel.

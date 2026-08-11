@@ -16,6 +16,7 @@ import {
   generado,
   temporadaDatos,
 } from '../data/competicion'
+import { useFoto } from '../data/contenidoContexto'
 
 const TODOS = 'Todos los equipos'
 
@@ -75,6 +76,7 @@ function Clasificacion({ equipo }) {
 }
 
 export default function Calendario() {
+  const foto = useFoto('calendario')
   const [filtro, setFiltro] = useState(TODOS)
   const [parte, setParte] = useState('') // '' = temporada entera
 
@@ -104,7 +106,7 @@ export default function Calendario() {
         kicker={temporadaDatos ? `Temporada ${temporadaDatos}` : 'Temporada 2026/27'}
         title="Calendario y resultados"
         sub="Todos los partidos del club, equipo por equipo. Los que se retransmiten llevan el enlace al canal de YouTube."
-        bg="/media/defensa.jpg"
+        bg={foto}
         foco="center 45%"
       />
 

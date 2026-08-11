@@ -1,5 +1,6 @@
 // ==========================================================================
-// Contenido editable de la web: noticias, patrocinadores y equipos.
+// Contenido editable de la web: noticias, patrocinadores, equipos y las fotos
+// fijas de cada sección.
 //
 // GET /api/contenido — público, sin permisos. Lo pide el navegador al cargar.
 //
@@ -16,11 +17,13 @@ import { leer, LISTAS } from './_almacen.js'
 
 // Se importa una vez al arrancar: son datos estáticos, no cambian en caliente.
 const estatico = await import('../src/data/contenido.js')
+const { fotosSemilla } = await import('../src/data/fotosSitio.js')
 
 const BASE = {
   noticias: estatico.noticias,
   patrocinadores: estatico.patrocinadoresActuales,
   equipos: estatico.equiposSemilla,
+  fotos: fotosSemilla(),
 }
 
 export function contenidoActual() {

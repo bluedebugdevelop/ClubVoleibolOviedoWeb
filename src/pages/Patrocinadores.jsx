@@ -1,12 +1,13 @@
 import { Link } from 'react-router-dom'
 import PageHead from '../components/PageHead'
 import { club, enlaceDePatrocinador } from '../data/contenido'
-import { usePatrocinadores } from '../data/contenidoContexto'
+import { usePatrocinadores, useFoto } from '../data/contenidoContexto'
 
 /* Esta página NO vende patrocinio (decisión de Diego, 2026-07-29): solo enseña
    quién acompaña al club. Cada marca lleva a su ficha si la tiene y, si no,
    directamente a su propia web. */
 export default function Patrocinadores() {
+  const foto = useFoto('patrocinadores')
   const patrocinadoresActuales = usePatrocinadores()
   return (
     <>
@@ -19,7 +20,7 @@ export default function Patrocinadores() {
            de juego o de celebración. celebracion.jpg no vale (es vertical, 1066x1600,
            y la banda la recortaba a un trozo de cuerpo); celebracion-manos.jpg sí,
            es apaisada. */
-        bg="/media/celebracion-manos.jpg"
+        bg={foto}
         foco="center 45%"
       />
 

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import PageHead from '../components/PageHead'
 import SectionHead from '../components/SectionHead'
 import { club } from '../data/contenido'
+import { useFoto } from '../data/contenidoContexto'
 
 const VACIO = {
   nombre: '',
@@ -12,6 +13,7 @@ const VACIO = {
 }
 
 export default function Contacto() {
+  const foto = useFoto('contacto')
   const [datos, setDatos] = useState(VACIO)
   const [consentimiento, setConsentimiento] = useState(false)
   const [estado, setEstado] = useState('inicial') // inicial · enviando · ok · sinConectar · error
@@ -60,7 +62,7 @@ export default function Contacto() {
         kicker="Estamos en Colloto"
         title="Contacto"
         sub="Para patrocinios, prensa o cualquier duda sobre el club, puedes escribirnos o venir a vernos entrenar."
-        bg="/media/bloqueo-doble.jpg"
+        bg={foto}
         foco="center 42%"
       />
 

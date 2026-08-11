@@ -89,6 +89,14 @@ app.use((req, res) => {
   if (req.method !== 'GET' && req.method !== 'HEAD') {
     return res.status(404).json({ ok: false, error: 'No encontrado' })
   }
+  /* Una imagen que no está tiene que decir que no está. Sin esto, pedir una
+     subida borrada devolvía el index.html con un 200: el navegador se comía una
+     página entera creyendo que era un JPEG, y en las herramientas de red parecía
+     que el fichero seguía ahí. Estas dos carpetas son ficheros, nunca rutas de
+     la web, así que aquí no tienen nada que buscar. */
+  if (req.path.startsWith('/subidas/') || req.path.startsWith('/media/')) {
+    return res.status(404).type('txt').send('No encontrado')
+  }
   res.sendFile(path.join(dist, 'index.html'))
 })
 

@@ -4,7 +4,7 @@ import PageHead from '../components/PageHead'
 import SectionHead from '../components/SectionHead'
 import Stats from '../components/Stats'
 import { club, alcanceClub, porQuePatrocinar, contrapartidas } from '../data/contenido'
-import { usePatrocinadores } from '../data/contenidoContexto'
+import { usePatrocinadores, useFoto } from '../data/contenidoContexto'
 
 /* Esta es la página que SÍ busca patrocinadores: la de /patrocinadores solo
    enseña las marcas que ya están. Aquí NO van precios ni niveles (decisión de
@@ -25,6 +25,7 @@ const VACIO = {
 }
 
 export default function Patrocinar() {
+  const foto = useFoto('patrocinar')
   const patrocinadoresActuales = usePatrocinadores()
   const [datos, setDatos] = useState(VACIO)
   const [consentimiento, setConsentimiento] = useState(false)
@@ -74,7 +75,7 @@ export default function Patrocinar() {
         sub="Buscamos empresas de Oviedo y de Asturias que quieran acompañar al club esta temporada. Cuéntanos quién eres y lo hablamos."
         /* misma razón que en /patrocinadores: fotos de juego, no de equipo, y
            celebracion.jpg es vertical y aquí solo se veía un recorte sin sentido */
-        bg="/media/plancha.jpg"
+        bg={foto}
         foco="center 55%"
       />
 

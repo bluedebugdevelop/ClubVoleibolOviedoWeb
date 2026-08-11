@@ -3,6 +3,7 @@ import PageHead from '../components/PageHead'
 import Pendiente from '../components/Pendiente'
 import { club } from '../data/contenido'
 import { legalActualizado, terceros, titular, tratamientos } from '../data/legal'
+import { useFoto } from '../data/contenidoContexto'
 
 /* Aviso legal, privacidad y cookies. Los tres documentos comparten maqueta y
    viven aquí porque se leen juntos y se tocan juntos: si cambia lo que recoge
@@ -269,6 +270,7 @@ const DOCS = {
 }
 
 export default function Legal({ doc }) {
+  const foto = useFoto('legal')
   const { titulo, sub, Cuerpo } = DOCS[doc]
 
   return (
@@ -278,7 +280,7 @@ export default function Legal({ doc }) {
         kicker={`Actualizado el ${legalActualizado}`}
         title={titulo}
         sub={sub}
-        bg="/media/bloqueo-noche.jpg"
+        bg={foto}
         foco="center 48%"
       />
 

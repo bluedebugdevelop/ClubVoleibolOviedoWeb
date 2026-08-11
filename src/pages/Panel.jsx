@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import NoEncontrado from './NoEncontrado'
+import Crest from '../components/Crest'
 import RecorteImagen from '../components/RecorteImagen'
 import { FORMATOS } from '../components/formatosImagen'
+import { FOTOS_SITIO } from '../data/fotosSitio'
 
 /* ---------------------------------------------------------------------------
    Panel de administración del club. Vive en /panel.
@@ -39,19 +41,24 @@ const hoy = () =>
   new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' })
     .replace('.', '')
 
-const SECCIONES = ['noticias', 'patrocinadores', 'equipos']
+const SECCIONES = ['noticias', 'patrocinadores', 'equipos', 'fotos']
 
 export default function Panel() {
   // comprobando · nopanel · fuera · dentro
   const [estado, setEstado] = useState('comprobando')
   const [sesion, setSesion] = useState(null)
   const [pestana, setPestana] = useState('noticias')
-  const [listas, setListas] = useState({ noticias: [], patrocinadores: [], equipos: [] })
+  const [listas, setListas] = useState({ noticias: [], patrocinadores: [], equipos: [], fotos: [] })
   const [aviso, setAviso] = useState(null)
 
   const cargar = useCallback((d) => {
     setSesion(d)
-    setListas({ noticias: d.noticias ?? [], patrocinadores: d.patrocinadores ?? [], equipos: d.equipos ?? [] })
+    setListas({
+      noticias: d.noticias ?? [],
+      patrocinadores: d.patrocinadores ?? [],
+      equipos: d.equipos ?? [],
+      fotos: d.fotos ?? [],
+    })
     setEstado('dentro')
   }, [])
 
@@ -105,7 +112,7 @@ export default function Panel() {
         <div className="panel-tabs">
           {SECCIONES.map((s) => (
             <button key={s} type="button" aria-pressed={pestana === s} onClick={() => setPestana(s)}>
-              {s} <i>{listas[s].length}</i>
+              {s} <i>{s === 'fotos' ? listas.fotos.filter((f) => f.ruta).length : listas[s].length}</i>
             </button>
           ))}
         </div>
@@ -156,6 +163,14 @@ export default function Panel() {
         />
       )}
 
+      {pestana === 'fotos' && (
+        <Fotos
+          items={listas.fotos}
+          setItems={(v) => ponerLista('fotos', v)}
+          onGuardar={() => guardar('fotos')}
+        />
+      )}
+
       {pestana === 'equipos' && (
         <Lista
           titulo="Equipos"
@@ -183,6 +198,7 @@ function Entrar({ onDentro }) {
   const [clave, setClave] = useState('')
   const [error, setError] = useState(null)
   const [enviando, setEnviando] = useState(false)
+  const [verClave, setVerClave] = useState(false)
 
   async function enviar(e) {
     e.preventDefault()
@@ -215,11 +231,29 @@ function Entrar({ onDentro }) {
 
   return (
     <div className="entrar">
-      <form className="entrar-caja" onSubmit={enviar}>
-        <h1>Acceso del club</h1>
-        <p>Para publicar noticias, patrocinadores y equipos.</p>
+      {/* Mismo azul y mismo grano que la portada: esto es del club, no una
+          pantalla de sistema pegada a la web. */}
+      <div className="entrar-grano" aria-hidden="true"></div>
 
-        {error && <p className="entrar-error">{error}</p>}
+      <form className="entrar-caja" onSubmit={enviar}>
+        <Crest className="entrar-escudo" />
+
+        <div className="entrar-titulo">
+          <span>Club Voleibol Oviedo</span>
+          <h1>Acceso del club</h1>
+        </div>
+
+        <p className="entrar-sub">Para publicar noticias, patrocinadores, equipos y fotos.</p>
+
+        {error && (
+          <p className="entrar-error" role="alert">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="12" cy="12" r="9" />
+              <path d="M12 7.5v5.5M12 16.2v.3" />
+            </svg>
+            <span>{error}</span>
+          </p>
+        )}
 
         <label>
           <span>Usuario</span>
@@ -231,18 +265,42 @@ function Entrar({ onDentro }) {
             required
           />
         </label>
+
         <label>
           <span>Contraseña</span>
-          <input
-            type="password"
-            value={clave}
-            onChange={(e) => setClave(e.target.value)}
-            autoComplete="current-password"
-            required
-          />
+          <div className="entrar-clave">
+            <input
+              type={verClave ? 'text' : 'password'}
+              value={clave}
+              onChange={(e) => setClave(e.target.value)}
+              autoComplete="current-password"
+              required
+            />
+            {/* Con una contraseña larga y aleatoria, escribirla a ciegas es
+                pedir un fallo. El ojo la enseña mientras se comprueba. */}
+            <button
+              type="button"
+              onClick={() => setVerClave((v) => !v)}
+              aria-label={verClave ? 'Ocultar la contraseña' : 'Ver la contraseña'}
+              title={verClave ? 'Ocultar' : 'Ver'}
+            >
+              {verClave ? (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9">
+                  <path d="M3 3l18 18" />
+                  <path d="M10.6 10.7a2 2 0 0 0 2.8 2.8" />
+                  <path d="M9.4 5.3A9.7 9.7 0 0 1 12 5c5 0 9 4.5 9 7 0 .9-.7 2.2-1.9 3.4M6.3 6.7C4.1 8.2 3 10.2 3 12c0 2.5 4 7 9 7 1.3 0 2.4-.2 3.4-.7" />
+                </svg>
+              ) : (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9">
+                  <path d="M3 12s3.6-7 9-7 9 7 9 7-3.6 7-9 7-9-7-9-7z" />
+                  <circle cx="12" cy="12" r="2.6" />
+                </svg>
+              )}
+            </button>
+          </div>
         </label>
 
-        <button type="submit" className="panel-btn primario" disabled={enviando}>
+        <button type="submit" className="entrar-btn" disabled={enviando}>
           {enviando ? 'Entrando…' : 'Entrar'}
         </button>
 
@@ -251,6 +309,74 @@ function Entrar({ onDentro }) {
         <a className="entrar-volver" href="/">← Volver a la web</a>
       </form>
     </div>
+  )
+}
+
+/* --------------------------------------------------------------------------
+   Fotos de las secciones.
+
+   No es una `Lista`: estas fotos no se añaden, ni se borran, ni se ordenan.
+   Son huecos FIJOS de la web —la banda de cada página, el fotograma de la
+   portada, el pabellón— y lo único que se hace con ellas es cambiar la imagen.
+   El catálogo lo fija el código (`data/fotosSitio.js`), porque cada hueco tiene
+   que estar usado en alguna página para que servir de algo.
+
+   «Restaurar» no borra nada: vacía la ruta, y entonces la web vuelve a la foto
+   que trae el código. Es la forma de deshacer un cambio sin tener que guardar
+   en algún sitio la original.
+   -------------------------------------------------------------------------- */
+function Fotos({ items, setItems, onGuardar }) {
+  const rutaDe = (clave) => items.find((f) => f.clave === clave)?.ruta || ''
+
+  const poner = (clave, ruta) => {
+    const hay = items.some((f) => f.clave === clave)
+    setItems(hay ? items.map((f) => (f.clave === clave ? { ...f, ruta } : f)) : [...items, { clave, ruta }])
+  }
+
+  return (
+    <section className="panel-sec">
+      <div className="panel-sec-top">
+        <h2>Fotos de la web</h2>
+        <div>
+          <button type="button" className="panel-btn primario" onClick={onGuardar}>
+            Guardar y publicar
+          </button>
+        </div>
+      </div>
+      <p className="panel-ayuda">
+        Las fotos que no son de una noticia, un patrocinador ni un equipo: la banda de detrás del título
+        de cada página y alguna suelta. Cada una se recorta a la medida de su hueco.
+      </p>
+
+      <div className="panel-fotos">
+        {FOTOS_SITIO.map((f) => {
+          const ruta = rutaDe(f.clave)
+          /* La lista arranca con las rutas que trae el código, así que tener
+             ruta no significa que se haya tocado nada: hay que compararla con
+             la original. Si no, todas saldrían marcadas como cambiadas y el
+             botón de restaurar no haría nada. */
+          const cambiada = Boolean(ruta) && ruta !== f.porDefecto
+          const formato = FORMATOS[f.formato]
+          return (
+            <div className="panel-foto" key={f.clave}>
+              <div className="panel-foto-txt">
+                <b>{f.titulo}</b>
+                <span>{f.donde}</span>
+                {cambiada && <i>Cambiada desde el panel</i>}
+              </div>
+              <SubirImagen
+                formato={{ ...formato, titulo: 'Cambiar foto' }}
+                valor={ruta || f.porDefecto}
+                onCambio={(r) => poner(f.clave, r)}
+                // mientras siga la del código no hay nada que restaurar; una vez
+                // cambiada, vaciar la ruta es justo lo que la devuelve
+                textoQuitar={cambiada ? 'Restaurar la original' : null}
+              />
+            </div>
+          )
+        })}
+      </div>
+    </section>
   )
 }
 
@@ -571,7 +697,7 @@ function Filas({ etiqueta, items = [], onCambio, vacia, columnas }) {
    pide ese hueco de la web. Lo que se manda al servidor es ya el recorte, del
    tamaño exacto, así que nada sale descuadrado ni se suben fotos de 6 MB.
    -------------------------------------------------------------------------- */
-function SubirImagen({ formato, valor, onCambio }) {
+function SubirImagen({ formato, valor, onCambio, textoQuitar = 'Quitar' }) {
   const [porRecortar, setPorRecortar] = useState(null)
   const [subiendo, setSubiendo] = useState(false)
   const [error, setError] = useState(null)
@@ -633,8 +759,8 @@ function SubirImagen({ formato, valor, onCambio }) {
           <em>{formato.ayuda}</em>
           {subiendo && <em>Subiendo…</em>}
           {error && <em className="mal">{error}</em>}
-          {valor && (
-            <button type="button" className="panel-btn" onClick={() => onCambio('')}>Quitar</button>
+          {valor && textoQuitar && (
+            <button type="button" className="panel-btn" onClick={() => onCambio('')}>{textoQuitar}</button>
           )}
         </div>
       </div>

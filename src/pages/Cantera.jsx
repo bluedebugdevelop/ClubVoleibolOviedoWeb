@@ -3,7 +3,7 @@ import PageHead from '../components/PageHead'
 import SectionHead from '../components/SectionHead'
 import JoinCta from '../components/JoinCta'
 import Sponsors from '../components/Sponsors'
-import { useEquipos } from '../data/contenidoContexto'
+import { useEquipos, useFoto } from '../data/contenidoContexto'
 
 /* La página se quedó solo con los equipos (decisión de Adrián, 02-08-2026).
    Antes llevaba también las cifras de la cantera, la sede, los horarios por
@@ -21,6 +21,7 @@ const NUMEROS = [
 const enLetra = (n) => NUMEROS[n] ?? String(n)
 
 export default function Cantera() {
+  const foto = useFoto('cantera')
   const equiposCantera = useEquipos().filter((eq) => eq.zona === 'cantera')
   const cuantos = enLetra(equiposCantera.length)
 
@@ -35,7 +36,7 @@ export default function Cantera() {
         kicker="Base y formación · Temporada 2026/27"
         title="Cantera"
         sub={`${cuantos.charAt(0).toUpperCase()}${cuantos.slice(1)} equipos federados, desde alevín hasta el segundo sénior. Aquí es donde empieza todo el que hoy juega en el primer equipo.`}
-        bg="/media/bloqueo.jpg"
+        bg={foto}
         foco="center 45%"
       />
 

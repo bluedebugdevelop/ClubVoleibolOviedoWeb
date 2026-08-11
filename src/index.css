@@ -1277,23 +1277,87 @@ footer .legal .credito b{color:#b9cbe0;font-weight:600}
 .acceso-panel:hover{opacity:1;color:var(--blue)}
 .acceso-panel.active{opacity:1;color:var(--blue)}
 
-.entrar{min-height:100vh;display:grid;place-items:center;padding:40px var(--pad);background:var(--tint)}
-.entrar-caja{width:100%;max-width:380px;background:#fff;border:1px solid var(--line);
-  padding:34px 32px 30px;display:flex;flex-direction:column;gap:14px}
-.entrar-caja h1{font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:28px;
-  text-transform:uppercase;letter-spacing:.02em;margin:0}
-.entrar-caja > p{margin:-8px 0 6px;font-size:14px;color:var(--dim);line-height:1.55}
-.entrar-caja label{display:flex;flex-direction:column;gap:5px}
-.entrar-caja label span{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:12px;
+/* Fondo azul del club, no un gris de formulario: quien entra aquí tiene que ver
+   que sigue en la web del CV Oviedo. El degradado sale del azul oscuro de la
+   marca y se aclara hacia una esquina, como la banda de las cabeceras. */
+.entrar{min-height:100vh;display:grid;place-items:center;padding:40px var(--pad);
+  background:radial-gradient(120% 90% at 78% 8%,#164a86 0%,var(--ink) 58%,#04101d 100%);
+  position:relative;overflow:hidden}
+/* mismo grano que el hero de la portada: quita el plano digital del degradado */
+.entrar-grano{position:absolute;inset:0;opacity:.4;pointer-events:none;
+  background-image:radial-gradient(rgba(255,255,255,.045) 1px,transparent 1px);
+  background-size:3px 3px}
+
+.entrar-caja{position:relative;width:100%;max-width:400px;background:#fff;border-radius:14px;
+  padding:0 34px 30px;display:flex;flex-direction:column;gap:15px;
+  box-shadow:0 24px 70px rgba(2,12,24,.42),0 2px 6px rgba(2,12,24,.2)}
+
+/* El escudo monta a caballo del borde de la tarjeta, que es lo que le da el
+   remate; por eso la caja no lleva relleno arriba y el margen lo pone él. */
+.entrar-escudo{width:76px;height:76px;margin:-38px auto 0;display:block;
+  background:#fff;border-radius:50%;padding:5px;box-shadow:0 4px 16px rgba(2,12,24,.18)}
+
+.entrar-titulo{text-align:center;display:flex;flex-direction:column;gap:7px;margin-top:2px}
+.entrar-titulo span{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:11.5px;
+  letter-spacing:.24em;text-transform:uppercase;color:var(--blue)}
+/* el h1 global va en blanco y con sombra, para ir sobre foto: aquí, sobre la
+   tarjeta blanca, hay que devolverlo al azul oscuro o no se lee nada */
+.entrar-caja h1{font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:32px;
+  line-height:1;text-transform:uppercase;letter-spacing:.01em;margin:0;
+  color:var(--ink);text-shadow:none}
+.entrar-sub{margin:-6px 0 4px;font-size:13.5px;color:var(--dim);line-height:1.55;text-align:center}
+
+.entrar-caja label{display:flex;flex-direction:column;gap:6px}
+.entrar-caja label > span{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:12px;
   letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
-.entrar-caja input{width:100%;border:1px solid var(--line);padding:11px 12px;font-family:inherit;
-  font-size:15px;color:var(--ink);border-radius:6px;background:#fff}
-.entrar-caja input:focus{outline:none;border-color:var(--blue)}
-.entrar-caja .panel-btn{margin-top:6px;width:100%;padding:12px}
-.entrar-error{margin:0;padding:11px 14px;border:1px solid #b3261e;background:#fdeceb;color:#8c1d18;
-  font-size:14px;line-height:1.5}
-.entrar-volver{display:block;text-align:center;font-size:13px;color:var(--dim);margin-top:4px}
+.entrar-caja input{width:100%;border:1px solid var(--line);padding:12px 13px;font-family:inherit;
+  font-size:15px;color:var(--ink);border-radius:9px;background:var(--tint);transition:border-color .15s,background .15s}
+.entrar-caja input:focus{outline:none;border-color:var(--blue);background:#fff;
+  box-shadow:0 0 0 3px rgba(21,96,189,.14)}
+
+/* el ojo va dentro del campo, no al lado: si no, la fila se descuadra */
+.entrar-clave{position:relative}
+.entrar-clave input{padding-right:46px}
+.entrar-clave button{position:absolute;right:4px;top:50%;transform:translateY(-50%);
+  width:36px;height:36px;display:grid;place-content:center;border:0;background:none;
+  color:var(--dim);cursor:pointer;border-radius:8px}
+.entrar-clave button:hover{color:var(--blue);background:rgba(21,96,189,.08)}
+
+.entrar-btn{margin-top:8px;width:100%;padding:14px;border:0;border-radius:9px;cursor:pointer;
+  background:var(--blue);color:#fff;font-family:"Barlow Condensed",sans-serif;font-weight:800;
+  font-size:15px;letter-spacing:.14em;text-transform:uppercase;transition:background .15s,transform .06s}
+.entrar-btn:hover{background:var(--blue-dark)}
+.entrar-btn:active{transform:translateY(1px)}
+.entrar-btn:disabled{opacity:.6;cursor:default;transform:none}
+
+.entrar-error{margin:0;padding:11px 14px;border:1px solid #f0b4b0;background:#fdeceb;color:#8c1d18;
+  font-size:13.5px;line-height:1.45;border-radius:9px;display:flex;gap:9px;align-items:flex-start}
+.entrar-error svg{flex:none;margin-top:1px}
+
+.entrar-volver{display:block;text-align:center;font-size:13px;color:var(--dim);margin-top:6px}
 .entrar-volver:hover{color:var(--blue)}
+
+@media(max-width:440px){
+  .entrar-caja{padding:0 22px 24px}
+  .entrar-caja h1{font-size:27px}
+}
+
+/* ---- fotos de las secciones ---- */
+.panel-fotos{display:flex;flex-direction:column;gap:0;border:1px solid var(--line);background:#fff}
+.panel-foto{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:20px;
+  align-items:start;padding:18px 20px;border-bottom:1px solid var(--line)}
+.panel-foto:last-child{border-bottom:0}
+.panel-foto-txt{display:flex;flex-direction:column;gap:5px;padding-top:2px}
+.panel-foto-txt b{font-size:15px}
+.panel-foto-txt span{font-size:13.5px;color:var(--dim);line-height:1.5}
+.panel-foto-txt i{font-style:normal;font-size:12px;color:var(--blue);font-weight:600}
+/* dentro de la rejilla, el campo de subida ya no necesita ocupar todo el ancho */
+.panel-foto .panel-campo.ancho{grid-column:auto}
+.panel-foto .panel-campo > span{display:none}
+
+@media(max-width:760px){
+  .panel-foto{grid-template-columns:1fr;gap:12px}
+}
 
 /* ---- casilla de sí/no ---- */
 .panel-casilla label{display:flex;align-items:center;gap:9px;cursor:pointer}

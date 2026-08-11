@@ -4,9 +4,10 @@ import SectionHead from '../components/SectionHead'
 import JoinCta from '../components/JoinCta'
 import Sponsors from '../components/Sponsors'
 import { enlaceNoticia, estadoPreinscripcion, textoPreinscripcion } from '../data/contenido'
-import { useNoticias } from '../data/contenidoContexto'
+import { useNoticias, useFoto } from '../data/contenidoContexto'
 
 export default function Noticias() {
+  const foto = useFoto('noticias')
   const noticias = useNoticias()
   const [destacada, ...resto] = noticias
 
@@ -17,7 +18,7 @@ export default function Noticias() {
         kicker="Actualidad del club"
         title="Noticias"
         sub="Lo último de los 13 equipos del CV Oviedo: resultados, fichajes, pretemporada y vida de club."
-        bg="/media/hero-remate.jpg"
+        bg={foto}
         foco="center 38%"
       />
 

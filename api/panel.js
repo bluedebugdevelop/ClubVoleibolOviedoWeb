@@ -7,6 +7,7 @@
 //   PUT  /api/panel/noticias        { noticias }
 //   PUT  /api/panel/patrocinadores  { patrocinadores }
 //   PUT  /api/panel/equipos         { equipos }
+//   PUT  /api/panel/fotos           { fotos }
 //   POST /api/panel/imagen          (bytes de la imagen) → { ruta }
 //
 // Todo lo que no sea `entrar` exige cookie válida. Y lo que llega se pasa por
@@ -43,6 +44,12 @@ import {
   usuario,
 } from './_acceso.js'
 import { semilla } from './contenido.js'
+import { FOTOS_SITIO } from '../src/data/fotosSitio.js'
+
+// Las claves de foto que existen. Lo que llegue con otra clave se tira: esta
+// lista la fija el código, no el panel, porque cada clave tiene que estar usada
+// en alguna página para que sirva de algo.
+const CLAVES_FOTO = new Set(FOTOS_SITIO.map((f) => f.clave))
 
 const LIMITE_TEXTO = 400
 const LIMITE_PARRAFO = 2000
@@ -113,6 +120,11 @@ function limpiaPatrocinador(p, i) {
   }
 }
 
+/* Una foto de sección es solo la clave del sitio donde va y la ruta de la
+   imagen. Sin ruta se guarda igual, con la cadena vacía: eso significa "vuelve
+   a la que trae el código por defecto", que es como se deshace un cambio. */
+const limpiaFoto = (f) => ({ clave: texto(f?.clave, 40), ruta: rutaImagen(f?.ruta) })
+
 /* Un equipo lleva dentro TODO lo suyo: lo de la tarjeta (nombre, foto,
    categoría) y lo de su ficha (cabecera, datos, plantilla, cuerpo técnico).
    Las sublistas se recortan a un tamaño sensato para que un envío raro no deje
@@ -161,8 +173,9 @@ function limpiaEquipo(e, i) {
   }
 }
 
-// Todos los campos de cualquier lista que guardan la ruta de una imagen.
-const CAMPOS_IMAGEN = ['img', 'logo', 'foto', 'headerImg']
+// Todos los campos de cualquier lista que guardan la ruta de una imagen. Se
+// miran todos en todas las listas: sobra con que el campo no exista.
+const CAMPOS_IMAGEN = ['img', 'logo', 'foto', 'headerImg', 'ruta']
 
 function rutasUsadas(estado, soloSubidas) {
   const salida = new Set()
@@ -204,6 +217,7 @@ const LIMPIADORES = {
   noticias: limpiaNoticia,
   patrocinadores: limpiaPatrocinador,
   equipos: limpiaEquipo,
+  fotos: limpiaFoto,
 }
 
 export default async function handler(req, res) {
@@ -306,7 +320,15 @@ export default async function handler(req, res) {
     }
 
     const antes = estadoActual()
-    const despues = { ...antes, [accion]: entrada.map(LIMPIADORES[accion]) }
+    let limpia = entrada.map(LIMPIADORES[accion])
+    if (accion === 'fotos') {
+      // solo claves que alguna página use de verdad, y una sola vez cada una
+      const vistas = new Set()
+      limpia = limpia.filter(
+        (f) => CLAVES_FOTO.has(f.clave) && !vistas.has(f.clave) && vistas.add(f.clave),
+      )
+    }
+    const despues = { ...antes, [accion]: limpia }
 
     try {
       escribir(despues)

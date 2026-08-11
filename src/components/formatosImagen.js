@@ -51,6 +51,22 @@ export const FORMATOS = {
     ayuda: 'Vertical, la de la tarjeta grande de la portada.',
   },
 
+  // La portada: el vídeo de fondo es 16:9 y el fotograma tiene que casar con él
+  hero: {
+    ancho: 1600,
+    alto: 900,
+    titulo: 'Fotograma de portada',
+    ayuda: 'Se ve un instante, mientras carga el vídeo. Que se parezca a su primer fotograma.',
+  },
+
+  // .instalaciones .ph → aspect-ratio 4/3
+  instalacion: {
+    ancho: 1200,
+    alto: 900,
+    titulo: 'Foto',
+    ayuda: 'Apaisada, junto al texto de la sede.',
+  },
+
   // El logo NO se recorta: se encaja entero dentro de la caja. Recortar un logo
   // es estropearlo, y además suelen venir con el fondo transparente.
   logo: {

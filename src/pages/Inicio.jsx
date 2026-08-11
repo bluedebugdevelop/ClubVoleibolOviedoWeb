@@ -13,7 +13,7 @@ import {
   estadoPreinscripcion,
   textoPreinscripcion,
 } from '../data/contenido'
-import { useNoticias, useEquipos } from '../data/contenidoContexto'
+import { useNoticias, useEquipos, useFoto } from '../data/contenidoContexto'
 
 export default function Inicio() {
   /* La portada no lleva PageHead (tiene su propio hero), así que pide el
@@ -27,6 +27,7 @@ export default function Inicio() {
       'Colloto. Apúntate esta temporada.',
   })
 
+  const posterHero = useFoto('portada-hero')
   const destacadas = useNoticias().slice(0, 2)
   // los equipos marcados para portada, con el acceso a Cantera al final
   const destacados = destacadosDe(useEquipos())
@@ -36,7 +37,7 @@ export default function Inicio() {
       {/* ─────────── hero ─────────── */}
       <section className="hero" id="hero">
         {/* poster: primer fotograma, para que no haya hueco negro mientras carga el vídeo */}
-        <video src="/media/hero.mp4" poster="/media/hero-poster.jpg" autoPlay muted loop playsInline />
+        <video src="/media/hero.mp4" poster={posterHero} autoPlay muted loop playsInline />
         <div className="veil"></div>
         <div className="grain"></div>
         <div className="hero-in">

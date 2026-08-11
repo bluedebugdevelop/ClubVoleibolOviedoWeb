@@ -6,7 +6,8 @@
 // desplegar. Para que el club los edite desde el panel tienen que ser datos que
 // se lean en caliente, y eso pide un sitio donde escribirlos.
 //
-// Ese mismo sitio guarda hoy tres listas —noticias, patrocinadores y equipos—
+// Ese mismo sitio guarda hoy cuatro listas —noticias, patrocinadores, equipos y
+// las fotos fijas de cada sección—
 // en un fichero JSON, más una carpeta de imágenes, dentro de:
 //
 //   DATOS_DIR  si está declarada
@@ -52,7 +53,7 @@ function asegurarCarpetas() {
 
 // Las listas que el panel sabe editar. Añadir una aquí es lo único que hay que
 // tocar en el almacén: el resto del fichero ya trabaja sobre esta constante.
-export const LISTAS = ['noticias', 'patrocinadores', 'equipos']
+export const LISTAS = ['noticias', 'patrocinadores', 'equipos', 'fotos']
 
 export function leer() {
   try {

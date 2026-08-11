@@ -10,6 +10,7 @@ import {
   preinscripcion,
   estadoPreinscripcion,
 } from '../data/contenido'
+import { useFoto } from '../data/contenidoContexto'
 
 const VACIO = {
   jugador: '',
@@ -24,6 +25,7 @@ const VACIO = {
 }
 
 export default function Inscripciones() {
+  const foto = useFoto('inscripciones')
   const ventana = estadoPreinscripcion()
   const [datos, setDatos] = useState(VACIO)
   const [consentimiento, setConsentimiento] = useState(false)
@@ -75,7 +77,7 @@ export default function Inscripciones() {
         kicker="Temporada 2026/27"
         title="Preinscripción"
         sub={`La inscripción no está abierta todo el año: la preinscripción para la temporada 2026/27 es ${preinscripcion.texto}.`}
-        bg="/media/hero-saque.jpg"
+        bg={foto}
         foco="center 54%"
       />
 

@@ -5,6 +5,7 @@ import JoinCta from '../components/JoinCta'
 import Sponsors from '../components/Sponsors'
 import Pendiente from '../components/Pendiente'
 import { club, hitos, palmares, valores, estadoPreinscripcion, textoPreinscripcion } from '../data/contenido'
+import { useFoto } from '../data/contenidoContexto'
 
 /* El palmarés se ordena aquí, de lo más reciente a lo más antiguo, en vez de
    pedir que la lista venga colocada: se va completando por tandas y a mano se
@@ -190,6 +191,8 @@ const PISADAS = [
 ]
 
 export default function QuienesSomos() {
+  const foto = useFoto('quienes-somos')
+  const fotoPabellon = useFoto('instalaciones')
   return (
     <>
       <PageHead
@@ -197,7 +200,7 @@ export default function QuienesSomos() {
         kicker={`Desde ${club.fundacion}`}
         title="Quiénes somos"
         sub="35 años de voleibol en Oviedo: de un único equipo sénior a un club con 13 equipos federados y 240 canteranos."
-        bg="/media/celebracion-punto.jpg"
+        bg={foto}
         foco="center 55%"
       />
 
@@ -387,7 +390,7 @@ export default function QuienesSomos() {
               </p>
             </div>
             <div className="ph">
-              <img src="/media/pista-azul.jpg" alt="Pista del Polideportivo José Manuel Fuente" />
+              <img src={fotoPabellon} alt="Pista del Polideportivo José Manuel Fuente" />
             </div>
           </div>
         </section>
