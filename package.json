@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "vite",
     "dev:api": "node server.js",
-    "build": "vite build",
+    "build": "vite build && node scripts/sitemap.mjs",
     "start": "node server.js",
     "lint": "oxlint",
     "preview": "vite preview",

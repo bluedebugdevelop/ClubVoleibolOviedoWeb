@@ -21,6 +21,61 @@
          `noindex, nofollow` porque el contenido era de muestra. Si algun dia
          hay que volver a cerrarla, es esta linea y public/robots.txt. -->
     <meta name="robots" content="index, follow" />
+
+    <!-- Estos valores son los de reserva, los que ven los robots que NO
+         ejecutan JavaScript (WhatsApp, X, Telegram al generar la vista previa
+         del enlace). Google sí ejecuta el JS, así que en su caso manda lo que
+         reescribe `src/seo.js` en cada ruta. -->
+    <link rel="canonical" href="https://clubvoleiboloviedo.com/" />
+    <meta property="og:site_name" content="Club Voleibol Oviedo" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://clubvoleiboloviedo.com/" />
+    <meta property="og:title" content="Club Voleibol Oviedo · Voleibol en Oviedo desde 1991" />
+    <meta
+      property="og:description"
+      content="Club de voleibol de Oviedo fundado en 1991. Superliga 2 Masculino, Primera Nacional Femenina y 9 equipos de cantera en el Polideportivo José Manuel Fuente, Colloto."
+    />
+    <meta property="og:image" content="https://clubvoleiboloviedo.com/media/hero-poster.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Datos estructurados: es lo que le dice a Google que esto es un club
+         deportivo de Oviedo y no una página cualquiera que menciona Oviedo. De
+         aquí salen el panel de la derecha y los enlaces a las redes.
+         Los datos son los mismos de `src/data/contenido.js` (club): si cambian
+         allí, cambiarlos aquí. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SportsClub",
+        "@id": "https://clubvoleiboloviedo.com/#club",
+        "name": "Club Voleibol Oviedo",
+        "alternateName": ["CV Oviedo", "Voleibol Oviedo"],
+        "sport": "Voleibol",
+        "foundingDate": "1991",
+        "url": "https://clubvoleiboloviedo.com/",
+        "logo": "https://clubvoleiboloviedo.com/escudo.svg",
+        "image": "https://clubvoleiboloviedo.com/media/hero-poster.jpg",
+        "email": "info@clubvoleiboloviedo.com",
+        "description": "Club de voleibol de Oviedo fundado en 1991. Compite en Superliga 2 Masculino y Primera Nacional Femenina, y tiene nueve equipos de cantera.",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Polideportivo José Manuel Fuente",
+          "addressLocality": "Colloto, Oviedo",
+          "addressRegion": "Asturias",
+          "addressCountry": "ES"
+        },
+        "areaServed": {
+          "@type": "City",
+          "name": "Oviedo"
+        },
+        "sameAs": [
+          "https://www.instagram.com/clubvoleiboloviedo/",
+          "https://www.facebook.com/voleiboloviedo"
+        ]
+      }
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

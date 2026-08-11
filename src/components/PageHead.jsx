@@ -7,7 +7,23 @@
    normal, casi cuadrada, la amplía tanto que se queda en un primer plano de
    las caras, y no hay `foco` que lo arregle. Para eso están las versiones
    `-cabecera` que genera `scripts/cabeceras.ps1`. */
-export default function PageHead({ crumbs, kicker, title, sub, bg, foco = 'center' }) {
+import useSeo from '../seo'
+
+export default function PageHead({ crumbs, kicker, title, sub, bg, foco = 'center', seo = {} }) {
+  /* De paso que la banda ya recibe el título y el subtítulo de la página, se
+     aprovechan para el <head>: así cada ruta tiene su propio <title> sin tener
+     que repetirlo en las catorce páginas que usan este componente.
+
+     `sub` a veces llega como JSX (enlaces dentro del texto) y una description
+     tiene que ser texto plano: en ese caso no se usa y cae en la de reserva.
+     Para afinarlo, la página pasa `seo={{ description: '…' }}`. */
+  useSeo({
+    title,
+    description: typeof sub === 'string' ? sub : undefined,
+    image: typeof bg === 'string' ? bg : undefined,
+    ...seo,
+  })
+
   return (
     <div className="phead">
       {bg && (

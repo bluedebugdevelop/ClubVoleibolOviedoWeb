@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import useSeo from '../seo'
 import SectionHead from '../components/SectionHead'
 import Stats from '../components/Stats'
 import JoinCta from '../components/JoinCta'
@@ -15,6 +16,17 @@ import {
 } from '../data/contenido'
 
 export default function Inicio() {
+  /* La portada no lleva PageHead (tiene su propio hero), así que pide el
+     <head> a mano. El título empieza por el nombre exacto del club porque es
+     la búsqueda que tiene que ganar: "club voleibol oviedo". */
+  useSeo({
+    title: 'Club Voleibol Oviedo · Voleibol en Oviedo desde 1991',
+    description:
+      'Club de voleibol de Oviedo fundado en 1991. Superliga 2 Masculino, Primera Nacional ' +
+      'Femenina y 9 equipos de cantera entrenando en el Polideportivo José Manuel Fuente, ' +
+      'Colloto. Apúntate esta temporada.',
+  })
+
   const destacadas = noticias.slice(0, 2)
 
   return (

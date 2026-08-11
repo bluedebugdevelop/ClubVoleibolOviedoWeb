@@ -2,3 +2,7 @@
 # web estaba en pruebas y sin dominio propio.
 User-agent: *
 Allow: /
+
+# Lo genera `scripts/sitemap.mjs` en cada build a partir de las rutas reales,
+# así que no hay que tocarlo al añadir una noticia o un equipo.
+Sitemap: https://clubvoleiboloviedo.com/sitemap.xml
