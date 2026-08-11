@@ -1,2 +1,4 @@
+# Abierto a buscadores desde el 11-08-2026. Antes iba "Disallow: /" porque la
+# web estaba en pruebas y sin dominio propio.
 User-agent: *
-Disallow: /
+Allow: /
