@@ -239,11 +239,10 @@ export const equiposCantera = [
   // dos equipos distintos, el federado y el que no compite en liga. El segundo
   // no tiene foto propia todavía: se reutiliza la del alevín hasta que la haya.
   { slug: 'alevin-federado', nombre: 'Alevín Federado', categoria: 'Sub-11', img: '/media/equipos/alevin.jpg', alt: 'Equipo alevín federado del CV Oviedo', liga: 'Liga Asturiana' },
-  // El Alevín y el Alevín Federado son dos equipos distintos, y la única foto de
-  // grupo que hay es la del federado. Antes se repetía en los dos, que es tanto
-  // como poner a un equipo la foto de otro: hasta que Diego mande la suya, va
-  // una de juego. Mismo criterio que el Sénior Masculino.
-  { slug: 'alevin', nombre: 'Alevín', categoria: 'Sub-11', img: '/media/remate.jpg', alt: 'Equipo alevín del CV Oviedo', liga: 'Liga Asturiana' },
+  // Comparte foto con el Alevín Federado a propósito (Diego, 11-08-2026): son
+  // los mismos críos, no hay foto propia y prefiere esa a una de juego. Es la
+  // única repetición consentida en toda la web.
+  { slug: 'alevin', nombre: 'Alevín', categoria: 'Sub-11', img: '/media/equipos/alevin.jpg', alt: 'Equipo alevín del CV Oviedo', liga: 'Liga Asturiana' },
 ]
 
 // ---------------------------------------------------------------------------
