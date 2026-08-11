@@ -8,12 +8,12 @@ import {
   club,
   cifrasClub,
   equiposDestacados,
-  noticias,
   enlaceNoticia,
   retransmisiones,
   estadoPreinscripcion,
   textoPreinscripcion,
 } from '../data/contenido'
+import { useNoticias } from '../data/contenidoContexto'
 
 export default function Inicio() {
   /* La portada no lleva PageHead (tiene su propio hero), así que pide el
@@ -27,7 +27,7 @@ export default function Inicio() {
       'Colloto. Apúntate esta temporada.',
   })
 
-  const destacadas = noticias.slice(0, 2)
+  const destacadas = useNoticias().slice(0, 2)
 
   return (
     <>

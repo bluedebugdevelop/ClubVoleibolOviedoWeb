@@ -3,9 +3,11 @@ import PageHead from '../components/PageHead'
 import SectionHead from '../components/SectionHead'
 import JoinCta from '../components/JoinCta'
 import Sponsors from '../components/Sponsors'
-import { noticias, enlaceNoticia, estadoPreinscripcion, textoPreinscripcion } from '../data/contenido'
+import { enlaceNoticia, estadoPreinscripcion, textoPreinscripcion } from '../data/contenido'
+import { useNoticias } from '../data/contenidoContexto'
 
 export default function Noticias() {
+  const noticias = useNoticias()
   const [destacada, ...resto] = noticias
 
   return (

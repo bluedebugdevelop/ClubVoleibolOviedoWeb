@@ -1,11 +1,13 @@
 import { Link } from 'react-router-dom'
 import PageHead from '../components/PageHead'
-import { club, patrocinadoresActuales, enlaceDePatrocinador } from '../data/contenido'
+import { club, enlaceDePatrocinador } from '../data/contenido'
+import { usePatrocinadores } from '../data/contenidoContexto'
 
 /* Esta página NO vende patrocinio (decisión de Diego, 2026-07-29): solo enseña
    quién acompaña al club. Cada marca lleva a su ficha si la tiene y, si no,
    directamente a su propia web. */
 export default function Patrocinadores() {
+  const patrocinadoresActuales = usePatrocinadores()
   return (
     <>
       <PageHead

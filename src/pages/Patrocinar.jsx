@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom'
 import PageHead from '../components/PageHead'
 import SectionHead from '../components/SectionHead'
 import Stats from '../components/Stats'
-import { club, alcanceClub, porQuePatrocinar, contrapartidas, patrocinadoresActuales } from '../data/contenido'
+import { club, alcanceClub, porQuePatrocinar, contrapartidas } from '../data/contenido'
+import { usePatrocinadores } from '../data/contenidoContexto'
 
 /* Esta es la página que SÍ busca patrocinadores: la de /patrocinadores solo
    enseña las marcas que ya están. Aquí NO van precios ni niveles (decisión de
@@ -24,6 +25,7 @@ const VACIO = {
 }
 
 export default function Patrocinar() {
+  const patrocinadoresActuales = usePatrocinadores()
   const [datos, setDatos] = useState(VACIO)
   const [consentimiento, setConsentimiento] = useState(false)
   const [estado, setEstado] = useState('inicial') // inicial · enviando · ok · sinConectar · error

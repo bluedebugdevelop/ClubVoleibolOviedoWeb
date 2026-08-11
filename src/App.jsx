@@ -19,6 +19,7 @@ import Producto from './pages/Producto'
 import Inscripciones from './pages/Inscripciones'
 import Contacto from './pages/Contacto'
 import Legal from './pages/Legal'
+import Panel from './pages/Panel'
 import NoEncontrado from './pages/NoEncontrado'
 
 function ScrollToTop() {
@@ -30,11 +31,15 @@ function ScrollToTop() {
 }
 
 function App() {
+  /* El panel no lleva la barra ni el pie del club: es una herramienta interna,
+     no una página más de la web, y con el menú encima se confunde con ella. */
+  const esPanel = useLocation().pathname === '/panel'
+
   return (
     <>
       <CrestDefs />
       <ScrollToTop />
-      <Nav />
+      {!esPanel && <Nav />}
       <Routes>
         <Route path="/" element={<Inicio />} />
         <Route path="/equipos/:slug" element={<Equipo />} />
@@ -55,9 +60,12 @@ function App() {
         <Route path="/aviso-legal" element={<Legal doc="aviso-legal" />} />
         <Route path="/privacidad" element={<Legal doc="privacidad" />} />
         <Route path="/cookies" element={<Legal doc="cookies" />} />
+        {/* Panel del club. NO se enlaza desde ningún sitio y la API responde
+            404 a quien no tenga permiso. Ver src/pages/Panel.jsx. */}
+        <Route path="/panel" element={<Panel />} />
         <Route path="*" element={<NoEncontrado />} />
       </Routes>
-      <Footer />
+      {!esPanel && <Footer />}
     </>
   )
 }

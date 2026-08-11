@@ -1,12 +1,14 @@
 import { Link, useParams } from 'react-router-dom'
 import PageHead from '../components/PageHead'
 import NoEncontrado from './NoEncontrado'
-import { patrocinadoresActuales, tieneFicha } from '../data/contenido'
+import { tieneFicha } from '../data/contenido'
+import { usePatrocinadores } from '../data/contenidoContexto'
 
 /* Ficha de un patrocinador: quién es, qué hace y su web. Sin nada de vender
    patrocinio — eso no vive en esta parte del sitio. */
 export default function Patrocinador() {
   const { slug } = useParams()
+  const patrocinadoresActuales = usePatrocinadores()
   const marca = patrocinadoresActuales.find((p) => p.slug === slug)
 
   // Sin texto escrito no hay ficha que enseñar: la marca existe, pero su URL no.

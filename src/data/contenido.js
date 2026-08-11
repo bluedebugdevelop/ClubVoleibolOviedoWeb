@@ -651,7 +651,7 @@ export const noticias = [
 /** A dónde lleva una tarjeta de noticia. Sin ficha escrita se queda en el
  *  listado, que es lo que hacía antes: nunca deja un enlace roto. */
 export function enlaceNoticia(n) {
-  return n && n.slug && n.cuerpo ? `/noticias/${n.slug}` : '/noticias'
+  return n && n.slug && n.cuerpo?.length ? `/noticias/${n.slug}` : '/noticias'
 }
 
 // ---------------------------------------------------------------------------

@@ -2,15 +2,16 @@ import { Link, useParams } from 'react-router-dom'
 import PageHead from '../components/PageHead'
 import Sponsors from '../components/Sponsors'
 import NoEncontrado from './NoEncontrado'
-import { club, noticias, preinscripcion, estadoPreinscripcion } from '../data/contenido'
+import { club, preinscripcion, estadoPreinscripcion } from '../data/contenido'
+import { useNoticias } from '../data/contenidoContexto'
 
 /* Ficha de una noticia: `/noticias/<slug>`. Sin `cuerpo` escrito no hay nada
    que enseñar, así que cae a 404 — mismo criterio que la ficha de patrocinador. */
 export default function Noticia() {
   const { slug } = useParams()
-  const noticia = noticias.find((n) => n.slug === slug)
+  const noticia = useNoticias().find((n) => n.slug === slug)
 
-  if (!noticia || !noticia.cuerpo) return <NoEncontrado />
+  if (!noticia || !noticia.cuerpo?.length) return <NoEncontrado />
 
   return (
     <>

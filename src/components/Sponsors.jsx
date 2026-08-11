@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom'
-import { patrocinadoresActuales, enlaceDePatrocinador } from '../data/contenido'
+import { enlaceDePatrocinador } from '../data/contenido'
+import { usePatrocinadores } from '../data/contenidoContexto'
 
 export default function Sponsors() {
+  const patrocinadoresActuales = usePatrocinadores()
   return (
     <div className="sponsors">
       <div className="sponsors-in">
