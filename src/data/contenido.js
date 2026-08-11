@@ -1020,6 +1020,28 @@ export const patrocinadoresActuales = [
       'Está en la calle Carmen Sarmiento, y al comedor le suma menús de domingo con música en vivo y reparto a domicilio en la zona de Avilés. No tiene web: lo suyo lo cuenta en Instagram.',
     ],
   },
+  {
+    // Alta el 11-08-2026. El club pasó también el DNI, el móvil personal de
+    // Miguel Muñoz y la razón social: eso es para el contrato y NO se publica.
+    // Los dos teléfonos de las clínicas tampoco van aquí —ninguna otra ficha
+    // lleva teléfono—; el club los quiere en la equipación y en el soporte
+    // fijo, que es otra cosa.
+    slug: 'clinica-dental-miguel-munoz',
+    nombre: 'Clínica Dental Miguel Muñoz',
+    logo: '/media/patrocinadores/clinica-dental-miguel-munoz.png',
+    foto: '/media/patrocinadores/clinica-dental-miguel-munoz-cabecera.jpg',
+    tagline: 'Clínica dental en Oviedo y Colloto',
+    web: 'https://munozdental.es',
+    webTexto: 'munozdental.es',
+    // Muestreado del propio logo: es azul puro, no una aproximación.
+    color: '#0000ff',
+    glow: 'rgba(0,0,255,.20)',
+    descripcion: 'Clínica dental con consultas en Oviedo y en Colloto. Implantes, ortodoncia, odontopediatría y estética dental.',
+    parrafos: [
+      'La Clínica Dental Miguel Muñoz atiende en dos consultas: una en Oviedo, en la calle Bermúdez de Castro, y otra en Colloto, en el Camino Real, a un paso del pabellón donde entrena el club. La dirige el doctor Miguel Muñoz Menéndez, licenciado en Odontología por la Universidad de Santiago de Compostela.',
+      'Trabaja implantes y cirugía, ortodoncia, prótesis, endodoncia, periodoncia y estética dental, con un equipo en el que cada especialidad tiene su responsable. Lleva además odontopediatría, que en un club con nueve equipos de cantera no es un detalle menor.',
+    ],
+  },
 ]
 
 /** Solo tienen ficha propia en /patrocinadores/:slug los que traen texto escrito. */
