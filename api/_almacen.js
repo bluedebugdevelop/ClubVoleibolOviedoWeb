@@ -10,9 +10,10 @@
 // las fotos fijas de cada sección—
 // en un fichero JSON, más una carpeta de imágenes, dentro de:
 //
-//   DATOS_DIR  si está declarada
-//   /data      si existe  → es donde Railway monta un Volume
-//   .datos/    en local (ignorada por git)
+//   DATOS_DIR                   si está declarada
+//   RAILWAY_VOLUME_MOUNT_PATH   la declara Railway al enganchar un Volume
+//   /data                       si existe
+//   .datos/                     en local (ignorada por git)
 //
 // OJO CON RAILWAY: el disco del contenedor es EFÍMERO. Sin un Volume montado en
 // /data, todo lo que publique el club desaparece en el siguiente despliegue. La
@@ -29,7 +30,11 @@ import path from 'node:path'
 
 function elegirCarpeta() {
   if (process.env.DATOS_DIR) return process.env.DATOS_DIR
-  // Railway monta aquí el Volume; si no hay Volume, esta carpeta no existe
+  /* Railway declara esta variable él solo al enganchar un Volume, con la ruta
+     donde lo haya montado. Mirarla evita tener que acertar con la ruta: se monta
+     donde se quiera y esto lo encuentra igual. */
+  if (process.env.RAILWAY_VOLUME_MOUNT_PATH) return process.env.RAILWAY_VOLUME_MOUNT_PATH
+  // y si no, la ruta de siempre, por si el volumen se montó en /data a secas
   try {
     if (fs.existsSync('/data') && fs.statSync('/data').isDirectory()) return '/data'
   } catch {
@@ -44,7 +49,11 @@ const FICHERO = path.join(CARPETA, 'contenido.json')
 
 /** ¿Sobrevivirá esto a un despliegue? */
 export function esPersistente() {
-  return Boolean(process.env.DATOS_DIR) || CARPETA === '/data'
+  return (
+    Boolean(process.env.DATOS_DIR) ||
+    Boolean(process.env.RAILWAY_VOLUME_MOUNT_PATH) ||
+    CARPETA === '/data'
+  )
 }
 
 function asegurarCarpetas() {
