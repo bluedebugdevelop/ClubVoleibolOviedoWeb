@@ -28,6 +28,7 @@ import contacto from './api/contacto.js'
 import contenido from './api/contenido.js'
 import panel from './api/panel.js'
 import { SUBIDAS, TIPOS_ACEPTADOS, esPersistente } from './api/_almacen.js'
+import { configurado as panelConfigurado } from './api/_acceso.js'
 
 const raiz = path.dirname(fileURLToPath(import.meta.url))
 const dist = path.join(raiz, 'dist')
@@ -100,6 +101,17 @@ app.listen(puerto, '0.0.0.0', () => {
     console.warn(
       'AVISO: no hay volumen montado. Lo que se publique desde el panel se ' +
         'perderá en el siguiente despliegue. Monta un Volume en /data.',
+    )
+  }
+  /* Sin estas variables el panel responde 404 y el candado de la barra lleva a
+     «página no encontrada». Visto desde fuera parece un fallo, así que aquí se
+     dice en voz alta qué falta en vez de dejarlo a que alguien lo deduzca. */
+  if (!panelConfigurado()) {
+    console.warn(
+      'AVISO: el panel está APAGADO. Faltan (o están mal) PANEL_CLAVE_HASH y/o ' +
+        'PANEL_SECRETO. Genéralas con `node scripts/clave.mjs`. ' +
+        'PANEL_CLAVE_HASH tiene la forma scrypt$<sal>$<hash> y PANEL_SECRETO ' +
+        'necesita 16 caracteres como mínimo.',
     )
   }
 })
