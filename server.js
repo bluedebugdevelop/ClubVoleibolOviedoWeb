@@ -52,6 +52,31 @@ app.use((_req, res, next) => {
   next()
 })
 
+/* ---- un solo dominio para Google ----
+
+   Railway deja la web servida en DOS sitios a la vez: el dominio del club y el
+   suyo, clubvoleiboloviedoweb-production.up.railway.app. Para Google son dos
+   webs con el mismo contenido, y puede acabar enseñando la fea en los
+   resultados. La etiqueta `canonical` ya le dice cuál es la buena, pero un 301
+   es más contundente: la de Railway deja de existir para el buscador.
+
+   Solo actúa si DOMINIO_CANONICO está declarada. Si algún día el dominio del
+   club diera problemas, se borra esa variable y se vuelve a entrar por el de
+   Railway sin tocar código. */
+const DOMINIO = (process.env.DOMINIO_CANONICO || '').trim().replace(/^https?:\/\//, '').replace(/\/$/, '')
+
+if (DOMINIO) {
+  app.use((req, res, siguiente) => {
+    const host = (req.headers.host || '').split(':')[0]
+    // localhost queda fuera: si no, no habría forma de probarlo en local
+    const esLocal = host === 'localhost' || host === '127.0.0.1'
+    if (!host || esLocal || host === DOMINIO) return siguiente()
+    // solo lo que se navega; un POST redirigido pierde el cuerpo por el camino
+    if (req.method !== 'GET' && req.method !== 'HEAD') return siguiente()
+    return res.redirect(301, `https://${DOMINIO}${req.originalUrl}`)
+  })
+}
+
 // ---- panel de administración ----
 // Va ANTES del express.json de abajo porque necesita otros límites: 32kb no dan
 // para una lista de noticias, y una imagen no es JSON.
