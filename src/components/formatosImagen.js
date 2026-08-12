@@ -27,12 +27,35 @@ export const FORMATOS = {
     ayuda: 'Sale en la tarjeta del listado y de fondo en la cabecera de la noticia.',
   },
 
-  // .phead .bg → la banda azul del título, muy apaisada
+  // .phead → la banda azul del título, muy apaisada.
+  //
+  // 1600×380 es EL hueco: la proporción que tiene la banda en un ordenador, de
+  // 1400 px de ancho para arriba, siempre la misma (ver `.phead::before` en
+  // index.css). Si se cambia una de las dos medidas hay que cambiar el
+  // `aspect-ratio` y el `max-height` de allí a la vez, o el panel recortaría a
+  // una forma que la web no usa.
+  //
+  // `zonaSegura` es la parte central del recorte que sobrevive en un móvil, en
+  // tanto por uno del ancho. La banda de un móvil no puede ser tan apaisada
+  // —el texto necesita su sitio—, así que se queda con una franja del centro y
+  // tira el resto. El recortador la marca para que se vea dónde hay que dejar
+  // lo importante.
+  //
+  // 0,33 es lo medido en las páginas de la web a 390 px de ancho, que es el
+  // móvil normal de hoy: sale entre 0,31 y 0,38 según lo largos que sean el
+  // título y la entradilla, y se coge el lado corto. En un móvil viejo de 320
+  // baja hasta 0,24, así que ahí se pierde algo más de lo que marca la línea.
+  //
+  // `vistas` enciende el botón de «ver cómo queda». Es el único hueco donde lo
+  // que se ve cambia con el dispositivo; los demás son cajas de proporción fija
+  // y salen igual en todas partes.
   cabecera: {
     ancho: 1600,
-    alto: 460,
+    alto: 380,
+    zonaSegura: 0.33,
+    vistas: true,
     titulo: 'Foto de cabecera',
-    ayuda: 'Es la banda de detrás del título. Muy apaisada: deja las caras en el centro.',
+    ayuda: 'Es la banda de detrás del título. Lo importante, dentro de las líneas: fuera de ellas no se ve en un móvil.',
   },
 
   // .teams.all .ph → aspect-ratio 1/1

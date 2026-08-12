@@ -20,6 +20,7 @@ import Inscripciones from './pages/Inscripciones'
 import Contacto from './pages/Contacto'
 import Legal from './pages/Legal'
 import Panel from './pages/Panel'
+import VistaCabecera from './pages/VistaCabecera'
 import NoEncontrado from './pages/NoEncontrado'
 
 function ScrollToTop() {
@@ -33,7 +34,7 @@ function ScrollToTop() {
 function App() {
   /* El panel no lleva la barra ni el pie del club: es una herramienta interna,
      no una página más de la web, y con el menú encima se confunde con ella. */
-  const esPanel = useLocation().pathname === '/panel'
+  const esPanel = useLocation().pathname.startsWith('/panel')
 
   return (
     <>
@@ -63,6 +64,9 @@ function App() {
         {/* Panel del club. NO se enlaza desde ningún sitio y la API responde
             404 a quien no tenga permiso. Ver src/pages/Panel.jsx. */}
         <Route path="/panel" element={<Panel />} />
+        {/* La banda de cabecera a pelo, para las vistas previas del panel.
+            Cuelga de /panel para que herede el "sin barra ni pie" de arriba. */}
+        <Route path="/panel/vista" element={<VistaCabecera />} />
         <Route path="*" element={<NoEncontrado />} />
       </Routes>
       {!esPanel && <Footer />}

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import NoEncontrado from './NoEncontrado'
 import Crest from '../components/Crest'
 import RecorteImagen from '../components/RecorteImagen'
+import VistaDispositivos from '../components/VistaDispositivos'
 import { FORMATOS } from '../components/formatosImagen'
 import { FOTOS_SITIO } from '../data/fotosSitio'
 
@@ -365,7 +366,15 @@ function Fotos({ items, setItems, onGuardar }) {
                 {cambiada && <i>Cambiada desde el panel</i>}
               </div>
               <SubirImagen
-                formato={{ ...formato, titulo: 'Cambiar foto' }}
+                /* `vistaTitulo` es el título que la vista previa pinta encima
+                   de la foto. Casi siempre es lo que hay antes del guión en el
+                   nombre de la entrada ("Cantera — cabecera" → "Cantera"); las
+                   que no cuadran lo dicen a mano en `fotosSitio.js`. */
+                formato={{
+                  ...formato,
+                  titulo: 'Cambiar foto',
+                  vistaTitulo: f.vistaTitulo || f.titulo.split(' — ')[0],
+                }}
                 valor={ruta || f.porDefecto}
                 onCambio={(r) => poner(f.clave, r)}
                 // mientras siga la del código no hay nada que restaurar; una vez
@@ -550,7 +559,11 @@ function CamposPatrocinador({ el, cambiar }) {
         filas={5}
       />
       <SubirImagen formato={FORMATOS.logo} valor={el.logo} onCambio={(r) => cambiar('logo', r)} />
-      <SubirImagen formato={FORMATOS.cabecera} valor={el.foto} onCambio={(r) => cambiar('foto', r)} />
+      <SubirImagen
+        formato={{ ...FORMATOS.cabecera, vistaTitulo: el.nombre, vistaSub: el.descripcion }}
+        valor={el.foto}
+        onCambio={(r) => cambiar('foto', r)}
+      />
     </>
   )
 }
@@ -608,7 +621,11 @@ function CamposEquipo({ el, cambiar }) {
       <Campo etiqueta="Entradilla de la ficha" ancho>
         <textarea value={el.sub || ''} onChange={(e) => cambiar('sub', e.target.value)} rows={2} />
       </Campo>
-      <SubirImagen formato={FORMATOS.cabecera} valor={el.headerImg} onCambio={(r) => cambiar('headerImg', r)} />
+      <SubirImagen
+        formato={{ ...FORMATOS.cabecera, vistaTitulo: el.nombre, vistaSub: el.sub }}
+        valor={el.headerImg}
+        onCambio={(r) => cambiar('headerImg', r)}
+      />
 
       <Filas
         etiqueta="Datos del equipo"
@@ -701,6 +718,9 @@ function SubirImagen({ formato, valor, onCambio, textoQuitar = 'Quitar' }) {
   const [porRecortar, setPorRecortar] = useState(null)
   const [subiendo, setSubiendo] = useState(false)
   const [error, setError] = useState(null)
+  // vistas de la foto que YA está puesta; la de la que se va a subir va dentro
+  // del recortador, que es donde hace falta antes de decidir
+  const [verVistas, setVerVistas] = useState(false)
   const input = useRef(null)
 
   function elegir(e) {
@@ -762,8 +782,21 @@ function SubirImagen({ formato, valor, onCambio, textoQuitar = 'Quitar' }) {
           {valor && textoQuitar && (
             <button type="button" className="panel-btn" onClick={() => onCambio('')}>{textoQuitar}</button>
           )}
+          {formato.vistas && valor && (
+            <button type="button" className="panel-btn" onClick={() => setVerVistas((v) => !v)}>
+              {verVistas ? 'Ocultar cómo queda' : 'Ver cómo queda'}
+            </button>
+          )}
         </div>
       </div>
+
+      {formato.vistas && valor && verVistas && (
+        <VistaDispositivos
+          foto={valor}
+          titulo={formato.vistaTitulo || 'Título de la página'}
+          sub={formato.vistaSub}
+        />
+      )}
 
       {porRecortar && (
         <RecorteImagen

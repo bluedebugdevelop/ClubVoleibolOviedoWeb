@@ -14,6 +14,10 @@
      donde       en qué página sale, para no tener que adivinarlo
      formato     el encuadre que pide (ver `components/formatosImagen.js`)
      porDefecto  la que hay hoy; si el panel no ha cambiado nada, es la que se ve
+     vistaTitulo el título que lleva esa página encima de la foto, para la vista
+                 previa del panel. Solo hace falta cuando NO coincide con lo que
+                 hay antes del guión en `titulo`; el largo del título importa,
+                 porque en un móvil uno de dos líneas sube el alto de la banda.
 
    Al añadir una entrada nueva hay que hacer dos cosas: ponerla aquí y usar
    `useFoto('la-clave')` donde antes estaba la ruta escrita a mano.
@@ -39,6 +43,7 @@ export const FOTOS_SITIO = [
     titulo: 'Calendario — cabecera',
     donde: 'Banda de detrás del título en /calendario.',
     formato: 'cabecera',
+    vistaTitulo: 'Calendario y resultados',
     porDefecto: '/media/defensa.jpg',
   },
   {
@@ -74,6 +79,7 @@ export const FOTOS_SITIO = [
     titulo: 'Patrocinar — cabecera',
     donde: 'Banda de detrás del título en /patrocinar.',
     formato: 'cabecera',
+    vistaTitulo: 'Patrocina al club',
     porDefecto: '/media/plancha.jpg',
   },
   {
@@ -81,6 +87,7 @@ export const FOTOS_SITIO = [
     titulo: 'Inscripciones — cabecera',
     donde: 'Banda de detrás del título en /inscripciones.',
     formato: 'cabecera',
+    vistaTitulo: 'Preinscripción',
     porDefecto: '/media/hero-saque.jpg',
   },
   {
@@ -102,6 +109,8 @@ export const FOTOS_SITIO = [
     titulo: 'Textos legales — cabecera',
     donde: 'Banda de detrás del título en aviso legal, privacidad y cookies.',
     formato: 'cabecera',
+    // la más larga de las tres, que es la que peor caso da
+    vistaTitulo: 'Política de privacidad',
     porDefecto: '/media/bloqueo-noche.jpg',
   },
 ]
