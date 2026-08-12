@@ -263,17 +263,47 @@ footer .legal .credito{margin-left:auto}
 footer .legal .credito b{color:#b9cbe0;font-weight:600}
 @media(max-width:640px){ footer .legal .credito{margin-left:0} }
 
-/* cabecera de página interior */
-.phead{background:var(--ink);color:#fff;position:relative;overflow:hidden}
+/* ---------------- cabecera de página interior ----------------
+
+   LA FOTO SE VE SIEMPRE IGUAL, en cualquier pantalla. Esto es lo que hace que
+   el recorte del panel valga para algo: lo que se encuadra ahí es lo que ve
+   todo el mundo, y no hay que adivinar nada.
+
+   Antes no era así. La banda ocupaba todo el ancho y su alto lo marcaba el
+   texto, o sea que su proporción cambiaba con el tamaño de la ventana Y con lo
+   largo que fuera el título. `object-fit:cover` recorta según esa proporción:
+   en un monitor ancho se comía el alto de la foto y en un móvil los lados. La
+   misma foto se veía distinta en cada sitio y en cada página.
+
+   Ahora el hueco de la foto tiene la proporción del recorte (1600×460, la de
+   `components/formatosImagen.js`) y nunca cambia: solo se hace más grande o más
+   pequeño. Cuando sobra banda —una ventana más ancha de 1600, o un texto más
+   alto que la foto— lo que sobra es azul, y los cantos se funden en él con una
+   máscara para que no se vea el rectángulo.
+
+   Si aquí se cambia el 1600/460, hay que cambiarlo también en FORMATOS.cabecera
+   o el panel recortará a una forma que la web no usa. */
+.phead{background:var(--ink);color:#fff;position:relative;overflow:hidden;display:grid}
+/* El hueco. Este cacho vacío es el que le da el alto a la banda: como es un
+   elemento de la rejilla, su ancho es el de la banda, y con `aspect-ratio` el
+   alto sale solo. Por eso va aquí y no con un `min-height` en vw, que contaría
+   también la barra de desplazamiento y dejaría el hueco descuadrado un 1%.
+
+   `max-height` es el tope: a partir de 1600 px de ancho la banda deja de crecer.
+   Sin tope, en un monitor de 1920 se iría a 456 px de alto y empujaría toda la
+   página hacia abajo. Con él, de 1600 en adelante se ve un pelín más de ancho de
+   la foto (5:1 en vez de 4,2:1), que es una diferencia que no canta.
+
+   Por debajo de ~1400 px manda el texto, que necesita más sitio del que da la
+   proporción, y ahí la banda vuelve a ser algo más alta de lo que le tocaría:
+   se ve menos ancho de foto, nunca menos alto. Por eso la zona segura que marca
+   el recortador se calcula con el caso peor, que es un móvil. */
+.phead::before{content:"";grid-area:1/1;aspect-ratio:1600/380;max-height:380px}
 .phead .bg{position:absolute;inset:0;opacity:.3}
 .phead .bg img{width:100%;height:100%;object-fit:cover}
-/* Las fotos de esta banda van siempre apaisadas y con los cantos ya fundidos en
-   el azul: las de equipo se preparan con `scripts/cabeceras.ps1`. El fundido va
-   en la propia imagen, no aquí, porque `cover` recorta y una máscara en CSS no
-   sabe dónde acaba la foto una vez recortada. */
-/* la banda se hace más alta de lo que pide el texto: cuanto más apaisada, más
-   brutal es el recorte de la foto de fondo y menos se ve de lo que hay dentro */
-.phead .in{position:relative;max-width:var(--wrap);margin:0 auto;padding:76px var(--pad) 84px}
+/* el texto va encima de la foto y centrado en la banda */
+.phead .in{grid-area:1/1;align-self:center;position:relative;width:100%;
+  max-width:var(--wrap);margin:0 auto;padding:64px var(--pad) 72px}
 .crumbs{font-size:13px;color:#9dc2ec;margin-bottom:16px}
 .crumbs a{text-decoration:none}
 .crumbs a:hover{color:#fff}
@@ -1411,6 +1441,20 @@ footer .legal .credito b{color:#b9cbe0;font-weight:600}
     linear-gradient(-45deg,transparent 75%,#eef2f6 75%)}
 .recorte-marco.entero img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:10px}
 
+/* franja central que sobrevive en un móvil: dos líneas y los lados velados.
+   `pointer-events:none` es imprescindible — está por encima de la foto y sin
+   eso se comería el arrastre justo en el centro del marco, que es donde más se
+   arrastra. */
+.recorte-zona{position:absolute;inset:0;pointer-events:none;
+  display:grid;grid-template-columns:1fr var(--ancho) 1fr;align-items:end}
+.recorte-zona::before,.recorte-zona::after{content:"";height:100%;background:rgba(6,20,35,.42)}
+.recorte-zona::before{grid-column:1;border-right:1px dashed rgba(255,255,255,.9)}
+.recorte-zona::after{grid-column:3;border-left:1px dashed rgba(255,255,255,.9)}
+.recorte-zona span{grid-column:2;justify-self:center;margin-bottom:8px;
+  font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:10.5px;
+  letter-spacing:.14em;text-transform:uppercase;color:#fff;
+  background:rgba(6,20,35,.72);padding:3px 8px;border-radius:3px;white-space:nowrap}
+
 .recorte-zoom{display:flex;align-items:center;gap:12px;width:100%;max-width:420px}
 .recorte-zoom span{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:12px;
   letter-spacing:.1em;text-transform:uppercase;color:var(--dim);flex:none}
@@ -1420,6 +1464,20 @@ footer .legal .credito b{color:#b9cbe0;font-weight:600}
   font-size:13.5px;line-height:1.5;text-align:center}
 .recorte-error{margin:0;padding:10px 14px;border:1px solid #b3261e;background:#fdeceb;color:#8c1d18;
   font-size:13.5px;width:100%}
+
+/* ---- «cómo queda»: la cabecera en cuatro anchos de pantalla ----
+   Cada vista es un iframe al ancho real del dispositivo, encogido con
+   `transform` para que quepa. El marco recorta lo que sobra: el iframe mide
+   1920 de ancho aunque se enseñe a 560. */
+.recorte-vistas{width:100%;display:flex;flex-direction:column;gap:12px;align-items:center;
+  border-top:1px solid var(--line);padding-top:14px}
+.vistas{width:100%;display:flex;flex-direction:column;gap:16px}
+.vistas figcaption{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:12px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+.vistas figcaption span{font-weight:500;letter-spacing:0;text-transform:none;opacity:.75}
+.vistas figure{margin:0}
+.vista-marco{overflow:hidden;border:1px solid var(--line);border-radius:6px;background:var(--ink)}
+.vista-marco iframe{border:0;display:block;transform-origin:top left}
 .recorte-botones{display:flex;gap:10px;justify-content:flex-end;width:100%;
   border-top:1px solid var(--line);padding-top:14px}
 
