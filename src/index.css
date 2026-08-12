@@ -806,8 +806,13 @@ footer .legal .credito b{color:#b9cbe0;font-weight:600}
    La caja lleva `aspect-ratio`, que llega en el style desde el JSX: así el alto
    acompaña al ancho y los porcentajes de cada parada siguen cayendo donde toca.
    -------------------------------------------------------------------------- */
+/* Azul del rastro. Va aquí arriba y no en `.camino` porque lo usan las dos
+   versiones de los hitos —el camino ancho y la lista estrecha— y no son madre
+   e hija sino hermanas: declarado dentro de `.camino` no llegaba a la lista y
+   la raya de su margen se caía sin pintarse. */
+.camino,.hitos-lista{--trazo:#8fb8e2}
+
 .camino{
-  --trazo:#8fb8e2;
   /* Hueco entre el punto del camino y la ficha. Antes salía de la mitad del
      balón; sin balón (08-08-2026) es un número propio, y va holgado porque
      Diego pidió el texto más separado de las huellas. Subido de 40 a 54 el
@@ -893,7 +898,7 @@ footer .legal .credito b{color:#b9cbe0;font-weight:600}
 .ficha p{margin:.45em 0 0;font-size:1.06em;line-height:1.55;color:var(--dim)}
 
 /* Lista de respaldo: solo por debajo del corte, ver más abajo. */
-.camino-lista{display:none}
+.hitos-lista{display:none}
 
 /* Por debajo de 1080px el camino deja las fichas tan juntas que se tocan, que
    es justo lo que no puede pasar. Se cambia por la lista vertical de siempre.
@@ -901,15 +906,71 @@ footer .legal .credito b{color:#b9cbe0;font-weight:600}
    manda aquí es cuándo dejan de caber las nueve fichas, no la barra. */
 @media(max-width:1080px){
   .camino{display:none}
-  .camino-lista{display:block;list-style:none;margin:0;padding:0 0 0 26px;
-                border-left:3px solid var(--trazo)}
+  /* Posicionada: el rastro se cuelga de ella y tiene que medir su alto, que es
+     el del texto. */
+  .hitos-lista{display:block;position:relative}
+
+  /* El camino ocupa el margen. Alto y trazo se los pone el JSX con lo que ha
+     medido; aquí solo se coloca y se pinta. */
+  .camino-vert{position:absolute;left:0;top:0;overflow:visible}
+  /* Igual que en el camino ancho: la guía va muy tenue, solo cose el recorrido
+     entre huella y huella. Subiéndole opacidad manda la línea y las pisadas
+     pasan a ser adorno. */
+  .camino-vert .guia{fill:none;stroke:var(--trazo);stroke-width:3;opacity:.28;
+                     stroke-linecap:round;stroke-linejoin:round;
+                     /* estado base: el trazo entero pintado */
+                     stroke-dasharray:var(--largo);stroke-dashoffset:0}
+  /* Las huellas se pintan de relleno, no de trazo. */
+  .camino-vert .pisada{opacity:.9}
+  .camino-vert .pisada path{fill:var(--trazo);stroke:none}
+
+  /* 74 = los 62 del camino y 12 de aire. Antes eran 26 para una raya de 3px. */
+  .camino-lista{list-style:none;margin:0;padding:0 0 0 74px}
   .camino-lista li{position:relative;padding:0 0 26px}
   .camino-lista li:last-child{padding-bottom:0}
-  .camino-lista li::before{content:"";position:absolute;left:-33px;top:6px;
-    width:13px;height:13px;border-radius:99px;background:var(--white);border:2.5px solid var(--blue)}
+  /* Sin punto en cada año, igual que el camino ancho se quedó sin balones
+     (Diego, 08-08-2026): manda el rastro y el año en grande es lo que señala.
+     Un punto por hito encima de las huellas era ruido sobre el mismo margen. */
   .camino-lista b{display:block;font-family:"Barlow Condensed",sans-serif;font-weight:800;
                   font-size:23px;line-height:1;color:var(--blue)}
   .camino-lista p{margin:7px 0 0;font-size:15px;line-height:1.6;color:var(--dim);max-width:62ch}
+
+  /* --- todo va entrando al deslizar -------------------------------------- */
+  /* Mismo criterio que en el camino ancho: el estado BASE es todo puesto —el
+     trazo entero, las huellas y los años— y la animación solo se monta encima
+     donde se soporta. En un navegador que no entienda `animation-timeline` —el
+     caso de casi todo el móvil que no sea Chrome— o con «reducir movimiento»,
+     se ve completo desde el principio en vez de no verse nada. Esto importa
+     más aquí que arriba: si fallara, lo que desaparecería es el TEXTO de los
+     hitos, no un adorno.
+
+     Las tres cosas comparten reparto: `--t` dice a qué altura de la lista cae
+     cada una, y de ahí sale cuándo le toca. La guía va por delante (14%-70%),
+     que es lo que cose el recorrido antes de que se pise; las huellas se
+     estampan de golpe en un tramo cortísimo, como una pisada; y el año entra
+     con un fundido algo más largo, que es texto y no un golpe.
+
+     Los extremos van algo más abiertos que en el camino ancho porque esta caja
+     es más alta que la ventana y, si no, se terminaría de pintar con media
+     lista todavía por bajar. */
+  @supports (animation-timeline:view()){
+    @media (prefers-reduced-motion:no-preference){
+      .hitos-lista{view-timeline-name:--vert;view-timeline-axis:block}
+
+      .camino-vert .guia{stroke-dashoffset:var(--largo);animation:cvo-dibuja linear both;
+              animation-timeline:--vert;animation-range:cover 14% cover 70%}
+
+      .camino-vert .pisada{opacity:0;animation:cvo-pisa linear both;animation-timeline:--vert;
+              animation-range:cover calc(18% + var(--t) * .5%) cover calc(20.5% + var(--t) * .5%)}
+
+      .camino-lista li{opacity:0;animation:cvo-asoma linear both;animation-timeline:--vert;
+              animation-range:cover calc(18% + var(--t) * .5%) cover calc(25% + var(--t) * .5%)}
+    }
+  }
+  /* Sube un poco al entrar. `translate` y no `transform` para no pisar otras
+     transformaciones, y porque la medida de las panzas se toma con `offsetTop`
+     justamente para no enterarse de esto. */
+  @keyframes cvo-asoma{from{opacity:0;translate:0 9px}to{opacity:1;translate:none}}
 }
 
 .values{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}

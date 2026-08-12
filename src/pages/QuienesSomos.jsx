@@ -1,3 +1,4 @@
+import { useLayoutEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import PageHead from '../components/PageHead'
 import SectionHead from '../components/SectionHead'
@@ -98,6 +99,63 @@ const PARADAS = RUTA.filter((p) => p.hito !== undefined)
 const pc = (v, total) => `${(v / total) * 100}%`
 
 /* ---------------------------------------------------------------------------
+   El mismo camino, pero en vertical (pantalla estrecha).
+
+   En un móvil no caben las nueve FICHAS de texto sobre un camino ancho —el
+   trazo cabría, el texto no—, así que el texto baja en lista y el camino
+   serpentea por su margen: mismas curvas, mismas huellas, girado 90°.
+
+   Por qué se calcula aquí y no va precalculado como PISADAS: el camino ancho
+   se dibuja sobre un lienzo de 1240×1180 FIJO, así que cada pisada se puede
+   dejar escrita. El vertical no tiene alto propio, se lo da el texto — y ese
+   alto cambia con el ancho de pantalla, con el tamaño de letra del navegador y
+   con lo que ocupe cada hito. Hay que medirlo ya pintado.
+
+   Las curvas van atadas a los años: cada hito es una panza del serpenteo,
+   alternando lado. Es la misma regla del camino ancho (cresta o valle en cada
+   parada) puesta de canto, y hace que la curva señale el año en vez de pasar
+   por al lado.
+   --------------------------------------------------------------------------- */
+const VERT = {
+  ancho: 62,        // el margen que ocupa el camino
+  izq: 16,          // panza izquierda
+  der: 46,          // panza derecha
+  escala: 0.8,      // ~21px de alto por huella; más pequeña pierde el taqueado
+  paso: 46,         // separación entre pisadas, a lo largo del trazo
+  desvio: 6.5,      // cuánto se aparta cada pie del centro del camino
+}
+
+/* Coloca huellas a lo largo de un <path> ya pintado, alternando pie. Necesita
+   el elemento de verdad: getPointAtLength() es quien sabe por dónde va la
+   curva. Mismo método con el que se sacaron las PISADAS del camino ancho, solo
+   que aquí toca repetirlo cada vez que cambia el alto. */
+function pisadasSobre(path, { paso, desvio }) {
+  const largo = path.getTotalLength()
+  const salida = []
+  for (let i = 0, d = paso / 2; d < largo; d += paso, i++) {
+    const p = path.getPointAtLength(d)
+    /* La tangente sale de un punto un pelín más adelante: con 6px de separación
+       el ángulo ya es estable y no se nota el escalón entre huella y huella. */
+    const q = path.getPointAtLength(Math.min(d + 6, largo))
+    const ang = (Math.atan2(q.y - p.y, q.x - p.x) * 180) / Math.PI
+    /* La suela de HUELLA apunta a -Y, así que hay que girarla 90° más para que
+       la puntera mire hacia donde avanza la marcha. */
+    const giro = ang + 90
+    /* Cada pie se aparta a un lado del trazo, perpendicular a la marcha. La
+       paridad es la misma que la del reflejo, y por eso el rastro se lee como
+       izquierdo-derecho y no como dos filas sueltas. */
+    const lado = i % 2 ? 1 : -1
+    const rad = (ang * Math.PI) / 180
+    salida.push([
+      +(p.x - Math.sin(rad) * desvio * lado).toFixed(1),
+      +(p.y + Math.cos(rad) * desvio * lado).toFixed(1),
+      +giro.toFixed(1),
+    ])
+  }
+  return salida
+}
+
+/* ---------------------------------------------------------------------------
    Los dos tratamientos que Diego quiere comparar montados de verdad:
 
    'pista'   — banda blanca con filo azul, como las líneas pintadas del campo,
@@ -190,9 +248,97 @@ const PISADAS = [
   [1132.7, 1017.4, 115.9],
 ]
 
+/* Mide la lista ya pintada y devuelve el camino vertical que le corresponde: el
+   trazo, su alto y las huellas colocadas encima.
+
+   Va en dos vueltas a propósito. La primera saca el trazo de dónde ha caído
+   cada año; con él pintado, la segunda le pregunta al <path> por dónde pasa
+   para repartir las pisadas. No hay forma de saltarse la segunda: sin el
+   elemento en la página no existe getPointAtLength().
+
+   Se recalcula al cambiar el tamaño porque el alto de la lista depende del
+   ancho: al girar el móvil, el texto reflowea y el camino tiene que seguirlo. */
+function useCaminoVertical(ref) {
+  const [trazo, setTrazo] = useState(null)
+  const [huellas, setHuellas] = useState({ pisadas: [], largo: 0 })
+  const refGuia = useRef(null)
+
+  useLayoutEffect(() => {
+    const caja = ref.current
+    if (!caja) return
+    const medir = () => {
+      const items = [...caja.querySelectorAll('.camino-lista > li')]
+      if (!items.length) return
+      const base = caja.getBoundingClientRect()
+      if (!base.height) return   // está oculta (pantalla ancha): nada que medir
+      /* Cada año marca una panza, alternando lado. Se ancla al <b> del año y no
+         al <li> entero: el <li> incluye el párrafo, y su centro cae más abajo
+         que el año, así que la curva señalaría al texto en vez de a la fecha. */
+      /* Se mide con `offsetTop` y no con getBoundingClientRect(): al entrar,
+         cada año viene desplazado unos píxeles por un `transform`, y el
+         rectángulo en pantalla lo recoge —mediría la posición de la animación,
+         no la de la maqueta— mientras que `offsetTop` no se entera de los
+         transforms. Con el rectángulo, medir a media entrada descolocaba las
+         panzas de la curva. */
+      const centroY = (li) => {
+        const b = li.querySelector('b')
+        return +(li.offsetTop + b.offsetTop + b.offsetHeight / 2).toFixed(1)
+      }
+      const lado = (i) => (i % 2 ? VERT.der : VERT.izq)
+      /* La entrada y la salida van por el MISMO lado que su año, no por el
+         centro del margen. Con el centro, el primer año —que cae a una decena
+         de píxeles del borde— quedaba tan cerca del punto de entrada que la
+         curva rebotaba para llegar a él y se salía por arriba de la caja (con
+         `overflow:visible` eso se ve: un gancho suelto sobre la lista). Yendo
+         recto no hay rebote ni en la primera ni en la última. */
+      const alto = +base.height.toFixed(1)
+      const ys = items.map(centroY)
+      const puntos = [{ x: lado(0), y: 0 }]
+      ys.forEach((y, i) => puntos.push({ x: lado(i), y }))
+      puntos.push({ x: lado(items.length - 1), y: alto })
+      /* A qué altura de la lista cae cada año, en tanto por ciento. Con esto
+         cada hito entra justo cuando el rastro llega a él, en vez de repartir
+         los nueve a partes iguales: los hitos no están repartidos —hay más
+         hueco entre 2006 y 2014 que entre 1991 y 1998— y a partes iguales el
+         texto se adelantaba o se retrasaba respecto a las huellas. */
+      setTrazo({
+        d: trazaSuave(puntos),
+        alto,
+        anclas: ys.map((y) => +((y / alto) * 100).toFixed(1)),
+      })
+    }
+    medir()
+    const ro = new ResizeObserver(medir)
+    ro.observe(caja)
+    /* Además del observador: la primera medida se toma con la letra de
+       respaldo, y «Barlow Condensed» entra después y cambia el alto de los
+       años. El observador lo pilla, pero esto lo deja atado también donde
+       llegue tarde o venga de la caché sin disparar cambio de tamaño. */
+    let vivo = true
+    document.fonts?.ready.then(() => { if (vivo) medir() })
+    return () => { vivo = false; ro.disconnect() }
+  }, [ref])
+
+  /* Segunda vuelta: con el trazo ya pintado se le pregunta por dónde pasa. El
+     largo hace falta para dibujarlo al bajar (stroke-dasharray), igual que
+     LARGO en el camino ancho — solo que allí está medido a mano y aquí cambia
+     con el alto, así que se mide cada vez. */
+  useLayoutEffect(() => {
+    if (!trazo || !refGuia.current) { setHuellas({ pisadas: [], largo: 0 }); return }
+    setHuellas({
+      pisadas: pisadasSobre(refGuia.current, VERT),
+      largo: Math.ceil(refGuia.current.getTotalLength()),
+    })
+  }, [trazo])
+
+  return { trazo, ...huellas, refGuia }
+}
+
 export default function QuienesSomos() {
   const foto = useFoto('quienes-somos')
   const fotoPabellon = useFoto('instalaciones')
+  const refLista = useRef(null)
+  const { trazo, pisadas, largo, refGuia } = useCaminoVertical(refLista)
   return (
     <>
       <PageHead
@@ -316,15 +462,63 @@ export default function QuienesSomos() {
           {/* En pantalla estrecha el camino no cabe: mismos hitos, lista de
               siempre. Se pintan los dos y el CSS enseña uno u otro — duplicar
               nueve líneas de texto sale más barato que un `matchMedia` que en
-              la primera pintada no sabe todavía qué ancho hay. */}
-          <ol className="camino-lista">
-            {hitos.map((h) => (
-              <li key={h.anio}>
-                <b>{h.anio}</b>
-                <p>{h.texto}</p>
-              </li>
-            ))}
-          </ol>
+              la primera pintada no sabe todavía qué ancho hay.
+
+              El rastro baja por el margen de la lista (ver RASTRO arriba).
+              Antes había ahí una raya recta que NUNCA llegó a verse: la pintaba
+              `border-left:3px solid var(--trazo)`, pero `--trazo` estaba
+              declarado en `.camino`, que es la hermana de esta lista y no su
+              madre, así que la variable no resolvía y la declaración entera se
+              caía. En el móvil se veían los puntos de cada año flotando sobre
+              un margen vacío. */}
+          <div className="hitos-lista" ref={refLista} style={{ '--largo': largo }}>
+            {/* Sin `viewBox` a propósito: así una unidad de usuario es un píxel
+                y las huellas salen del tamaño que se ha calculado. Con
+                `viewBox` el SVG escalaría al alto de la caja —que aquí lo pone
+                el texto— y estiraría la suela. */}
+            <svg className="camino-vert" width={VERT.ancho} height={trazo?.alto || 0} aria-hidden="true">
+              {trazo && (
+                <>
+                  <path className="guia" ref={refGuia} d={trazo.d} />
+                  {pisadas.map(([x, y, giro], i) => (
+                    <g
+                      key={i}
+                      className="pisada"
+                      /* Igual que en el camino ancho: la suela es asimétrica y
+                         reflejarla en X es lo que convierte el rastro en pie
+                         izquierdo y pie derecho. La paridad es la misma que la
+                         del lado al que se aparta cada huella, y por eso
+                         encajan. */
+                      transform={`translate(${x},${y}) rotate(${giro}) scale(${
+                        i % 2 ? -VERT.escala : VERT.escala
+                      },${VERT.escala})`}
+                      style={{ '--t': `${((i / Math.max(1, pisadas.length - 1)) * 100).toFixed(1)}` }}
+                    >
+                      <path d={HUELLA} fillRule="evenodd" />
+                    </g>
+                  ))}
+                </>
+              )}
+            </svg>
+            <ol className="camino-lista">
+              {hitos.map((h, i) => (
+                <li
+                  key={h.anio}
+                  /* Dónde cae este año a lo largo de la lista, para que entre
+                     cuando el rastro lo alcanza. Hasta que hay medida se
+                     reparten por igual: es lo que se ve en la primera pintada,
+                     antes de que el navegador diga a qué altura ha quedado
+                     cada uno. */
+                  style={{
+                    '--t': trazo?.anclas?.[i] ?? +((i / (hitos.length - 1)) * 100).toFixed(1),
+                  }}
+                >
+                  <b>{h.anio}</b>
+                  <p>{h.texto}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
         </section>
       </div>
 
