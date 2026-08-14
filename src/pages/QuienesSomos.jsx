@@ -4,17 +4,8 @@ import PageHead from '../components/PageHead'
 import SectionHead from '../components/SectionHead'
 import JoinCta from '../components/JoinCta'
 import Sponsors from '../components/Sponsors'
-import Pendiente from '../components/Pendiente'
-import { club, hitos, palmares, valores, estadoPreinscripcion, textoPreinscripcion } from '../data/contenido'
+import { club, hitos, valores, estadoPreinscripcion, textoPreinscripcion } from '../data/contenido'
 import { useFoto } from '../data/contenidoContexto'
-
-/* El palmarés se ordena aquí, de lo más reciente a lo más antiguo, en vez de
-   pedir que la lista venga colocada: se va completando por tandas y a mano se
-   acababa metiendo alguna fuera de sitio. Se mira el primer año de la
-   temporada, así «2019/20» y «2019» caen juntos, y los empates respetan el
-   orden en que están escritas. */
-const anio = (p) => Number(/\d{4}/.exec(p.temporada)?.[0] ?? 0)
-const porFecha = [...palmares].sort((a, b) => anio(b) - anio(a))
 
 /* ---------------------------------------------------------------------------
    Camino de hitos — un solo trazo que serpentea de 1991 a 2026, con un balón
@@ -521,41 +512,6 @@ export default function QuienesSomos() {
           </div>
         </section>
       </div>
-
-      <section className="sec">
-        <SectionHead title="Palmarés" />
-        {palmares.length > 0 ? (
-          <>
-            <ol className="palmares">
-              {porFecha.map((p) => (
-                <li
-                  className={`pal${p.destacado ? ' oro' : ''}`}
-                  key={`${p.temporada}-${p.equipo}-${p.logro}`}
-                >
-                  <span className="temp">{p.temporada}</span>
-                  <span className="cuerpo">
-                    <b>{p.logro}</b>
-                    <span className="eq">
-                      {p.equipo}
-                      {p.disciplina && <i>{p.disciplina}</i>}
-                      {p.lugar && <i>{p.lugar}</i>}
-                    </span>
-                  </span>
-                  <span className={`ambito ${p.ambito === 'España' ? 'es' : 'as'}`}>{p.ambito}</span>
-                </li>
-              ))}
-            </ol>
-            {/* El club va pasando el palmarés por tandas: se dice, para que no
-                parezca que esto es todo lo que ha ganado en 35 años. */}
-            <p className="palmares-nota">Seguimos recopilando el resto del palmarés del club.</p>
-          </>
-        ) : (
-          <Pendiente titulo="El palmarés todavía no está publicado">
-            Estamos recopilando los campeonatos de España y los resultados a nivel nacional del club, con su
-            categoría y su año, para contarlos como se merecen.
-          </Pendiente>
-        )}
-      </section>
 
       <section className="sec">
         <SectionHead title="Nuestros valores" />
