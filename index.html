@@ -20,7 +20,14 @@
          (clubvoleiboloviedo.com) y la web esta publicada. Antes iba con
          `noindex, nofollow` porque el contenido era de muestra. Si algun dia
          hay que volver a cerrarla, es esta linea y public/robots.txt. -->
-    <meta name="robots" content="index, follow" />
+    <!-- `max-image-preview:large` es lo que autoriza a Google a sacar la foto
+         grande junto al resultado. Sin esta linea la vista previa se queda en
+         el tamano por defecto y el resultado sale solo con texto. Va tambien en
+         `src/seo.js`, que reescribe esta misma etiqueta en cada ruta. -->
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
 
     <!-- Estos valores son los de reserva, los que ven los robots que NO
          ejecutan JavaScript (WhatsApp, X, Telegram al generar la vista previa
@@ -37,6 +44,11 @@
       content="Club de voleibol de Oviedo fundado en 1991. Superliga 2 Masculino, Primera Nacional Femenina y 9 equipos de cantera en el Polideportivo José Manuel Fuente, Colloto."
     />
     <meta property="og:image" content="https://clubvoleiboloviedo.com/media/hero-poster.jpg" />
+    <!-- las medidas reales del fichero: sin ellas algunos robots descartan la
+         imagen antes de descargarla -->
+    <meta property="og:image:width" content="1280" />
+    <meta property="og:image:height" content="720" />
+    <meta property="og:image:alt" content="Equipo del Club Voleibol Oviedo en el Polideportivo José Manuel Fuente" />
     <meta name="twitter:card" content="summary_large_image" />
 
     <!-- Datos estructurados: es lo que le dice a Google que esto es un club

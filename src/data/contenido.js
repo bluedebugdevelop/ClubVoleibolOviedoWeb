@@ -37,11 +37,14 @@ export const club = {
 }
 
 // DATOS DE MUESTRA — cifras de portada
+// `sube: true` hace que la cifra se cuente desde cero al entrar en pantalla
+// (ver Stats.jsx). Solo los seguidores: el año de fundación contando hacia
+// arriba parecería un contador roto, no un dato.
 export const cifrasClub = [
   { n: '1991', label: 'Año de fundación' },
   { n: '240', label: 'Canteranos' },
   { n: '13', label: 'Equipos federados' },
-  { n: '+6.700', label: 'Seguidores en redes' },
+  { n: '+6.700', label: 'Seguidores en redes', sube: true },
 ]
 
 /**
@@ -686,12 +689,10 @@ export const clasificaciones = {
   ],
 }
 
-// DATOS DE MUESTRA — retransmisiones (portada, equipo, calendario)
-export const retransmisiones = [
-  { titulo: 'Masculino — CV Teide', detalle: 'YouTube · Sáb 26 sep, 18:00' },
-  { titulo: 'Femenino — CV Gijón', detalle: 'YouTube · Dom 27 sep, 12:00' },
-  { titulo: 'Resumen jornada anterior', detalle: 'YouTube · Ya disponible' },
-]
+/* Aquí vivía `retransmisiones`: tres tarjetas de muestra con enlaces a "#" que
+   se pintaban en portada y en el calendario. Se quitaron el 14-08-2026 porque
+   anunciaban partidos que no se retransmiten. Si algún día hay canal de
+   YouTube de verdad, vuelve el bloque, pero con enlaces reales. */
 
 // ---------------------------------------------------------------------------
 // Noticias
@@ -856,7 +857,7 @@ export const valores = [
 // el total incluye los de X, que no aparece enlazada en la web.
 // PENDIENTE DE CONFIRMAR con el club: la cifra de partidos retransmitidos.
 export const alcanceClub = [
-  { n: '+6.700', label: 'Seguidores en redes' },
+  { n: '+6.700', label: 'Seguidores en redes', sube: true },
   { n: '240', label: 'Familias en el club' },
   { n: '13', label: 'Equipos federados' },
   { n: '20+', label: 'Partidos retransmitidos al año' },

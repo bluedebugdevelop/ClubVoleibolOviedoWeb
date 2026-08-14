@@ -9,7 +9,6 @@ import {
   cifrasClub,
   destacadosDe,
   enlaceNoticia,
-  retransmisiones,
   estadoPreinscripcion,
   textoPreinscripcion,
 } from '../data/contenido'
@@ -28,7 +27,9 @@ export default function Inicio() {
   })
 
   const posterHero = useFoto('portada-hero')
-  const destacadas = useNoticias().slice(0, 2)
+  // tres: las noticias ocupan el ancho entero desde que se fue la columna de
+  // retransmisiones, y con dos tarjetas quedaban desproporcionadas
+  const destacadas = useNoticias().slice(0, 3)
   // los equipos marcados para portada, con el acceso a Cantera al final
   const destacados = destacadosDe(useEquipos())
 
@@ -99,45 +100,26 @@ export default function Inicio() {
       <div className="band">
         <section className="sec" id="noticias">
           <SectionHead title="Actualidad" link="/noticias" linkText="Todas las noticias →" />
-          <div className="cols">
-            <div className="news">
-              {destacadas.map((n) => (
-                <Link key={n.id} className="card" to={enlaceNoticia(n)}>
-                  <div className="ph">
-                    <img src={n.img} alt={n.titulo} />
+          {/* Aquí había una columna de "Retransmisiones" al lado de las noticias.
+              Fuera desde el 14-08-2026: eran tres tarjetas de muestra con enlace
+              a "#" anunciando partidos que no se retransmiten. Sin ella las
+              noticias ocupan el ancho entero. */}
+          <div className="news">
+            {destacadas.map((n) => (
+              <Link key={n.id} className="card" to={enlaceNoticia(n)}>
+                <div className="ph">
+                  <img src={n.img} alt={n.titulo} />
+                </div>
+                <div className="in">
+                  <div className="meta">
+                    <b>{n.categoria}</b>
+                    <span>{n.fecha}</span>
                   </div>
-                  <div className="in">
-                    <div className="meta">
-                      <b>{n.categoria}</b>
-                      <span>{n.fecha}</span>
-                    </div>
-                    <h3>{n.titulo}</h3>
-                    <p>{n.resumen}</p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-            <div>
-              <div className="sechead" style={{ marginBottom: 18 }}>
-                <h2 style={{ fontSize: 24 }}>Retransmisiones</h2>
-              </div>
-              <div className="streams">
-                {/* PENDIENTE: enlaces reales a los vídeos de YouTube */}
-                {retransmisiones.map((r) => (
-                  <a className="stream" href="#" key={r.titulo}>
-                    <span className="play">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
-                    </span>
-                    <span>
-                      <b>{r.titulo}</b>
-                      <span>{r.detalle}</span>
-                    </span>
-                  </a>
-                ))}
-              </div>
-            </div>
+                  <h3>{n.titulo}</h3>
+                  <p>{n.resumen}</p>
+                </div>
+              </Link>
+            ))}
           </div>
         </section>
       </div>

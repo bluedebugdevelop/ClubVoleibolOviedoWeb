@@ -71,7 +71,16 @@ export default function useSeo({ title, description, image, noindex = false }) {
 
     document.title = completo
     meta('description', desc)
-    meta('robots', noindex ? 'noindex, follow' : 'index, follow')
+    // `max-image-preview:large` autoriza a Google a enseñar la foto grande al
+    // lado del resultado. Sin ella el resultado sale sin imagen. Tiene que ir
+    // igual que en `index.html`: esta línea pisa aquella cuando Google ejecuta
+    // el JS, así que si solo se cambia una, la otra manda.
+    meta(
+      'robots',
+      noindex
+        ? 'noindex, follow'
+        : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+    )
 
     // Canonical: el sitio responde también en `…up.railway.app` y con `?utm_…`
     // pegado por las campañas. Sin esta línea, Google ve varias URLs con el

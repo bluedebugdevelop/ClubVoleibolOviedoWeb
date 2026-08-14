@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import PageHead from '../components/PageHead'
 import Sponsors from '../components/Sponsors'
-import { retransmisiones } from '../data/contenido'
 /* calendario, resultados y clasificaciones vienen de las federaciones (FVBPA y
    RFEVB) a través de `npm run datos`. Si ese JSON aún no existe, el módulo cae
    solo en los datos de muestra de contenido.js. */
@@ -105,7 +104,7 @@ export default function Calendario() {
         crumbs={<>Inicio · Calendario y resultados</>}
         kicker={temporadaDatos ? `Temporada ${temporadaDatos}` : 'Temporada 2026/27'}
         title="Calendario y resultados"
-        sub="Todos los partidos del club, equipo por equipo. Los que se retransmiten llevan el enlace al canal de YouTube."
+        sub="Todos los partidos del club, equipo por equipo, con resultados y clasificación de cada competición."
         bg={foto}
         foco="center 45%"
       />
@@ -178,7 +177,10 @@ export default function Calendario() {
                       <span className="sets">
                         {p.parciales?.length > 0
                           && p.parciales.map((s, i) => <b key={i}>{s}</b>)}
-                        {!p.resultado && p.retransmite && <em>Se retransmite ▸</em>}
+                        {/* aquí salía "Se retransmite ▸" con `p.retransmite`.
+                            Fuera el 14-08-2026: los datos reales de la
+                            federación traen siempre `false` (competicion.js) y
+                            solo lo encendían los partidos de muestra. */}
                       </span>
                       {p.resultado ? (
                         <span className={`r ${p.tipo}`}>{p.resultado}</span>
@@ -221,25 +223,9 @@ export default function Calendario() {
               <Clasificacion key={eq} equipo={eq} />
             ))}
 
-            <div className="sechead" style={{ margin: '34px 0 16px' }}>
-              <h2 style={{ fontSize: 24 }}>Retransmisiones</h2>
-            </div>
-            <div className="streams">
-              {/* PENDIENTE: enlaces reales a los vídeos de YouTube */}
-              {retransmisiones.map((r) => (
-                <a className="stream" href="#" key={r.titulo}>
-                  <span className="play">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
-                  </span>
-                  <span>
-                    <b>{r.titulo}</b>
-                    <span>{r.detalle}</span>
-                  </span>
-                </a>
-              ))}
-            </div>
+            {/* Debajo de la clasificación iba un bloque de "Retransmisiones".
+                Fuera desde el 14-08-2026: eran tres tarjetas de muestra con
+                enlace a "#" anunciando partidos que no se retransmiten. */}
           </div>
         </div>
       </section>

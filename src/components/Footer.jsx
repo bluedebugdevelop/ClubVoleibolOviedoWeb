@@ -7,7 +7,12 @@ export default function Footer() {
   return (
     <footer>
       <div className="in">
-        <Crest className="crest" />
+        {/* el escudo va envuelto para poder mandarlo a su propia línea en móvil:
+            suelto dentro del flex se colocaba a la izquierda de "Equipos" y le
+            robaba el ancho a la primera columna */}
+        <div className="crest-box">
+          <Crest className="crest" />
+        </div>
         <div className="col">
           <b>Equipos</b>
           <Link to="/equipos/superliga-2-masculino">Superliga 2 Masculino</Link>
@@ -48,9 +53,16 @@ export default function Footer() {
           <Link to="/aviso-legal">Aviso legal</Link>
           <Link to="/privacidad">Privacidad</Link>
           <Link to="/cookies">Cookies</Link>
-          {/* PENDIENTE de confirmar: si el crédito lleva enlace a la web de
-              BlueDebug, se cambia el <span> por un <a> y ya está. */}
-          <span className="credito">Web desarrollada por <b>BlueDebug</b></span>
+          {/* el crédito de quien ha hecho la web: la marca es un botón blanco
+              que enlaza a bluedebug.com. Blanco porque sobre el azul oscuro del
+              pie cualquier otro tono se pierde entre los enlaces legales. */}
+          <span className="credito">
+            Web desarrollada por
+            <a href="https://bluedebug.com" target="_blank" rel="noreferrer">
+              <img src="/media/bluedebug-logo.png" alt="" width="20" height="20" />
+              <b>BlueDebug</b>
+            </a>
+          </span>
         </div>
       </div>
     </footer>

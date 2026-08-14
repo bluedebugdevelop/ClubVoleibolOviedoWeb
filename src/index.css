@@ -203,9 +203,13 @@ h1 em{font-style:normal;display:block;color:var(--blue-light)}
 .team h3{font-family:"Barlow Condensed",sans-serif;font-weight:800;text-transform:uppercase;font-size:27px;margin:5px 0 0;line-height:1}
 .team p{margin:7px 0 0;font-size:13px;color:#c3d5e8}
 
-/* noticias y retransmisiones */
-.cols{display:grid;grid-template-columns:2fr 1fr;gap:44px}
-.news{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+/* noticias.
+   `auto-fit` + `minmax` y no un número fijo de columnas porque ahora mismo hay
+   UNA sola noticia publicada: con tres columnas fijas la tarjeta se quedaba
+   estrecha y con dos huecos al lado. Así las columnas vacías se colapsan, la
+   tarjeta suelta se queda en su ancho bueno (380px) y cuando haya tres
+   noticias se reparten el ancho entero. */
+.news{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,380px));gap:22px}
 .card{background:#fff;border:1px solid var(--line);text-decoration:none;display:flex;flex-direction:column}
 .card .ph{aspect-ratio:16/10;overflow:hidden}
 .card img{width:100%;height:100%;object-fit:cover;transition:.4s}
@@ -216,13 +220,8 @@ h1 em{font-style:normal;display:block;color:var(--blue-light)}
   letter-spacing:.12em;text-transform:uppercase;padding:3px 8px}
 .card h3{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:21px;margin:0;line-height:1.12;text-transform:uppercase}
 .card p{margin:9px 0 0;font-size:14px;color:var(--dim);line-height:1.55}
-.streams{display:flex;flex-direction:column;gap:10px}
-.stream{display:flex;gap:14px;align-items:flex-start;border:1px solid var(--line);padding:16px;text-decoration:none;
-  transition:.15s;background:#fff}
-.stream:hover{border-color:var(--blue)}
-.stream .play{width:38px;height:38px;flex:none;border-radius:99px;background:var(--blue);color:#fff;display:grid;place-content:center}
-.stream b{display:block;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:16px;text-transform:uppercase;line-height:1.15}
-.stream span{display:block;margin-top:4px;font-size:12px;color:var(--dim)}
+/* aquí estaban `.cols`, `.streams` y `.stream`, el bloque de retransmisiones de
+   portada y calendario. Se fue el 14-08-2026 con las tarjetas de muestra. */
 
 /* patrocinadores */
 .sponsors{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
@@ -247,7 +246,8 @@ h1 em{font-style:normal;display:block;color:var(--blue-light)}
 /* pie */
 footer{background:var(--ink);color:#a9c0d8}
 footer .in{max-width:var(--wrap);margin:0 auto;padding:48px var(--pad);display:flex;gap:46px;flex-wrap:wrap;align-items:flex-start}
-footer .crest{width:96px;height:96px;flex:none}
+footer .crest-box{flex:none}
+footer .crest{width:96px;height:96px;display:block}
 footer .col b{display:block;color:#fff;font-family:"Barlow Condensed",sans-serif;font-weight:700;letter-spacing:.16em;
   text-transform:uppercase;font-size:12px;margin-bottom:13px}
 footer .col a,footer .col p{display:block;text-decoration:none;font-size:14px;margin:0 0 7px;color:#a9c0d8}
@@ -258,9 +258,16 @@ footer .legal div{max-width:var(--wrap);margin:0 auto;padding:18px var(--pad);fo
 footer .legal a{color:#7f97b3;text-decoration:none}
 footer .legal a:hover{color:#fff}
 /* crédito de quien ha hecho la web: al otro extremo de la franja legal, para
-   que no se mezcle con los enlaces obligatorios */
-footer .legal .credito{margin-left:auto}
-footer .legal .credito b{color:#b9cbe0;font-weight:600}
+   que no se mezcle con los enlaces obligatorios. La marca es un botón blanco
+   con el logo, así que resalta sobre el azul oscuro sin gritar. */
+footer .legal .credito{margin-left:auto;display:inline-flex;align-items:center;gap:9px}
+footer .legal .credito a{display:inline-flex;align-items:center;gap:7px;background:#fff;color:var(--ink);
+  border-radius:99px;padding:4px 12px 4px 5px;text-decoration:none;
+  transition:transform .2s cubic-bezier(.22,.68,.3,1.1),box-shadow .2s}
+footer .legal .credito a:hover{color:var(--ink);transform:translateY(-1px);box-shadow:0 5px 16px rgba(0,0,0,.32)}
+footer .legal .credito img{width:20px;height:20px;border-radius:99px;display:block}
+footer .legal .credito b{color:var(--ink);font-family:"Barlow Condensed",sans-serif;font-weight:700;
+  font-size:13px;letter-spacing:.08em;text-transform:uppercase}
 @media(max-width:640px){ footer .legal .credito{margin-left:0} }
 
 /* ---------------- cabecera de página interior ----------------
@@ -344,7 +351,6 @@ footer .legal .credito b{color:#b9cbe0;font-weight:600}
   .teams,.news{grid-template-columns:1fr}
   .teams.all{grid-template-columns:1fr 1fr}
   .teams .featured{grid-column:span 2}
-  .cols{grid-template-columns:1fr}
   .venue-in a{margin-left:0}
   .join .btn{margin-left:0}
   .sechead{flex-wrap:wrap;gap:12px}
@@ -387,7 +393,12 @@ footer .legal .credito b{color:#b9cbe0;font-weight:600}
   .sponsors img{height:32px}
   .sponsors .more{margin-left:0}
 
+  /* el escudo, a su propia línea: dentro del flex se ponía al lado de
+     "Equipos" y esa columna se quedaba sin sitio mientras las demás iban
+     rectas. Con la caja a ancho completo, el escudo manda arriba y las cuatro
+     columnas caen debajo en dos filas iguales. */
   footer .in{gap:26px;padding-top:38px;padding-bottom:38px}
+  footer .crest-box{flex-basis:100%}
   footer .crest{width:72px;height:72px}
   footer .col{min-width:44%}
 
