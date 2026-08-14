@@ -27,6 +27,7 @@ import patrocinio from './api/patrocinio.js'
 import contacto from './api/contacto.js'
 import contenido from './api/contenido.js'
 import panel from './api/panel.js'
+import club from './api/club.js'
 import { SUBIDAS, TIPOS_ACEPTADOS, esPersistente } from './api/_almacen.js'
 import { configurado as panelConfigurado } from './api/_acceso.js'
 
@@ -83,6 +84,13 @@ if (DOMINIO) {
 app.use('/api/panel/imagen', express.raw({ type: TIPOS_ACEPTADOS, limit: '5mb' }))
 app.use('/api/panel', express.json({ limit: '1mb' }))
 app.all('/api/panel/:accion', panel)
+
+// ---- área del club: peticiones de publicación ----
+// Mismo reparto de límites que el panel, pero el JSON va más corto: aquí no se
+// manda una lista entera, solo una petición con sus rutas de foto.
+app.use('/api/club/imagen', express.raw({ type: TIPOS_ACEPTADOS, limit: '5mb' }))
+app.use('/api/club', express.json({ limit: '64kb' }))
+app.all('/api/club/:accion', club)
 
 // Las imágenes que sube el panel. Se sirven desde el volumen, no desde dist/,
 // así que sobreviven a los despliegues igual que el JSON.

@@ -10,9 +10,19 @@
 //   PUT  /api/panel/fotos           { fotos }
 //   POST /api/panel/imagen          (bytes de la imagen) → { ruta }
 //
-// Todo lo que no sea `entrar` exige cookie válida. Y lo que llega se pasa por
-// una lista blanca de campos: lo que el panel manda acaba pintado en la web, así
-// que no se guarda un objeto tal cual venga del navegador.
+//   GET  /api/panel/usuarios                    → cuentas del club
+//   POST /api/panel/usuarios        { nombre }   → alta, devuelve la clave UNA vez
+//   POST /api/panel/usuario-baja    { id }       → dar de baja una cuenta
+//   GET  /api/panel/peticiones                   → bandeja de peticiones
+//   POST /api/panel/peticion-estado { id, estado }
+//
+// Todo lo que no sea `entrar` exige cookie válida DE ADMINISTRACIÓN. Desde que
+// existe el área del club hay cookies válidas que no lo son, y el reparto de
+// permisos se juega entero en la línea de `sesionAdmin` de abajo.
+//
+// Lo que llega se pasa por una lista blanca de campos: lo que el panel manda
+// acaba pintado en la web, así que no se guarda un objeto tal cual venga del
+// navegador.
 //
 // Las respuestas cuando no hay permiso son 404, no 401: quien husmee no debe
 // poder distinguir "esto existe pero no puedes" de "esto no existe". La única
@@ -24,9 +34,13 @@ import {
   borrarImagen,
   esPersistente,
   escribir,
+  escribirPrivado,
+  ESTADOS_PETICION as ESTADOS,
   guardarImagen,
   leer,
+  leerPrivado,
   LISTAS,
+  MAX_CUENTAS,
   TAMANO_MAXIMO,
   TIPOS_ACEPTADOS,
 } from './_almacen.js'
@@ -34,13 +48,15 @@ import {
   apuntaFallo,
   bloqueadoHasta,
   borrarCookie,
+  claveAleatoria,
   configurado,
   credencialesValidas,
+  hashear,
   MAX_INTENTOS,
   olvidaFallos,
   ponerCookie,
   quienLlama,
-  sesion,
+  sesionAdmin,
   usuario,
 } from './_acceso.js'
 import { semilla } from './contenido.js'
@@ -76,6 +92,9 @@ const slugificar = (s) =>
 /** Encuadre de la foto de cabecera: es un `object-position` de CSS, así que
     solo se admite ese formato y no cualquier texto que acabe en una hoja de estilos. */
 const foco = (v) => (/^[a-z0-9 %.]{0,24}$/i.test(texto(v, 24)) ? texto(v, 24) : '')
+
+/** Una cuenta del club tal como puede salir del servidor: sin su huella. */
+const sinHuella = ({ huella: _huella, ...resto }) => resto
 
 function limpiaNoticia(n, i) {
   const titulo = texto(n.titulo, 160)
@@ -260,7 +279,7 @@ export default async function handler(req, res) {
     }
 
     olvidaFallos(ip)
-    ponerCookie(res, usuario(), seguro)
+    ponerCookie(res, usuario(), seguro, 'admin')
     console.log(`Panel: entra ${usuario()} desde ${ip}`)
     return res.status(200).json({ ok: true, nombre: usuario() })
   }
@@ -268,8 +287,13 @@ export default async function handler(req, res) {
   /* 401, no 404: ahora el panel se anuncia con un candado en la barra, así que
      esconderlo ya no aporta nada y confundir "no existe" con "no has entrado"
      solo complica el mensaje que ve quien está usándolo. El 404 se reserva para
-     cuando el panel NO está montado (arriba), que entonces sí es verdad. */
-  const quien = sesion(req)
+     cuando el panel NO está montado (arriba), que entonces sí es verdad.
+
+     `sesionAdmin` y no `sesion`: desde que existe el área del club hay cookies
+     válidas que NO son de administración. Comprobar solo que hay sesión daría a
+     cualquier entrenador el panel entero. Este es EL control del reparto de
+     permisos; si algún día se cambia por `sesion`, se abre de par en par. */
+  const quien = sesionAdmin(req)
   if (!quien) return res.status(401).json({ ok: false, error: 'Hay que iniciar sesión.' })
 
   if (accion === 'salir') {
@@ -340,6 +364,119 @@ export default async function handler(req, res) {
 
     console.log(`Panel: ${quien} guarda ${accion} (${despues[accion].length})`)
     return res.status(200).json({ ok: true, [accion]: despues[accion] })
+  }
+
+  // ---- cuentas del club ----
+  if (accion === 'usuarios') {
+    const privado = leerPrivado()
+
+    if (req.method === 'GET') {
+      // sin la huella de la contraseña: no tiene por qué salir del servidor
+      return res.status(200).json({ ok: true, usuarios: privado.usuarios.map(sinHuella) })
+    }
+    if (req.method !== 'POST') return res.status(405).json({ ok: false, error: 'Solo GET o POST' })
+
+    const cuerpo = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {})
+    const nombre = texto(cuerpo.nombre, 60)
+    if (nombre.length < 2) {
+      return res.status(400).json({ ok: false, error: 'Falta el nombre de la persona.' })
+    }
+    if (privado.usuarios.filter((u) => u.activo).length >= MAX_CUENTAS) {
+      return res.status(400).json({ ok: false, error: `No caben más de ${MAX_CUENTAS} cuentas activas.` })
+    }
+
+    /* El identificador con el que entra sale del nombre: "Marta Gil" → "marta.gil".
+       Si ya existe, se le pega un número. Es más fácil de dictar que un correo. */
+    const base = slugificar(nombre).replace(/-/g, '.') || 'cuenta'
+    const usados = new Set(privado.usuarios.map((u) => u.id))
+    let id = base
+    for (let i = 2; usados.has(id); i += 1) id = `${base}${i}`
+
+    const clave = claveAleatoria()
+    privado.usuarios.push({
+      id,
+      nombre,
+      huella: hashear(clave),
+      activo: true,
+      creada: new Date().toISOString(),
+    })
+
+    try {
+      escribirPrivado(privado)
+    } catch (e) {
+      console.error('Panel: no se pudo crear la cuenta', e.message)
+      return res.status(500).json({ ok: false, error: 'No se pudo guardar en el disco.' })
+    }
+
+    console.log(`Panel: ${quien} crea la cuenta de club ${id}`)
+    /* La contraseña se devuelve AQUÍ Y SOLO AQUÍ: lo guardado es su huella, así
+       que ni Diego puede volver a verla. Si se pierde, se da de baja la cuenta y
+       se crea otra. */
+    return res.status(200).json({ ok: true, clave, usuario: sinHuella(privado.usuarios.at(-1)) })
+  }
+
+  if (accion === 'usuario-baja') {
+    if (req.method !== 'POST') return res.status(405).json({ ok: false, error: 'Solo POST' })
+    const cuerpo = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {})
+    const id = texto(cuerpo.id, 60)
+
+    const privado = leerPrivado()
+    const cuenta = privado.usuarios.find((u) => u.id === id)
+    if (!cuenta) return res.status(404).json({ ok: false, error: 'Esa cuenta no existe.' })
+
+    /* Se marca inactiva, no se borra: sus peticiones antiguas siguen diciendo
+       quién las mandó, y así se ve que la cuenta existió. */
+    cuenta.activo = false
+    cuenta.baja = new Date().toISOString()
+
+    try {
+      escribirPrivado(privado)
+    } catch (e) {
+      console.error('Panel: no se pudo dar de baja', e.message)
+      return res.status(500).json({ ok: false, error: 'No se pudo guardar en el disco.' })
+    }
+
+    console.log(`Panel: ${quien} da de baja la cuenta de club ${id}`)
+    return res.status(200).json({ ok: true, usuarios: privado.usuarios.map(sinHuella) })
+  }
+
+  // ---- bandeja de peticiones ----
+  if (accion === 'peticiones') {
+    if (req.method !== 'GET') return res.status(405).json({ ok: false, error: 'Solo GET' })
+    return res.status(200).json({ ok: true, peticiones: leerPrivado().peticiones })
+  }
+
+  if (accion === 'peticion-estado') {
+    if (req.method !== 'POST') return res.status(405).json({ ok: false, error: 'Solo POST' })
+    const cuerpo = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {})
+    const id = texto(cuerpo.id, 60)
+    const estado = ESTADOS.includes(cuerpo.estado) ? cuerpo.estado : ''
+    if (!estado) return res.status(400).json({ ok: false, error: 'Estado no válido.' })
+
+    const privado = leerPrivado()
+    const peticion = privado.peticiones.find((p) => p.id === id)
+    if (!peticion) return res.status(404).json({ ok: false, error: 'Esa petición no existe.' })
+
+    peticion.estado = estado
+    peticion.cerrada = estado === 'nueva' ? '' : new Date().toISOString()
+
+    /* Al cerrarla se van sus fotos. Son fotos de cantera, muchas de menores: no
+       tienen por qué quedarse en el volumen para siempre una vez publicadas o
+       descartadas. Las rutas se conservan solo como rastro de qué hubo. */
+    if (estado !== 'nueva' && !peticion.fotosBorradas) {
+      peticion.fotos.forEach(borrarImagen)
+      peticion.fotosBorradas = true
+    }
+
+    try {
+      escribirPrivado(privado)
+    } catch (e) {
+      console.error('Panel: no se pudo cambiar el estado', e.message)
+      return res.status(500).json({ ok: false, error: 'No se pudo guardar en el disco.' })
+    }
+
+    console.log(`Panel: ${quien} marca la petición ${id} como ${estado}`)
+    return res.status(200).json({ ok: true, peticiones: privado.peticiones })
   }
 
   return res.status(404).json({ ok: false, error: 'No encontrado' })

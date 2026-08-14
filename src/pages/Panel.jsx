@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import NoEncontrado from './NoEncontrado'
-import Crest from '../components/Crest'
+import EntrarCaja from '../components/EntrarCaja'
 import RecorteImagen from '../components/RecorteImagen'
 import VistaDispositivos from '../components/VistaDispositivos'
 import { FORMATOS } from '../components/formatosImagen'
@@ -42,7 +42,20 @@ const hoy = () =>
   new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' })
     .replace('.', '')
 
-const SECCIONES = ['noticias', 'patrocinadores', 'equipos', 'fotos']
+/* «peticiones» y «cuentas» no editan contenido de la web: son la bandeja de lo
+   que pide el club desde /club y las cuentas con las que entran ahí. Van al
+   final porque se miran, no se publican. */
+const SECCIONES = ['noticias', 'patrocinadores', 'equipos', 'fotos', 'peticiones', 'cuentas']
+
+/* El número que va en cada pestaña. En las peticiones NO es cuántas hay, sino
+   cuántas quedan por atender: una bandeja con 40 cerradas y ninguna pendiente
+   tiene que marcar 0, no 40. */
+function cuentaDe(seccion, listas, pendientes) {
+  if (seccion === 'peticiones') return pendientes
+  if (seccion === 'cuentas') return ''
+  if (seccion === 'fotos') return listas.fotos.filter((f) => f.ruta).length
+  return listas[seccion].length
+}
 
 export default function Panel() {
   // comprobando · nopanel · fuera · dentro
@@ -51,6 +64,9 @@ export default function Panel() {
   const [pestana, setPestana] = useState('noticias')
   const [listas, setListas] = useState({ noticias: [], patrocinadores: [], equipos: [], fotos: [] })
   const [aviso, setAviso] = useState(null)
+  // lo del área del club: no se edita, se atiende
+  const [peticiones, setPeticiones] = useState([])
+  const [cuentas, setCuentas] = useState([])
 
   const cargar = useCallback((d) => {
     setSesion(d)
@@ -73,6 +89,22 @@ export default function Panel() {
   useEffect(() => {
     comprobar().catch(() => setEstado('fuera'))
   }, [comprobar])
+
+  /* Peticiones y cuentas van por su cuenta y no dentro de `/sesion`: la sesión
+     ya arrastra las cuatro listas de contenido, y cargarlo todo junto haría
+     esperar a quien entra solo a publicar una noticia. */
+  const cargarClub = useCallback(async () => {
+    const [rp, rc] = await Promise.all([
+      fetch('/api/panel/peticiones'),
+      fetch('/api/panel/usuarios'),
+    ])
+    if (rp.ok) setPeticiones((await rp.json()).peticiones ?? [])
+    if (rc.ok) setCuentas((await rc.json()).usuarios ?? [])
+  }, [])
+
+  useEffect(() => {
+    if (estado === 'dentro') cargarClub().catch(() => {})
+  }, [estado, cargarClub])
 
   const ponerLista = (clave, valor) =>
     setListas((l) => ({ ...l, [clave]: typeof valor === 'function' ? valor(l[clave]) : valor }))
@@ -102,6 +134,7 @@ export default function Panel() {
   if (estado === 'fuera') return <Entrar onDentro={cargar} />
 
   const equiposPortada = listas.equipos.filter((e) => e.enPortada).length
+  const pendientes = peticiones.filter((p) => p.estado === 'nueva').length
 
   return (
     <div className="panel">
@@ -113,7 +146,7 @@ export default function Panel() {
         <div className="panel-tabs">
           {SECCIONES.map((s) => (
             <button key={s} type="button" aria-pressed={pestana === s} onClick={() => setPestana(s)}>
-              {s} <i>{s === 'fotos' ? listas.fotos.filter((f) => f.ruta).length : listas[s].length}</i>
+              {s} <i>{cuentaDe(s, listas, pendientes)}</i>
             </button>
           ))}
         </div>
@@ -187,7 +220,247 @@ export default function Panel() {
           Campos={CamposEquipo}
         />
       )}
+
+      {pestana === 'peticiones' && (
+        <Peticiones peticiones={peticiones} setPeticiones={setPeticiones} setAviso={setAviso} />
+      )}
+
+      {pestana === 'cuentas' && (
+        <Cuentas cuentas={cuentas} setCuentas={setCuentas} setAviso={setAviso} />
+      )}
     </div>
+  )
+}
+
+/* --------------------------------------------------------------------------
+   Bandeja de peticiones.
+
+   Lo que el club pide desde /club. No se edita: se lee y se cierra. Al marcar
+   una como hecha o descartada, el servidor borra sus fotos —son de cantera, y
+   no tienen por qué quedarse en el volumen para siempre—, así que el botón
+   avisa antes.
+   -------------------------------------------------------------------------- */
+const PRIORIDAD_TEXTO = { alta: 'Urgente', normal: 'Normal', baja: 'Sin prisa' }
+
+function Peticiones({ peticiones, setPeticiones, setAviso }) {
+  const [verCerradas, setVerCerradas] = useState(false)
+
+  const nuevas = peticiones.filter((p) => p.estado === 'nueva')
+  const cerradas = peticiones.filter((p) => p.estado !== 'nueva')
+  // las urgentes primero, y dentro de cada grupo la más antigua arriba: si algo
+  // lleva cuatro días esperando tiene que verse antes que lo de esta mañana
+  const orden = { alta: 0, normal: 1, baja: 2 }
+  const aLaVista = [...nuevas].sort(
+    (a, b) => orden[a.prioridad] - orden[b.prioridad] || a.creada.localeCompare(b.creada),
+  )
+
+  async function marcar(id, estado) {
+    if (estado !== 'nueva'
+      && !window.confirm('Al cerrarla se borran sus fotos del servidor. ¿Seguro?')) return
+    try {
+      const r = await fetch('/api/panel/peticion-estado', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, estado }),
+      })
+      const d = await r.json().catch(() => ({}))
+      if (!r.ok || !d.ok) throw new Error(d.error || 'No se pudo cambiar')
+      setPeticiones(d.peticiones)
+      setAviso({ tipo: 'bien', texto: estado === 'hecha' ? 'Marcada como publicada.' : 'Descartada.' })
+    } catch (e) {
+      setAviso({ tipo: 'mal', texto: e.message })
+    }
+  }
+
+  return (
+    <section className="panel-sec">
+      <div className="panel-sec-top">
+        <h2>Peticiones</h2>
+        <div>
+          <button type="button" className="panel-btn" onClick={() => setVerCerradas((v) => !v)}>
+            {verCerradas ? 'Ver solo pendientes' : `Ver cerradas (${cerradas.length})`}
+          </button>
+        </div>
+      </div>
+      <p className="panel-ayuda">
+        Lo que pide el club desde <code>/club</code>. Al marcar una como publicada o descartada
+        se borran sus fotos del servidor, así que descárgalas antes si las necesitas.
+      </p>
+
+      {aLaVista.length === 0 && !verCerradas && (
+        <p className="panel-vacio">Nada pendiente. Todo al día.</p>
+      )}
+
+      <ol className="panel-peticiones">
+        {(verCerradas ? cerradas : aLaVista).map((p) => (
+          <li key={p.id} className={p.estado}>
+            <div className="pet-top">
+              <b>{p.autorNombre}</b>
+              <i className={`pet-prio ${p.prioridad}`}>{PRIORIDAD_TEXTO[p.prioridad]}</i>
+              <span>
+                {new Date(p.creada).toLocaleString('es-ES', {
+                  day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit',
+                })}
+              </span>
+            </div>
+
+            <p className="pet-texto">{p.texto}</p>
+
+            <div className="pet-datos">
+              {p.equipo && <span>{p.equipo}</span>}
+              {p.paraCuando && <span>Para el {p.paraCuando}</span>}
+              {p.fotosBorradas && p.fotos.length > 0 && <span>{p.fotos.length} foto(s), ya borradas</span>}
+            </div>
+
+            {!p.fotosBorradas && p.fotos.length > 0 && (
+              <ul className="pet-fotos">
+                {p.fotos.map((ruta) => (
+                  <li key={ruta}>
+                    {/* a tamaño completo en pestaña nueva: desde aquí se
+                        descargan antes de cerrar la petición */}
+                    <a href={ruta} target="_blank" rel="noreferrer"><img src={ruta} alt="" /></a>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {p.estado === 'nueva' ? (
+              <div className="pet-botones">
+                <button type="button" className="panel-btn primario" onClick={() => marcar(p.id, 'hecha')}>
+                  Publicada
+                </button>
+                <button type="button" className="panel-btn" onClick={() => marcar(p.id, 'descartada')}>
+                  Descartar
+                </button>
+              </div>
+            ) : (
+              <div className="pet-botones">
+                <i>{p.estado === 'hecha' ? 'Publicada' : 'Descartada'}</i>
+                <button type="button" className="panel-btn" onClick={() => marcar(p.id, 'nueva')}>
+                  Volver a pendiente
+                </button>
+              </div>
+            )}
+          </li>
+        ))}
+      </ol>
+    </section>
+  )
+}
+
+/* --------------------------------------------------------------------------
+   Cuentas del área del club.
+
+   Una por persona. La contraseña la genera el servidor y se enseña UNA vez, al
+   crearla: lo que se guarda es su huella, así que no hay forma de volver a
+   verla. Si alguien la pierde, se da de baja la cuenta y se crea otra.
+   -------------------------------------------------------------------------- */
+function Cuentas({ cuentas, setCuentas, setAviso }) {
+  const [nombre, setNombre] = useState('')
+  const [reciencreada, setRecien] = useState(null)
+
+  async function crear(e) {
+    e.preventDefault()
+    try {
+      const r = await fetch('/api/panel/usuarios', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombre }),
+      })
+      const d = await r.json().catch(() => ({}))
+      if (!r.ok || !d.ok) throw new Error(d.error || 'No se pudo crear')
+      setCuentas((c) => [...c, d.usuario])
+      setRecien({ ...d.usuario, clave: d.clave })
+      setNombre('')
+    } catch (err) {
+      setAviso({ tipo: 'mal', texto: err.message })
+    }
+  }
+
+  async function darDeBaja(id, comoSeLlama) {
+    if (!window.confirm(`¿Dar de baja a ${comoSeLlama}? No podrá volver a entrar.`)) return
+    try {
+      const r = await fetch('/api/panel/usuario-baja', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id }),
+      })
+      const d = await r.json().catch(() => ({}))
+      if (!r.ok || !d.ok) throw new Error(d.error || 'No se pudo dar de baja')
+      setCuentas(d.usuarios)
+      setAviso({ tipo: 'bien', texto: `${comoSeLlama} ya no puede entrar.` })
+    } catch (err) {
+      setAviso({ tipo: 'mal', texto: err.message })
+    }
+  }
+
+  const activas = cuentas.filter((c) => c.activo)
+  const bajas = cuentas.filter((c) => !c.activo)
+
+  return (
+    <section className="panel-sec">
+      <div className="panel-sec-top">
+        <h2>Cuentas del club</h2>
+      </div>
+      <p className="panel-ayuda">
+        Quién puede entrar en <code>/club</code> a pedir publicaciones. Con estas cuentas NO se
+        puede tocar la web: solo dejar peticiones.
+      </p>
+
+      <form className="panel-filas" onSubmit={crear}>
+        <label>
+          <span>Nombre de la persona</span>
+          <input
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
+            placeholder="Marta Gil"
+            maxLength={60}
+            required
+          />
+        </label>
+        <button type="submit" className="panel-btn primario">Crear cuenta</button>
+      </form>
+
+      {reciencreada && (
+        <div className="panel-aviso bien cuenta-nueva">
+          <b>Cuenta creada para {reciencreada.nombre}</b>
+          <p>
+            Usuario <code>{reciencreada.id}</code> · Contraseña <code>{reciencreada.clave}</code>
+          </p>
+          {/* Se dice claramente porque es verdad y porque si no, la pregunta
+              llega dentro de dos semanas. */}
+          <p>
+            Cópialas y mándaselas. <b>Esta contraseña no se puede volver a ver</b>: en el
+            servidor solo queda su huella. Si se pierde, se da de baja la cuenta y se crea otra.
+          </p>
+          <button type="button" className="panel-btn" onClick={() => setRecien(null)}>Ya está</button>
+        </div>
+      )}
+
+      {activas.length === 0 && <p className="panel-vacio">Todavía no hay ninguna cuenta.</p>}
+
+      <ul className="panel-cuentas">
+        {activas.map((c) => (
+          <li key={c.id}>
+            <div>
+              <b>{c.nombre}</b>
+              <span>{c.id}</span>
+            </div>
+            <button type="button" className="panel-btn" onClick={() => darDeBaja(c.id, c.nombre)}>
+              Dar de baja
+            </button>
+          </li>
+        ))}
+        {bajas.map((c) => (
+          <li key={c.id} className="baja">
+            <div>
+              <b>{c.nombre}</b>
+              <span>{c.id} · dada de baja</span>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
   )
 }
 
@@ -195,121 +468,18 @@ export default function Panel() {
    Pantalla de entrada
    -------------------------------------------------------------------------- */
 function Entrar({ onDentro }) {
-  const [usuario, setUsuario] = useState('')
-  const [clave, setClave] = useState('')
-  const [error, setError] = useState(null)
-  const [enviando, setEnviando] = useState(false)
-  const [verClave, setVerClave] = useState(false)
-
-  async function enviar(e) {
-    e.preventDefault()
-    setEnviando(true)
-    setError(null)
-    try {
-      const r = await fetch('/api/panel/entrar', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ usuario, clave }),
-      })
-      const d = await r.json().catch(() => ({}))
-      if (!r.ok || !d.ok) {
-        throw new Error(
-          d.quedan === 0
-            ? 'Usuario o contraseña incorrectos. Se han agotado los intentos.'
-            : d.error || 'No se pudo entrar',
-        )
-      }
-      // se vuelve a preguntar por la sesión: así el panel arranca con los datos
-      // y el estado del disco, sin duplicar eso en la respuesta del login
-      const s = await fetch('/api/panel/sesion')
-      onDentro(await s.json())
-    } catch (err) {
-      setError(err.message)
-      setClave('')
-      setEnviando(false)
-    }
-  }
-
   return (
-    <div className="entrar">
-      {/* Mismo azul y mismo grano que la portada: esto es del club, no una
-          pantalla de sistema pegada a la web. */}
-      <div className="entrar-grano" aria-hidden="true"></div>
-
-      <form className="entrar-caja" onSubmit={enviar}>
-        <Crest className="entrar-escudo" />
-
-        <div className="entrar-titulo">
-          <span>Club Voleibol Oviedo</span>
-          <h1>Acceso del club</h1>
-        </div>
-
-        <p className="entrar-sub">Para publicar noticias, patrocinadores, equipos y fotos.</p>
-
-        {error && (
-          <p className="entrar-error" role="alert">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="12" cy="12" r="9" />
-              <path d="M12 7.5v5.5M12 16.2v.3" />
-            </svg>
-            <span>{error}</span>
-          </p>
-        )}
-
-        <label>
-          <span>Usuario</span>
-          <input
-            value={usuario}
-            onChange={(e) => setUsuario(e.target.value)}
-            autoComplete="username"
-            autoFocus
-            required
-          />
-        </label>
-
-        <label>
-          <span>Contraseña</span>
-          <div className="entrar-clave">
-            <input
-              type={verClave ? 'text' : 'password'}
-              value={clave}
-              onChange={(e) => setClave(e.target.value)}
-              autoComplete="current-password"
-              required
-            />
-            {/* Con una contraseña larga y aleatoria, escribirla a ciegas es
-                pedir un fallo. El ojo la enseña mientras se comprueba. */}
-            <button
-              type="button"
-              onClick={() => setVerClave((v) => !v)}
-              aria-label={verClave ? 'Ocultar la contraseña' : 'Ver la contraseña'}
-              title={verClave ? 'Ocultar' : 'Ver'}
-            >
-              {verClave ? (
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9">
-                  <path d="M3 3l18 18" />
-                  <path d="M10.6 10.7a2 2 0 0 0 2.8 2.8" />
-                  <path d="M9.4 5.3A9.7 9.7 0 0 1 12 5c5 0 9 4.5 9 7 0 .9-.7 2.2-1.9 3.4M6.3 6.7C4.1 8.2 3 10.2 3 12c0 2.5 4 7 9 7 1.3 0 2.4-.2 3.4-.7" />
-                </svg>
-              ) : (
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9">
-                  <path d="M3 12s3.6-7 9-7 9 7 9 7-3.6 7-9 7-9-7-9-7z" />
-                  <circle cx="12" cy="12" r="2.6" />
-                </svg>
-              )}
-            </button>
-          </div>
-        </label>
-
-        <button type="submit" className="entrar-btn" disabled={enviando}>
-          {enviando ? 'Entrando…' : 'Entrar'}
-        </button>
-
-        {/* En /panel no se pinta la barra del club, así que sin esto quien
-            llegue por error se queda sin salida que no sea el botón de atrás. */}
-        <a className="entrar-volver" href="/">← Volver a la web</a>
-      </form>
-    </div>
+    <EntrarCaja
+      titulo="Acceso del club"
+      sub="Para publicar noticias, patrocinadores, equipos y fotos."
+      endpoint="/api/panel/entrar"
+      /* se vuelve a preguntar por la sesión: así el panel arranca con los datos
+         y el estado del disco, sin duplicar eso en la respuesta del login */
+      onEntrado={async () => {
+        const s = await fetch('/api/panel/sesion')
+        onDentro(await s.json())
+      }}
+    />
   )
 }
 

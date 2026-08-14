@@ -1,7 +1,16 @@
 // ==========================================================================
-// Quién puede tocar el panel.
+// Quién puede tocar qué.
 //
-// Una sola cuenta de administración, con usuario y contraseña:
+// Hay DOS roles y comparten esta maquinaria (ver `ROLES`, más abajo):
+//   · admin — Diego. Una sola cuenta, la de las variables de entorno.
+//   · club  — entrenadores y delegados. Sus cuentas viven en el almacén
+//             privado, las crea el admin, y solo sirven para dejar peticiones
+//             de publicación.
+//
+// El área del club también necesita PANEL_SECRETO: sin él no se firma ninguna
+// cookie, así que sin panel configurado tampoco hay área del club.
+//
+// La cuenta de administración, con usuario y contraseña:
 //
 //   PANEL_USUARIO=admin
 //   PANEL_CLAVE_HASH=scrypt$<sal en base64url>$<hash en base64url>
@@ -91,27 +100,114 @@ export function credencialesValidas(nombre, clave) {
   return claveOk && usuarioOk
 }
 
+/**
+ * ¿Coinciden una contraseña y una huella guardada?
+ *
+ * Lo de arriba compara contra `PANEL_CLAVE_HASH`, que es una variable de
+ * entorno. Las cuentas del club guardan su huella en el almacén, así que
+ * necesitan comparar contra un valor cualquiera. La cuenta la busca quien
+ * llame; aquí no se toca el disco a propósito, para que este fichero siga sin
+ * depender de dónde se guarden las cosas.
+ */
+export function claveCoincide(clave, guardado) {
+  const huella = String(guardado || '')
+  if (!/^scrypt\$[\w-]+\$[\w-]+$/.test(huella)) return false
+
+  const [, sal64] = huella.split('$')
+  let sal
+  try {
+    sal = Buffer.from(sal64, 'base64url')
+  } catch {
+    return false
+  }
+
+  let calculado
+  try {
+    calculado = hashear(String(clave ?? ''), sal)
+  } catch {
+    return false
+  }
+  return iguales(calculado, huella)
+}
+
+/**
+ * Contraseña para una cuenta nueva del club.
+ *
+ * Se genera aquí y se le enseña a Diego UNA vez, al crearla: lo que se guarda
+ * es la huella, así que ni él ni nadie puede volver a verla después. Si se
+ * pierde, se genera otra.
+ *
+ * Sin `l` ni `1` ni `O` ni `0`: esto se dicta por teléfono o se copia de una
+ * pantalla, y esos cuatro caracteres son los que hacen volver a llamar.
+ */
+export function claveAleatoria(largo = 12) {
+  const abc = 'abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789'
+  const bytes = crypto.randomBytes(largo)
+  let salida = ''
+  for (let i = 0; i < largo; i += 1) salida += abc[bytes[i] % abc.length]
+  return salida
+}
+
 function firma(datos) {
   return crypto.createHmac('sha256', secreto()).update(datos).digest('base64url')
 }
 
-export function crearCookie(nombre) {
+// --------------------------------------------------------------------------
+// Dos roles, una sola cookie.
+//
+//   admin — Diego. Entra al panel y lo toca todo.
+//   club  — entrenadores y delegados. SOLO pueden dejar peticiones de
+//           publicación: ni ven el panel ni tocan el contenido de la web.
+//
+// El rol viaja DENTRO de la firma. Si fuera por fuera (una cookie aparte, o un
+// campo sin firmar), cualquiera con una sesión de club se ascendería a admin
+// editando su propio navegador.
+// --------------------------------------------------------------------------
+export const ROLES = ['admin', 'club']
+
+export function crearCookie(nombre, rol = 'admin') {
   const caduca = Date.now() + DIAS * 24 * 60 * 60 * 1000
-  const datos = `${Buffer.from(nombre).toString('base64url')}.${caduca}`
+  const datos =
+    `${Buffer.from(rol).toString('base64url')}.` +
+    `${Buffer.from(nombre).toString('base64url')}.${caduca}`
   return `${datos}.${firma(datos)}`
 }
 
-/** Nombre de quien viene en la cookie, o `null` si no vale o ha caducado. */
+/**
+ * Quién viene en la cookie: `{ rol, nombre }`, o `null` si no vale o caducó.
+ *
+ * Que el rol sea `club` NO significa que la cuenta siga existiendo: eso lo
+ * comprueba `api/club.js` contra la lista de usuarios, porque aquí no se toca
+ * el almacén. Una cuenta dada de baja conserva su cookie firmada hasta que
+ * caduca; el que corta el paso es ese segundo control.
+ */
 export function leerCookie(valor) {
   if (!valor || !configurado()) return null
   const partes = String(valor).split('.')
-  if (partes.length !== 3) return null
-  const [nombre64, caduca, sello] = partes
-  if (!iguales(sello, firma(`${nombre64}.${caduca}`))) return null
+
+  // Formato viejo, sin rol: `nombre.caduca.sello`. Se sigue aceptando para no
+  // echar a quien tuviera el panel abierto al desplegar esto. Siempre es admin,
+  // porque cuando se firmó no existía otro rol.
+  if (partes.length === 3) {
+    const [nombre64, caduca, sello] = partes
+    if (!iguales(sello, firma(`${nombre64}.${caduca}`))) return null
+    if (Number(caduca) < Date.now()) return null
+    const nombre = Buffer.from(nombre64, 'base64url').toString()
+    return nombre.toLowerCase() === usuario().toLowerCase() ? { rol: 'admin', nombre } : null
+  }
+
+  if (partes.length !== 4) return null
+  const [rol64, nombre64, caduca, sello] = partes
+  if (!iguales(sello, firma(`${rol64}.${nombre64}.${caduca}`))) return null
   if (Number(caduca) < Date.now()) return null
+
+  const rol = Buffer.from(rol64, 'base64url').toString()
+  if (!ROLES.includes(rol)) return null
   const nombre = Buffer.from(nombre64, 'base64url').toString()
+
   // si se cambia PANEL_USUARIO, las cookies del anterior dejan de valer
-  return nombre.toLowerCase() === usuario().toLowerCase() ? nombre : null
+  if (rol === 'admin' && nombre.toLowerCase() !== usuario().toLowerCase()) return null
+  return { rol, nombre }
 }
 
 /** Cookies de la petición, sin dependencias extra. */
@@ -126,14 +222,20 @@ export function cookies(req) {
   return salida
 }
 
-/** Quién hace la petición, o `null` si no es nadie con permiso. */
+/** Quién hace la petición: `{rol, nombre}`, o `null` si no es nadie. */
 export function sesion(req) {
   return leerCookie(cookies(req)[COOKIE])
 }
 
-export function ponerCookie(res, nombre, seguro) {
+/** Atajo para las rutas del panel: solo devuelve nombre si es admin. */
+export function sesionAdmin(req) {
+  const s = sesion(req)
+  return s && s.rol === 'admin' ? s.nombre : null
+}
+
+export function ponerCookie(res, nombre, seguro, rol = 'admin') {
   const trozos = [
-    `${COOKIE}=${crearCookie(nombre)}`,
+    `${COOKIE}=${crearCookie(nombre, rol)}`,
     'Path=/',
     'HttpOnly',
     'SameSite=Strict',

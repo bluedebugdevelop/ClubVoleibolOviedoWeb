@@ -7,8 +7,9 @@
 // se lean en caliente, y eso pide un sitio donde escribirlos.
 //
 // Ese mismo sitio guarda hoy cuatro listas —noticias, patrocinadores, equipos y
-// las fotos fijas de cada sección—
-// en un fichero JSON, más una carpeta de imágenes, dentro de:
+// las fotos fijas de cada sección— en `contenido.json`, y aparte, en
+// `privado.json`, lo que NO es para publicar: las cuentas del club y las
+// peticiones de publicación. Más una carpeta de imágenes. Todo dentro de:
 //
 //   DATOS_DIR                   si está declarada
 //   RAILWAY_VOLUME_MOUNT_PATH   la declara Railway al enganchar un Volume
@@ -46,6 +47,7 @@ function elegirCarpeta() {
 export const CARPETA = elegirCarpeta()
 export const SUBIDAS = path.join(CARPETA, 'subidas')
 const FICHERO = path.join(CARPETA, 'contenido.json')
+const FICHERO_PRIVADO = path.join(CARPETA, 'privado.json')
 
 /** ¿Sobrevivirá esto a un despliegue? */
 export function esPersistente() {
@@ -62,6 +64,11 @@ function asegurarCarpetas() {
 
 // Las listas que el panel sabe editar. Añadir una aquí es lo único que hay que
 // tocar en el almacén: el resto del fichero ya trabaja sobre esta constante.
+//
+// PERO OJO: esta constante la recorre `GET /api/contenido`, que es PÚBLICO y sin
+// permisos. Todo lo que entre aquí se sirve a cualquiera que pida esa URL. Lo
+// que no sea para publicar va en `LISTAS_PRIVADAS`, más abajo, que vive en otro
+// fichero.
 export const LISTAS = ['noticias', 'patrocinadores', 'equipos', 'fotos']
 
 export function leer() {
@@ -86,6 +93,58 @@ export function escribir(datos) {
   const temp = `${FICHERO}.tmp`
   fs.writeFileSync(temp, `${JSON.stringify(datos, null, 1)}\n`, 'utf-8')
   fs.renameSync(temp, FICHERO)
+}
+
+// --------------------------------------------------------------------------
+// Lo privado, en OTRO fichero.
+//
+// Aquí van las cuentas del club (con la huella de su contraseña) y las
+// peticiones de publicación, que llevan texto libre y fotos de cantera.
+//
+// Y va aparte a propósito, no por orden: `GET /api/contenido` es PÚBLICO y
+// recorre `LISTAS` entera (api/contenido.js). Cualquier lista que se añada
+// arriba se sirve a quien pida esa URL. Metiendo esto en `LISTAS` estaríamos
+// publicando huellas de contraseñas y fotos de menores en un GET sin permisos.
+//
+// Con dos ficheros y dos funciones distintas, para filtrarlo no basta con un
+// despiste: hay que escribirlo a mano.
+// --------------------------------------------------------------------------
+export const LISTAS_PRIVADAS = ['usuarios', 'peticiones']
+
+/** Por dónde pasa una petición. `nueva` es lo único que cuenta como pendiente. */
+export const ESTADOS_PETICION = ['nueva', 'hecha', 'descartada']
+
+/** Cuántas cuentas de club puede haber a la vez. */
+export const MAX_CUENTAS = 40
+
+export function leerPrivado() {
+  try {
+    const datos = JSON.parse(fs.readFileSync(FICHERO_PRIVADO, 'utf-8'))
+    return Object.fromEntries(
+      LISTAS_PRIVADAS.map((k) => [k, Array.isArray(datos[k]) ? datos[k] : []]),
+    )
+  } catch {
+    return Object.fromEntries(LISTAS_PRIVADAS.map((k) => [k, []]))
+  }
+}
+
+/** Misma escritura atómica que el contenido: temporal y renombrado. */
+export function escribirPrivado(datos) {
+  asegurarCarpetas()
+  const limpio = Object.fromEntries(
+    LISTAS_PRIVADAS.map((k) => [k, Array.isArray(datos[k]) ? datos[k] : []]),
+  )
+  const temp = `${FICHERO_PRIVADO}.tmp`
+  fs.writeFileSync(temp, `${JSON.stringify(limpio, null, 1)}\n`, 'utf-8')
+  fs.renameSync(temp, FICHERO_PRIVADO)
+  /* 0600: en el volumen no hay más usuarios, pero si algún día este fichero
+     acaba en una copia de seguridad o en una imagen compartida, que no lo lea
+     cualquiera. En Windows no hace nada y no pasa nada. */
+  try {
+    fs.chmodSync(FICHERO_PRIVADO, 0o600)
+  } catch {
+    /* sistemas sin permisos POSIX */
+  }
 }
 
 const TIPOS = {

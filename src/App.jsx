@@ -20,6 +20,7 @@ import Inscripciones from './pages/Inscripciones'
 import Contacto from './pages/Contacto'
 import Legal from './pages/Legal'
 import Panel from './pages/Panel'
+import Club from './pages/Club'
 import VistaCabecera from './pages/VistaCabecera'
 import NoEncontrado from './pages/NoEncontrado'
 
@@ -32,9 +33,11 @@ function ScrollToTop() {
 }
 
 function App() {
-  /* El panel no lleva la barra ni el pie del club: es una herramienta interna,
-     no una página más de la web, y con el menú encima se confunde con ella. */
-  const esPanel = useLocation().pathname.startsWith('/panel')
+  /* Ni el panel ni el área del club llevan la barra ni el pie: son herramientas
+     internas, no páginas más de la web, y con el menú encima se confunden con
+     ella. */
+  const ruta = useLocation().pathname
+  const esPanel = ruta.startsWith('/panel') || ruta.startsWith('/club')
 
   return (
     <>
@@ -67,6 +70,10 @@ function App() {
         {/* La banda de cabecera a pelo, para las vistas previas del panel.
             Cuelga de /panel para que herede el "sin barra ni pie" de arriba. */}
         <Route path="/panel/vista" element={<VistaCabecera />} />
+        {/* Área del club: donde entrenadores y delegados piden publicaciones.
+            Tampoco se enlaza, va con `noindex`, y quien entre aquí NO puede
+            tocar la web. Ver src/pages/Club.jsx. */}
+        <Route path="/club" element={<Club />} />
         <Route path="*" element={<NoEncontrado />} />
       </Routes>
       {!esPanel && <Footer />}

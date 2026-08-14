@@ -1562,3 +1562,120 @@ footer .legal .credito b{color:var(--ink);font-family:"Barlow Condensed",sans-se
   .recorte-botones{flex-direction:column-reverse}
   .recorte-botones .panel-btn{width:100%}
 }
+
+/* ==========================================================================
+   Área del club (/club) — peticiones de publicación.
+
+   Reutiliza el armazón del panel (`.panel`, `.panel-sec`, `.panel-btn`) porque
+   es la misma herramienta interna con otra puerta. Solo lo propio del
+   formulario lleva clase nueva.
+
+   Se diseña para el MÓVIL primero, al revés que el panel: esto se rellena en el
+   pabellón, al acabar el partido y con una mano.
+   ========================================================================== */
+.club-form{display:flex;flex-direction:column;gap:22px}
+.club-form label{display:flex;flex-direction:column;gap:7px;position:relative}
+.club-form label > span{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:12px;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.club-form label > span i{font-style:normal;font-weight:500;letter-spacing:.06em;text-transform:none;opacity:.7}
+.club-form textarea,.club-form input{font:inherit;font-size:16px;padding:12px 14px;
+  border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:0}
+.club-form textarea{resize:vertical;line-height:1.55;min-height:120px}
+.club-form textarea:focus,.club-form input:focus{outline:2px solid var(--blue);outline-offset:-2px}
+.club-cuenta{position:absolute;right:2px;bottom:-18px;font-style:normal;font-size:12px;color:var(--dim)}
+
+.club-fila{display:grid;grid-template-columns:1fr;gap:22px;margin-top:12px}
+
+/* Botones y no un <select>: en el móvil un desplegable de tres opciones son dos
+   toques y una lista que tapa la pantalla. Aquí se ve todo y se elige de una. */
+.club-prioridad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.club-prioridad button{display:flex;flex-direction:column;gap:2px;padding:11px 8px;cursor:pointer;
+  border:1px solid var(--line);background:#fff;text-align:left;transition:.15s}
+.club-prioridad button b{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:14px;
+  text-transform:uppercase;line-height:1.1;color:var(--ink)}
+.club-prioridad button i{font-style:normal;font-size:11.5px;color:var(--dim);line-height:1.2}
+.club-prioridad button:hover{border-color:var(--blue)}
+.club-prioridad button[aria-pressed="true"]{border-color:var(--blue);background:var(--tint);box-shadow:inset 0 0 0 1px var(--blue)}
+/* el color solo marca la elegida: sin él las tres urgencias se ven igual */
+.club-prioridad button.alta[aria-pressed="true"]{border-color:#b3261e;box-shadow:inset 0 0 0 1px #b3261e;background:#fdeceb}
+.club-prioridad button.baja[aria-pressed="true"]{border-color:#1a8a4c;box-shadow:inset 0 0 0 1px #1a8a4c;background:#eaf7ef}
+
+.club-fotos{border:1px dashed var(--line);padding:16px}
+.club-fotos-top{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.club-fotos-top > span{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:12px;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-right:auto}
+.club-fotos-top > span i{font-style:normal;letter-spacing:0;opacity:.7}
+.club-miniaturas{list-style:none;margin:14px 0 0;padding:0;display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:10px}
+.club-miniaturas li{position:relative;aspect-ratio:1;border:1px solid var(--line)}
+.club-miniaturas img{width:100%;height:100%;object-fit:cover;display:block}
+.club-miniaturas button{position:absolute;top:-8px;right:-8px;width:26px;height:26px;border-radius:99px;
+  border:1px solid var(--line);background:#fff;color:var(--ink);font-size:17px;line-height:1;cursor:pointer;
+  display:grid;place-content:center;box-shadow:0 2px 6px rgba(0,0,0,.18)}
+.club-miniaturas button:hover{border-color:#b3261e;color:#b3261e}
+
+.club-privacidad{margin:0;font-size:13px;line-height:1.6;color:var(--dim);
+  border-left:3px solid var(--line);padding-left:14px;max-width:74ch}
+
+.club-mias{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.club-mias li{display:flex;align-items:center;gap:16px;border:1px solid var(--line);
+  background:#fff;padding:14px 16px}
+.club-mias li > div{min-width:0}
+.club-mias b{display:block;font-weight:600;font-size:14.5px;line-height:1.4}
+.club-mias span{display:block;margin-top:4px;font-size:12.5px;color:var(--dim)}
+.club-mias i{margin-left:auto;flex:none;font-style:normal;font-family:"Barlow Condensed",sans-serif;
+  font-weight:700;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+  padding:5px 10px;background:var(--tint);color:var(--blue)}
+.club-mias li.hecha i{background:#eaf7ef;color:#155e35}
+.club-mias li.descartada i{background:#f2f2f2;color:#666}
+
+@media(min-width:760px){
+  .club-fila{grid-template-columns:auto 1fr 1fr;align-items:start}
+  .club-prioridad{grid-template-columns:repeat(3,minmax(104px,auto))}
+}
+
+/* ---- bandeja de peticiones y cuentas, dentro del panel ---- */
+.panel-peticiones{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
+.panel-peticiones li{border:1px solid var(--line);background:#fff;padding:16px 18px}
+/* la barra de color es lo que hace que se vea de un vistazo qué corre prisa */
+.panel-peticiones li{border-left:4px solid var(--line)}
+.panel-peticiones li:has(.pet-prio.alta){border-left-color:#b3261e}
+.panel-peticiones li:has(.pet-prio.normal){border-left-color:var(--blue)}
+.panel-peticiones li:has(.pet-prio.baja){border-left-color:#1a8a4c}
+.panel-peticiones li.hecha,.panel-peticiones li.descartada{opacity:.7;border-left-color:var(--line)}
+
+.pet-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:9px}
+.pet-top b{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:16px;text-transform:uppercase}
+.pet-top span{margin-left:auto;font-size:12.5px;color:var(--dim)}
+.pet-prio{font-style:normal;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:11px;
+  letter-spacing:.14em;text-transform:uppercase;padding:3px 9px;background:var(--tint);color:var(--blue)}
+.pet-prio.alta{background:#fdeceb;color:#8c1d18}
+.pet-prio.baja{background:#eaf7ef;color:#155e35}
+
+.pet-texto{margin:0 0 10px;font-size:15px;line-height:1.6;white-space:pre-wrap}
+.pet-datos{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.pet-datos span{font-size:12px;color:var(--dim);border:1px solid var(--line);padding:3px 9px}
+
+.pet-fotos{list-style:none;margin:0 0 14px;padding:0;display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px}
+.pet-fotos li{aspect-ratio:1;border:1px solid var(--line)}
+.pet-fotos img{width:100%;height:100%;object-fit:cover;display:block}
+.pet-fotos a:hover img{opacity:.85}
+
+.pet-botones{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.pet-botones > i{font-style:normal;font-family:"Barlow Condensed",sans-serif;font-weight:700;
+  font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-right:auto}
+
+.panel-cuentas{list-style:none;margin:18px 0 0;padding:0;display:flex;flex-direction:column;gap:9px}
+.panel-cuentas li{display:flex;align-items:center;gap:16px;border:1px solid var(--line);
+  background:#fff;padding:12px 16px}
+.panel-cuentas li.baja{opacity:.55}
+.panel-cuentas li > div{min-width:0;margin-right:auto}
+.panel-cuentas b{display:block;font-size:14.5px}
+.panel-cuentas span{display:block;margin-top:3px;font-size:12.5px;color:var(--dim);font-family:ui-monospace,monospace}
+
+.cuenta-nueva{display:block;margin-top:18px}
+.cuenta-nueva p{margin:8px 0 0;line-height:1.6}
+.cuenta-nueva code{font-size:15px;background:#fff;padding:2px 7px;border:1px solid currentColor;
+  user-select:all}
+.cuenta-nueva .panel-btn{margin-top:14px}
