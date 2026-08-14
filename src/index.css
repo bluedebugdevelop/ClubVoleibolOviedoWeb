@@ -628,7 +628,11 @@ footer .legal .credito b{color:var(--ink);font-family:"Barlow Condensed",sans-se
    que solo usaba la página de Cantera. Se retiraron el 02-08-2026 al dejar esa
    página únicamente con los equipos. Están en el historial de git. */
 
-/* -------- palmarés (QuienesSomos.jsx) --------
+/* -------- palmarés — APARCADO --------
+   Ya no lo pinta nadie: la sección salió de Quiénes somos el 14-08-2026. Se
+   queda aquí igual que se quedan los datos (`palmares` en contenido.js) por si
+   vuelve; si dentro de un tiempo sigue sin volver, esto y los datos se van
+   juntos.
    Una fila por logro, no tarjetas sueltas: un palmarés se lee de arriba abajo y
    así las temporadas quedan en columna, alineadas. El logro es lo que manda en
    la fila; el equipo y el resto van debajo, en pequeño. */
