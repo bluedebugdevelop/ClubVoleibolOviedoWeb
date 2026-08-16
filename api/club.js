@@ -24,18 +24,7 @@ import {
   TAMANO_MAXIMO,
   TIPOS_ACEPTADOS,
 } from './_almacen.js'
-import {
-  apuntaFallo,
-  bloqueadoHasta,
-  borrarCookie,
-  claveCoincide,
-  configurado,
-  MAX_INTENTOS,
-  olvidaFallos,
-  ponerCookie,
-  quienLlama,
-  sesion,
-} from './_acceso.js'
+import { borrarCookie, configurado, sesion } from './_acceso.js'
 import { avisarPeticion } from './_telegram.js'
 
 const PRIORIDADES = ['alta', 'normal', 'baja']
@@ -73,7 +62,7 @@ function fecha(v) {
  * baja conserva su cookie firmada hasta que caduca (30 días), y sin esta
  * comprobación seguiría entrando un mes después de irse del club.
  */
-function cuentaDeLaSesion(req) {
+export function cuentaDeLaSesion(req) {
   const s = sesion(req)
   if (!s || s.rol !== 'club') return null
   const cuenta = leerPrivado().usuarios.find((u) => u.id === s.nombre)
@@ -87,45 +76,7 @@ export default async function handler(req, res) {
   // Sin PANEL_SECRETO no se firma ninguna cookie: el área no existe.
   if (!configurado()) return res.status(404).json({ ok: false, error: 'No encontrado' })
 
-  // ---- entrar: lo único que no pide cookie ----
-  if (accion === 'entrar') {
-    if (req.method !== 'POST') return res.status(404).json({ ok: false })
-
-    const ip = quienLlama(req)
-    const espera = bloqueadoHasta(ip)
-    if (espera > 0) {
-      const minutos = Math.ceil(espera / 60000)
-      return res.status(429).json({
-        ok: false,
-        error: `Demasiados intentos fallidos (${MAX_INTENTOS}). Vuelve a probar dentro de ${minutos} min.`,
-      })
-    }
-
-    const cuerpo = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {})
-    const id = texto(cuerpo.usuario, 60).toLowerCase()
-    const cuenta = leerPrivado().usuarios.find((u) => u.id === id && u.activo)
-
-    /* Se comprueba la contraseña AUNQUE la cuenta no exista, contra una huella
-       de mentira. Si se saliera antes, el tiempo de respuesta diría si el
-       usuario es bueno, y se podrían ir descubriendo cuentas una a una. */
-    const huella = cuenta?.huella || 'scrypt$AAAAAAAAAAAAAAAAAAAAAA$AAAAAAAAAAAAAAAAAAAAAA'
-    const claveOk = claveCoincide(cuerpo.clave, huella)
-
-    if (!cuenta || !claveOk) {
-      const quedan = apuntaFallo(ip)
-      console.warn(`Club: acceso fallido (${id || 'sin usuario'}) desde ${ip}`)
-      return res.status(401).json({
-        ok: false,
-        error: 'Usuario o contraseña incorrectos.',
-        quedan: quedan <= 2 ? Math.max(0, quedan) : undefined,
-      })
-    }
-
-    olvidaFallos(ip)
-    ponerCookie(res, cuenta.id, seguro, 'club')
-    console.log(`Club: entra ${cuenta.id} desde ${ip}`)
-    return res.status(200).json({ ok: true, nombre: cuenta.nombre })
-  }
+  /* La entrada estaba aquí. Ahora es común, en api/acceso.js. */
 
   const cuenta = cuentaDeLaSesion(req)
   if (!cuenta) return res.status(401).json({ ok: false, error: 'Hay que iniciar sesión.' })

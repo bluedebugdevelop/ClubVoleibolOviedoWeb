@@ -21,13 +21,16 @@ const secciones = [
   { to: '/tienda', texto: 'Tienda' },
 ]
 
-/* Acceso al panel del club. Discreto a propósito: un candado pequeño, en gris,
-   al lado de las redes. No lleva texto porque no es para el visitante — quien
-   tiene que entrar ya sabe lo que es, y al resto no le dice nada.
-   La página de destino pide usuario y contraseña; esto solo es la puerta. */
+/* Acceso del club. Discreto a propósito: un candado pequeño, en gris, al lado
+   de las redes. No lleva texto porque no es para el visitante — quien tiene que
+   entrar ya sabe lo que es, y al resto no le dice nada.
+
+   Lleva a /acceso y no a /panel: es una puerta para dos sitios. Según la cuenta
+   que se escriba, el servidor manda al panel o al área de peticiones, así que
+   nadie tiene que acordarse de una dirección distinta a la del candado. */
 function Candado() {
   return (
-    <NavLink className="acceso-panel" to="/panel" aria-label="Acceso del club" title="Acceso del club">
+    <NavLink className="acceso-panel" to="/acceso" aria-label="Acceso del club" title="Acceso del club">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
         <rect x="4" y="10.5" width="16" height="11" rx="2" />
         <path d="M8 10.5V7a4 4 0 0 1 8 0v3.5" />

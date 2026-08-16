@@ -1,7 +1,7 @@
 // ==========================================================================
 // API del panel de administración.
 //
-//   POST /api/panel/entrar          { usuario, clave } → deja la cookie firmada
+//   (la entrada es común y vive en /api/acceso)
 //   GET  /api/panel/sesion                      → quién soy y estado del disco
 //   POST /api/panel/salir                       → borra la cookie
 //   PUT  /api/panel/noticias        { noticias }
@@ -45,19 +45,11 @@ import {
   TIPOS_ACEPTADOS,
 } from './_almacen.js'
 import {
-  apuntaFallo,
-  bloqueadoHasta,
   borrarCookie,
   claveAleatoria,
   configurado,
-  credencialesValidas,
   hashear,
-  MAX_INTENTOS,
-  olvidaFallos,
-  ponerCookie,
-  quienLlama,
   sesionAdmin,
-  usuario,
 } from './_acceso.js'
 import { semilla } from './contenido.js'
 import { FOTOS_SITIO } from '../src/data/fotosSitio.js'
@@ -242,47 +234,16 @@ const LIMPIADORES = {
 export default async function handler(req, res) {
   // La ruta llega como /api/panel/loquesea
   const accion = (req.params?.accion || req.url.split('/').filter(Boolean).pop() || '').split('?')[0]
-  const seguro = req.protocol === 'https' || req.headers['x-forwarded-proto'] === 'https'
 
   if (!configurado()) {
     // Sin PANEL_CLAVE_HASH y PANEL_SECRETO el panel no existe.
     return res.status(404).json({ ok: false, error: 'No encontrado' })
   }
 
-  // ---- entrar: lo único que no pide cookie ----
-  if (accion === 'entrar') {
-    if (req.method !== 'POST') return res.status(404).json({ ok: false })
-
-    const ip = quienLlama(req)
-    const espera = bloqueadoHasta(ip)
-    if (espera > 0) {
-      const minutos = Math.ceil(espera / 60000)
-      return res.status(429).json({
-        ok: false,
-        error:
-          `Demasiados intentos fallidos (${MAX_INTENTOS}). ` +
-          `Vuelve a probar dentro de ${minutos} min.`,
-      })
-    }
-
-    const cuerpo = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {})
-
-    if (!credencialesValidas(cuerpo.usuario, cuerpo.clave)) {
-      const quedan = apuntaFallo(ip)
-      console.warn(`Panel: acceso fallido desde ${ip} (quedan ${Math.max(0, quedan)} intentos)`)
-      return res.status(401).json({
-        ok: false,
-        error: 'Usuario o contraseña incorrectos.',
-        // solo se avisa cuando ya quedan pocos: antes es ruido
-        quedan: quedan <= 2 ? Math.max(0, quedan) : undefined,
-      })
-    }
-
-    olvidaFallos(ip)
-    ponerCookie(res, usuario(), seguro, 'admin')
-    console.log(`Panel: entra ${usuario()} desde ${ip}`)
-    return res.status(200).json({ ok: true, nombre: usuario() })
-  }
+  /* Aquí estaba el formulario de entrada del panel. Se fue el 16-08-2026:
+     ahora la puerta es única y vive en api/acceso.js, que mira la cuenta y
+     decide si manda al panel o al área del club. Dos sitios donde comprobar
+     una contraseña son dos sitios que revisar cada vez. */
 
   /* 401, no 404: ahora el panel se anuncia con un candado en la barra, así que
      esconderlo ya no aporta nada y confundir "no existe" con "no has entrado"

@@ -28,6 +28,7 @@ import contacto from './api/contacto.js'
 import contenido from './api/contenido.js'
 import panel from './api/panel.js'
 import club from './api/club.js'
+import acceso from './api/acceso.js'
 import { SUBIDAS, TIPOS_ACEPTADOS, esPersistente } from './api/_almacen.js'
 import { configurado as panelConfigurado } from './api/_acceso.js'
 
@@ -91,6 +92,13 @@ app.all('/api/panel/:accion', panel)
 app.use('/api/club/imagen', express.raw({ type: TIPOS_ACEPTADOS, limit: '5mb' }))
 app.use('/api/club', express.json({ limit: '64kb' }))
 app.all('/api/club/:accion', club)
+
+// ---- la puerta única ----
+// Un solo formulario para las dos áreas: el servidor mira la cuenta y dice a
+// dónde va. Va aquí arriba, con los otros dos, porque comparte el express.json
+// propio y no el de 32kb de los formularios públicos.
+app.use('/api/acceso', express.json({ limit: '8kb' }))
+app.all('/api/acceso', acceso)
 
 // Las imágenes que sube el panel. Se sirven desde el volumen, no desde dist/,
 // así que sobreviven a los despliegues igual que el JSON.

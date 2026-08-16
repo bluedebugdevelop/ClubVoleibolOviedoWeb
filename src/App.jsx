@@ -21,6 +21,7 @@ import Contacto from './pages/Contacto'
 import Legal from './pages/Legal'
 import Panel from './pages/Panel'
 import Club from './pages/Club'
+import Acceso from './pages/Acceso'
 import VistaCabecera from './pages/VistaCabecera'
 import NoEncontrado from './pages/NoEncontrado'
 
@@ -37,7 +38,7 @@ function App() {
      internas, no páginas más de la web, y con el menú encima se confunden con
      ella. */
   const ruta = useLocation().pathname
-  const esPanel = ruta.startsWith('/panel') || ruta.startsWith('/club')
+  const esPanel = ruta.startsWith('/panel') || ruta.startsWith('/club') || ruta.startsWith('/acceso')
 
   return (
     <>
@@ -74,6 +75,10 @@ function App() {
             Tampoco se enlaza, va con `noindex`, y quien entre aquí NO puede
             tocar la web. Ver src/pages/Club.jsx. */}
         <Route path="/club" element={<Club />} />
+        {/* La puerta común, a donde lleva el candado de la barra. Se escribe la
+            cuenta y el servidor decide si va al panel o al área del club, así
+            que nadie tiene que saber de antemano qué tipo de cuenta tiene. */}
+        <Route path="/acceso" element={<Acceso />} />
         <Route path="*" element={<NoEncontrado />} />
       </Routes>
       {!esPanel && <Footer />}

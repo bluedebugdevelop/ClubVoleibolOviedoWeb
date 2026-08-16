@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { Navigate } from 'react-router-dom'
 import NoEncontrado from './NoEncontrado'
-import EntrarCaja from '../components/EntrarCaja'
 import useSeo from '../seo'
 
 /* ---------------------------------------------------------------------------
@@ -60,16 +60,10 @@ export default function Club() {
   // sin el panel montado en el servidor no hay cuentas que valgan: se comporta
   // como una dirección que no existe, igual que /panel
   if (estado === 'nohay') return <NoEncontrado />
-  if (estado === 'fuera') {
-    return (
-      <EntrarCaja
-        titulo="Área del club"
-        sub="Para pedir que se publique algo en las redes del club."
-        endpoint="/api/club/entrar"
-        onEntrado={comprobar}
-      />
-    )
-  }
+  /* la puerta es /acceso, común con el panel: allí se escribe la cuenta y el
+     servidor decide dónde va. Si quien llega aquí resulta ser el admin, /acceso
+     lo devuelve a /panel, así que no hay bucle. */
+  if (estado === 'fuera') return <Navigate to="/acceso" replace />
 
   return (
     <div className="panel">

@@ -1441,10 +1441,6 @@ footer .legal .credito b{color:var(--ink);font-family:"Barlow Condensed",sans-se
 .entrar-error svg{flex:none;margin-top:1px}
 
 .entrar-volver{display:block;text-align:center;font-size:13px;color:var(--dim);margin-top:6px}
-/* la señal para quien se ha equivocado de puerta: se lee, pero no compite con
-   el botón de entrar, que es a lo que viene el 99% de la gente */
-.entrar-pie{margin:14px 0 0;text-align:center;font-size:12.5px;line-height:1.5;color:#8fb2d1;
-  border-top:1px solid rgba(255,255,255,.12);padding-top:13px}
 .entrar-volver:hover{color:var(--blue)}
 
 @media(max-width:440px){

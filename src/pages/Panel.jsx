@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { Navigate } from 'react-router-dom'
 import NoEncontrado from './NoEncontrado'
-import EntrarCaja from '../components/EntrarCaja'
 import RecorteImagen from '../components/RecorteImagen'
 import VistaDispositivos from '../components/VistaDispositivos'
 import { FORMATOS } from '../components/formatosImagen'
@@ -131,7 +131,10 @@ export default function Panel() {
 
   if (estado === 'comprobando') return null
   if (estado === 'nopanel') return <NoEncontrado />
-  if (estado === 'fuera') return <Entrar onDentro={cargar} />
+  /* la puerta es /acceso: allí se escribe la cuenta y el servidor decide si
+     esto es su sitio o lo es /club. Sin esto habría dos formularios que piden
+     lo mismo y uno de los dos siempre es el equivocado. */
+  if (estado === 'fuera') return <Navigate to="/acceso" replace />
 
   const equiposPortada = listas.equipos.filter((e) => e.enPortada).length
   const pendientes = peticiones.filter((p) => p.estado === 'nueva').length
@@ -429,12 +432,12 @@ function Cuentas({ cuentas, setCuentas, setAviso }) {
           <p>
             Usuario <code>{reciencreada.id}</code> · Contraseña <code>{reciencreada.clave}</code>
           </p>
-          {/* Lo primero que pasó al usar esto de verdad (16-08-2026) fue meter
-              una cuenta de club en el panel y comerse el error. La dirección
-              tiene que ir junto a la contraseña, no en la ayuda de arriba. */}
+          {/* La dirección va pegada a la contraseña, no en la ayuda de arriba:
+              lo primero que pasó al usar esto de verdad (16-08-2026) fue no
+              saber por dónde se entraba. */}
           <p className="donde">
-            Se entra en <b>{window.location.origin}/club</b>, no en el panel.
-            Con esta cuenta el panel da error a propósito.
+            Entra en <b>{window.location.origin}/acceso</b> — o en el candado de la
+            barra de la web. Con esa cuenta llega sola al área de peticiones.
           </p>
           {/* Se dice claramente porque es verdad y porque si no, la pregunta
               llega dentro de dos semanas. */}
@@ -476,23 +479,6 @@ function Cuentas({ cuentas, setCuentas, setAviso }) {
 /* --------------------------------------------------------------------------
    Pantalla de entrada
    -------------------------------------------------------------------------- */
-function Entrar({ onDentro }) {
-  return (
-    <EntrarCaja
-      titulo="Acceso del club"
-      sub="Para publicar noticias, patrocinadores, equipos y fotos."
-      endpoint="/api/panel/entrar"
-      pie="¿Vienes a pedir una publicación? Eso es en /club, no aquí."
-      /* se vuelve a preguntar por la sesión: así el panel arranca con los datos
-         y el estado del disco, sin duplicar eso en la respuesta del login */
-      onEntrado={async () => {
-        const s = await fetch('/api/panel/sesion')
-        onDentro(await s.json())
-      }}
-    />
-  )
-}
-
 /* --------------------------------------------------------------------------
    Fotos de las secciones.
 
