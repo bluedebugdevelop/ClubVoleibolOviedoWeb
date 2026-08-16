@@ -1625,6 +1625,12 @@ footer .legal .credito b{color:var(--ink);font-family:"Barlow Condensed",sans-se
 .club-ver span{font-size:13.5px;color:var(--dim);letter-spacing:0;text-transform:none;font-weight:400}
 .club-pista{margin:0;font-size:13px;color:#8c1d18}
 
+/* la zona de enviar: aviso, botón y motivo, juntos y al final */
+.club-enviar{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.club-enviar .panel-aviso{margin:0;width:100%}
+.club-enviar .panel-btn{min-width:190px;text-align:center}
+.club-enviar .club-pista{color:var(--dim)}
+
 .club-mias{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
 .club-mias li{display:flex;align-items:center;gap:16px;border:1px solid var(--line);
   background:#fff;padding:14px 16px}

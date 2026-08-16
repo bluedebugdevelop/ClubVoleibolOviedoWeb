@@ -24,6 +24,11 @@ const PRIORIDADES = [
 
 const VACIA = { texto: '', prioridad: 'normal', paraCuando: '', equipo: '', fotos: [] }
 
+/* Lo mismo que exige el servidor en api/club.js. Si se cambia allí, cambiarlo
+   aquí: si el navegador deja enviar algo que el servidor rechaza, el usuario se
+   come un error que no entiende. */
+const MINIMO_TEXTO = 10
+
 export default function Club() {
   // comprobando · nohay · fuera · dentro
   const [estado, setEstado] = useState('comprobando')
@@ -264,7 +269,19 @@ function Formulario({ sesion, onEnviada }) {
     }
   }
 
-  const listo = datos.texto.trim().length >= 10 && subiendo === 0 && !enviando
+  /* Por qué no se puede enviar todavía, en cristiano. Antes el botón se
+     apagaba y ya está: se pulsaba, no pasaba nada, y no había forma de saber
+     que faltaban caracteres. Eso es exactamente lo que pasó la primera vez que
+     alguien lo usó de verdad (16-08-2026). */
+  const faltan = MINIMO_TEXTO - datos.texto.trim().length
+  const porQueNo = enviando
+    ? 'Enviando…'
+    : subiendo > 0
+      ? 'Espera a que acaben de subir las fotos.'
+      : faltan > 0
+        ? `Cuenta un poco más: te ${faltan === 1 ? 'falta' : 'faltan'} ${faltan} ${faltan === 1 ? 'carácter' : 'caracteres'}.`
+        : ''
+  const listo = !porQueNo
 
   return (
     <section className="panel-sec">
@@ -275,8 +292,6 @@ function Formulario({ sesion, onEnviada }) {
         Cuenta de qué va y adjunta las fotos. Cuanto más concreto, menos preguntas después:
         qué equipo, contra quién, cómo quedó.
       </p>
-
-      {aviso && <p className={`panel-aviso ${aviso.tipo}`} role="status">{aviso.texto}</p>}
 
       <form className="club-form" onSubmit={enviar}>
         <label>
@@ -379,9 +394,17 @@ function Formulario({ sesion, onEnviada }) {
           menores sin permiso de sus familias.
         </p>
 
-        <button type="submit" className="panel-btn primario" disabled={!listo}>
-          {enviando ? 'Enviando…' : 'Enviar petición'}
-        </button>
+        {/* El aviso va JUNTO AL BOTÓN, no arriba del formulario. En el móvil,
+            con el texto, las fotos y los tres campos por medio, la cabecera
+            queda a media pantalla de distancia: se pulsaba enviar, salía el
+            error donde no se veía, y parecía que no hacía nada. */}
+        <div className="club-enviar">
+          {aviso && <p className={`panel-aviso ${aviso.tipo}`} role="status">{aviso.texto}</p>}
+          <button type="submit" className="panel-btn primario" disabled={!listo}>
+            {enviando ? 'Enviando…' : 'Enviar petición'}
+          </button>
+          {porQueNo && !enviando && <p className="club-pista">{porQueNo}</p>}
+        </div>
       </form>
     </section>
   )
