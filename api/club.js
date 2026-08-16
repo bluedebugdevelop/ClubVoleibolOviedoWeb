@@ -24,7 +24,15 @@ import {
   TAMANO_MAXIMO,
   TIPOS_ACEPTADOS,
 } from './_almacen.js'
-import { borrarCookie, configurado, sesion } from './_acceso.js'
+import {
+  borrarCookie,
+  claveAleatoria,
+  claveCoincide,
+  configurado,
+  hashear,
+  ponerCookie,
+  sesion,
+} from './_acceso.js'
 import { avisarPeticion } from './_telegram.js'
 
 const PRIORIDADES = ['alta', 'normal', 'baja']
@@ -34,6 +42,11 @@ const MAX_FOTOS = 6
 const MAX_TEXTO = 1200
 const MAX_PENDIENTES = 15 // peticiones sin cerrar por cuenta
 const MAX_POR_HORA = 10
+
+/* Ocho. No se pide mayúscula ni número: esas reglas empujan a "Vitor2024!" y a
+   escribirla en un papel. Lo que de verdad protege aquí es que la cuenta no
+   pueda hacer nada más que dejar peticiones. */
+const MINIMO_CLAVE = 8
 
 const texto = (v, max) => (typeof v === 'string' ? v.trim().slice(0, max) : '')
 
@@ -55,18 +68,33 @@ function fecha(v) {
   return d >= hoy ? s : ''
 }
 
+/** ¿Tiene que poner su propia contraseña antes de nada? */
+export const estrena = (cuenta) => cuenta.debeCambiar !== false
+
 /**
  * La cuenta que hay detrás de la cookie, o `null`.
  *
- * Se busca en el almacén CADA VEZ, no se fía de la cookie: una cuenta dada de
- * baja conserva su cookie firmada hasta que caduca (30 días), y sin esta
- * comprobación seguiría entrando un mes después de irse del club.
+ * Se busca en el almacén CADA VEZ y se comprueban DOS cosas, no una:
+ *
+ *  1. Que la cuenta siga existiendo. Una borrada conserva su cookie firmada
+ *     hasta que caduca (30 días); sin esto seguiría entrando un mes después de
+ *     irse del club.
+ *  2. Que la serie coincida. Borrar a "vitor" libera el nombre, así que la
+ *     cuenta nueva que se cree con él sería otra persona: sin la serie, la
+ *     cookie de la vieja entraría en la nueva. Cambiar la contraseña también
+ *     rota la serie, y eso echa a cualquier otro dispositivo.
  */
 export function cuentaDeLaSesion(req) {
   const s = sesion(req)
   if (!s || s.rol !== 'club') return null
-  const cuenta = leerPrivado().usuarios.find((u) => u.id === s.nombre)
-  return cuenta && cuenta.activo ? cuenta : null
+
+  const [id, serie] = String(s.nombre).split('~')
+  // cookie del formato anterior, sin serie: se pide entrar otra vez
+  if (!serie) return null
+
+  const cuenta = leerPrivado().usuarios.find((u) => u.id === id)
+  if (!cuenta || cuenta.activo === false) return null
+  return cuenta.serie === serie ? cuenta : null
 }
 
 export default async function handler(req, res) {
@@ -90,10 +118,61 @@ export default async function handler(req, res) {
     return res.status(200).json({
       ok: true,
       nombre: cuenta.nombre,
+      debeCambiar: estrena(cuenta),
+      minimoClave: MINIMO_CLAVE,
       maxFotos: MAX_FOTOS,
       maxTexto: MAX_TEXTO,
       limiteImagen: TAMANO_MAXIMO,
       tiposImagen: TIPOS_ACEPTADOS,
+    })
+  }
+
+  // ---- poner una contraseña propia ----
+  if (accion === 'clave') {
+    if (req.method !== 'POST') return res.status(405).json({ ok: false, error: 'Solo POST' })
+    const cuerpo = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {})
+    const nueva = typeof cuerpo.clave === 'string' ? cuerpo.clave : ''
+
+    if (nueva.length < MINIMO_CLAVE) {
+      return res.status(400).json({ ok: false, error: `La contraseña necesita al menos ${MINIMO_CLAVE} caracteres.` })
+    }
+    /* Que no repita la temporal: si no, «cambiar la contraseña» acaba siendo
+       pegar otra vez la que venía en el mensaje y no cambia nada. */
+    if (claveCoincide(nueva, cuenta.huella)) {
+      return res.status(400).json({ ok: false, error: 'Esa es la que ya tenías. Pon una distinta.' })
+    }
+
+    const privado = leerPrivado()
+    const guardada = privado.usuarios.find((u) => u.id === cuenta.id)
+    if (!guardada) return res.status(404).json({ ok: false, error: 'Esa cuenta ya no existe.' })
+
+    guardada.huella = hashear(nueva)
+    guardada.debeCambiar = false
+    // serie nueva: cierra la sesión en cualquier otro sitio donde estuviera abierta
+    guardada.serie = claveAleatoria(10)
+    guardada.cambiada = new Date().toISOString()
+
+    try {
+      escribirPrivado(privado)
+    } catch (e) {
+      console.error('Club: no se pudo cambiar la contraseña', e.message)
+      return res.status(500).json({ ok: false, error: 'No se pudo guardar. Inténtalo otra vez.' })
+    }
+
+    // y aquí mismo se renueva la cookie, para no echar a quien la acaba de poner
+    ponerCookie(res, `${guardada.id}~${guardada.serie}`, seguro, 'club')
+    console.log(`Club: ${guardada.id} pone su propia contraseña`)
+    return res.status(200).json({ ok: true })
+  }
+
+  /* De aquí para abajo, nada mientras use la contraseña temporal. Sin este
+     corte el cambio obligatorio sería un cartel: bastaría con no hacer caso a la
+     pantalla y llamar al API a mano. */
+  if (estrena(cuenta)) {
+    return res.status(403).json({
+      ok: false,
+      error: 'Primero tienes que poner tu propia contraseña.',
+      debeCambiar: true,
     })
   }
 

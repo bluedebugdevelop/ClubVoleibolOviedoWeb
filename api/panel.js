@@ -330,6 +330,12 @@ export default async function handler(req, res) {
   // ---- cuentas del club ----
   if (accion === 'usuarios') {
     const privado = leerPrivado()
+    /* Restos del esquema viejo, cuando dar de baja marcaba `activo: false` en
+       vez de borrar. Se limpian al pasar por aquí: si no, esas cuentas seguirían
+       ocupando su nombre y volver a crear "vitor" daría "vitor2". */
+    const antes = privado.usuarios.length
+    privado.usuarios = privado.usuarios.filter((u) => u.activo !== false)
+    if (privado.usuarios.length !== antes) escribirPrivado(privado)
 
     if (req.method === 'GET') {
       // sin la huella de la contraseña: no tiene por qué salir del servidor
@@ -342,12 +348,14 @@ export default async function handler(req, res) {
     if (nombre.length < 2) {
       return res.status(400).json({ ok: false, error: 'Falta el nombre de la persona.' })
     }
-    if (privado.usuarios.filter((u) => u.activo).length >= MAX_CUENTAS) {
-      return res.status(400).json({ ok: false, error: `No caben más de ${MAX_CUENTAS} cuentas activas.` })
+    if (privado.usuarios.length >= MAX_CUENTAS) {
+      return res.status(400).json({ ok: false, error: `No caben más de ${MAX_CUENTAS} cuentas.` })
     }
 
     /* El identificador con el que entra sale del nombre: "Marta Gil" → "marta.gil".
-       Si ya existe, se le pega un número. Es más fácil de dictar que un correo. */
+       Si ya existe, se le pega un número. Es más fácil de dictar que un correo.
+       Como borrar una cuenta la borra de verdad, el nombre queda libre y volver
+       a crear a la misma persona devuelve su identificador limpio. */
     const base = slugificar(nombre).replace(/-/g, '.') || 'cuenta'
     const usados = new Set(privado.usuarios.map((u) => u.id))
     let id = base
@@ -358,7 +366,15 @@ export default async function handler(req, res) {
       id,
       nombre,
       huella: hashear(clave),
-      activo: true,
+      /* La serie viaja dentro de la cookie y se compara al entrar. Sin ella,
+         borrar a "vitor" y volver a crearlo dejaría entrar en la cuenta NUEVA a
+         quien tuviera abierta la sesión de la vieja, porque la cookie va firmada
+         y dura 30 días. Cambiar la contraseña también la rota, así que eso echa
+         de paso a cualquier otro dispositivo. */
+      serie: claveAleatoria(10),
+      /* La contraseña que sale de aquí es temporal: la primera vez que entre, el
+         área del club no le deja hacer nada hasta que ponga la suya. */
+      debeCambiar: true,
       creada: new Date().toISOString(),
     })
 
@@ -371,8 +387,8 @@ export default async function handler(req, res) {
 
     console.log(`Panel: ${quien} crea la cuenta de club ${id}`)
     /* La contraseña se devuelve AQUÍ Y SOLO AQUÍ: lo guardado es su huella, así
-       que ni Diego puede volver a verla. Si se pierde, se da de baja la cuenta y
-       se crea otra. */
+       que ni Diego puede volver a verla. Si se pierde, se borra la cuenta y se
+       crea otra, que ahora recupera el mismo identificador. */
     return res.status(200).json({ ok: true, clave, usuario: sinHuella(privado.usuarios.at(-1)) })
   }
 
@@ -385,19 +401,20 @@ export default async function handler(req, res) {
     const cuenta = privado.usuarios.find((u) => u.id === id)
     if (!cuenta) return res.status(404).json({ ok: false, error: 'Esa cuenta no existe.' })
 
-    /* Se marca inactiva, no se borra: sus peticiones antiguas siguen diciendo
-       quién las mandó, y así se ve que la cuenta existió. */
-    cuenta.activo = false
-    cuenta.baja = new Date().toISOString()
+    /* Se borra de verdad, no se marca inactiva. Antes se guardaba «por si acaso»
+       y el resultado era una lista que solo crecía y un nombre ocupado para
+       siempre. El historial no se pierde: cada petición guarda dentro el nombre
+       de quien la mandó (`autorNombre`), no una referencia a esta lista. */
+    privado.usuarios = privado.usuarios.filter((u) => u.id !== id)
 
     try {
       escribirPrivado(privado)
     } catch (e) {
-      console.error('Panel: no se pudo dar de baja', e.message)
+      console.error('Panel: no se pudo borrar la cuenta', e.message)
       return res.status(500).json({ ok: false, error: 'No se pudo guardar en el disco.' })
     }
 
-    console.log(`Panel: ${quien} da de baja la cuenta de club ${id}`)
+    console.log(`Panel: ${quien} borra la cuenta de club ${id}`)
     return res.status(200).json({ ok: true, usuarios: privado.usuarios.map(sinHuella) })
   }
 

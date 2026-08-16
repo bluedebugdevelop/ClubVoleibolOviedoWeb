@@ -381,7 +381,10 @@ function Cuentas({ cuentas, setCuentas, setAviso }) {
   }
 
   async function darDeBaja(id, comoSeLlama) {
-    if (!window.confirm(`¿Dar de baja a ${comoSeLlama}? No podrá volver a entrar.`)) return
+    if (!window.confirm(
+      `¿Borrar la cuenta de ${comoSeLlama}? No podrá volver a entrar y, si tenía la `
+      + 'sesión abierta, se le cierra. Sus peticiones anteriores se quedan como están.',
+    )) return
     try {
       const r = await fetch('/api/panel/usuario-baja', {
         method: 'POST',
@@ -389,16 +392,17 @@ function Cuentas({ cuentas, setCuentas, setAviso }) {
         body: JSON.stringify({ id }),
       })
       const d = await r.json().catch(() => ({}))
-      if (!r.ok || !d.ok) throw new Error(d.error || 'No se pudo dar de baja')
+      if (!r.ok || !d.ok) throw new Error(d.error || 'No se pudo borrar')
       setCuentas(d.usuarios)
-      setAviso({ tipo: 'bien', texto: `${comoSeLlama} ya no puede entrar.` })
+      setAviso({ tipo: 'bien', texto: `Cuenta de ${comoSeLlama} borrada. Su nombre vuelve a estar libre.` })
     } catch (err) {
       setAviso({ tipo: 'mal', texto: err.message })
     }
   }
 
-  const activas = cuentas.filter((c) => c.activo)
-  const bajas = cuentas.filter((c) => !c.activo)
+  /* Ya no hay «activas» y «de baja»: borrar una cuenta la borra. La lista es lo
+     que hay, y por eso volver a crear a la misma persona le devuelve su mismo
+     identificador en vez de uno con un número pegado. */
 
   return (
     <section className="panel-sec">
@@ -449,26 +453,21 @@ function Cuentas({ cuentas, setCuentas, setAviso }) {
         </div>
       )}
 
-      {activas.length === 0 && <p className="panel-vacio">Todavía no hay ninguna cuenta.</p>}
+      {cuentas.length === 0 && <p className="panel-vacio">Todavía no hay ninguna cuenta.</p>}
 
       <ul className="panel-cuentas">
-        {activas.map((c) => (
+        {cuentas.map((c) => (
           <li key={c.id}>
             <div>
               <b>{c.nombre}</b>
               <span>{c.id}</span>
             </div>
+            {/* «sin estrenar» = todavía usa la contraseña temporal. Sirve para
+                saber a quién hay que recordarle que entre. */}
+            {c.debeCambiar !== false && <i className="sin-estrenar">Sin estrenar</i>}
             <button type="button" className="panel-btn" onClick={() => darDeBaja(c.id, c.nombre)}>
-              Dar de baja
+              Borrar
             </button>
-          </li>
-        ))}
-        {bajas.map((c) => (
-          <li key={c.id} className="baja">
-            <div>
-              <b>{c.nombre}</b>
-              <span>{c.id} · dada de baja</span>
-            </div>
           </li>
         ))}
       </ul>

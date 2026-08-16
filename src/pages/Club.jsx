@@ -84,9 +84,108 @@ export default function Club() {
         </button>
       </header>
 
-      <Formulario sesion={sesion} onEnviada={cargarMias} />
-      <Mias peticiones={mias} />
+      {/* Mientras use la contraseña temporal no ve nada más. El servidor lo
+          impone igual (api/club.js devuelve 403), así que esto no es la
+          cerradura: es no enseñar una puerta que no se abre. */}
+      {sesion.debeCambiar ? (
+        <Estrenar sesion={sesion} onPuesta={comprobar} />
+      ) : (
+        <>
+          <Formulario sesion={sesion} onEnviada={cargarMias} />
+          <Mias peticiones={mias} />
+        </>
+      )}
     </div>
+  )
+}
+
+/* --------------------------------------------------------------------------
+   Primera vez: poner una contraseña propia.
+
+   La que le llegó por WhatsApp la ha visto Diego, ha viajado por un chat y
+   probablemente siga ahí escrita. Sirve para entrar una vez, no para quedarse.
+   -------------------------------------------------------------------------- */
+function Estrenar({ sesion, onPuesta }) {
+  const [clave, setClave] = useState('')
+  const [repetida, setRepetida] = useState('')
+  const [ver, setVer] = useState(false)
+  const [error, setError] = useState(null)
+  const [enviando, setEnviando] = useState(false)
+
+  const corta = clave.length > 0 && clave.length < sesion.minimoClave
+  const distintas = repetida.length > 0 && clave !== repetida
+  const listo = clave.length >= sesion.minimoClave && clave === repetida && !enviando
+
+  async function enviar(e) {
+    e.preventDefault()
+    setEnviando(true)
+    setError(null)
+    try {
+      const r = await fetch('/api/club/clave', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ clave }),
+      })
+      const d = await r.json().catch(() => ({}))
+      if (!r.ok || !d.ok) throw new Error(d.error || 'No se pudo cambiar')
+      await onPuesta()
+    } catch (err) {
+      setError(err.message)
+      setEnviando(false)
+    }
+  }
+
+  return (
+    <section className="panel-sec">
+      <div className="panel-sec-top">
+        <h2>Pon tu contraseña</h2>
+      </div>
+      <p className="panel-ayuda">
+        La que te dieron es temporal y la ha visto más gente. Elige la tuya y ya no hace
+        falta acordarse de la otra. Mínimo {sesion.minimoClave} caracteres.
+      </p>
+
+      {error && <p className="panel-aviso mal" role="alert">{error}</p>}
+
+      <form className="club-form club-estrena" onSubmit={enviar}>
+        <label>
+          <span>Tu contraseña nueva</span>
+          <input
+            type={ver ? 'text' : 'password'}
+            value={clave}
+            onChange={(e) => setClave(e.target.value)}
+            autoComplete="new-password"
+            autoFocus
+            required
+          />
+        </label>
+
+        <label>
+          <span>Otra vez, para confirmar</span>
+          <input
+            type={ver ? 'text' : 'password'}
+            value={repetida}
+            onChange={(e) => setRepetida(e.target.value)}
+            autoComplete="new-password"
+            required
+          />
+        </label>
+
+        <label className="club-ver">
+          <input type="checkbox" checked={ver} onChange={(e) => setVer(e.target.checked)} />
+          <span>Verlas mientras escribo</span>
+        </label>
+
+        {/* el aviso sale al escribir, no al enviar: corregir sobre la marcha es
+            menos frustrante que darle a un botón y que te lo rechacen */}
+        {corta && <p className="club-pista">Te faltan {sesion.minimoClave - clave.length} caracteres.</p>}
+        {distintas && <p className="club-pista">Las dos no coinciden.</p>}
+
+        <button type="submit" className="panel-btn primario" disabled={!listo}>
+          {enviando ? 'Guardando…' : 'Guardar y entrar'}
+        </button>
+      </form>
+    </section>
   )
 }
 

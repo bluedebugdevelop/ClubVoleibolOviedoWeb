@@ -21,6 +21,7 @@
 import {
   apuntaFallo,
   bloqueadoHasta,
+  claveAleatoria,
   claveCoincide,
   configurado,
   credencialesValidas,
@@ -31,7 +32,7 @@ import {
   sesion,
   usuario,
 } from './_acceso.js'
-import { leerPrivado } from './_almacen.js'
+import { escribirPrivado, leerPrivado } from './_almacen.js'
 import { cuentaDeLaSesion } from './club.js'
 
 /** A dónde manda cada rol. */
@@ -83,7 +84,13 @@ export default async function handler(req, res) {
 
   // Las dos, siempre, en este orden y sin cortocircuito.
   const esAdmin = credencialesValidas(nombre, clave)
-  const cuenta = leerPrivado().usuarios.find((u) => u.id === nombre.toLowerCase() && u.activo)
+  /* `activo !== false` y no `activo`: desde que borrar una cuenta la borra de
+     verdad, las nuevas ya no llevan esa marca. Comprobando `u.activo` a secas,
+     ninguna cuenta creada de ahora en adelante podría entrar. El `!== false`
+     sigue respetando las que quedaran marcadas del esquema anterior. */
+  const cuenta = leerPrivado().usuarios.find(
+    (u) => u.id === nombre.toLowerCase() && u.activo !== false,
+  )
   const esClub = claveCoincide(clave, cuenta?.huella || HUELLA_FALSA) && Boolean(cuenta)
 
   if (esAdmin) {
@@ -95,7 +102,26 @@ export default async function handler(req, res) {
 
   if (esClub) {
     olvidaFallos(ip)
-    ponerCookie(res, cuenta.id, seguro, 'club')
+
+    /* Las cuentas creadas antes de que existiera la serie no tienen ninguna. Se
+       les pone la primera vez que entran, en vez de pedir que alguien migre el
+       fichero a mano. */
+    let { serie } = cuenta
+    if (!serie) {
+      const privado = leerPrivado()
+      const guardada = privado.usuarios.find((u) => u.id === cuenta.id)
+      serie = claveAleatoria(10)
+      guardada.serie = serie
+      try {
+        escribirPrivado(privado)
+      } catch (e) {
+        console.error('Acceso: no se pudo poner la serie', e.message)
+        return res.status(500).json({ ok: false, error: 'No se pudo entrar. Inténtalo otra vez.' })
+      }
+    }
+
+    // la cookie lleva `id~serie`: ver `cuentaDeLaSesion` en api/club.js
+    ponerCookie(res, `${cuenta.id}~${serie}`, seguro, 'club')
     console.log(`Acceso: entra ${cuenta.id} (club) desde ${ip}`)
     return res.status(200).json({ ok: true, rol: 'club', nombre: cuenta.nombre, destino: DESTINO.club })
   }
