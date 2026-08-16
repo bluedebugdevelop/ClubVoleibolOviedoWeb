@@ -404,7 +404,9 @@ function Cuentas({ cuentas, setCuentas, setAviso }) {
       </div>
       <p className="panel-ayuda">
         Quién puede entrar en <code>/club</code> a pedir publicaciones. Con estas cuentas NO se
-        puede tocar la web: solo dejar peticiones.
+        puede tocar la web: solo dejar peticiones, y en el panel no entran.
+        Recuerda mandarles la dirección: <code>/club</code> no está enlazado desde ningún
+        sitio de la web.
       </p>
 
       <form className="panel-filas" onSubmit={crear}>
@@ -426,6 +428,13 @@ function Cuentas({ cuentas, setCuentas, setAviso }) {
           <b>Cuenta creada para {reciencreada.nombre}</b>
           <p>
             Usuario <code>{reciencreada.id}</code> · Contraseña <code>{reciencreada.clave}</code>
+          </p>
+          {/* Lo primero que pasó al usar esto de verdad (16-08-2026) fue meter
+              una cuenta de club en el panel y comerse el error. La dirección
+              tiene que ir junto a la contraseña, no en la ayuda de arriba. */}
+          <p className="donde">
+            Se entra en <b>{window.location.origin}/club</b>, no en el panel.
+            Con esta cuenta el panel da error a propósito.
           </p>
           {/* Se dice claramente porque es verdad y porque si no, la pregunta
               llega dentro de dos semanas. */}
@@ -473,6 +482,7 @@ function Entrar({ onDentro }) {
       titulo="Acceso del club"
       sub="Para publicar noticias, patrocinadores, equipos y fotos."
       endpoint="/api/panel/entrar"
+      pie="¿Vienes a pedir una publicación? Eso es en /club, no aquí."
       /* se vuelve a preguntar por la sesión: así el panel arranca con los datos
          y el estado del disco, sin duplicar eso en la respuesta del login */
       onEntrado={async () => {

@@ -13,7 +13,7 @@ import Crest from './Crest'
    propósito: quien entra tiene que ver que sigue en la web del club y no en una
    pantalla de sistema pegada por detrás.
    --------------------------------------------------------------------------- */
-export default function EntrarCaja({ titulo, sub, endpoint, onEntrado }) {
+export default function EntrarCaja({ titulo, sub, endpoint, onEntrado, pie }) {
   const [usuario, setUsuario] = useState('')
   const [clave, setClave] = useState('')
   const [error, setError] = useState(null)
@@ -120,6 +120,10 @@ export default function EntrarCaja({ titulo, sub, endpoint, onEntrado }) {
         <button type="submit" className="entrar-btn" disabled={enviando}>
           {enviando ? 'Entrando…' : 'Entrar'}
         </button>
+
+        {/* Para quien ha llegado a la puerta que no era. No dice si una cuenta
+            existe ni de qué tipo es: es el mismo texto para todo el mundo. */}
+        {pie && <p className="entrar-pie">{pie}</p>}
 
         {/* Ni /panel ni /club pintan la barra del club, así que sin esto quien
             llegue por error se queda sin salida que no sea el botón de atrás. */}
