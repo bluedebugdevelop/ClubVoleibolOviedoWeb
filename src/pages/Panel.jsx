@@ -47,6 +47,25 @@ const hoy = () =>
    final porque se miran, no se publican. */
 const SECCIONES = ['noticias', 'patrocinadores', 'equipos', 'fotos', 'peticiones', 'cuentas']
 
+/* Las cuatro que sí se editan y se publican. Cada una es una lista que viaja
+   entera al servidor con su PUT. */
+const EDITABLES = ['noticias', 'patrocinadores', 'equipos', 'fotos']
+
+/* Cómo se llama cada lista cuando hay que decirlo en una frase. */
+const NOMBRES = {
+  noticias: 'noticias',
+  patrocinadores: 'patrocinadores',
+  equipos: 'equipos',
+  fotos: 'fotos de la web',
+}
+
+/** Enumeración en castellano: «noticias y fotos de la web». */
+const enumerar = (claves) => {
+  const partes = claves.map((k) => NOMBRES[k])
+  if (partes.length < 2) return partes.join('')
+  return `${partes.slice(0, -1).join(', ')} y ${partes.at(-1)}`
+}
+
 /* El número que va en cada pestaña. En las peticiones NO es cuántas hay, sino
    cuántas quedan por atender: una bandeja con 40 cerradas y ninguna pendiente
    tiene que marcar 0, no 40. */
@@ -63,6 +82,11 @@ export default function Panel() {
   const [sesion, setSesion] = useState(null)
   const [pestana, setPestana] = useState('noticias')
   const [listas, setListas] = useState({ noticias: [], patrocinadores: [], equipos: [], fotos: [] })
+  /* Lo MISMO, pero tal como está en el servidor. Comparando las dos se sabe qué
+     falta por publicar, que es lo que antes no se veía: cada pestaña tiene su
+     botón de guardar, así que cambiar una foto y pulsar «Guardar» estando en
+     noticias decía «Guardado» sin haber guardado la foto. */
+  const [publicado, setPublicado] = useState({ noticias: [], patrocinadores: [], equipos: [], fotos: [] })
   const [aviso, setAviso] = useState(null)
   // lo del área del club: no se edita, se atiende
   const [peticiones, setPeticiones] = useState([])
@@ -70,12 +94,14 @@ export default function Panel() {
 
   const cargar = useCallback((d) => {
     setSesion(d)
-    setListas({
+    const delServidor = {
       noticias: d.noticias ?? [],
       patrocinadores: d.patrocinadores ?? [],
       equipos: d.equipos ?? [],
       fotos: d.fotos ?? [],
-    })
+    }
+    setListas(delServidor)
+    setPublicado(delServidor)
     setEstado('dentro')
   }, [])
 
@@ -109,21 +135,64 @@ export default function Panel() {
   const ponerLista = (clave, valor) =>
     setListas((l) => ({ ...l, [clave]: typeof valor === 'function' ? valor(l[clave]) : valor }))
 
-  async function guardar(clave) {
+  /* Qué hay tocado y sin publicar. Se compara con lo que devolvió el servidor,
+     que ya viene recortado por los limpiadores de `api/panel.js`: por eso la
+     comparación se hace contra ESO y no contra la semilla. */
+  const sinPublicar = EDITABLES.filter(
+    (k) => JSON.stringify(listas[k]) !== JSON.stringify(publicado[k]),
+  )
+
+  /* Un aviso del navegador al cerrar o recargar con cambios a medias. Es la
+     última red: sin él, cambiar una foto y recargar la deja perdida sin que
+     nadie lo diga. */
+  useEffect(() => {
+    if (!sinPublicar.length) return undefined
+    const alSalir = (e) => {
+      e.preventDefault()
+      e.returnValue = ''
+    }
+    window.addEventListener('beforeunload', alSalir)
+    return () => window.removeEventListener('beforeunload', alSalir)
+  }, [sinPublicar.length])
+
+  /**
+   * Publica TODO lo que esté sin guardar, no solo la pestaña que se esté
+   * mirando.
+   *
+   * Antes cada botón guardaba lo suyo, y como el botón pone «Guardar y
+   * publicar» en las cuatro pestañas, cambiar una foto y guardar desde
+   * noticias daba «Guardado. Ya está publicado» con la foto todavía sin subir.
+   * Al volver a entrar no estaba, claro.
+   *
+   * Las listas van UNA DETRÁS DE OTRA, nunca a la vez: el servidor reescribe el
+   * fichero entero en cada PUT partiendo de lo que hay en disco, así que dos
+   * peticiones en paralelo se pisarían la una a la otra.
+   */
+  async function guardar() {
+    const porGuardar = sinPublicar
+    if (!porGuardar.length) {
+      return setAviso({ tipo: 'bien', texto: 'No había nada nuevo que publicar.' })
+    }
     setAviso({ tipo: 'espera', texto: 'Guardando…' })
     try {
-      const r = await fetch(`/api/panel/${clave}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ [clave]: listas[clave] }),
+      for (const clave of porGuardar) {
+        const r = await fetch(`/api/panel/${clave}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ [clave]: listas[clave] }),
+        })
+        const d = await r.json().catch(() => ({}))
+        if (r.status === 401) throw new Error('Se ha cerrado la sesión. Vuelve a entrar.')
+        if (!r.ok || !d.ok) throw new Error(d.error || 'No se pudo guardar')
+        // se recoge lo que devuelve el servidor, ya limpio: así se ve al momento
+        // si algo se ha descartado o corregido al validarlo
+        ponerLista(clave, d[clave])
+        setPublicado((p) => ({ ...p, [clave]: d[clave] }))
+      }
+      setAviso({
+        tipo: 'bien',
+        texto: `Guardado (${enumerar(porGuardar)}). Ya está publicado en la web.`,
       })
-      const d = await r.json().catch(() => ({}))
-      if (r.status === 401) throw new Error('Se ha cerrado la sesión. Vuelve a entrar.')
-      if (!r.ok || !d.ok) throw new Error(d.error || 'No se pudo guardar')
-      // se recoge lo que devuelve el servidor, ya limpio: así se ve al momento
-      // si algo se ha descartado o corregido al validarlo
-      ponerLista(clave, d[clave])
-      setAviso({ tipo: 'bien', texto: 'Guardado. Ya está publicado en la web.' })
     } catch (e) {
       setAviso({ tipo: 'mal', texto: e.message })
     }
@@ -148,7 +217,15 @@ export default function Panel() {
         </div>
         <div className="panel-tabs">
           {SECCIONES.map((s) => (
-            <button key={s} type="button" aria-pressed={pestana === s} onClick={() => setPestana(s)}>
+            <button
+              key={s}
+              type="button"
+              aria-pressed={pestana === s}
+              /* el punto naranja de la pestaña avisa de que ahí dentro hay algo
+                 tocado y todavía sin publicar */
+              className={sinPublicar.includes(s) ? 'sin-publicar' : undefined}
+              onClick={() => setPestana(s)}
+            >
               {s} <i>{cuentaDe(s, listas, pendientes)}</i>
             </button>
           ))}
@@ -172,6 +249,19 @@ export default function Panel() {
         </div>
       )}
 
+      {/* Lo tocado y sin publicar, dicho por su nombre. Con el botón al lado,
+          porque el de la sección solo se ve si estás en esa pestaña. */}
+      {sinPublicar.length > 0 && (
+        <div className="panel-pendiente">
+          <span>
+            Sin publicar: <b>{enumerar(sinPublicar)}</b>. Si sales o recargas ahora, se pierde.
+          </span>
+          <button type="button" className="panel-btn primario" onClick={guardar}>
+            Guardar y publicar
+          </button>
+        </div>
+      )}
+
       {aviso && <div className={`panel-aviso ${aviso.tipo}`}>{aviso.texto}</div>}
 
       {pestana === 'noticias' && (
@@ -182,7 +272,7 @@ export default function Panel() {
           setItems={(v) => ponerLista('noticias', v)}
           nueva={() => ({ ...VACIA_NOTICIA, id: `n-${Date.now().toString(36)}`, fecha: hoy() })}
           etiqueta={(n) => n.titulo || '(sin título)'}
-          onGuardar={() => guardar('noticias')}
+          onGuardar={guardar}
           Campos={CamposNoticia}
         />
       )}
@@ -195,7 +285,7 @@ export default function Panel() {
           setItems={(v) => ponerLista('patrocinadores', v)}
           nueva={() => ({ ...VACIO_PATROCINADOR })}
           etiqueta={(p) => p.nombre || '(sin nombre)'}
-          onGuardar={() => guardar('patrocinadores')}
+          onGuardar={guardar}
           Campos={CamposPatrocinador}
         />
       )}
@@ -204,7 +294,7 @@ export default function Panel() {
         <Fotos
           items={listas.fotos}
           setItems={(v) => ponerLista('fotos', v)}
-          onGuardar={() => guardar('fotos')}
+          onGuardar={guardar}
         />
       )}
 
@@ -219,7 +309,7 @@ export default function Panel() {
           setItems={(v) => ponerLista('equipos', v)}
           nueva={() => ({ ...VACIO_EQUIPO })}
           etiqueta={(e) => e.nombre || '(sin nombre)'}
-          onGuardar={() => guardar('equipos')}
+          onGuardar={guardar}
           Campos={CamposEquipo}
         />
       )}

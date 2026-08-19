@@ -1300,6 +1300,10 @@ footer .legal .credito b{color:var(--ink);font-family:"Barlow Condensed",sans-se
   border-radius:999px;background:#fff;color:var(--dim);cursor:pointer}
 .panel-tabs button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
 .panel-tabs button i{font-style:normal;opacity:.6;margin-left:5px}
+/* Punto naranja: en esa pestaña hay algo cambiado y sin publicar. */
+.panel-tabs button.sin-publicar{position:relative;border-color:#c77700}
+.panel-tabs button.sin-publicar::after{content:"";position:absolute;top:-3px;right:-3px;
+  width:9px;height:9px;border-radius:50%;background:#e08a00;border:2px solid #fff}
 .panel-salir{border:1px solid var(--line);background:#fff;color:var(--dim);cursor:pointer;
   font-size:13px;padding:8px 14px;border-radius:8px}
 .panel-salir:hover{border-color:#b3261e;color:#b3261e}
@@ -1307,6 +1311,12 @@ footer .legal .credito b{color:var(--ink);font-family:"Barlow Condensed",sans-se
 .panel-alarma{border:1px solid #e6d3a3;background:#fdf6e3;color:#6b4e07;
   padding:14px 18px;margin-bottom:18px;font-size:14.5px;line-height:1.55}
 .panel-alarma code{background:#f6e4b8;padding:1px 6px;border-radius:4px}
+/* Barra de «esto todavía no está en la web». Naranja y con su botón al lado:
+   el de la sección solo se ve si estás en la pestaña donde se tocó algo. */
+.panel-pendiente{display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  border:1px solid #e0b062;background:#fff7e8;color:#6b4e07;
+  padding:12px 18px;margin-bottom:18px;font-size:14.5px;line-height:1.5}
+.panel-pendiente > span{flex:1;min-width:220px}
 .panel-aviso{padding:12px 18px;margin-bottom:18px;font-size:14.5px;border:1px solid}
 .panel-aviso.bien{border-color:#1a8a4c;background:#eaf7ef;color:#155e35}
 .panel-aviso.mal{border-color:#b3261e;background:#fdeceb;color:#8c1d18}
