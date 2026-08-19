@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import PageHead from '../components/PageHead'
 import Sponsors from '../components/Sponsors'
@@ -37,23 +38,10 @@ export default function Noticia() {
           ))}
 
           {/* Carteles, calendarios y gráficos que acompañan al texto. Van
-              enteros y debajo, no de fondo: la cabecera recorta a una banda muy
-              apaisada y un cartel ahí no se lee. */}
-          {noticia.galeria?.length > 0 && (
-            <div className="articulo-galeria">
-              {noticia.galeria.map((g) => (
-                <figure key={g.ruta}>
-                  {/* Enlace a la imagen suelta: un calendario tiene once filas
-                      de letra pequeña y en el móvil hay que poder abrirlo a
-                      tamaño completo. Es un enlace normal, sin visor. */}
-                  <a href={g.ruta} target="_blank" rel="noreferrer">
-                    <img src={g.ruta} alt={g.pie || ''} loading="lazy" />
-                  </a>
-                  {g.pie && <figcaption>{g.pie}</figcaption>}
-                </figure>
-              ))}
-            </div>
-          )}
+              debajo y en miniatura: a tamaño completo, cuatro calendarios eran
+              tres pantallas de scroll para leer tres párrafos. Se tocan para
+              verlos grandes. */}
+          <Galeria imagenes={noticia.galeria} />
 
           {noticia.cta === 'preinscripcion' && <CtaPreinscripcion />}
         </article>
@@ -64,6 +52,67 @@ export default function Noticia() {
       </section>
 
       <Sponsors />
+    </>
+  )
+}
+
+/**
+ * Las imágenes de dentro de la noticia: miniaturas en fila y, al tocar una, la
+ * foto entera encima de la página.
+ *
+ * El visor va a mano y no con una librería porque es esto: un div encima de
+ * todo, tres formas de cerrarlo (fuera, la X y Escape) y nada más. Mientras
+ * está abierto se bloquea el scroll del fondo, que si no la página de detrás se
+ * mueve al arrastrar sobre la foto.
+ */
+function Galeria({ imagenes }) {
+  const [abierta, setAbierta] = useState(null)
+
+  useEffect(() => {
+    if (!abierta) return undefined
+    const conTecla = (e) => {
+      if (e.key === 'Escape') setAbierta(null)
+    }
+    const scrollAntes = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', conTecla)
+    return () => {
+      document.body.style.overflow = scrollAntes
+      window.removeEventListener('keydown', conTecla)
+    }
+  }, [abierta])
+
+  if (!imagenes?.length) return null
+
+  return (
+    <>
+      <div className="articulo-galeria">
+        {imagenes.map((g) => (
+          <figure key={g.ruta}>
+            <button type="button" onClick={() => setAbierta(g)} aria-label={`Ver ${g.pie || 'la imagen'} más grande`}>
+              <img src={g.ruta} alt={g.pie || ''} loading="lazy" />
+            </button>
+            {g.pie && <figcaption>{g.pie}</figcaption>}
+          </figure>
+        ))}
+      </div>
+
+      {abierta && (
+        /* El clic en el fondo cierra; el de dentro de la foto no, o cerraría al
+           intentar mirarla de cerca. */
+        <div className="visor" role="dialog" aria-modal="true" aria-label={abierta.pie || 'Imagen'}
+          onClick={() => setAbierta(null)}>
+          <button type="button" className="cerrar" aria-label="Cerrar" onClick={() => setAbierta(null)}>×</button>
+          <figure onClick={(e) => e.stopPropagation()}>
+            <img src={abierta.ruta} alt={abierta.pie || ''} />
+            {abierta.pie && <figcaption>{abierta.pie}</figcaption>}
+            {/* En un móvil la foto grande cabe a lo ancho de la pantalla y un
+                calendario de once filas sigue pidiendo lupa. Este enlace abre
+                el fichero suelto, que ya se amplía con los dedos. */}
+            <a href={abierta.ruta} target="_blank" rel="noreferrer">Abrir a tamaño completo</a>
+          </figure>
+        </div>
+      )}
     </>
   )
 }
