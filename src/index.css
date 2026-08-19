@@ -811,9 +811,26 @@ footer .legal .credito b{color:var(--ink);font-family:"Barlow Condensed",sans-se
 /* 420px de mínimo y no 260: un cartel de calendario tiene once filas de letra
    pequeña, y a media columna no se lee. Con este mínimo, dentro de la columna
    del texto (70ch) cae siempre en una sola columna y se ve entero. */
-/* Miniaturas en fila, no carteles a toda página: cuatro calendarios a ancho
-   completo son tres pantallas de scroll para leer una noticia de tres párrafos.
-   Se ven pequeñas y se tocan para verlas grandes. */
+/* El texto en su columna de lectura y las imágenes AL LADO, en el hueco que la
+   página deja libre a la derecha (`--wrap` llega a 2040px y `.articulo` se
+   queda en 70ch). Debajo del texto había que bajar para verlas y no cabían más
+   grandes; aquí caben en dos filas y sin scroll. */
+.articulo-lado{display:grid;gap:48px;align-items:start;
+  grid-template-columns:minmax(0,70ch) minmax(0,1fr)}
+.articulo-lado .articulo-galeria{margin:0;width:min(100%,540px);
+  grid-template-columns:repeat(2,minmax(0,1fr))}
+
+/* Por debajo de 1180px ya no hay hueco a la derecha: la galería vuelve a caer
+   debajo del texto y las miniaturas se reparten solas. */
+@media(max-width:1180px){
+  .articulo-lado{grid-template-columns:minmax(0,1fr);gap:0}
+  .articulo-lado .articulo-galeria{margin:32px 0 0;width:100%;
+    grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
+}
+
+/* Miniaturas, no carteles a toda página: cuatro calendarios a ancho completo
+   eran tres pantallas de scroll para leer una noticia de tres párrafos. Se ven
+   pequeñas y se tocan para verlas grandes. */
 .articulo-galeria{display:grid;gap:14px;margin:32px 0 0;
   grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
 .articulo-galeria figure{margin:0}

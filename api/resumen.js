@@ -66,6 +66,9 @@ const claveValida = (req) => iguales(req.headers['x-clave'] || '', secreto())
 
 const texto = (v, max = 400) => (typeof v === 'string' ? v.trim().slice(0, max) : '')
 
+/** Un slug de noticia, con las mismas letras que admite el panel. */
+const slug = (v) => texto(v, 80).toLowerCase().replace(/[^a-z0-9-]/g, '')
+
 /** Un borrador caduca: si nadie lo aprueba en dos semanas ya no es noticia. */
 const DIAS_VIVO = 14
 const MAX_BORRADORES = 20
@@ -140,9 +143,16 @@ function paginaAprobacion(b, f) {
 </style>
 </head>
 <body>
-<p class="aviso">Esto <b>todavía no está publicado</b>. Léelo antes: lo ha
-redactado un modelo a partir de los pies de foto de Instagram, y de ahí salen
-los datos que puede haberse inventado.</p>
+<p class="aviso">Esto <b>todavía no está publicado</b>. Léelo antes de darle al
+botón: si el texto lo ha escrito un modelo, de ahí salen los datos que puede
+haberse inventado.</p>
+
+${
+  b.reemplaza
+    ? `<p class="aviso">Esto <b>SUSTITUYE</b> a la noticia que ya está publicada en
+       <code>/noticias/${escapa(b.reemplaza)}</code>. No se añade otra: se queda esta, en el mismo sitio de la lista.</p>`
+    : ''
+}
 
 ${n.img ? `<img src="${escapa(n.img)}" alt="">` : ''}
 <p class="meta">${escapa(n.categoria)} · ${escapa(n.fecha)}</p>
@@ -153,7 +163,7 @@ ${parrafos}
 ${fuentes ? `<h2>De dónde sale</h2>\n<ul>${fuentes}</ul>` : ''}
 
 <div class="botones">
-  <button class="publicar"${cerrada ? ' disabled' : ''}>Publicar en la web</button>
+  <button class="publicar"${cerrada ? ' disabled' : ''}>${b.reemplaza ? 'Publicar la corrección' : 'Publicar en la web'}</button>
   <button class="descartar"${cerrada ? ' disabled' : ''}>Descartar</button>
 </div>
 <p id="resultado">${cerrada ? `Ya ${b.estado === 'publicada' ? 'se publicó' : 'se descartó'}.` : ''}</p>
@@ -248,6 +258,11 @@ export default async function handler(req, res) {
             .filter((u) => u.startsWith('https://'))
             .slice(0, 20)
         : [],
+      /* Corregir una noticia YA publicada: con esto, aprobar no añade otra
+         noticia sino que sustituye a la del slug indicado, en su mismo sitio de
+         la lista. Sin esto, alargar un texto obligaba a entrar al panel a mano
+         o dejaba la noticia duplicada. */
+      reemplaza: slug(cuerpo.reemplaza),
       noticia,
     }
     privado.borradores.unshift(borrador)
@@ -312,10 +327,27 @@ export default async function handler(req, res) {
        publicar esta borraría la de la preinscripción. */
     const guardado = leer()
     const noticias = guardado.noticias.length ? guardado.noticias : semilla().noticias
-    if (noticias.some((n) => n.slug === borrador.noticia.slug)) {
-      borrador.noticia.slug = `${borrador.noticia.slug}-${Date.now().toString(36).slice(-4)}`
+
+    /* Si viene a corregir una que ya está publicada, ocupa su sitio en la lista
+       y se queda con su identificador: para la web es la misma noticia con el
+       texto nuevo, no una segunda parecida. */
+    const donde = borrador.reemplaza
+      ? noticias.findIndex((n) => n.slug === borrador.reemplaza)
+      : -1
+
+    let lista
+    if (donde >= 0) {
+      lista = [...noticias]
+      lista[donde] = { ...borrador.noticia, id: noticias[donde].id }
+    } else {
+      /* Dos noticias con el mismo slug dejarían una inalcanzable, porque la
+         ficha busca por slug y se queda con la primera. */
+      if (noticias.some((n) => n.slug === borrador.noticia.slug)) {
+        borrador.noticia.slug = `${borrador.noticia.slug}-${Date.now().toString(36).slice(-4)}`
+      }
+      lista = [borrador.noticia, ...noticias]
     }
-    const despues = { ...guardado, noticias: [borrador.noticia, ...noticias].slice(0, 200) }
+    const despues = { ...guardado, noticias: lista.slice(0, 200) }
 
     try {
       escribir(despues)
@@ -327,7 +359,11 @@ export default async function handler(req, res) {
       return res.status(500).json({ ok: false, error: 'No se pudo guardar en el disco.' })
     }
 
-    console.log(`Resumen: ${id} publicado como /noticias/${borrador.noticia.slug}`)
+    console.log(
+      donde >= 0
+        ? `Resumen: ${id} sustituye a /noticias/${borrador.reemplaza}`
+        : `Resumen: ${id} publicado como /noticias/${borrador.noticia.slug}`,
+    )
     return res.status(200).json({ ok: true, estado: 'publicada', slug: borrador.noticia.slug })
   }
 

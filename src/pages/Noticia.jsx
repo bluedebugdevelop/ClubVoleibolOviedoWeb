@@ -30,21 +30,25 @@ export default function Noticia() {
       />
 
       <section className="sec">
-        <article className="articulo">
-          <p className="fecha">{noticia.fecha}</p>
+        {/* El texto va en su columna de lectura y las imágenes AL LADO, en el
+            hueco que quedaba vacío a la derecha. Debajo del texto obligaban a
+            bajar para nada y encima no cabían más grandes. En pantalla estrecha
+            la galería vuelve a caer debajo. */}
+        <div className="articulo-lado">
+          <article className="articulo">
+            <p className="fecha">{noticia.fecha}</p>
 
-          {noticia.cuerpo.map((t) => (
-            <p key={t.slice(0, 40)}>{t}</p>
-          ))}
+            {noticia.cuerpo.map((t) => (
+              <p key={t.slice(0, 40)}>{t}</p>
+            ))}
 
-          {/* Carteles, calendarios y gráficos que acompañan al texto. Van
-              debajo y en miniatura: a tamaño completo, cuatro calendarios eran
-              tres pantallas de scroll para leer tres párrafos. Se tocan para
-              verlos grandes. */}
+            {noticia.cta === 'preinscripcion' && <CtaPreinscripcion />}
+          </article>
+
+          {/* Carteles, calendarios y gráficos que acompañan al texto: en
+              miniatura, y se tocan para verlos grandes. */}
           <Galeria imagenes={noticia.galeria} />
-
-          {noticia.cta === 'preinscripcion' && <CtaPreinscripcion />}
-        </article>
+        </div>
 
         <p className="volver">
           <Link to="/noticias">← Todas las noticias</Link>
