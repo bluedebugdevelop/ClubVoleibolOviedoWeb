@@ -36,6 +36,25 @@ export default function Noticia() {
             <p key={t.slice(0, 40)}>{t}</p>
           ))}
 
+          {/* Carteles, calendarios y gráficos que acompañan al texto. Van
+              enteros y debajo, no de fondo: la cabecera recorta a una banda muy
+              apaisada y un cartel ahí no se lee. */}
+          {noticia.galeria?.length > 0 && (
+            <div className="articulo-galeria">
+              {noticia.galeria.map((g) => (
+                <figure key={g.ruta}>
+                  {/* Enlace a la imagen suelta: un calendario tiene once filas
+                      de letra pequeña y en el móvil hay que poder abrirlo a
+                      tamaño completo. Es un enlace normal, sin visor. */}
+                  <a href={g.ruta} target="_blank" rel="noreferrer">
+                    <img src={g.ruta} alt={g.pie || ''} loading="lazy" />
+                  </a>
+                  {g.pie && <figcaption>{g.pie}</figcaption>}
+                </figure>
+              ))}
+            </div>
+          )}
+
           {noticia.cta === 'preinscripcion' && <CtaPreinscripcion />}
         </article>
 

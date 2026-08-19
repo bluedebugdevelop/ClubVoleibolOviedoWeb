@@ -1,0 +1,75 @@
+name: Resumen semanal de Instagram
+
+# Los domingos por la tarde mira lo que el club ha publicado en Instagram
+# durante la semana, redacta UNA noticia y la deja como borrador en la web.
+# NO publica: manda un aviso a Telegram con un enlace y Diego decide.
+#
+# Si la semana tuvo menos de tres publicaciones, no hace nada.
+
+on:
+  # EL DOMINGO AUTOMÁTICO ESTÁ APAGADO (19-08-2026): sin token de Instagram esto
+  # fallaría cada semana, y un workflow que falla siempre deja de mirarse. Se
+  # enciende quitando el comentario de las dos líneas de abajo el día que estén
+  # los secretos puestos.
+  #
+  # Mientras tanto la noticia se deja a mano con `scripts/borrador.mjs`, que usa
+  # el mismo camino de aprobación.
+  #
+  # schedule:
+  #   Las 20:00 en España, con el mismo truco que `datos.yml`: GitHub programa
+  #   en UTC y no sabe de horario de verano, así que se ponen las dos horas y
+  #   el primer paso descarta la que no toca.
+  #   - cron: '0 18 * * 0' # 20:00 en horario de verano (CEST, UTC+2)
+  #   - cron: '0 19 * * 0' # 20:00 en horario de invierno (CET, UTC+1)
+  workflow_dispatch: # botón de "ejecutar ahora" en la pestaña Actions
+
+concurrency:
+  group: resumen-semanal
+  cancel-in-progress: false
+
+jobs:
+  resumir:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ¿Son las 20:00 en España?
+        id: hora
+        run: |
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            echo "seguir=si" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          hora_es=$(TZ=Europe/Madrid date +%H)
+          if [ "$hora_es" = "20" ]; then
+            echo "seguir=si" >> "$GITHUB_OUTPUT"
+          else
+            echo "En España son las $hora_es:00. Se salta."
+            echo "seguir=no" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.hora.outputs.seguir == 'si'
+
+      - uses: actions/setup-node@v4
+        if: steps.hora.outputs.seguir == 'si'
+        with:
+          node-version: 20
+          cache: npm
+
+      # Este sí necesita dependencias (el SDK de Anthropic), al revés que el
+      # scraper de datos. Con `npm ci` se instalan también las de desarrollo,
+      # que es donde vive.
+      - name: Instalar dependencias
+        if: steps.hora.outputs.seguir == 'si'
+        run: npm ci
+
+      - name: Redactar y dejar el borrador
+        if: steps.hora.outputs.seguir == 'si'
+        env:
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SITIO_CLAVE: ${{ secrets.SITIO_CLAVE }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          SITIO: ${{ vars.SITIO || 'https://clubvoleiboloviedo.com' }}
+        run: npm run resumen

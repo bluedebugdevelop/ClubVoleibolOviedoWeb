@@ -804,6 +804,21 @@ footer .legal .credito b{color:var(--ink);font-family:"Barlow Condensed",sans-se
 /* El bloque del formulario se separa del texto con una línea: es la acción de
    la noticia, no un párrafo más. `.notice` viene centrado por defecto (`margin:
    0 auto`) y aquí va alineado con el texto. */
+/* Imágenes dentro de la noticia (carteles, calendarios, gráficos). Van DEBAJO
+   del texto y enteras, sin recortar: un cartel recortado no se puede leer, que
+   es justo para lo que sirve. Con una sola imagen ocupa toda la columna; con
+   dos o más se reparten en dos columnas hasta que no caben. */
+/* 420px de mínimo y no 260: un cartel de calendario tiene once filas de letra
+   pequeña, y a media columna no se lee. Con este mínimo, dentro de la columna
+   del texto (70ch) cae siempre en una sola columna y se ve entero. */
+.articulo-galeria{display:grid;gap:18px;margin:32px 0 0;
+  grid-template-columns:repeat(auto-fit,minmax(min(420px,100%),1fr))}
+.articulo-galeria figure{margin:0}
+.articulo-galeria a{display:block}
+.articulo-galeria img{display:block;width:100%;height:auto;border-radius:10px;
+  border:1px solid var(--line);background:#fff}
+.articulo-galeria figcaption{margin:8px 0 0;font-size:13.5px;color:var(--dim)}
+
 .articulo-cta{margin:40px 0 0;padding:30px 0 0;border-top:1px solid var(--line)}
 .articulo-cta .notice{margin-left:0;margin-right:0;max-width:none}
 .articulo-cta .letra-pequena{margin-top:18px}
@@ -1363,6 +1378,16 @@ footer .legal .credito b{color:var(--ink);font-family:"Barlow Condensed",sans-se
 .panel-campo select{cursor:pointer}
 .panel-campo input[type="color"]{height:42px;padding:4px;cursor:pointer}
 .panel-campo textarea{resize:vertical;line-height:1.6}
+
+/* Una fila por imagen de dentro de la noticia: miniatura, su pie y los botones
+   de ordenarla o quitarla. La miniatura va entera (`contain`) porque estas
+   imágenes tampoco se recortan en la web. */
+.panel-galeria-fila{display:flex;gap:12px;align-items:center;margin:0 0 10px;
+  padding:10px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.panel-galeria-fila img{width:64px;height:80px;object-fit:contain;background:#fafafa;
+  border:1px solid var(--line);border-radius:4px}
+.panel-galeria-fila input{flex:1}
+.panel-galeria-botones{display:flex;gap:6px;flex-shrink:0}
 
 .panel-imagen{display:flex;gap:14px;align-items:flex-start}
 /* La vista previa se enseña con la MISMA proporción que tendrá en la web (le

@@ -32,3 +32,7 @@ dist-ssr
 
 # Contenido que escribe el panel en local (en producción va al volumen)
 .datos/
+
+# Material de trabajo del club (fotos, vídeo, dossier, listas de patrocinio).
+# Son gigas de vídeo y datos de contacto de empresas: nunca al repositorio.
+_club/

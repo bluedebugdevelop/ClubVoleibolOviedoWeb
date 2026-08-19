@@ -23,7 +23,7 @@ import { FOTOS_SITIO } from '../data/fotosSitio'
 
 const VACIA_NOTICIA = {
   destacada: false, categoria: '', fecha: '', titulo: '', resumen: '',
-  img: '', foco: '', cuerpo: [], cta: '',
+  img: '', foco: '', cuerpo: [], galeria: [], cta: '',
 }
 
 const VACIO_PATROCINADOR = {
@@ -265,16 +265,37 @@ export default function Panel() {
       {aviso && <div className={`panel-aviso ${aviso.tipo}`}>{aviso.texto}</div>}
 
       {pestana === 'noticias' && (
-        <Lista
-          titulo="Noticias"
-          ayuda="La primera de la lista es la destacada: sale grande arriba del todo en /noticias y en la portada."
-          items={listas.noticias}
-          setItems={(v) => ponerLista('noticias', v)}
-          nueva={() => ({ ...VACIA_NOTICIA, id: `n-${Date.now().toString(36)}`, fecha: hoy() })}
-          etiqueta={(n) => n.titulo || '(sin título)'}
-          onGuardar={guardar}
-          Campos={CamposNoticia}
-        />
+        <>
+          <Lista
+            titulo="Noticias"
+            ayuda="La primera de la lista es la destacada: sale grande arriba del todo en /noticias y en la portada."
+            items={listas.noticias}
+            setItems={(v) => ponerLista('noticias', v)}
+            nueva={() => ({ ...VACIA_NOTICIA, id: `n-${Date.now().toString(36)}`, fecha: hoy() })}
+            etiqueta={(n) => n.titulo || '(sin título)'}
+            onGuardar={guardar}
+            Campos={CamposNoticia}
+          />
+
+          {/* La banda de detrás del título de /noticias. Estaba en «Fotos de la
+              web», que es donde nadie la buscaba: quien cambia la portada de
+              noticias está aquí. Se guarda con el mismo botón, porque el panel
+              publica de una vez todo lo que esté tocado. */}
+          <section className="panel-sec">
+            <div className="panel-sec-top">
+              <h2>Portada de la página de noticias</h2>
+            </div>
+            <p className="panel-ayuda">
+              La foto de detrás del título en /noticias. No es de ninguna noticia en concreto: es la
+              cabecera de la sección entera.
+            </p>
+            <FotosDeSeccion
+              seccion="noticias"
+              items={listas.fotos}
+              setItems={(v) => ponerLista('fotos', v)}
+            />
+          </section>
+        </>
       )}
 
       {pestana === 'patrocinadores' && (
@@ -581,13 +602,78 @@ function Cuentas({ cuentas, setCuentas, setAviso }) {
    que trae el código. Es la forma de deshacer un cambio sin tener que guardar
    en algún sitio la original.
    -------------------------------------------------------------------------- */
-function Fotos({ items, setItems, onGuardar }) {
-  const rutaDe = (clave) => items.find((f) => f.clave === clave)?.ruta || ''
+/**
+ * Una foto fija de la web, con su explicación y su recortador.
+ *
+ * Vive fuera de `Fotos` porque las que llevan `panel` en `fotosSitio.js` no se
+ * enseñan ahí, sino en la pestaña de su sección: la cabecera de /noticias se
+ * cambia editando noticias, que es donde está quien publica.
+ */
+function FichaFoto({ f, ruta, poner }) {
+  /* La lista arranca con las rutas que trae el código, así que tener ruta no
+     significa que se haya tocado nada: hay que compararla con la original. Si
+     no, todas saldrían marcadas como cambiadas y el botón de restaurar no haría
+     nada. */
+  const cambiada = Boolean(ruta) && ruta !== f.porDefecto
 
-  const poner = (clave, ruta) => {
+  return (
+    <div className="panel-foto">
+      <div className="panel-foto-txt">
+        <b>{f.titulo}</b>
+        <span>{f.donde}</span>
+        {cambiada && <i>Cambiada desde el panel</i>}
+      </div>
+      <SubirImagen
+        /* `vistaTitulo` es el título que la vista previa pinta encima de la
+           foto. Casi siempre es lo que hay antes del guión en el nombre de la
+           entrada ("Cantera — cabecera" → "Cantera"); las que no cuadran lo
+           dicen a mano en `fotosSitio.js`. */
+        formato={{
+          ...FORMATOS[f.formato],
+          titulo: 'Cambiar foto',
+          vistaTitulo: f.vistaTitulo || f.titulo.split(' — ')[0],
+        }}
+        valor={ruta || f.porDefecto}
+        onCambio={(r) => poner(f.clave, r)}
+        // mientras siga la del código no hay nada que restaurar; una vez
+        // cambiada, vaciar la ruta es justo lo que la devuelve
+        textoQuitar={cambiada ? 'Restaurar la original' : null}
+      />
+    </div>
+  )
+}
+
+/** Pone una ruta en la lista `fotos`, que es la que viaja al servidor. */
+function ponerFoto(items, setItems) {
+  return (clave, ruta) => {
     const hay = items.some((f) => f.clave === clave)
     setItems(hay ? items.map((f) => (f.clave === clave ? { ...f, ruta } : f)) : [...items, { clave, ruta }])
   }
+}
+
+const rutaDeFoto = (items, clave) => items.find((f) => f.clave === clave)?.ruta || ''
+
+/**
+ * Las fotos fijas de UNA sección, para enseñarlas dentro de su pestaña.
+ * Se guardan en la lista `fotos` como todas las demás: lo único distinto es
+ * dónde se tocan.
+ */
+function FotosDeSeccion({ seccion, items, setItems }) {
+  const fichas = FOTOS_SITIO.filter((f) => f.panel === seccion)
+  if (!fichas.length) return null
+  const poner = ponerFoto(items, setItems)
+
+  return (
+    <div className="panel-fotos seccion">
+      {fichas.map((f) => (
+        <FichaFoto key={f.clave} f={f} ruta={rutaDeFoto(items, f.clave)} poner={poner} />
+      ))}
+    </div>
+  )
+}
+
+function Fotos({ items, setItems, onGuardar }) {
+  const poner = ponerFoto(items, setItems)
 
   return (
     <section className="panel-sec">
@@ -605,40 +691,12 @@ function Fotos({ items, setItems, onGuardar }) {
       </p>
 
       <div className="panel-fotos">
-        {FOTOS_SITIO.map((f) => {
-          const ruta = rutaDe(f.clave)
-          /* La lista arranca con las rutas que trae el código, así que tener
-             ruta no significa que se haya tocado nada: hay que compararla con
-             la original. Si no, todas saldrían marcadas como cambiadas y el
-             botón de restaurar no haría nada. */
-          const cambiada = Boolean(ruta) && ruta !== f.porDefecto
-          const formato = FORMATOS[f.formato]
-          return (
-            <div className="panel-foto" key={f.clave}>
-              <div className="panel-foto-txt">
-                <b>{f.titulo}</b>
-                <span>{f.donde}</span>
-                {cambiada && <i>Cambiada desde el panel</i>}
-              </div>
-              <SubirImagen
-                /* `vistaTitulo` es el título que la vista previa pinta encima
-                   de la foto. Casi siempre es lo que hay antes del guión en el
-                   nombre de la entrada ("Cantera — cabecera" → "Cantera"); las
-                   que no cuadran lo dicen a mano en `fotosSitio.js`. */
-                formato={{
-                  ...formato,
-                  titulo: 'Cambiar foto',
-                  vistaTitulo: f.vistaTitulo || f.titulo.split(' — ')[0],
-                }}
-                valor={ruta || f.porDefecto}
-                onCambio={(r) => poner(f.clave, r)}
-                // mientras siga la del código no hay nada que restaurar; una vez
-                // cambiada, vaciar la ruta es justo lo que la devuelve
-                textoQuitar={cambiada ? 'Restaurar la original' : null}
-              />
-            </div>
-          )
-        })}
+        {/* Las que llevan `panel` se editan en la pestaña de su sección; aquí
+            saldrían dos veces y el mismo campo en dos sitios se acaba tocando
+            en el que no toca. */}
+        {FOTOS_SITIO.filter((f) => !f.panel).map((f) => (
+          <FichaFoto key={f.clave} f={f} ruta={rutaDeFoto(items, f.clave)} poner={poner} />
+        ))}
       </div>
     </section>
   )
@@ -748,6 +806,69 @@ function Parrafos({ etiqueta, valor, onCambio, filas = 6, placeholder }) {
   )
 }
 
+/**
+ * Las imágenes de dentro de la noticia: carteles, calendarios, gráficos.
+ *
+ * Van enteras y debajo del texto, así que no es lo mismo que la foto de la
+ * noticia (esa sí se recorta, y sale en la tarjeta y en la cabecera). Cada una
+ * lleva su pie, que es lo único que las distingue cuando van cuatro seguidas
+ * («Ida · Superliga 2», «Vuelta · Superliga 2»…).
+ *
+ * El hueco de subir va siempre vacío al final: cada foto que se elige se AÑADE
+ * a la lista en vez de sustituir a la anterior.
+ */
+function Galeria({ valor, onCambio }) {
+  const lista = valor || []
+
+  const cambiarPie = (i, pie) =>
+    onCambio(lista.map((g, j) => (j === i ? { ...g, pie } : g)))
+
+  const mover = (i, salto) => {
+    const j = i + salto
+    if (j < 0 || j >= lista.length) return
+    const copia = [...lista]
+    ;[copia[i], copia[j]] = [copia[j], copia[i]]
+    onCambio(copia)
+  }
+
+  return (
+    <div className="panel-campo ancho">
+      <span>Imágenes dentro de la noticia ({lista.length})</span>
+      <p className="panel-ayuda">
+        Opcional. Van debajo del texto y enteras, sin recortar. Si no pones ninguna, la noticia queda
+        solo con su foto de cabecera.
+      </p>
+
+      {lista.map((g, i) => (
+        <div className="panel-galeria-fila" key={g.ruta}>
+          <img src={g.ruta} alt="" />
+          <input
+            value={g.pie || ''}
+            onChange={(e) => cambiarPie(i, e.target.value)}
+            placeholder="Pie de la imagen (opcional)"
+          />
+          <div className="panel-galeria-botones">
+            <button type="button" className="panel-btn" disabled={i === 0}
+              aria-label="Subir" onClick={() => mover(i, -1)}>↑</button>
+            <button type="button" className="panel-btn" disabled={i === lista.length - 1}
+              aria-label="Bajar" onClick={() => mover(i, 1)}>↓</button>
+            <button type="button" className="panel-btn"
+              onClick={() => onCambio(lista.filter((_, j) => j !== i))}>Quitar</button>
+          </div>
+        </div>
+      ))}
+
+      {lista.length < 8 && (
+        <SubirImagen
+          formato={FORMATOS.galeriaNoticia}
+          valor=""
+          onCambio={(ruta) => onCambio([...lista, { ruta, pie: '' }])}
+        />
+      )}
+    </div>
+  )
+}
+
 function CamposNoticia({ el, cambiar }) {
   return (
     <>
@@ -774,6 +895,7 @@ function CamposNoticia({ el, cambiar }) {
         placeholder="Si lo dejas vacío, la noticia sale en el listado pero no tendrá página propia para abrirla."
       />
       <SubirImagen formato={FORMATOS.noticia} valor={el.img} onCambio={(r) => cambiar('img', r)} />
+      <Galeria valor={el.galeria} onCambio={(v) => cambiar('galeria', v)} />
       <Campo etiqueta="Enlace del botón" ancho>
         <select value={el.cta || ''} onChange={(e) => cambiar('cta', e.target.value)}>
           <option value="">Sin botón</option>

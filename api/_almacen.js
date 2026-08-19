@@ -109,7 +109,10 @@ export function escribir(datos) {
 // Con dos ficheros y dos funciones distintas, para filtrarlo no basta con un
 // despiste: hay que escribirlo a mano.
 // --------------------------------------------------------------------------
-export const LISTAS_PRIVADAS = ['usuarios', 'peticiones']
+// `borradores` son las noticias que el robot semanal deja escritas a la espera
+// de que Diego las apruebe (api/resumen.js). Van aquí y no en `LISTAS` porque
+// justamente NO están publicadas: servirlas en el GET público sería publicarlas.
+export const LISTAS_PRIVADAS = ['usuarios', 'peticiones', 'borradores']
 
 /** Por dónde pasa una petición. `nueva` es lo único que cuenta como pendiente. */
 export const ESTADOS_PETICION = ['nueva', 'hecha', 'descartada']

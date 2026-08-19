@@ -52,6 +52,11 @@ export const FOTOS_SITIO = [
     donde: 'Banda de detrás del título en /noticias.',
     formato: 'cabecera',
     porDefecto: '/media/hero-remate.jpg',
+    /* Se edita en la pestaña de Noticias, no en «Fotos de la web»: quien
+       publica una noticia está ahí, y esa banda es la portada de esa página. Se
+       guarda en la lista `fotos` igual que las demás; lo único que cambia es
+       dónde se enseña. */
+    panel: 'noticias',
   },
   {
     clave: 'quienes-somos',

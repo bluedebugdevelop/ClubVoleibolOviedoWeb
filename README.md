@@ -11,6 +11,7 @@ npm run build    # build de producción
 npm run start    # lo que ejecuta Railway
 npm run lint     # oxlint
 npm run datos    # actualiza los datos de competición (ver abajo)
+npm run resumen  # redacta la noticia semanal de Instagram (ver abajo)
 ```
 
 ## Formularios y correo
@@ -135,6 +136,75 @@ src/data/
 `src/data/competicion.js` es la única pieza que tocan las páginas. Si el JSON
 estuviera vacío, cae solo en los datos de muestra de `contenido.js`, así que la
 web nunca se queda sin calendario.
+
+## Noticias con aprobación
+
+Una noticia se puede dejar **en borrador** en la web y publicarla después desde
+el móvil, tocando un botón. La escribe quien sea —a mano o un modelo—, pero no
+sale hasta que alguien la lee.
+
+```bash
+SITIO_CLAVE=… node scripts/borrador.mjs mi-noticia.json
+```
+
+Eso devuelve un enlace. Se abre, se lee y se publica o se descarta. El formato
+del JSON está en la cabecera de `scripts/borrador.mjs`. Un borrador sin aprobar
+caduca a los 14 días.
+
+### La versión automática, desde Instagram (apagada)
+
+`.github/workflows/resumen-semanal.yml` hace lo mismo pero solo: los domingos
+mira lo que el club ha publicado en Instagram y redacta la noticia de la semana.
+
+```
+Instagram Graph API → ¿al menos 3 publicaciones? → Claude redacta
+→ copia una foto → borrador en el volumen → aviso a Telegram → aprobación
+```
+
+**El domingo automático está apagado** (19-08-2026): faltan los secretos de
+Instagram, y un workflow que falla cada semana deja de mirarse. Se enciende
+descomentando las dos líneas de `cron` cuando estén puestos. Con menos de tres
+publicaciones no hace nada y termina con bien: una semana floja no es un fallo.
+
+> **Por qué no publica solo.** Un modelo escribiendo prosa pública del club sin
+> que nadie la lea acabará inventando un marcador o cambiando «cadete» por
+> «infantil». La página de aprobación enseña, debajo del texto, los enlaces a
+> las publicaciones de las que salió, para poder comprobarlo de un vistazo.
+>
+> Y el enlace del aviso **solo enseña** (GET): publicar es un POST del botón.
+> Telegram abre los enlaces él solo para pintar la miniatura, así que un enlace
+> que publicase por sí mismo publicaría al llegar el aviso.
+
+### Las dos mitades
+
+| Dónde | Qué hace |
+| --- | --- |
+| `scripts/borrador.mjs` | Deja una noticia escrita a mano como borrador y devuelve el enlace. |
+| `scripts/resumen-semanal.mjs` | Lo que corre en GitHub Actions: baja de Instagram, redacta y avisa. |
+| `api/resumen.js` | Lo que corre en Railway: guarda el borrador, sirve la página de aprobación y publica. |
+
+Los scripts y el sitio se hablan con **una clave compartida**: `RESUMEN_SECRETO` en Railway y
+el mismo valor como secreto `SITIO_CLAVE` en GitHub. Esa misma cadena firma el
+enlace de aprobación (HMAC del identificador del borrador). Sin ella en Railway,
+`/api/resumen/*` responde 404: la función no existe.
+
+### Variables
+
+| Dónde | Variable | Para qué |
+| --- | --- | --- |
+| Railway | `RESUMEN_SECRETO` | Clave compartida y firma de los enlaces. Mínimo 24 caracteres. |
+| GitHub → Secrets | `SITIO_CLAVE` | La misma cadena que la anterior. |
+| GitHub → Secrets | `IG_TOKEN` | Token de larga duración de Instagram. **Caduca cada 60 días**: cuando el workflow empiece a fallar, mirar esto primero. |
+| GitHub → Secrets | `IG_USER_ID` | Id de la cuenta de Instagram Business. Sin él se pregunta por `me/media`, que es lo que vale con un token de Instagram Login. |
+| GitHub → Secrets | `ANTHROPIC_API_KEY` | Para redactar. |
+| GitHub → Secrets | `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` | El aviso. Sin ellos el enlace se queda en el log del workflow. |
+| GitHub → Variables | `SITIO` | Opcional; por defecto `https://clubvoleiboloviedo.com`. |
+
+Se puede lanzar cuando se quiera desde **Actions → Resumen semanal de Instagram
+→ Run workflow** (las ejecuciones a mano no comprueban la hora).
+
+**Publicar no despliega.** El borrador aprobado entra por el mismo camino que el
+panel (`api/_almacen.js` → volumen), así que sale en la web al momento.
 
 ## Datos que siguen siendo de muestra
 

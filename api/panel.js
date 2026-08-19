@@ -88,13 +88,25 @@ const foco = (v) => (/^[a-z0-9 %.]{0,24}$/i.test(texto(v, 24)) ? texto(v, 24) : 
 /** Una cuenta del club tal como puede salir del servidor: sin su huella. */
 const sinHuella = ({ huella: _huella, ...resto }) => resto
 
-function limpiaNoticia(n, i) {
+/* Exportado porque `api/resumen.js` guarda noticias que escribe un modelo: da
+   igual quién teclee, todo lo que acaba en la web pasa por el mismo recorte. */
+export function limpiaNoticia(n, i) {
   const titulo = texto(n.titulo, 160)
   /* `cuerpo` son los párrafos de la página propia de la noticia (Noticia.jsx).
      Sin cuerpo la noticia existe igual, pero solo como tarjeta del listado:
      `enlaceNoticia` la deja sin enlazar a ninguna ficha. */
   const cuerpo = Array.isArray(n.cuerpo)
     ? n.cuerpo.map((t) => texto(t, LIMITE_PARRAFO)).filter(Boolean).slice(0, 20)
+    : []
+
+  /* Las imágenes que van DENTRO de la noticia, debajo del texto: carteles,
+     calendarios, gráficos. Cada una con su pie, que es lo que las distingue
+     cuando van cuatro seguidas. Sin ruta válida no entra. */
+  const galeria = Array.isArray(n.galeria)
+    ? n.galeria
+        .map((g) => ({ ruta: rutaImagen(g?.ruta), pie: texto(g?.pie, 120) }))
+        .filter((g) => g.ruta)
+        .slice(0, 8)
     : []
 
   return {
@@ -108,6 +120,7 @@ function limpiaNoticia(n, i) {
     img: rutaImagen(n.img),
     foco: foco(n.foco),
     cuerpo,
+    galeria,
     // el único botón que sabe pintar la ficha; cualquier otro valor se descarta
     cta: n.cta === 'preinscripcion' ? 'preinscripcion' : '',
   }
@@ -188,13 +201,21 @@ function limpiaEquipo(e, i) {
 // miran todos en todas las listas: sobra con que el campo no exista.
 const CAMPOS_IMAGEN = ['img', 'logo', 'foto', 'headerImg', 'ruta']
 
+/* Campos que son una LISTA de imágenes con su pie, no una sola ruta. Si la
+   galería no se mirase aquí, guardar cualquier otra cosa daría sus fotos por
+   huérfanas y las borraría del volumen con la noticia todavía publicada. */
+const CAMPOS_IMAGEN_LISTA = ['galeria']
+
 function rutasUsadas(estado, soloSubidas) {
   const salida = new Set()
+  const apuntar = (r) => {
+    if (r && (!soloSubidas || r.startsWith('/subidas/'))) salida.add(r)
+  }
   for (const clave of LISTAS) {
     for (const el of estado[clave] || []) {
-      for (const campo of CAMPOS_IMAGEN) {
-        const r = el[campo]
-        if (r && (!soloSubidas || r.startsWith('/subidas/'))) salida.add(r)
+      for (const campo of CAMPOS_IMAGEN) apuntar(el[campo])
+      for (const campo of CAMPOS_IMAGEN_LISTA) {
+        for (const g of el[campo] || []) apuntar(g?.ruta)
       }
     }
   }

@@ -13,7 +13,8 @@
     "start": "node server.js",
     "lint": "oxlint",
     "preview": "vite preview",
-    "datos": "node scripts/scrape.mjs"
+    "datos": "node scripts/scrape.mjs",
+    "resumen": "node scripts/resumen-semanal.mjs"
   },
   "dependencies": {
     "express": "^5.2.1",
@@ -22,6 +23,7 @@
     "react-router-dom": "^7.18.1"
   },
   "devDependencies": {
+    "@anthropic-ai/sdk": "^0.118.0",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.3",

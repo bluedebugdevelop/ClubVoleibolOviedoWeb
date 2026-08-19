@@ -27,6 +27,20 @@ export const FORMATOS = {
     ayuda: 'Sale en la tarjeta del listado y de fondo en la cabecera de la noticia.',
   },
 
+  // .articulo-galeria img → las imágenes de dentro de la noticia.
+  //
+  // `entero` como el logo, y por el mismo motivo: aquí van carteles y
+  // calendarios, y recortar un cartel es dejarlo sin la mitad de las fechas. La
+  // caja es 4:5 (la de los carteles del club, 1080×1350); lo que tenga otra
+  // forma se encaja dentro sin cortar nada.
+  galeriaNoticia: {
+    ancho: 1080,
+    alto: 1350,
+    entero: true,
+    titulo: 'Imagen dentro de la noticia',
+    ayuda: 'Va debajo del texto y entera, sin recortar. Para carteles, calendarios y gráficos.',
+  },
+
   // .phead → la banda azul del título, muy apaisada.
   //
   // 1600×380 es EL hueco: la proporción que tiene la banda en un ordenador, de

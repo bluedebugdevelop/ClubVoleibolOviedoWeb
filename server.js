@@ -29,6 +29,7 @@ import contenido from './api/contenido.js'
 import panel from './api/panel.js'
 import club from './api/club.js'
 import acceso from './api/acceso.js'
+import resumen from './api/resumen.js'
 import { SUBIDAS, TIPOS_ACEPTADOS, esPersistente } from './api/_almacen.js'
 import { configurado as panelConfigurado } from './api/_acceso.js'
 
@@ -99,6 +100,14 @@ app.all('/api/club/:accion', club)
 // propio y no el de 32kb de los formularios públicos.
 app.use('/api/acceso', express.json({ limit: '8kb' }))
 app.all('/api/acceso', acceso)
+
+// ---- la noticia semanal de Instagram ----
+// El robot sube la foto por `/imagen` (bytes crudos, como el panel) y deja el
+// texto por `/borrador`; el resto de rutas las abre Diego desde el enlace del
+// aviso de Telegram. Va con los de arriba porque necesita sus propios límites.
+app.use('/api/resumen/imagen', express.raw({ type: TIPOS_ACEPTADOS, limit: '5mb' }))
+app.use('/api/resumen', express.json({ limit: '256kb' }))
+app.all('/api/resumen/:accion', resumen)
 
 // Las imágenes que sube el panel. Se sirven desde el volumen, no desde dist/,
 // así que sobreviven a los despliegues igual que el JSON.
