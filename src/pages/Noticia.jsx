@@ -5,14 +5,21 @@ import Sponsors from '../components/Sponsors'
 import NoEncontrado from './NoEncontrado'
 import { club, preinscripcion, estadoPreinscripcion } from '../data/contenido'
 import { useNoticias } from '../data/contenidoContexto'
+import { SITIO, ID_CLUB, useJsonLd, fechaIso } from '../seo'
 
 /* Ficha de una noticia: `/noticias/<slug>`. Sin `cuerpo` escrito no hay nada
    que enseñar, así que cae a 404 — mismo criterio que la ficha de patrocinador. */
 export default function Noticia() {
   const { slug } = useParams()
   const noticia = useNoticias().find((n) => n.slug === slug)
+  const publicada = noticia && noticia.cuerpo?.length ? noticia : null
 
-  if (!noticia || !noticia.cuerpo?.length) return <NoEncontrado />
+  /* El JSON-LD se declara ANTES del 404 de abajo porque un hook no puede
+     quedarse detrás de un `return`: con la noticia sin escribir recibe null y
+     no mete nada en el <head>. */
+  useJsonLd(fichaNoticia(publicada))
+
+  if (!publicada) return <NoEncontrado />
 
   return (
     <>
@@ -178,4 +185,40 @@ function CtaPreinscripcion() {
       )}
     </div>
   )
+}
+
+/**
+ * La noticia contada en JSON-LD, para que Google sepa que esto es una noticia
+ * con fecha y no una página suelta: es lo que le deja enseñarla en Google
+ * Noticias y en Discover.
+ *
+ * El autor y el editor no se repiten aquí, se apunta al SportsClub que ya
+ * declara `index.html` con su `@id`. Así el club es una sola entidad para
+ * Google y no tres que se llaman parecido.
+ *
+ * Lo que no se sepa se deja fuera en vez de rellenarlo: sin fecha reconocible
+ * no hay `datePublished`, y sin foto no hay `image`. Un campo inventado vale
+ * menos que un campo ausente.
+ */
+function fichaNoticia(n) {
+  if (!n) return null
+
+  const fecha = fechaIso(n.fecha)
+  const fotos = [n.img, ...(n.galeria ?? []).map((g) => g.ruta)]
+    .filter(Boolean)
+    .map((ruta) => (ruta.startsWith('http') ? ruta : SITIO + ruta))
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'NewsArticle',
+    headline: n.titulo,
+    description: n.resumen,
+    articleSection: n.categoria,
+    inLanguage: 'es-ES',
+    mainEntityOfPage: `${SITIO}/noticias/${n.slug}`,
+    ...(fotos.length ? { image: fotos } : {}),
+    ...(fecha ? { datePublished: fecha, dateModified: fecha } : {}),
+    author: { '@id': ID_CLUB },
+    publisher: { '@id': ID_CLUB },
+  }
 }

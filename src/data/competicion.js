@@ -135,6 +135,12 @@ function aPartido(p, equipo) {
     tipo,
     local: clubLocal,
     retransmite: false, // las federaciones no publican enlaces de retransmisión
+    // Los dos equipos por separado y el pabellón. La página no los usa —le basta
+    // con `rival` y `detalle`—, pero el JSON-LD de /calendario sí: un
+    // SportsEvent tiene que decir quién juega contra quién y dónde.
+    equipoLocal: p.local,
+    equipoVisitante: p.visitante,
+    sede: p.sede ?? null,
   }
 }
 
@@ -263,6 +269,43 @@ function bloques(lista) {
 }
 
 export const jornadas = hayDatosReales ? bloques(TODOS_PARTIDOS) : jornadasMuestra
+
+/**
+ * Los partidos que aún no se han jugado, del más cercano al más lejano.
+ *
+ * Solo lo usa el JSON-LD de `Calendario.jsx`: Google entiende un partido futuro
+ * como un evento y puede enseñarlo con su fecha en los resultados, mientras que
+ * uno ya jugado no le sirve de nada. Se corta en doce para no volcar la
+ * temporada entera de doce equipos dentro del <head>.
+ *
+ * NO BASTA CON MIRAR LA FECHA. Las federaciones publican el calendario sin año
+ * y `scrape.mjs` le pone el de la temporada que toca por el mes de hoy: en
+ * agosto de 2026, los partidos de la temporada PASADA salieron fechados en
+ * octubre de 2026 y en 2027, con su resultado final ya puesto. Eran 150, y
+ * declararlos como eventos era anunciarle a Google partidos que ya se jugaron.
+ *
+ * Por eso el filtro exige las dos cosas: fecha por venir Y sin resultado. Un
+ * partido futuro con marcador es un dato equivocado, no un evento. Mientras la
+ * FVBPA y la RFEVB no publiquen el calendario nuevo, esta lista está vacía y la
+ * página no declara ningún evento, que es exactamente lo que debe pasar.
+ */
+export const proximosPartidos = hayDatosReales
+  ? [
+      // El mismo partido llega dos veces cuando lo publican las dos
+      // competiciones en las que aparece un equipo, y comparte `id`. Sin quitar
+      // el repetido, Google vería dos eventos idénticos el mismo día.
+      ...new Map(
+        TODOS_PARTIDOS
+          .filter((p) => {
+            if (p.resultado) return false
+            const d = aFecha(p.iso)
+            return d && d >= HOY
+          })
+          .sort(porFecha)
+          .map((p) => [p.id, p]),
+      ).values(),
+    ].slice(0, 12)
+  : []
 
 /** Partidos de un equipo (o de todo el club si no se pasa ninguno). */
 const partidosDe = (equipo) =>

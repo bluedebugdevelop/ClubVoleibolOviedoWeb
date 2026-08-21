@@ -15,7 +15,9 @@ import {
   generado,
   temporadaDatos,
 } from '../data/competicion'
+import { proximosPartidos } from '../data/competicion'
 import { useFoto } from '../data/contenidoContexto'
+import { SITIO, ID_CLUB, useJsonLd } from '../seo'
 
 const TODOS = 'Todos los equipos'
 
@@ -74,8 +76,81 @@ function Clasificacion({ equipo }) {
   )
 }
 
+// ---------------------------------------------------------------------------
+// Los próximos partidos, en JSON-LD.
+//
+// Un partido con fecha es un evento para Google, y puede salir en los
+// resultados con su día y su hora en vez de escondido dentro de la página. Solo
+// van los que aún no se han jugado: un evento pasado no lo enseña nadie.
+//
+// La dirección del pabellón está repetida del SportsClub de `index.html`. Si
+// cambia allí, cambiarla aquí (mismo criterio que ya seguía el resto del sitio).
+// ---------------------------------------------------------------------------
+const PABELLON = {
+  '@type': 'Place',
+  name: 'Polideportivo José Manuel Fuente',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Calle Luis Suárez Ximielga, s/n (Colloto)',
+    addressLocality: 'Oviedo',
+    postalCode: '33010',
+    addressRegion: 'Asturias',
+    addressCountry: 'ES',
+  },
+}
+
+/**
+ * Un partido futuro como SportsEvent, o null si no se puede declarar entero.
+ *
+ * Se cae el partido cuando no se sabe DÓNDE se juega: las federaciones dejan
+ * `sede` vacía muchas veces y, si jugamos fuera, el pabellón del club no vale
+ * como respuesta. Antes que decirle a Google que se juega en Colloto un partido
+ * que se juega en Burgos, ese no se declara.
+ */
+function evento(p) {
+  /* Jugando en casa se declara el pabellón con su dirección entera, y no el
+     nombre a gritos que mandan las federaciones ("POLIDEPORTIVO JOSÉ MANUEL
+     FUENTE"): una dirección de verdad es lo que deja a Google ponerlo en el
+     mapa. Fuera de casa solo se sabe el nombre, y con eso se queda. */
+  let lugar = null
+  if (p.sede && p.sede.toUpperCase().includes('MANUEL FUENTE')) lugar = PABELLON
+  else if (p.sede) lugar = { '@type': 'Place', name: p.sede }
+  else if (p.local) lugar = PABELLON
+
+  if (!lugar || !p.iso) return null
+
+  return {
+    '@type': 'SportsEvent',
+    name: `${p.equipoLocal} — ${p.equipoVisitante}`,
+    description: p.detalle || undefined,
+    sport: 'Voleibol',
+    // `iso` viene sin huso ('2026-10-04T19:30'), que es hora local española:
+    // ponerle un desfase fijo se equivocaría media temporada, cuando cambia la
+    // hora. Sin huso, Google la lee como local, que es lo correcto.
+    startDate: p.iso,
+    eventStatus: 'https://schema.org/EventScheduled',
+    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    location: lugar,
+    homeTeam: { '@type': 'SportsTeam', name: p.equipoLocal },
+    awayTeam: { '@type': 'SportsTeam', name: p.equipoVisitante },
+    organizer: { '@id': ID_CLUB },
+    url: `${SITIO}/calendario`,
+  }
+}
+
+/* Todo en un solo `@graph` en vez de una lista de objetos sueltos: así el
+   `@context` se escribe una vez y no una por partido. Sin partidos declarables
+   es null, y el <head> se queda como estaba. */
+const LISTA = proximosPartidos.map(evento).filter(Boolean)
+const EVENTOS = LISTA.length ? { '@context': 'https://schema.org', '@graph': LISTA } : null
+
 export default function Calendario() {
   const foto = useFoto('calendario')
+
+  /* Los partidos que vienen, declarados como eventos. Se calculan una sola vez
+     al cargar el módulo (los datos son un JSON fijo del build), así que aquí
+     solo se enchufan al <head>. */
+  useJsonLd(EVENTOS)
   const [filtro, setFiltro] = useState(TODOS)
   const [parte, setParte] = useState('') // '' = temporada entera
 

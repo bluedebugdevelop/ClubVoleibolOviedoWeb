@@ -101,3 +101,73 @@ export default function useSeo({ title, description, image, noindex = false }) {
     meta('twitter:image', foto)
   }, [pathname, title, description, image, noindex])
 }
+
+// ==========================================================================
+// Datos estructurados (JSON-LD) por página.
+//
+// `index.html` ya lleva el SportsClub del club entero, que es fijo y lo mismo
+// en las diecisiete rutas. Lo de aquí es lo que cambia con la ruta: la ficha de
+// una noticia es un NewsArticle, y el calendario son partidos que Google
+// entiende como eventos con fecha.
+//
+// Los dos apuntan al club con `@id`, en vez de repetir sus datos: así Google
+// sabe que el autor de la noticia y el organizador del partido son el mismo
+// club del que ya tiene la ficha, y no tres entidades sueltas que se llaman
+// parecido.
+// ==========================================================================
+
+/** El `@id` del SportsClub de `index.html`. Si se cambia allí, cambiarlo aquí. */
+export const ID_CLUB = `${SITIO}/#club`
+
+/**
+ * Cuelga un <script type="application/ld+json"> del <head> mientras la página
+ * esté montada, y lo retira al cambiar de ruta.
+ *
+ * Va marcado con `data-ruta` para no tocar nunca el del club: ese es de
+ * `index.html`, tiene que sobrevivir a toda la navegación y no lleva la marca.
+ *
+ * Se le pasa `null` cuando no hay nada que declarar (una noticia sin cuerpo,
+ * un calendario sin partidos). Declarar un objeto a medias es peor que no
+ * declarar ninguno: Google lo da por dato roto.
+ */
+export function useJsonLd(datos) {
+  // El JSON ya en texto es la dependencia del efecto: el objeto se construye de
+  // cero en cada render y compararlo por identidad reinyectaría el <script> en
+  // todos ellos.
+  const json = datos ? JSON.stringify(datos) : null
+
+  useEffect(() => {
+    if (!json) return undefined
+    const el = document.createElement('script')
+    el.type = 'application/ld+json'
+    el.setAttribute('data-ruta', '')
+    el.textContent = json
+    document.head.appendChild(el)
+    return () => el.remove()
+  }, [json])
+}
+
+const MESES_CORTOS = {
+  ene: '01', feb: '02', mar: '03', abr: '04', may: '05', jun: '06',
+  jul: '07', ago: '08', sep: '09', oct: '10', nov: '11', dic: '12',
+}
+
+/**
+ * '10 ago 2026' → '2026-08-10'.
+ *
+ * Las noticias guardan la fecha como la lee una persona, que es como la escribe
+ * el panel y como la pinta la ficha. Un NewsArticle la necesita en ISO, así que
+ * se traduce aquí en vez de guardar el mismo dato dos veces y arriesgarse a que
+ * se separen.
+ *
+ * Devuelve null si la fecha no tiene esa forma —una escrita a mano de otra
+ * manera, o vacía—, y entonces la noticia sale sin `datePublished` en vez de
+ * con una fecha inventada.
+ */
+export function fechaIso(fecha) {
+  const m = /^([0-9]{1,2}) +([a-záéíóú]{3})[a-záéíóú.]* +([0-9]{4})$/i.exec(String(fecha ?? '').trim())
+  if (!m) return null
+  const mes = MESES_CORTOS[m[2].toLowerCase()]
+  if (!mes) return null
+  return `${m[3]}-${mes}-${m[1].padStart(2, '0')}`
+}
