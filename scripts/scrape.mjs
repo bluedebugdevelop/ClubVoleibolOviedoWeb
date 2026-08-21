@@ -8,7 +8,7 @@
 // generado, así la página carga instantánea y una caída de las federaciones no
 // deja el calendario en blanco (se sigue viendo lo último bueno).
 
-import { writeFile, readFile } from 'node:fs/promises'
+import { writeFile, readFile, mkdir } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 import { scrapeFvbpa } from './fuentes/fvbpa.mjs'
@@ -16,6 +16,10 @@ import { scrapeRfevb } from './fuentes/rfevb.mjs'
 
 const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..')
 const DESTINO = join(RAIZ, 'src', 'data', 'competicion.json')
+// Las temporadas cerradas se guardan aquí, una por fichero, el día que las
+// federaciones publican la siguiente. Así el calendario y las clasificaciones
+// de los años anteriores siguen estando para poder consultarlos.
+const ARCHIVO = join(RAIZ, 'src', 'data', 'temporadas')
 
 const log = (...a) => console.log(...a)
 
@@ -23,6 +27,76 @@ const log = (...a) => console.log(...a)
 function temporada(hoy = new Date()) {
   const inicio = hoy.getMonth() + 1 >= 8 ? hoy.getFullYear() : hoy.getFullYear() - 1
   return { inicio, etiqueta: `${inicio}/${String(inicio + 1).slice(2)}` }
+}
+
+/** Etiqueta de temporada a partir de un año de inicio: 2025 → "2025/26". */
+const etiquetaDe = (inicio) => `${inicio}/${String(inicio + 1).slice(2)}`
+
+/** La misma fecha un año antes, o la de partida si ese día no existiera. */
+function unAnioAntes(iso) {
+  const texto = String(iso)
+  const anio = Number(texto.slice(0, 4))
+  const mes = Number(texto.slice(5, 7))
+  const dia = Number(texto.slice(8, 10))
+  if (!anio || !mes || !dia) return iso
+
+  // El 29 de febrero no existe en un año no bisiesto: antes que correr la fecha
+  // a otro día, se deja como estaba.
+  const d = new Date(anio - 1, mes - 1, dia)
+  if (d.getMonth() + 1 !== mes || d.getDate() !== dia) return iso
+
+  return String(anio - 1) + texto.slice(4)
+}
+
+/**
+ * La fecha que de verdad le toca a un partido.
+ *
+ * La FVBPA publica el calendario SIN AÑO ("4 oct") y aquí se le pone el de la
+ * temporada que toca por el mes de hoy. Mientras la federación no publica la
+ * temporada nueva sigue sirviendo la vieja, así que en agosto de 2026 los
+ * partidos de la 25/26 salían fechados en octubre de 2026 y en 2027.
+ *
+ * Lo que los delata es el marcador: un partido TERMINADO no puede jugarse
+ * dentro de tres meses. Cuando eso pasa, el año sobra y se le quita uno.
+ */
+function isoReal(p, hoy) {
+  const jugado = p.setsLocal != null && p.setsVisitante != null
+  if (!jugado || !p.iso) return p.iso
+  const d = new Date(Number(String(p.iso).slice(0, 4)), Number(String(p.iso).slice(5, 7)) - 1, Number(String(p.iso).slice(8, 10)))
+  return d >= hoy ? unAnioAntes(p.iso) : p.iso
+}
+
+/** Aplica `isoReal` a todos los partidos. Devuelve cuántos se movieron. */
+function corregirAnios(equipos, hoy) {
+  let movidos = 0
+  for (const e of equipos) {
+    for (const p of e.partidos) {
+      const bueno = isoReal(p, hoy)
+      if (bueno !== p.iso) { p.iso = bueno; movidos++ }
+    }
+    e.partidos.sort((a, b) => String(a.iso).localeCompare(String(b.iso)))
+  }
+  return movidos
+}
+
+/**
+ * De qué temporada son unos datos, mirando SUS fechas y no el calendario.
+ *
+ * Deducirlo de la fecha de hoy es lo que ponía "2026/27" encima de los partidos
+ * del año pasado. El primer partido de la lista manda: de agosto en adelante
+ * abre temporada, de enero a julio la cierra.
+ */
+function temporadaDe(equipos, hoy, respaldo) {
+  const fechas = equipos
+    .flatMap((e) => e.partidos.map((p) => isoReal(p, hoy)))
+    .filter(Boolean)
+    .sort()
+  if (!fechas.length) return respaldo
+
+  const anio = Number(fechas[0].slice(0, 4))
+  const mes = Number(fechas[0].slice(5, 7))
+  if (!anio || !mes) return respaldo
+  return etiquetaDe(mes >= 8 ? anio : anio - 1)
 }
 
 const slug = (s) =>
@@ -174,6 +248,24 @@ async function main() {
   const equipos = fusionar(sinDuplicadosNacionales(crudo, log)).sort(ordenar)
   const partidos = equipos.reduce((n, e) => n + e.partidos.length, 0)
 
+  const hoy = new Date()
+  hoy.setHours(0, 0, 0, 0)
+  const movidos = corregirAnios(equipos, hoy)
+  if (movidos) {
+    log(`\n!! ${movidos} partidos venían fechados en el futuro con el resultado ya`)
+    log('   puesto: son de la temporada anterior y se les ha quitado un año.')
+    log('   Pasa mientras las federaciones no publican el calendario nuevo.')
+  }
+
+  // La etiqueta sale de las fechas de los partidos, NO del calendario: si las
+  // federaciones siguen sirviendo la temporada pasada, se dice que es la
+  // pasada. El día que publiquen la nueva, cambia sola.
+  const etiqueta = temporadaDe(equipos, hoy, t.etiqueta)
+  if (etiqueta !== t.etiqueta) {
+    log(`\nLos datos son de la temporada ${etiqueta}, no de la ${t.etiqueta}:`)
+    log('   las federaciones aún no han publicado el calendario nuevo.')
+  }
+
   log(`\n${'='.repeat(46)}`)
   log(`Equipos del club encontrados: ${equipos.length}`)
   log(`Partidos totales:             ${partidos}`)
@@ -220,7 +312,7 @@ async function main() {
 
   const salida = {
     generado: new Date().toISOString(),
-    temporada: t.etiqueta,
+    temporada: etiqueta,
     fuentes: {
       FVBPA: 'https://www.fvbpa.com',
       RFEVB: 'https://esvoley.es',
@@ -244,6 +336,21 @@ async function main() {
     log('   Parece un fallo de las federaciones: se conserva el JSON anterior.')
     process.exitCode = 1
     return
+  }
+
+  // Antes de pisar el JSON: si lo que había era de OTRA temporada, se guarda
+  // una copia. La temporada del fichero viejo se deduce de SUS fechas con la
+  // misma regla, y no de la etiqueta que llevara escrita: la anterior a este
+  // arreglo decía "2026/27" sobre partidos de la 25/26, y hacerle caso habría
+  // archivado la misma temporada dos veces con dos nombres distintos.
+  if (previo?.equipos?.length) {
+    const anterior = temporadaDe(previo.equipos, hoy, previo.temporada)
+    if (anterior && anterior !== etiqueta) {
+      await mkdir(ARCHIVO, { recursive: true })
+      const copia = join(ARCHIVO, `${anterior.replace('/', '-')}.json`)
+      await writeFile(copia, `${JSON.stringify({ ...previo, temporada: anterior }, null, 1)}\n`, 'utf-8')
+      log(`\nTemporada ${anterior} cerrada: copia guardada en ${copia}`)
+    }
   }
 
   await writeFile(DESTINO, `${JSON.stringify(salida, null, 1)}\n`, 'utf-8')
