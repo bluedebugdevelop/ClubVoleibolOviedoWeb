@@ -1257,6 +1257,14 @@ footer .legal .credito b{color:var(--ink);font-family:"Barlow Condensed",sans-se
 .contact-info svg{color:var(--blue);flex:none;margin-top:2px}
 .contact-info b{display:block;font-size:14.5px}
 .contact-info span{display:block;font-size:14px;color:var(--dim);margin-top:2px}
+/* El teléfono con el icono de WhatsApp al lado (Whatsapp.jsx). En el pie hay
+   que repetir el display porque `footer .col a` lo pone a block y gana. */
+.wa{display:inline-flex;align-items:center;gap:7px;text-decoration:none}
+/* con selector de elemento para ganarle a `.contact-info svg`, que pone el
+   azul del sitio a todos los iconos de esa columna */
+svg.ico-wa{flex:none;color:#25d366}
+footer .col a.wa{display:inline-flex}
+
 .map-frame{border:1px solid var(--line);overflow:hidden;aspect-ratio:4/3}
 .map-frame iframe{width:100%;height:100%;border:0;display:block}
 

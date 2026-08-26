@@ -17,10 +17,17 @@ export const club = {
   // Tiene que coincidir con el destino de `api/patrocinio.js`.
   email: 'info@clubvoleiboloviedo.com',
   emailPatrocinio: 'patrocinadores@clubvoleiboloviedo.com',
-  // El teléfono del club NO se publica en la web (decisión del 03-08-2026): se
-  // quitó del pie, de contacto, de los avisos de los formularios y del aviso
-  // legal. Ojo: los campos "teléfono" de los formularios son otra cosa, ahí lo
-  // escribe quien se apunta y siguen en su sitio.
+  // El teléfono vuelve a la web el 26-08-2026, y va con WhatsApp: es el canal
+  // por el que escriben las familias. Lo pintan el pie, /contacto y el JSON-LD
+  // de index.html (ese hay que cambiarlo a mano si cambia el número).
+  //
+  // Tres campos porque son tres cosas distintas: lo que se LEE, el enlace de
+  // llamada y el de WhatsApp. wa.me exige prefijo de país y ni espacios ni "+".
+  // Ojo: los campos "teléfono" de los formularios son otra cosa —ahí lo escribe
+  // quien se apunta— y no tienen nada que ver con esto.
+  telefono: '645 71 99 50',
+  telefonoEnlace: 'tel:+34645719950',
+  whatsapp: 'https://wa.me/34645719950',
   sede: 'Polideportivo José Manuel Fuente, Colloto, Oviedo',
   sedeCorta: 'Pol. José Manuel Fuente',
   localidad: 'Colloto, Oviedo',
@@ -498,15 +505,15 @@ export const formularioInscripcionUrl =
 // Preinscripción (08-08-2026).
 //
 // La inscripción NO está abierta todo el año: hay una ventana de preinscripción
-// del 10 al 25 de agosto. Fuera de esa ventana la web no invita a rellenar el
+// del 10 al 30 de agosto. Fuera de esa ventana la web no invita a rellenar el
 // formulario, avisa de cuándo abre (o de que ya cerró) y deja el correo del club.
 //
 // Las fechas son las únicas dos líneas que hay que tocar cada temporada.
 // ---------------------------------------------------------------------------
 export const preinscripcion = {
   abre: '2026-08-10',
-  cierra: '2026-08-25', // incluido: cuenta el día entero
-  texto: 'del 10 al 25 de agosto',
+  cierra: '2026-08-30', // incluido: cuenta el día entero
+  texto: 'del 10 al 30 de agosto',
   url: formularioInscripcionUrl,
 }
 
@@ -718,7 +725,7 @@ export const noticias = [
     categoria: 'Cantera',
     fecha: '10 ago 2026',
     titulo: 'Abierta la preinscripción para la 26/27',
-    resumen: 'Desde alevín hasta juvenil. El plazo es del 10 al 25 de agosto y el formulario está en la web.',
+    resumen: 'Desde alevín hasta juvenil. El plazo es del 10 al 30 de agosto y el formulario está en la web.',
     // bloqueo.jpg no: es la cabecera de /cantera y la noticia va justo de eso,
     // así que se veían las dos seguidas
     img: '/media/ataque.jpg',
@@ -933,8 +940,8 @@ export const nivelesPatrocinio = [
 ]
 
 // Patrocinadores del club. El copy NO es inventado: cada ficha se escribió
-// leyendo la web de la propia marca (geffsport.com, imqasturias.es,
-// funerariasreunidas.com, palaciodegarana.com, centrofisan.es) y, en el caso de
+// leyendo la web de la propia marca (geffsport.com, funerariasreunidas.com,
+// palaciodegarana.com, centrofisan.es) y, en el caso de
 // Bluedebug y VBStats, su `src/app/layout.tsx` y su `src/data/apps.ts`. Los
 // colores son los de cada marca, y se usan solo para el brillo del aro al pasar
 // por encima; `glow` es ese mismo color en rgba. Los logos los mandó el club el
@@ -1013,22 +1020,6 @@ export const patrocinadoresActuales = [
     parrafos: [
       'GEFF es una fábrica española de equipaciones deportivas personalizadas. Nació en 2010, forma parte del grupo Stampa Team y su planta de 2.000 m² es una de las mayores de Europa dedicadas a la personalización textil por sublimación.',
       'Fabrica ropa de juego para clubes de voleibol, baloncesto, rugby y otros deportes, con el diseño incluido y plazos de entrega de unos quince días laborables. Distribuye en Europa, Estados Unidos y Oriente Medio, y monta una tienda online para cada club, para que las familias hagan sus pedidos directamente.',
-    ],
-  },
-  {
-    slug: 'imq-asturias',
-    nombre: 'IMQ Asturias',
-    logo: '/media/patrocinadores/imq-asturias.png',
-    foto: '/media/patrocinadores/imq-asturias-cabecera.jpg',
-    tagline: 'El seguro de salud de Asturias',
-    web: 'https://www.imqasturias.es/',
-    webTexto: 'imqasturias.es',
-    color: '#3aaa35',
-    glow: 'rgba(58,170,53,.22)',
-    descripcion: 'Seguros de salud con cuadro médico propio en Asturias.',
-    parrafos: [
-      'IMQ Asturias es una aseguradora de salud cien por cien asturiana. La fundó en 1954 un grupo de médicos de la región —de ahí su nombre, Igualatorio Médico-Quirúrgico y de Especialidades de Asturias— para atender a los colectivos que entonces quedaban fuera de la Seguridad Social.',
-      'Hoy es una de las entidades de referencia del seguro médico en el Principado, con cuadro médico propio, oficinas en Oviedo y Gijón y pólizas que cubren especialidades, medios de diagnóstico, fisioterapia, psicología y hospitalización. Su app permite consultar el cuadro médico, pedir cita y hacer telemedicina.',
     ],
   },
   {

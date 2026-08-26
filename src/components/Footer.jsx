@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import Crest from './Crest'
 import { redes } from './redes'
+import { IconoWhatsapp } from './Whatsapp'
 import { club } from '../data/contenido'
 
 export default function Footer() {
@@ -35,7 +36,11 @@ export default function Footer() {
           {/* el de patrocinio va aparte y etiquetado: si van los dos correos
               seguidos y sin etiqueta, una empresa escribe al que sea */}
           <p>Patrocinio: {club.emailPatrocinio}</p>
-          {/* el teléfono no se publica en la web (03-08-2026) */}
+          {/* el teléfono con el icono de WhatsApp (26-08-2026): mismo enlace
+              que en /contacto, los dos salen de `club` */}
+          <a className="wa" href={club.whatsapp} target="_blank" rel="noreferrer">
+            <IconoWhatsapp />{club.telefono}
+          </a>
           <p>{club.sedeCorta}<br />{club.localidad}</p>
         </div>
         <div className="col">

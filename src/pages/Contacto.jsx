@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import PageHead from '../components/PageHead'
 import SectionHead from '../components/SectionHead'
+import { IconoWhatsapp } from '../components/Whatsapp'
 import { club } from '../data/contenido'
 import { useFoto } from '../data/contenidoContexto'
 
@@ -80,8 +81,17 @@ export default function Contacto() {
                 <span>{club.sede}</span>
               </span>
             </div>
-            {/* la fila del teléfono se quitó el 03-08-2026: el número no se
-                publica en la web, el contacto es por correo */}
+            {/* el teléfono vuelve el 26-08-2026 y va con el icono de WhatsApp:
+                las familias escriben por ahí antes que por correo */}
+            <div className="row">
+              <IconoWhatsapp size={18} />
+              <span>
+                <b>Teléfono y WhatsApp</b>
+                <span>
+                  <a className="wa" href={club.whatsapp} target="_blank" rel="noreferrer">{club.telefono}</a>
+                </span>
+              </span>
+            </div>
             <div className="row">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M4 4h16v16H4z" />
