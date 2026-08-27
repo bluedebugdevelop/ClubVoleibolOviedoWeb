@@ -26,6 +26,7 @@ import inscripcion from './api/inscripcion.js'
 import patrocinio from './api/patrocinio.js'
 import contacto from './api/contacto.js'
 import contenido from './api/contenido.js'
+import competicion from './api/competicion.js'
 import panel from './api/panel.js'
 import club from './api/club.js'
 import acceso from './api/acceso.js'
@@ -126,6 +127,9 @@ app.all('/api/inscripcion', inscripcion)
 app.all('/api/patrocinio', patrocinio)
 app.all('/api/contacto', contacto)
 app.all('/api/contenido', contenido)
+// Los datos de las federaciones. La web los trae en el bundle; esto es para la
+// app móvil, que no pasa por Vite.
+app.all('/api/competicion', competicion)
 
 // Vite mete el hash en el nombre de cada asset, así que se pueden cachear para
 // siempre. El resto (favicon, imágenes de public/) con el valor por defecto.
