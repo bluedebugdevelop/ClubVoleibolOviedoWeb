@@ -9,6 +9,8 @@ import {
   posicionesInscripcion,
   preinscripcion,
   estadoPreinscripcion,
+  horariosInicio,
+  horariosInicioVigentes,
 } from '../data/contenido'
 import { useFoto } from '../data/contenidoContexto'
 
@@ -27,6 +29,7 @@ const VACIO = {
 export default function Inscripciones() {
   const foto = useFoto('inscripciones')
   const ventana = estadoPreinscripcion()
+  const conHorarios = horariosInicioVigentes()
   const [datos, setDatos] = useState(VACIO)
   const [consentimiento, setConsentimiento] = useState(false)
   const [estado, setEstado] = useState('inicial') // inicial · enviando · ok · sinConectar · error
@@ -147,6 +150,37 @@ export default function Inscripciones() {
           />
         )}
       </section>
+
+      {/* Horarios de las dos primeras semanas de septiembre (29-08-2026). Van
+          aquí, pegados al formulario, porque es lo primero que pregunta una
+          familia después de apuntarse. Se caen solos pasado
+          `horariosInicio.hasta`: son temporales y un horario caducado en la
+          web es peor que no tener horario. */}
+      {conHorarios && (
+        <section className="sec" id="horarios">
+          <SectionHead title="Horarios de las dos primeras semanas" />
+          <p className="horarios-nota">
+            <b>{horariosInicio.vigencia}.</b> Son horarios temporales, para arrancar la temporada; los
+            definitivos se publican más adelante. Se entrena en el {club.sede}.
+          </p>
+          <div className="horarios">
+            {horariosInicio.bloques.map((b) => (
+              <div className="horario" key={b.dias}>
+                <h3>{b.dias}</h3>
+                <p className="fechas">{b.fechas}</p>
+                <ul>
+                  {b.grupos.map((g) => (
+                    <li key={g.grupo}>
+                      <span className="grupo">{g.grupo}</span>
+                      <span className="hora">{g.hora}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       <div className="band">
         <section className="sec">

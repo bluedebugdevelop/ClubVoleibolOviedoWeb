@@ -144,6 +144,11 @@ Runbook curado del repo. No es un diario: si algo deja de ser útil, se borra.
    Nada de rivales, derbis ni partidos concretos: solo cuándo empieza la liga. Y un
    fichero + un `send-text.ts` por texto, para que Diego lo copie entero sin borrar.
    Ver la memoria `copy-redes-general-y-suelto`.
+   · **Toda publicación cierra con la línea obligatoria**, después de los hashtags
+   propios: `#oviedoviveeldeporte @oviedodeporte2026 @aytoviedo @deportesayov
+   @voleibolasturias`. Sin excepciones (decisión de Diego, 28-07-2026). Está en
+   `_club/_meta-cvo/napkin.md:88` — mirarlo ANTES de escribir un texto de redes,
+   no después de que Diego lo reclame.
 9. **«He guardado y no sale» se diagnostica con `railway logs`.** El panel deja
    rastro de cada acción (`Panel: admin sube /subidas/…`, `Panel: admin guarda
    noticias (1)`), así que ahí se ve QUÉ lista se guardó de verdad y a qué hora.
@@ -192,3 +197,9 @@ Runbook curado del repo. No es un diario: si algo deja de ser útil, se borra.
    el volumen lleva la fecha escrita a mano en `resumen` y `cuerpo` (se congeló al
    publicarla desde el panel): cambiar el código NO la corrige, hay que editarla en
    /panel. Al mover las fechas, mirar siempre las dos.
+4. **El contenido temporal lleva fecha de caducidad, no recordatorio.** Los
+   horarios del arranque de temporada (`horariosInicio` en contenido.js, se
+   pintan en /inscripciones) llevan `hasta` y un `horariosInicioVigentes()`
+   que los quita solos, igual que `estadoPreinscripcion` tapa el formulario.
+   Mismo criterio para cualquier bloque con fecha: mejor que desaparezca solo
+   a que se quede un dato caducado esperando a que alguien se acuerde.

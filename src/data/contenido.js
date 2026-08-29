@@ -517,12 +517,56 @@ export const preinscripcion = {
   url: formularioInscripcionUrl,
 }
 
+/** La fecha de hoy como 'AAAA-MM-DD', para poder comparar con las de arriba. */
+const diaDe = (hoy) =>
+  `${hoy.getFullYear()}-${String(hoy.getMonth() + 1).padStart(2, '0')}-${String(hoy.getDate()).padStart(2, '0')}`
+
 /** 'antes' · 'abierta' · 'cerrada' — se calcula en cada carga, sin tocar nada. */
 export function estadoPreinscripcion(hoy = new Date()) {
-  const dia = `${hoy.getFullYear()}-${String(hoy.getMonth() + 1).padStart(2, '0')}-${String(hoy.getDate()).padStart(2, '0')}`
+  const dia = diaDe(hoy)
   if (dia < preinscripcion.abre) return 'antes'
   if (dia > preinscripcion.cierra) return 'cerrada'
   return 'abierta'
+}
+
+// Horarios de entrenamiento de las dos primeras semanas de septiembre
+// (29-08-2026). Son TEMPORALES: los definitivos se cierran más adelante y
+// entonces hay que rehacer este bloque. Por eso lleva `hasta`: pasado ese día
+// desaparece solo de la página, igual que la ventana de fechas tapa el
+// formulario, y nadie tiene que acordarse de quitar un horario caducado.
+//
+// Van agrupados por pareja de días y no por equipo, que es como se repartieron
+// en el cartel que se publicó en redes: seis grupos caben en dos columnas.
+// Solo está la cantera: los dos sénior no se preinscriben aquí. El lunes no
+// sale porque ningún grupo entrena ese día.
+export const horariosInicio = {
+  hasta: '2026-09-11',
+  vigencia: 'Del 1 al 11 de septiembre',
+  bloques: [
+    {
+      dias: 'Martes y jueves',
+      fechas: '1, 3, 8 y 10 de septiembre',
+      grupos: [
+        { grupo: 'Benjamín y Alevín', hora: '18:00 – 19:15' },
+        { grupo: 'Infantil y Cadete Masculino', hora: '18:00 – 19:15' },
+        { grupo: 'Cadete Femenino', hora: '19:15 – 20:30' },
+      ],
+    },
+    {
+      dias: 'Miércoles y viernes',
+      fechas: '2, 4, 9 y 11 de septiembre',
+      grupos: [
+        { grupo: 'Infantil Femenino', hora: '18:00 – 19:15' },
+        { grupo: 'Juvenil y Júnior Femenino', hora: '19:15 – 20:30' },
+        { grupo: 'Juvenil y Júnior Masculino', hora: '19:15 – 20:30' },
+      ],
+    },
+  ],
+}
+
+/** ¿Siguen en pie los horarios de arriba? Falso a partir del día siguiente. */
+export function horariosInicioVigentes(hoy = new Date()) {
+  return diaDe(hoy) <= horariosInicio.hasta
 }
 
 /** Frase para las llamadas a inscripción repartidas por el sitio. */
