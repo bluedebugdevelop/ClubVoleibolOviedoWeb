@@ -54,30 +54,14 @@ function colores(equipo) {
 // ---------------------------------------------------------------------------
 // Ajustes de presentación
 //
-// El sénior masculino jugó 2025/26 en Primera División Nacional, pero la
-// temporada que viene compite en Superliga 2. Los datos de la pasada están
-// solo de prueba mientras las federaciones no publican la nueva, así que el
-// equipo se enseña ya con el nombre y el rojo de la categoría en la que va a
-// jugar (decisión de Adrián, 2026-07-29).
-//
-// El equipo se localiza por su competición, no por el nombre generado: cuando
-// empiece la temporada, el scraper lo encontrará en la RFEVB, este apaño dejará
-// de casar y el equipo pasará a llamarse Superliga 2 por la vía normal, sin
-// tener que acordarse de venir a borrar nada.
+// Sitio para enseñar un equipo con un nombre o un color distintos de los que
+// traen los datos. Se usó en 2026 para adelantar el ascenso del sénior
+// masculino a Superliga 2 mientras la RFEVB seguía sirviendo la temporada
+// anterior; desde que publicó la 2026/27 el equipo se llama así por la vía
+// normal y el apaño sobraba. Se deja la lista vacía, no el mecanismo: el
+// próximo ajuste no tendrá que reescribirlo.
 // ---------------------------------------------------------------------------
-const PRESENTACION = [
-  {
-    // vale tanto para la Primera División Masculina de la RFEVB (la fuente
-    // buena) como para la copia de la FVBPA, por si algún día hay que tirar de
-    // ella
-    casa: (e) =>
-      e.genero === 'Masculino' &&
-      /primera\s+divisi[oó]n\s+(masculina|nacional)/i.test(e.division ?? ''),
-    nombre: 'Superliga 2 Masculina',
-    nacional: true,
-    paleta: ROJO,
-  },
-]
+const PRESENTACION = []
 
 /** Equipos ya con los ajustes de presentación aplicados. */
 const EQUIPOS = CRUDOS.map((e) => {
@@ -97,7 +81,11 @@ const EQUIPOS = CRUDOS.map((e) => {
 /** ¿Es este el equipo del club dentro del partido? */
 const esClub = (nombre, equipoClub) => {
   const n = String(nombre).toUpperCase()
-  return n === String(equipoClub).toUpperCase() || /\bC\.?\s?V\.?\s+OVIEDO\b/.test(n)
+  return (
+    n === String(equipoClub).toUpperCase() ||
+    /\bC\.?\s?V\.?\s+OVIEDO\b/.test(n) ||
+    /\bCLUB\s+VOLEIBOL\s+OVIEDO\b/.test(n)
+  )
 }
 
 /** Convierte un partido scrapeado al formato que pinta la página. */

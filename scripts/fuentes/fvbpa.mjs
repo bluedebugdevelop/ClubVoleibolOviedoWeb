@@ -48,10 +48,13 @@ export function esRivalReal(nombre) {
 
 /** ¿Este nombre de equipo es del Club Voleibol Oviedo? */
 export function esDelClub(nombre) {
-  const n = nombre.toUpperCase()
-  // "CV OVIEDO", "C.V. OVIEDO A", "CV OVIEDO B"… pero NO otros clubes de la
-  // ciudad que también llevan "Oviedo" en el nombre (p. ej. universitarios).
-  return /\bC\.?\s?V\.?\s+OVIEDO\b/.test(n) || /^OVIEDO\b/.test(n)
+  const n = String(nombre).toUpperCase().replace(/\s+/g, ' ').trim()
+  // "CV OVIEDO", "C.V. OVIEDO A", "CV OVIEDO B"… y "CLUB VOLEIBOL OVIEDO", que
+  // es como lo inscribe la RFEVB. Pero NO otros clubes de la ciudad que también
+  // llevan "Oviedo" en el nombre (p. ej. los universitarios).
+  return /\bC\.?\s?V\.?\s+OVIEDO\b/.test(n) ||
+    /\bCLUB\s+VOLEIBOL\s+OVIEDO\b/.test(n) ||
+    /^OVIEDO\b/.test(n)
 }
 
 /**
