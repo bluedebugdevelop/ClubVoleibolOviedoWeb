@@ -334,7 +334,8 @@
      "pj": 0,
      "sf": 0,
      "sc": 0,
-     "yo": false
+     "yo": false,
+     "escudo": "/media/escudos/eq71333.png"
     },
     {
      "pos": 2,
@@ -343,7 +344,8 @@
      "pj": 0,
      "sf": 0,
      "sc": 0,
-     "yo": false
+     "yo": false,
+     "escudo": "/media/escudos/eq71334.png"
     },
     {
      "pos": 3,
@@ -352,7 +354,8 @@
      "pj": 0,
      "sf": 0,
      "sc": 0,
-     "yo": true
+     "yo": true,
+     "escudo": "/media/escudos/eq71336.png"
     },
     {
      "pos": 4,
@@ -361,7 +364,8 @@
      "pj": 0,
      "sf": 0,
      "sc": 0,
-     "yo": false
+     "yo": false,
+     "escudo": "/media/escudos/eq71339.png"
     },
     {
      "pos": 5,
@@ -370,7 +374,8 @@
      "pj": 0,
      "sf": 0,
      "sc": 0,
-     "yo": false
+     "yo": false,
+     "escudo": "/media/escudos/eq71343.png"
     },
     {
      "pos": 6,
@@ -379,7 +384,8 @@
      "pj": 0,
      "sf": 0,
      "sc": 0,
-     "yo": false
+     "yo": false,
+     "escudo": "/media/escudos/eq71345.png"
     },
     {
      "pos": 7,
@@ -388,7 +394,8 @@
      "pj": 0,
      "sf": 0,
      "sc": 0,
-     "yo": false
+     "yo": false,
+     "escudo": "/media/escudos/eq71347.png"
     },
     {
      "pos": 8,
@@ -397,7 +404,8 @@
      "pj": 0,
      "sf": 0,
      "sc": 0,
-     "yo": false
+     "yo": false,
+     "escudo": "/media/escudos/eq71354.png"
     },
     {
      "pos": 9,
@@ -406,7 +414,8 @@
      "pj": 0,
      "sf": 0,
      "sc": 0,
-     "yo": false
+     "yo": false,
+     "escudo": "/media/escudos/eq71355.png"
     },
     {
      "pos": 10,
@@ -415,7 +424,8 @@
      "pj": 0,
      "sf": 0,
      "sc": 0,
-     "yo": false
+     "yo": false,
+     "escudo": "/media/escudos/eq71361.png"
     },
     {
      "pos": 11,
@@ -424,7 +434,8 @@
      "pj": 0,
      "sf": 0,
      "sc": 0,
-     "yo": false
+     "yo": false,
+     "escudo": "/media/escudos/eq71365.png"
     },
     {
      "pos": 12,
@@ -433,11 +444,26 @@
      "pj": 0,
      "sf": 0,
      "sc": 0,
-     "yo": false
+     "yo": false,
+     "escudo": "/media/escudos/eq71366.png"
     }
    ],
    "clave": "superliga-masculina-2-superliga-masculina-2-rfevb",
-   "nombre": "Superliga Masculina 2"
+   "nombre": "Superliga Masculina 2",
+   "escudos": {
+    "Rivas Ciudad del Deporte": "/media/escudos/eq71333.png",
+    "CDE Parla Vóley": "/media/escudos/eq71334.png",
+    "Club Voleibol Oviedo": "/media/escudos/eq71336.png",
+    "Club Voleibol Dumbría": "/media/escudos/eq71339.png",
+    "Universidad Valladolid": "/media/escudos/eq71343.png",
+    "CID Jovellanos": "/media/escudos/eq71345.png",
+    "Universidad de Granada": "/media/escudos/eq71347.png",
+    "Vóley Playa Madrid": "/media/escudos/eq71354.png",
+    "CV Gupane Guía": "/media/escudos/eq71355.png",
+    "COX CV Collado Villalba": "/media/escudos/eq71361.png",
+    "Arenal Emevé": "/media/escudos/eq71365.png",
+    "Cisneros La Laguna": "/media/escudos/eq71366.png"
+   }
   },
   {
    "fuente": "RFEVB",
@@ -767,7 +793,8 @@
      "pj": 0,
      "sf": 0,
      "sc": 0,
-     "yo": false
+     "yo": false,
+     "escudo": "/media/escudos/eq71461.png"
     },
     {
      "pos": 2,
@@ -776,7 +803,8 @@
      "pj": 0,
      "sf": 0,
      "sc": 0,
-     "yo": false
+     "yo": false,
+     "escudo": "/media/escudos/eq71467.png"
     },
     {
      "pos": 3,
@@ -785,7 +813,8 @@
      "pj": 0,
      "sf": 0,
      "sc": 0,
-     "yo": false
+     "yo": false,
+     "escudo": "/media/escudos/eq71476.png"
     },
     {
      "pos": 4,
@@ -794,7 +823,8 @@
      "pj": 0,
      "sf": 0,
      "sc": 0,
-     "yo": false
+     "yo": false,
+     "escudo": "/media/escudos/eq71481.png"
     },
     {
      "pos": 5,
@@ -803,7 +833,8 @@
      "pj": 0,
      "sf": 0,
      "sc": 0,
-     "yo": false
+     "yo": false,
+     "escudo": "/media/escudos/eq71490.png"
     },
     {
      "pos": 6,
@@ -812,7 +843,8 @@
      "pj": 0,
      "sf": 0,
      "sc": 0,
-     "yo": false
+     "yo": false,
+     "escudo": "/media/escudos/eq71494.png"
     },
     {
      "pos": 7,
@@ -821,7 +853,8 @@
      "pj": 0,
      "sf": 0,
      "sc": 0,
-     "yo": false
+     "yo": false,
+     "escudo": "/media/escudos/eq71470.png"
     },
     {
      "pos": 8,
@@ -830,7 +863,8 @@
      "pj": 0,
      "sf": 0,
      "sc": 0,
-     "yo": true
+     "yo": true,
+     "escudo": "/media/escudos/eq71488.png"
     },
     {
      "pos": 9,
@@ -839,7 +873,8 @@
      "pj": 0,
      "sf": 0,
      "sc": 0,
-     "yo": false
+     "yo": false,
+     "escudo": "/media/escudos/eq71452.png"
     },
     {
      "pos": 10,
@@ -848,7 +883,8 @@
      "pj": 0,
      "sf": 0,
      "sc": 0,
-     "yo": false
+     "yo": false,
+     "escudo": "/media/escudos/eq71474.png"
     },
     {
      "pos": 11,
@@ -857,7 +893,8 @@
      "pj": 0,
      "sf": 0,
      "sc": 0,
-     "yo": false
+     "yo": false,
+     "escudo": "/media/escudos/eq71513.png"
     },
     {
      "pos": 12,
@@ -866,11 +903,26 @@
      "pj": 0,
      "sf": 0,
      "sc": 0,
-     "yo": false
+     "yo": false,
+     "escudo": "/media/escudos/eq71514.png"
     }
    ],
    "clave": "primera-division-femenina-primera-division-femenina-rfevb",
-   "nombre": "Primera División Femenina"
+   "nombre": "Primera División Femenina",
+   "escudos": {
+    "Arenal Emevé": "/media/escudos/eq71461.png",
+    "Curtidora Uniovi": "/media/escudos/eq71467.png",
+    "AD Los Campos": "/media/escudos/eq71476.png",
+    "Club Voleibol Oleiros": "/media/escudos/eq71481.png",
+    "CV Cuesta Piedra": "/media/escudos/eq71490.png",
+    "CAEP Soria": "/media/escudos/eq71494.png",
+    "AULE": "/media/escudos/eq71470.png",
+    "Club Voleibol Oviedo": "/media/escudos/eq71488.png",
+    "RGC Covadonga": "/media/escudos/eq71452.png",
+    "Universidad de Salamanca": "/media/escudos/eq71474.png",
+    "Sidra Menéndez La Calzada": "/media/escudos/eq71513.png",
+    "Getxoko Aixerrota BKT": "/media/escudos/eq71514.png"
+   }
   }
  ]
 }

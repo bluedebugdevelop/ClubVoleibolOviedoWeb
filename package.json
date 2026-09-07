@@ -14,6 +14,7 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "datos": "node scripts/scrape.mjs",
+    "escudos": "node scripts/escudos.mjs",
     "resumen": "node scripts/resumen-semanal.mjs"
   },
   "dependencies": {

@@ -203,3 +203,20 @@ Runbook curado del repo. No es un diario: si algo deja de ser útil, se borra.
    que los quita solos, igual que `estadoPreinscripcion` tapa el formulario.
    Mismo criterio para cualquier bloque con fecha: mejor que desaparezca solo
    a que se quede un dato caducado esperando a que alguien se acuerde.
+
+## Datos de competición y escudos
+
+1. **Los escudos los da la RFEVB, la FVBPA no.** `getClasificacionGrupo` trae un
+   campo `imagen` por equipo; `scripts/lib/escudos.mjs` lo baja UNA vez, lo
+   encoge con Chrome a 128 px y lo deja en `public/media/escudos/eq<id>.png`.
+   `npm run escudos` lo hace sobre un JSON ya generado (una petición por grupo,
+   sin rescrapear); `npm run datos` lo hace de paso. Los rivales de cantera se
+   quedan sin escudo a propósito: `EscudoEquipo.jsx` les pinta un monograma.
+2. **El calendario enseña ida o vuelta, nunca la temporada entera.** El botón
+   "Toda la temporada" se quitó el 08-09-2026 (volcaba 22 jornadas). `parte`
+   arranca en `'ida'`, y si el equipo no tiene mitades se pasa `null` a
+   `bloquesDe` o se perderían partidos.
+3. **Quién es "nosotros" se decide en un solo sitio.** `esClub` de
+   `src/data/competicion.js` (y `esDelClub` en `fuentes/fvbpa.mjs`) reconocen
+   también "Club Voleibol Oviedo", que es como lo inscribe la RFEVB. No escribir
+   una tercera regex: el escudo del club sale de ahí.

@@ -420,6 +420,48 @@ export const destacadosClasificacion = hayDatosReales
 export const equiposCompeticion = EQUIPOS
 
 // ---------------------------------------------------------------------------
+// Escudos
+//
+// Los baja `npm run escudos` (o `npm run datos`) de la clasificación de la
+// RFEVB y los deja en public/media/escudos; en el JSON queda la ruta. La FVBPA
+// no publica ninguno, así que los rivales de cantera no están en este mapa y la
+// web les pinta un monograma (ver components/EscudoEquipo.jsx).
+//
+// La búsqueda es por nombre normalizado porque el mismo club no se escribe
+// igual en todos los sitios: "CV Oviedo" en la clasificación y "C.V. Oviedo" en
+// el calendario son el mismo escudo.
+// ---------------------------------------------------------------------------
+const clave = (nombre) =>
+  String(nombre)
+    .normalize('NFD')
+    .replace(/\p{M}/gu, '') // quita las tildes que NFD deja sueltas
+    .toUpperCase()
+    .replace(/[^A-Z0-9]/g, '')
+
+const ESCUDOS = new Map()
+for (const e of EQUIPOS) {
+  for (const [nombre, ruta] of Object.entries(e.escudos ?? {})) {
+    if (!ESCUDOS.has(clave(nombre))) ESCUDOS.set(clave(nombre), ruta)
+  }
+}
+
+/** Ruta del escudo de un equipo, o null si no se conoce. */
+export function escudoDe(nombre) {
+  if (!nombre) return null
+  return ESCUDOS.get(clave(nombre)) ?? null
+}
+
+/**
+ * ¿Este nombre es de un equipo del club? Lo usa el escudo para saber cuándo
+ * pintar el vectorial de la casa en vez del PNG de la federación. Se apoya en
+ * el mismo `esClub` que reparte victorias y derrotas, para que no haya dos
+ * criterios distintos de qué es "nosotros".
+ */
+export function esEquipoDelClub(nombre) {
+  return Boolean(nombre) && esClub(nombre, '')
+}
+
+// ---------------------------------------------------------------------------
 // Fichas de equipo (/equipos/:slug)
 //
 // Las páginas de los dos equipos nacionales existían antes que el scraper, así

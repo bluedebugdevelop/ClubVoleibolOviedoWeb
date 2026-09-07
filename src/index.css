@@ -444,8 +444,16 @@ footer .legal .credito b{color:var(--ink);font-family:"Barlow Condensed",sans-se
   text-transform:uppercase;color:var(--dim);line-height:1.2}
 .fix .d b{display:block;font-size:22px;color:var(--ink);letter-spacing:-.01em}
 .fix .t{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:19px;text-transform:uppercase}
-.fix .t span{display:block;font-family:"Barlow",sans-serif;font-weight:400;font-size:12.5px;
+.fix .t .det{display:block;font-family:"Barlow",sans-serif;font-weight:400;font-size:12.5px;
   text-transform:none;color:var(--dim);letter-spacing:0;margin-top:2px}
+/* los dos equipos del partido, uno debajo de otro y cada uno con su escudo:
+   local arriba, visitante debajo. En una línea no caben —"Club Voleibol Oviedo"
+   ya son tres palabras— y se partían por donde tocara según el ancho de la
+   ventana; apilados, todas las filas se leen igual. */
+.fix .t .duelo{display:flex;flex-direction:column;align-items:flex-start;gap:5px;
+  line-height:1.15;font-size:17px}
+.fix .t .lado{display:inline-flex;align-items:center;gap:8px;min-width:0}
+.fix .t .lado b{font-weight:700}
 .fix .r{font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:24px;letter-spacing:.02em}
 .fix .r.w{color:#1a8a4c}
 .fix .r.l{color:#b5313a}
@@ -600,6 +608,25 @@ footer .legal .credito b{color:var(--ink);font-family:"Barlow Condensed",sans-se
 .standing-head b{font-family:"Barlow Condensed",sans-serif;font-weight:800;text-transform:uppercase;
   font-size:17px;letter-spacing:.03em}
 .standing-head span{font-size:12px;color:var(--dim)}
+/* celda de equipo con escudo: el nombre no se parte por debajo del escudo */
+.table td.eq{display:flex;align-items:center;gap:10px}
+.table td.eq span{min-width:0}
+
+/* -------- escudos (EscudoEquipo.jsx) --------
+   Mismo hueco cuadrado para las tres variantes —escudo del club, PNG de la
+   federación y monograma—, así todas las filas quedan alineadas tengan o no
+   escudo el rival. */
+.escudo{flex:0 0 22px;width:22px;height:22px;display:block}
+img.escudo{object-fit:contain}
+.escudo-cvo{display:grid;place-items:center}
+.escudo-cvo svg{width:100%;height:100%;display:block}
+/* el monograma es el suplente: iniciales sobre el color que le toca al club por
+   su nombre (ver EscudoEquipo.jsx). La federación asturiana no publica escudos
+   y sin esto la cantera se quedaría con un hueco */
+.escudo-mono{display:grid;place-items:center;border-radius:50%;background:var(--mono,var(--blue));
+  color:#fff;font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:11px;
+  letter-spacing:.02em;text-transform:uppercase;line-height:1}
+
 .table.liga{border:0}
 .table.liga th{background:var(--liga,var(--ink));color:var(--liga-sobre,#fff)}
 .table.liga tr.me td{background:var(--liga-tinte,var(--tint))}

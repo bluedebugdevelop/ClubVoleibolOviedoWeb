@@ -217,9 +217,35 @@ function aClasificacion(filas, bonito) {
         sf: num(f.sets_a_favor),
         sc: num(f.sets_en_contra),
         yo: esDelClub(equipo),
+        // El escudo del club, que la API sirve aparte. Aquí solo se anota de
+        // dónde bajarlo: `lib/escudos.mjs` lo cambia por la ruta del fichero ya
+        // descargado en public/media/escudos.
+        escudoUrl: limpio(f.imagen) || null,
       }
     })
     .filter(Boolean)
+}
+
+/**
+ * Escudos de los equipos de un grupo: `{ 'CV Oviedo': 'https://…' }`.
+ *
+ * Lo usa `npm run escudos` para completar un JSON ya generado sin rescrapear la
+ * temporada entera: una sola petición por grupo.
+ */
+export async function escudosDeGrupo(id) {
+  let filas
+  try {
+    filas = await api('getClasificacionGrupo', { grupoId: id })
+  } catch {
+    return {}
+  }
+  const mapa = {}
+  for (const f of filas ?? []) {
+    const nombre = limpio(f.nombre)
+    const imagen = limpio(f.imagen)
+    if (nombre && imagen) mapa[clave(nombre)] = imagen
+  }
+  return mapa
 }
 
 /**

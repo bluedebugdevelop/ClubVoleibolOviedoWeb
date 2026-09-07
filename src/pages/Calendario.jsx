@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import PageHead from '../components/PageHead'
 import Sponsors from '../components/Sponsors'
+import EscudoEquipo from '../components/EscudoEquipo'
 /* calendario, resultados y clasificaciones vienen de las federaciones (FVBPA y
    RFEVB) a través de `npm run datos`. Si ese JSON aún no existe, el módulo cae
    solo en los datos de muestra de contenido.js. */
@@ -65,7 +66,13 @@ function Clasificacion({ equipo }) {
           {filas.map((f) => (
             <tr className={f.yo ? 'me' : undefined} key={f.pos}>
               <td className="pos n">{f.pos}</td>
-              <td>{f.equipo}</td>
+              {/* el escudo va pegado al nombre, en la misma celda: así la
+                  columna sigue siendo una y las filas no se descuadran cuando
+                  algún club no tiene escudo */}
+              <td className="eq">
+                <EscudoEquipo nombre={f.equipo} escudo={f.escudo} />
+                <span>{f.equipo}</span>
+              </td>
               <td className="n">{f.pj}</td>
               <td className="n">{f.pts}</td>
             </tr>
@@ -152,20 +159,26 @@ export default function Calendario() {
      solo se enchufan al <head>. */
   useJsonLd(EVENTOS)
   const [filtro, setFiltro] = useState(TODOS)
-  const [parte, setParte] = useState('') // '' = temporada entera
+  /* ida o vuelta, nunca las dos a la vez: la temporada entera de un equipo son
+     veintitantas jornadas seguidas y no hay quien la lea. Se empieza por la ida,
+     que es por donde empieza la liga. */
+  const [parte, setParte] = useState('ida')
 
   const equipo = filtro === TODOS ? null : filtro
   const mitades = mitadesDe(equipo)
 
   /* los bloques se piden ya filtrados: así, al elegir un equipo, las fechas que
-     se enseñan son las suyas y no las del club entero */
-  const jornadasFiltradas = bloquesDe(equipo, parte || null)
+     se enseñan son las suyas y no las del club entero.
 
-  /* al cambiar de equipo se vuelve a la temporada entera: no todos tienen ida y
-     vuelta, y dejar el filtro puesto podía enseñar una lista vacía */
+     Sin mitades que elegir (competiciones a una sola vuelta, o el club entero)
+     no se filtra por parte: hacerlo dejaría fuera partidos que sí hay que ver. */
+  const jornadasFiltradas = bloquesDe(equipo, mitades.length ? parte : null)
+
+  /* al cambiar de equipo se vuelve a la ida: cada competición tiene sus
+     jornadas, y dejar puesta la vuelta del anterior descolocaba la lista */
   function elegirEquipo(eq) {
     setFiltro(eq)
-    setParte('')
+    setParte('ida')
   }
 
   /* con "Todos los equipos" no hay una sola clasificación que enseñar, así que
@@ -201,16 +214,11 @@ export default function Calendario() {
         </div>
 
         {/* ida y vuelta solo con un equipo elegido: con "todos" no significan
-            nada, porque cada competición va por su jornada */}
+            nada, porque cada competición va por su jornada. Aquí había también
+            un "Toda la temporada"; fuera el 08-09-2026, porque volcaba las
+            veintitantas jornadas del equipo de una sentada. */}
         {mitades.length > 0 && (
           <div className="mitades">
-            <button
-              type="button"
-              aria-pressed={parte === ''}
-              onClick={() => setParte('')}
-            >
-              Toda la temporada
-            </button>
             {mitades.map((m) => (
               <button
                 key={m.id}
@@ -242,8 +250,28 @@ export default function Calendario() {
                       </span>
                       <span className="who">{p.equipo}</span>
                       <span className="t">
-                        {p.rival}
-                        <span>{p.detalle}</span>
+                        {/* con los datos reales se pintan los dos equipos por
+                            separado, cada uno con su escudo; los de muestra solo
+                            traen la línea "Local — Visitante" ya montada */}
+                        {p.equipoLocal && p.equipoVisitante ? (
+                          <span className="duelo">
+                            {/* local arriba y visitante debajo, siempre en ese
+                                orden: los nombres de la federación son largos
+                                ("Club Voleibol Oviedo") y en una sola línea se
+                                partían de cualquier manera según el ancho */}
+                            <span className="lado">
+                              <EscudoEquipo nombre={p.equipoLocal} />
+                              <b>{p.equipoLocal}</b>
+                            </span>
+                            <span className="lado">
+                              <EscudoEquipo nombre={p.equipoVisitante} />
+                              <b>{p.equipoVisitante}</b>
+                            </span>
+                          </span>
+                        ) : (
+                          p.rival
+                        )}
+                        <span className="det">{p.detalle}</span>
                       </span>
                       {/* Los parciales van en su propia columna, a la izquierda
                           del marcador, y el marcador en una de ancho fijo. Antes

@@ -13,6 +13,7 @@ import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 import { scrapeFvbpa } from './fuentes/fvbpa.mjs'
 import { scrapeRfevb } from './fuentes/rfevb.mjs'
+import { resolverEscudos } from './lib/escudos.mjs'
 
 const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..')
 const DESTINO = join(RAIZ, 'src', 'data', 'competicion.json')
@@ -328,6 +329,11 @@ async function main() {
       return
     }
   }
+
+  // Los escudos que dice la clasificación de la RFEVB: se bajan una vez a
+  // public/media/escudos y en el JSON queda la ruta local. Los que ya estén
+  // descargados no se vuelven a pedir.
+  await resolverEscudos(equipos, { log })
 
   const salida = {
     generado: new Date().toISOString(),
