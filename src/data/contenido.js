@@ -86,7 +86,7 @@ export const equiposDestacados = [
     categoria: 'Competición nacional',
     img: '/media/equipos/senior-masculino.jpg',
     alt: 'Equipo de Superliga 2 masculino del CV Oviedo',
-    resumen: '18 jugadores · Grupo B',
+    resumen: '18 jugadores · Grupo C',
   },
   {
     slug: 'primera-nacional-femenina',
@@ -113,7 +113,7 @@ const fichasNacionales = {
     slug: 'superliga-2-masculino',
     nombre: 'Superliga 2 Masculino',
     crumb: 'Superliga 2 Masculino',
-    kicker: 'Superliga 2 · Grupo B · Temporada 2026/27',
+    kicker: 'Superliga 2 · Grupo C · Temporada 2026/27',
     sub: 'La primera plantilla del club. Segunda categoría del voleibol nacional, con partidos en casa cada dos fines de semana en el José Manuel Fuente.',
     // versión "desampliada" de equipo-masc.jpg: se le quitan 200px de gradas
     // vacías por arriba y se pega en un lienzo un 44% más ancho, relleno del
@@ -146,7 +146,7 @@ const fichasNacionales = {
     ],
     datos: [
       { label: 'Competición', valor: 'Superliga 2' },
-      { label: 'Grupo', valor: 'B' },
+      { label: 'Grupo', valor: 'C' },
       { label: 'Sede', valor: 'Pol. J. M. Fuente' },
       // Los horarios de entrenamiento se quitaron el 2026-07-29 (decisión de
       // Diego): eran de muestra y no van en la ficha pública.
@@ -627,7 +627,7 @@ export const jornadas = [
 // fino sobre blanco: van una pizca más oscuros.
 export const competiciones = {
   'Superliga 2 Masculino': {
-    liga: 'Superliga 2', grupo: 'Grupo B', ente: 'RFEVB', nacional: true,
+    liga: 'Superliga 2', grupo: 'Grupo C', ente: 'RFEVB', nacional: true,
     color: '#dd0a16', sobre: '#fff', tinte: '#fdeaeb', tinta: '#c00812',
   },
   'Primera Nacional Femenina': {

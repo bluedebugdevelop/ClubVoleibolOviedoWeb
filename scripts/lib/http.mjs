@@ -1,10 +1,11 @@
 // Descarga de páginas con reintentos y decodificación correcta.
 //
-// OJO con la codificación: intranet.rfevb.com declara `charset=UTF-8` en la
-// cabecera pero en realidad sirve ISO-8859-1 (el byte 0xD3 es "Ó" en latin-1,
-// no un carácter UTF-8 válido). Si se decodifica como UTF-8 los nombres salen
-// con "�". Por eso cada fuente dice explícitamente en qué juego de caracteres
-// habla, en vez de fiarnos de la cabecera.
+// Cada fuente dice explícitamente en qué juego de caracteres habla, en vez de
+// fiarnos de la cabecera. Viene de la vieja intranet de la RFEVB, que declaraba
+// `charset=UTF-8` y servía ISO-8859-1 (el byte 0xD3 es "Ó" en latin-1, no un
+// carácter UTF-8 válido) y dejaba los nombres llenos de "�". Aquella intranet ya
+// no se usa —esvoley.es sirve JSON en UTF-8 de verdad—, pero la opción se queda:
+// es una línea y la próxima federación que mienta no costará nada.
 
 const UA =
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 ' +

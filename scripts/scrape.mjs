@@ -298,7 +298,26 @@ async function main() {
     // no había JSON previo: primera ejecución, nada que comparar
   }
 
-  if (previo?.equipos?.length) {
+  // La temporada del fichero viejo se deduce de SUS fechas con la misma regla,
+  // y no de la etiqueta que llevara escrita.
+  const anterior = previo?.equipos?.length
+    ? temporadaDe(previo.equipos, hoy, previo.temporada)
+    : null
+
+  // Las dos redes de seguridad de abajo comparan el recuento de equipos con el
+  // de la pasada anterior, y eso solo tiene sentido DENTRO de una temporada. En
+  // el cambio de año no: en septiembre la RFEVB ya ha publicado las ligas
+  // nacionales y la FVBPA todavía no tiene ni un equipo inscrito en la cantera,
+  // así que un JSON con dos equipos es la verdad y no un fallo. Además el
+  // anterior se archiva entero justo debajo, así que no se pierde nada.
+  const cambioDeTemporada = Boolean(anterior && anterior !== etiqueta)
+  if (cambioDeTemporada) {
+    log(`\nEmpieza la temporada ${etiqueta} (el JSON que había era de la ${anterior}).`)
+    log('   Las comprobaciones de “faltan equipos” no se aplican en el cambio de')
+    log('   temporada: las federaciones publican sus competiciones a distinto ritmo.')
+  }
+
+  if (previo?.equipos?.length && !cambioDeTemporada) {
     const antes = porFuente(previo.equipos)
     const caidas = Object.keys(antes).filter((f) => !ahora[f])
     if (caidas.length) {
@@ -331,7 +350,7 @@ async function main() {
 
   // Y si el recuento cae en picado sin que ninguna fuente se haya ido del todo,
   // tampoco: más vale enseñar los datos de ayer que media web vacía.
-  if (previo?.equipos?.length > equipos.length * 2) {
+  if (!cambioDeTemporada && previo?.equipos?.length > equipos.length * 2) {
     log(`\n!! Antes había ${previo.equipos.length} equipos y ahora solo ${equipos.length}.`)
     log('   Parece un fallo de las federaciones: se conserva el JSON anterior.')
     process.exitCode = 1
@@ -339,18 +358,15 @@ async function main() {
   }
 
   // Antes de pisar el JSON: si lo que había era de OTRA temporada, se guarda
-  // una copia. La temporada del fichero viejo se deduce de SUS fechas con la
-  // misma regla, y no de la etiqueta que llevara escrita: la anterior a este
-  // arreglo decía "2026/27" sobre partidos de la 25/26, y hacerle caso habría
-  // archivado la misma temporada dos veces con dos nombres distintos.
-  if (previo?.equipos?.length) {
-    const anterior = temporadaDe(previo.equipos, hoy, previo.temporada)
-    if (anterior && anterior !== etiqueta) {
-      await mkdir(ARCHIVO, { recursive: true })
-      const copia = join(ARCHIVO, `${anterior.replace('/', '-')}.json`)
-      await writeFile(copia, `${JSON.stringify({ ...previo, temporada: anterior }, null, 1)}\n`, 'utf-8')
-      log(`\nTemporada ${anterior} cerrada: copia guardada en ${copia}`)
-    }
+  // una copia. La temporada del fichero viejo se dedujo arriba de SUS fechas, y
+  // no de la etiqueta que llevara escrita: la anterior a este arreglo decía
+  // "2026/27" sobre partidos de la 25/26, y hacerle caso habría archivado la
+  // misma temporada dos veces con dos nombres distintos.
+  if (cambioDeTemporada) {
+    await mkdir(ARCHIVO, { recursive: true })
+    const copia = join(ARCHIVO, `${anterior.replace('/', '-')}.json`)
+    await writeFile(copia, `${JSON.stringify({ ...previo, temporada: anterior }, null, 1)}\n`, 'utf-8')
+    log(`\nTemporada ${anterior} cerrada: copia guardada en ${copia}`)
   }
 
   await writeFile(DESTINO, `${JSON.stringify(salida, null, 1)}\n`, 'utf-8')

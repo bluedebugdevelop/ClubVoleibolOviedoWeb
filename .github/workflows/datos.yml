@@ -2,7 +2,7 @@ name: Actualizar datos de competición
 
 # Baja calendario, resultados y clasificaciones de las federaciones (FVBPA y
 # RFEVB) y, si algo ha cambiado, commitea el JSON. El push dispara el
-# despliegue en Vercel, así que la web se actualiza sola.
+# despliegue en Railway, así que la web se actualiza sola.
 
 on:
   schedule:
@@ -60,19 +60,21 @@ jobs:
       - name: Commitear si hay cambios
         if: steps.hora.outputs.seguir == 'si'
         run: |
-          # Se firma como bluedebugdevelop, que es el dueño del proyecto en
-          # Vercel. En el plan Hobby solo despliegan los commits de esa cuenta:
-          # firmados por cualquier otro autor, el despliegue queda BLOQUEADO
-          # ("Vercel user not found / Account not linked").
           git config user.name  "bluedebugdevelop"
           git config user.email "256811162+bluedebugdevelop@users.noreply.github.com"
 
-          if git diff --quiet -- src/data/competicion.json; then
+          # También `temporadas/`: al cambiar de temporada el scraper guarda ahí
+          # una copia de la que se cierra, y ese fichero nace SIN seguimiento.
+          # Mirando solo competicion.json se commiteaba la temporada nueva y se
+          # perdía la vieja en el runner, una vez al año y sin avisar.
+          mkdir -p src/data/temporadas
+          git add -A src/data/competicion.json src/data/temporadas
+
+          if git diff --cached --quiet; then
             echo "Sin cambios en los datos: no se commitea."
             exit 0
           fi
 
-          git add src/data/competicion.json
           git commit -m "datos: actualizar calendario y clasificaciones
 
           Generado automáticamente desde fvbpa.com y esvoley.es."
