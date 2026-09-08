@@ -33,9 +33,10 @@ export default function Footer() {
         <div className="col">
           <b>Contacto</b>
           <p>{club.email}</p>
-          {/* el de patrocinio va aparte y etiquetado: si van los dos correos
-              seguidos y sin etiqueta, una empresa escribe al que sea */}
-          <p>Patrocinio: {club.emailPatrocinio}</p>
+          {/* el de patrocinio, sin etiqueta (08-09-2026): el propio correo ya
+              dice para qué es. Dónde se explica la diferencia es en /contacto,
+              que sí los presenta uno a uno */}
+          <p>{club.emailPatrocinio}</p>
           {/* el teléfono con el icono de WhatsApp (26-08-2026): mismo enlace
               que en /contacto, los dos salen de `club` */}
           <a className="wa" href={club.whatsapp} target="_blank" rel="noreferrer">
