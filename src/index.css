@@ -265,7 +265,10 @@ footer .legal .credito a{display:inline-flex;align-items:center;gap:7px;backgrou
   border-radius:99px;padding:4px 12px 4px 5px;text-decoration:none;
   transition:transform .2s cubic-bezier(.22,.68,.3,1.1),box-shadow .2s}
 footer .legal .credito a:hover{color:var(--ink);transform:translateY(-1px);box-shadow:0 5px 16px rgba(0,0,0,.32)}
-footer .legal .credito img{width:20px;height:20px;border-radius:99px;display:block}
+/* sin redondear: el logo nuevo va sobre fondo transparente y el círculo le
+   cortaba las patas. El de antes era un cuadrado con fondo blanco y por eso
+   pedía el recorte. */
+footer .legal .credito img{width:20px;height:20px;display:block}
 footer .legal .credito b{color:var(--ink);font-family:"Barlow Condensed",sans-serif;font-weight:700;
   font-size:13px;letter-spacing:.08em;text-transform:uppercase}
 @media(max-width:640px){ footer .legal .credito{margin-left:0} }
