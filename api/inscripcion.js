@@ -16,6 +16,9 @@
 // en silencio.
 // ==========================================================================
 
+import { frenoFormulario } from './_freno.js'
+import { quienLlama } from './_acceso.js'
+
 const CORREO_CLUB = 'info@clubvoleiboloviedo.com'
 
 /* Solo lo imprescindible para poder llamar a la familia y asignar grupo. Ni DNI
@@ -45,8 +48,9 @@ export default async function handler(req, res) {
   // El endpoint es público a propósito —es un formulario de inscripción, no
   // puede pedir login—, así que al menos se rechaza lo que venga desde otra
   // web. Compara contra el propio host, para que siga valiendo el día que haya
-  // dominio propio. Esto NO es un límite de peticiones: si alguien abusa a
-  // base de scripts, el freno tiene que ponerse en el firewall de Vercel.
+  // dominio propio. Esto NO es un límite de peticiones: de eso se encarga el
+  // freno de volumen de aquí abajo, porque el firewall de Vercel al que apuntaba
+  // este comentario dejó de existir el 07-08-2026.
   const origen = req.headers.origin
   if (origen) {
     let anfitrion = ''
@@ -59,6 +63,18 @@ export default async function handler(req, res) {
       console.warn('Inscripción rechazada, origen ajeno:', origen)
       return res.status(403).json({ ok: false, error: 'Origen no permitido' })
     }
+  }
+
+  /* Y detrás, un freno de VOLUMEN, que es lo que de verdad para a un script.
+     El control de arriba solo actúa si viene `Origin`, y esa cabecera solo la
+     manda un navegador: sin ella se saltaba entero. Lo que antes se daba por
+     hecho que pararía el firewall de Vercel, que ya no existe. Ver api/_freno.js. */
+  const espera = frenoFormulario(quienLlama(req))
+  if (espera > 0) {
+    return res.status(429).json({
+      ok: false,
+      error: 'Has mandado varias inscripciones seguidas. Prueba dentro de un rato.',
+    })
   }
 
   const cuerpo = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {})

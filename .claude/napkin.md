@@ -52,6 +52,36 @@ Runbook curado del repo. No es un diario: si algo deja de ser útil, se borra.
    propias funciones. El comentario de `LISTAS` invita a añadir listas ahí; no
    hacerlo sin mirar quién las sirve.
 
+## Seguridad
+
+1. **La IP de quien llama sale de `req.ip`, NUNCA de `X-Forwarded-For` a pelo.**
+   Esa cabecera la escribe el cliente y el proxy solo AÑADE la buena por detrás:
+   quedándose con el primer elemento, cualquiera estrenaba IP en cada intento y
+   el freno del login no saltaba nunca (comprobado y arreglado el 09-09-2026).
+   `server.js` ya trae `trust proxy 1`, así que `req.ip` da la buena. Si algún
+   día hay que leer la cabecera a mano, el elemento válido es el ÚLTIMO.
+2. **Hay CSP y es fácil de romper sin enterarse.** Vive en `server.js` (constante
+   `CSP`) y cada permiso está ahí por algo concreto: `frame-src` por el mapa de
+   Google de /contacto, `font-src` + `style-src` por Google Fonts, `img-src blob:`
+   por el recortador de fotos del panel. Al meter un script, un iframe o un
+   dominio nuevo, tocar la CSP en el mismo commit y mirar la consola del
+   navegador: una violación no rompe la página entera, solo apaga esa pieza.
+   La página de aprobación de `api/resumen.js` pone su PROPIA CSP, con nonce.
+3. **El `Origin` solo lo manda un navegador.** Los tres formularios públicos lo
+   comprueban, pero el `if (origen)` deja pasar entero a quien no lo mande, o sea
+   a cualquier script. Lo que de verdad frena es `api/_freno.js` (10 envíos por
+   IP cada 15 min). Un formulario público nuevo tiene que llamarlo también, o
+   queda abierto a inundar el buzón y quemar la cuota de Resend.
+4. **Cualquier enlace absoluto se construye con `sitioPublico(req)`**
+   (`api/_telegram.js`), que prefiere `DOMINIO_CANONICO`. `req.headers.host` lo
+   escribe quien llama, y el 301 al dominio bueno solo actúa sobre GET/HEAD: un
+   POST se lo salta. Estaba escrito dos veces y una de las dos se quedó atrás.
+5. **Lo que come cuerpo grande comprueba permisos ANTES del parser.** Los tres
+   `express.raw` de 5 MB llevan delante `antesDeTragar(...)` en `server.js`; sin
+   eso el servidor se tragaba los 5 MB de cualquiera para acabar dando un 401.
+6. **Pasar `npm audit` de vez en cuando.** El 09-09-2026 había 4 avisos
+   (react-router y qs) y se limpiaron con `npm audit fix`, sin tocar código.
+
 ## SEO
 
 1. **Está abierta a buscadores desde el 11-08-2026.** Antes iba `noindex` +

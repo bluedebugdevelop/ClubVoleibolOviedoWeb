@@ -31,6 +31,14 @@ jobs:
   resumir:
     runs-on: ubuntu-latest
 
+    # Este job no toca el repo: lee Instagram, redacta y deja el borrador por
+    # HTTP. Sin este bloque heredaba el permiso por defecto del repositorio,
+    # que puede ser de escritura, y aquí dentro viven cuatro secretos
+    # (Anthropic, Telegram, SITIO_CLAVE). datos.yml sí lo acota, porque ese SÍ
+    # commitea; este no tiene por qué poder hacerlo.
+    permissions:
+      contents: read
+
     steps:
       - name: ¿Son las 20:00 en España?
         id: hora

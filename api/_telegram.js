@@ -15,6 +15,32 @@
 
 const API = 'https://api.telegram.org'
 
+/**
+ * El origen público del sitio, para poder mandar enlaces absolutos.
+ *
+ * `DOMINIO_CANONICO` PRIMERO y la cabecera `Host` solo como último recurso. El
+ * `Host` lo escribe quien llama: el 301 al dominio bueno (server.js) solo actúa
+ * sobre GET y HEAD, así que un POST con `Host: loquesea` se lo salta entero.
+ * Construyendo el enlace con eso, una cuenta del club podía hacer que el botón
+ * «panel» del aviso que le llega a Diego al móvil apuntara a donde quisiera, y
+ * que Telegram se bajara las fotos de un servidor ajeno.
+ *
+ * Vive aquí y no en cada fichero porque estaba escrita dos veces —bien en
+ * `api/resumen.js`, mal en `api/club.js`— y esa es justo la forma de que una de
+ * las dos se quede atrás.
+ */
+export function sitioPublico(req) {
+  const dominio = (process.env.DOMINIO_CANONICO || '')
+    .trim()
+    .replace(/^https?:[/][/]/, '')
+    .replace(/[/]+$/, '')
+  if (dominio) return `https://${dominio}`
+
+  const host = req?.headers?.host || 'localhost'
+  const local = host.startsWith('localhost') || host.startsWith('127.')
+  return `${local ? 'http' : 'https'}://${host}`
+}
+
 export function telegramConfigurado() {
   return Boolean(process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHAT_ID)
 }

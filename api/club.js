@@ -33,7 +33,7 @@ import {
   ponerCookie,
   sesion,
 } from './_acceso.js'
-import { avisarPeticion } from './_telegram.js'
+import { avisarPeticion, sitioPublico } from './_telegram.js'
 
 const PRIORIDADES = ['alta', 'normal', 'baja']
 
@@ -266,7 +266,7 @@ export default async function handler(req, res) {
 
     /* Después de guardar y sin esperarlo: el aviso es una comodidad, no parte
        de la operación. Si Telegram está caído, la petición ya está a salvo. */
-    const sitio = `${seguro ? 'https' : req.protocol}://${req.headers.host}`
+    const sitio = sitioPublico(req)
     avisarPeticion(peticion, sitio)
 
     return res.status(200).json({ ok: true, peticion })

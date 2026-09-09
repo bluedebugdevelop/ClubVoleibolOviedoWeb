@@ -39,6 +39,7 @@ import {
 } from './_almacen.js'
 import { semilla } from './contenido.js'
 import { limpiaNoticia } from './panel.js'
+import { sitioPublico } from './_telegram.js'
 
 const secreto = () => (process.env.RESUMEN_SECRETO || '').trim()
 
@@ -61,8 +62,19 @@ function iguales(a, b) {
 
 const firmaValida = (id, f) => iguales(firmar(id), f)
 
-/** La clave del robot, la misma que firma los enlaces. */
-const claveValida = (req) => iguales(req.headers['x-clave'] || '', secreto())
+/**
+ * La clave del robot, la misma que firma los enlaces.
+ *
+ * `configurado()` PRIMERO, y no por orden: sin RESUMEN_SECRETO, `secreto()` es
+ * la cadena vacía y una llamada sin cabecera `x-clave` compara vacío contra
+ * vacío, que da verdadero. Dentro del handler daba igual —arriba del todo ya se
+ * responde 404 si no está configurado— pero esto lo usa también la guarda de
+ * `server.js`, que corre ANTES, y allí sí importa.
+ *
+ * Exportada por eso: para que esa guarda pueda rechazar la subida antes de
+ * tragarse los 5 MB del cuerpo, usando esta misma comprobación y no una copia.
+ */
+export const claveValida = (req) => configurado() && iguales(req.headers['x-clave'] || '', secreto())
 
 const texto = (v, max = 400) => (typeof v === 'string' ? v.trim().slice(0, max) : '')
 
@@ -88,18 +100,6 @@ function limpiarViejos(privado) {
   privado.borradores = vivos
 }
 
-/** El sitio público, para poder mandar un enlace absoluto por Telegram. */
-function sitio(req) {
-  const dominio = (process.env.DOMINIO_CANONICO || '')
-    .trim()
-    .replace(/^https?:\/\//, '')
-    .replace(/\/$/, '')
-  if (dominio) return `https://${dominio}`
-  const host = req.headers.host || 'localhost'
-  const local = host.startsWith('localhost') || host.startsWith('127.')
-  return `${local ? 'http' : 'https'}://${host}`
-}
-
 const escapa = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`)
 
 // --------------------------------------------------------------------------
@@ -107,7 +107,7 @@ const escapa = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => `&#${c.charCode
 // el router de React a propósito. Se abre desde el móvil, con una firma en la
 // URL, y cuanto menos cargue menos sitios hay por donde se escape.
 // --------------------------------------------------------------------------
-function paginaAprobacion(b, f) {
+function paginaAprobacion(b, f, nonce) {
   const n = b.noticia
   const cerrada = b.estado !== 'borrador'
   const parrafos = n.cuerpo.map((p) => `<p>${escapa(p)}</p>`).join('\n')
@@ -168,7 +168,7 @@ ${fuentes ? `<h2>De dónde sale</h2>\n<ul>${fuentes}</ul>` : ''}
 </div>
 <p id="resultado">${cerrada ? `Ya ${b.estado === 'publicada' ? 'se publicó' : 'se descartó'}.` : ''}</p>
 
-<script>
+<script nonce="${nonce}">
 const id = ${JSON.stringify(b.id)}
 const firma = ${JSON.stringify(String(f))}
 const salida = document.getElementById('resultado')
@@ -274,7 +274,7 @@ export default async function handler(req, res) {
       return res.status(500).json({ ok: false, error: 'No se pudo guardar en el disco.' })
     }
 
-    const enlace = `${sitio(req)}/api/resumen/ver?id=${id}&f=${firmar(id)}`
+    const enlace = `${sitioPublico(req)}/api/resumen/ver?id=${id}&f=${firmar(id)}`
     console.log(`Resumen: borrador ${id} a la espera de aprobación`)
     return res.status(200).json({ ok: true, id, enlace })
   }
@@ -297,7 +297,28 @@ export default async function handler(req, res) {
     res.setHeader('Referrer-Policy', 'no-referrer')
     res.setHeader('X-Robots-Tag', 'noindex, nofollow')
     res.setHeader('Content-Type', 'text/html; charset=utf-8')
-    return res.status(200).send(paginaAprobacion(borrador, f))
+
+    /* CSP propia, que PISA la general de server.js. Esta página no es la web:
+       es HTML montado a mano aquí, con su <script> dentro, así que necesita su
+       propio permiso. Se le da por nonce —un número de un solo uso, distinto en
+       cada carga— y no con 'unsafe-inline', que autorizaría cualquier script.
+       El resto queda a cero: ni imágenes de fuera, ni conexiones a ningún sitio
+       que no sea este servidor. */
+    const nonce = crypto.randomBytes(16).toString('base64')
+    res.setHeader(
+      'Content-Security-Policy',
+      [
+        "default-src 'none'",
+        `script-src 'nonce-${nonce}'`,
+        "style-src 'unsafe-inline'",
+        "img-src 'self'",
+        "connect-src 'self'",
+        "form-action 'none'",
+        "base-uri 'none'",
+        "frame-ancestors 'none'",
+      ].join('; '),
+    )
+    return res.status(200).send(paginaAprobacion(borrador, f, nonce))
   }
 
   if (accion === 'publicar' || accion === 'descartar') {

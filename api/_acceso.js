@@ -185,16 +185,12 @@ export function leerCookie(valor) {
   if (!valor || !configurado()) return null
   const partes = String(valor).split('.')
 
-  // Formato viejo, sin rol: `nombre.caduca.sello`. Se sigue aceptando para no
-  // echar a quien tuviera el panel abierto al desplegar esto. Siempre es admin,
-  // porque cuando se firmó no existía otro rol.
-  if (partes.length === 3) {
-    const [nombre64, caduca, sello] = partes
-    if (!iguales(sello, firma(`${nombre64}.${caduca}`))) return null
-    if (Number(caduca) < Date.now()) return null
-    const nombre = Buffer.from(nombre64, 'base64url').toString()
-    return nombre.toLowerCase() === usuario().toLowerCase() ? { rol: 'admin', nombre } : null
-  }
+  /* Aquí se aceptaba el formato viejo de cookie (`nombre.caduca.sello`, sin
+     rol), puente para no echar a quien tuviera el panel abierto el día que se
+     desplegó el reparto de roles. Duraban 30 días y se firmaron en agosto de
+     2026: hace tiempo que no queda ninguna viva. Se quita porque era un segundo
+     camino de entrada, y un camino que ya no usa nadie solo sirve para que se
+     revise mal. */
 
   if (partes.length !== 4) return null
   const [rol64, nombre64, caduca, sello] = partes
@@ -266,9 +262,26 @@ const MAX_INTENTOS = 5
 const CASTIGO = 15 * 60 * 1000 // 15 minutos
 
 export function quienLlama(req) {
-  // Railway va detrás de un proxy, así que la IP real viene en la cabecera.
-  const reenviada = (req.headers['x-forwarded-for'] || '').split(',')[0].trim()
-  return reenviada || req.socket?.remoteAddress || 'desconocida'
+  /* `req.ip`, NUNCA la cabecera a pelo.
+
+     `X-Forwarded-For` la escribe quien llama y el proxy se limita a AÑADIR la
+     IP de verdad POR DETRÁS. Quedándose con el primer elemento —como se hacía
+     hasta el 09-09-2026— bastaba con mandar una cabecera distinta en cada
+     intento para estrenar IP y el freno de aquí abajo no saltaba jamás: una IP
+     ya castigada con 429 volvía a 401 y podía seguir probando contraseñas sin
+     techo. Estaba comprobado, no era teórico.
+
+     Con `trust proxy 1` (server.js) Express descuenta el salto de confianza
+     —el proxy de Railway— y devuelve la IP que ESE proxy vio, que es la única
+     que el cliente no puede falsear. */
+  if (req.ip) return req.ip
+
+  /* Sin Express delante (una prueba suelta, o si algún día se vuelve a
+     serverless): el ÚLTIMO elemento es el que escribió el proxy; el primero es
+     el que se inventa quien llama. */
+  const cadena = String(req.headers?.['x-forwarded-for'] || '').split(',')
+  const ultima = cadena[cadena.length - 1].trim()
+  return ultima || req.socket?.remoteAddress || 'desconocida'
 }
 
 /** Milisegundos que le quedan de castigo a esta IP; 0 si puede intentarlo. */

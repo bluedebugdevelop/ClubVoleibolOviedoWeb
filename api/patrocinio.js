@@ -19,6 +19,9 @@
 // `patrocinadores@`, sin "cvo" delante (confirmado el 13-08-2026). Es el mismo
 // buzón que enseña la web en `club.emailPatrocinio`: si se cambia uno, hay que
 // cambiar el otro.
+import { frenoFormulario } from './_freno.js'
+import { quienLlama } from './_acceso.js'
+
 const CORREO_PATROCINIO = 'patrocinadores@clubvoleiboloviedo.com'
 
 const CAMPOS = ['empresa', 'contacto', 'telefono', 'email', 'web', 'mensaje']
@@ -45,7 +48,7 @@ export default async function handler(req, res) {
 
   // Mismo criterio que en inscripcion.js: el endpoint es público porque es un
   // formulario, pero se rechaza lo que venga desde otra web. No es un límite de
-  // peticiones; para eso está el firewall de Vercel.
+  // peticiones: de eso se encarga el freno de aquí abajo.
   const origen = req.headers.origin
   if (origen) {
     let anfitrion = ''
@@ -58,6 +61,18 @@ export default async function handler(req, res) {
       console.warn('Solicitud de patrocinio rechazada, origen ajeno:', origen)
       return res.status(403).json({ ok: false, error: 'Origen no permitido' })
     }
+  }
+
+  /* Y detrás, un freno de VOLUMEN, que es lo que de verdad para a un script.
+     El control de arriba solo actúa si viene `Origin`, y esa cabecera solo la
+     manda un navegador: sin ella se saltaba entero. Lo que antes se daba por
+     hecho que pararía el firewall de Vercel, que ya no existe. Ver api/_freno.js. */
+  const espera = frenoFormulario(quienLlama(req))
+  if (espera > 0) {
+    return res.status(429).json({
+      ok: false,
+      error: 'Has mandado varias solicitudes seguidas. Prueba dentro de un rato.',
+    })
   }
 
   const cuerpo = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {})
