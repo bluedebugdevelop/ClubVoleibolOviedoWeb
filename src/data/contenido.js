@@ -529,44 +529,54 @@ export function estadoPreinscripcion(hoy = new Date()) {
   return 'abierta'
 }
 
-// Horarios de entrenamiento de las dos primeras semanas de septiembre
-// (29-08-2026). Son TEMPORALES: los definitivos se cierran más adelante y
-// entonces hay que rehacer este bloque. Por eso lleva `hasta`: pasado ese día
-// desaparece solo de la página, igual que la ventana de fechas tapa el
-// formulario, y nadie tiene que acordarse de quitar un horario caducado.
+// Horarios de entrenamiento definitivos de la temporada 2026/27 (14-09-2026,
+// del PDF que mandó el club). Sustituyen a los temporales de septiembre.
+// Llevan `hasta` por el mismo motivo que los temporales: pasado ese día
+// desaparecen solos de la página, y un horario caducado en la web es peor que
+// no tener horario. Cada temporada nueva: cambiar `temporada`, `hasta` y la lista.
 //
-// Van agrupados por pareja de días y no por equipo, que es como se repartieron
-// en el cartel que se publicó en redes: seis grupos caben en dos columnas.
-// Solo está la cantera: los dos sénior no se preinscriben aquí. El lunes no
-// sale porque ningún grupo entrena ese día.
-export const horariosInicio = {
-  hasta: '2026-09-11',
-  vigencia: 'Del 1 al 11 de septiembre',
-  bloques: [
-    {
-      dias: 'Martes y jueves',
-      fechas: '1, 3, 8 y 10 de septiembre',
-      grupos: [
-        { grupo: 'Benjamín y Alevín', hora: '18:00 – 19:15' },
-        { grupo: 'Infantil y Cadete Masculino', hora: '18:00 – 19:15' },
-        { grupo: 'Cadete Femenino', hora: '19:15 – 20:30' },
-      ],
-    },
-    {
-      dias: 'Miércoles y viernes',
-      fechas: '2, 4, 9 y 11 de septiembre',
-      grupos: [
-        { grupo: 'Infantil Femenino', hora: '18:00 – 19:15' },
-        { grupo: 'Juvenil y Júnior Femenino', hora: '19:15 – 20:30' },
-        { grupo: 'Juvenil y Júnior Masculino', hora: '19:15 – 20:30' },
-      ],
-    },
-  ],
+// Van por `slug` de equipo, no dentro de `datos` en la ficha de la semilla:
+// la lista `equipos` es editable desde el panel y en producción sale del
+// volumen, no de este fichero, así que cualquier campo que se meta en `datos`
+// se perdería en cuanto el club tocara un equipo ahí. Yendo por slug, el
+// horario se superpone al pintar la ficha (`horariosDe` en Equipo.jsx) y
+// sobrevive a lo que se edite en el panel. Un equipo sin entrada aquí no
+// enseña horario.
+export const horariosTemporada = {
+  temporada: '2026/27',
+  hasta: '2027-06-30',
+  // slug del equipo → sesiones. Un equipo sin entrada no enseña horario.
+  porEquipo: {
+    'superliga-2-masculino': [{ dias: 'Lunes, miércoles y jueves', hora: '20:30 – 22:30' }],
+    'primera-nacional-femenina': [{ dias: 'Lunes, miércoles y viernes', hora: '20:30 – 22:30' }],
+    'junior-masculino': [{ dias: 'Lunes, miércoles y jueves', hora: '19:15 – 20:30' }],
+    // El PDF del club trae Juvenil Femenino A y B; en la web hay un solo equipo.
+    'juvenil-femenino': [
+      { dias: 'Equipo A · Lunes y miércoles', hora: '19:15 – 20:30' },
+      { dias: 'Equipo A · Viernes', hora: '19:00 – 20:30' },
+      { dias: 'Equipo B · Martes y jueves', hora: '18:00 – 19:15' },
+    ],
+    'cadete-masculino': [{ dias: 'Martes y miércoles', hora: '19:15 – 20:30' }, { dias: 'Viernes', hora: '19:00 – 20:30' }],
+    'cadete-femenino-a': [{ dias: 'Martes y jueves', hora: '19:15 – 20:30' }, { dias: 'Viernes', hora: '17:30 – 19:00' }],
+    'cadete-femenino-b': [{ dias: 'Lunes', hora: '19:15 – 20:30' }, { dias: 'Viernes', hora: '19:00 – 20:30' }],
+    'infantil-masculino': [{ dias: 'Lunes, miércoles y jueves', hora: '18:00 – 19:15' }],
+    'infantil-femenino-a': [{ dias: 'Martes y jueves', hora: '19:15 – 20:30' }, { dias: 'Viernes', hora: '17:30 – 19:00' }],
+    'infantil-femenino-b': [{ dias: 'Martes', hora: '18:00 – 19:15' }, { dias: 'Viernes', hora: '17:30 – 19:00' }],
+    'alevin-federado': [{ dias: 'Lunes y miércoles', hora: '18:00 – 19:15' }],
+    'alevin': [{ dias: 'Lunes y miércoles', hora: '18:00 – 19:15' }],
+    // 'senior-masculino' (2ª División) no viene en el PDF del club.
+  },
 }
 
-/** ¿Siguen en pie los horarios de arriba? Falso a partir del día siguiente. */
-export function horariosInicioVigentes(hoy = new Date()) {
-  return diaDe(hoy) <= horariosInicio.hasta
+/** ¿Siguen en pie los horarios de arriba? Falso a partir del día siguiente a `hasta`. */
+export function horariosTemporadaVigentes(hoy = new Date()) {
+  return diaDe(hoy) <= horariosTemporada.hasta
+}
+
+/** Sesiones del equipo `slug`, o `[]` si no tiene horario o si ya caducó el de la temporada. */
+export function horariosDe(slug, hoy = new Date()) {
+  if (!horariosTemporadaVigentes(hoy)) return []
+  return horariosTemporada.porEquipo[slug] || []
 }
 
 /** Frase para las llamadas a inscripción repartidas por el sitio. */

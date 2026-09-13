@@ -4,7 +4,7 @@ import JoinCta from '../components/JoinCta'
 import Sponsors from '../components/Sponsors'
 import NoEncontrado from './NoEncontrado'
 import Pendiente from '../components/Pendiente'
-import { padreDe, inicialesDe } from '../data/contenido'
+import { padreDe, inicialesDe, horariosDe } from '../data/contenido'
 import { useEquipos } from '../data/contenidoContexto'
 
 export default function Equipo() {
@@ -16,6 +16,7 @@ export default function Equipo() {
   /* Los equipos nacionales cuelgan de la portada; los de base, de Cantera,
      que es de donde se llega a ellos. */
   const padre = padreDe(equipo)
+  const sesiones = horariosDe(equipo.slug)
 
   return (
     <>
@@ -48,6 +49,17 @@ export default function Equipo() {
               <b>{d.valor}</b>
             </div>
           ))}
+          {/* El horario no viene de `equipo.datos` (editable en el panel):
+              va por código, keyed por slug, para no perderse si el club toca
+              el equipo ahí. Ver `horariosDe` en contenido.js. */}
+          {sesiones.length > 0 && (
+            <div className="entrenos">
+              <span>Entrenamientos</span>
+              {sesiones.map((s) => (
+                <b key={s.dias}>{s.dias} <i>{s.hora}</i></b>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

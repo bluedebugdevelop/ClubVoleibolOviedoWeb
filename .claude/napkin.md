@@ -228,11 +228,17 @@ Runbook curado del repo. No es un diario: si algo deja de ser útil, se borra.
    publicarla desde el panel): cambiar el código NO la corrige, hay que editarla en
    /panel. Al mover las fechas, mirar siempre las dos.
 4. **El contenido temporal lleva fecha de caducidad, no recordatorio.** Los
-   horarios del arranque de temporada (`horariosInicio` en contenido.js, se
-   pintan en /inscripciones) llevan `hasta` y un `horariosInicioVigentes()`
-   que los quita solos, igual que `estadoPreinscripcion` tapa el formulario.
-   Mismo criterio para cualquier bloque con fecha: mejor que desaparezca solo
-   a que se quede un dato caducado esperando a que alguien se acuerde.
+   horarios de entrenamiento (`horariosTemporada.porEquipo` en contenido.js,
+   por slug) llevan `hasta` (fin de temporada) y `horariosDe(slug)` devuelve
+   vacío pasado ese día, igual que `estadoPreinscripcion` tapa el formulario.
+   Cada temporada: cambiar `temporada`, `hasta` y la lista.
+   · **Van en la ficha de cada equipo** (`Equipo.jsx`, celda «Entrenamientos»
+   de `.ficha-datos`), no en /inscripciones (Diego, 14-09-2026). Y se
+   SUPERPONEN al pintar, no van en `datos` de la semilla: `equipos` es lista
+   del panel y en producción sale del volumen, así que un dato metido en la
+   semilla no se vería.
+   · El cartel de redes que los acompaña sale del HTML de la memoria
+   `carteles-html-a-png`: una fila por equipo, foto real a sangre.
 
 ## Datos de competición y escudos
 
