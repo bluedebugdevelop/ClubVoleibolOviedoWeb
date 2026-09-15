@@ -8,6 +8,7 @@ import Inicio from './pages/Inicio'
 import Equipo from './pages/Equipo'
 import Cantera from './pages/Cantera'
 import Calendario from './pages/Calendario'
+import Horarios from './pages/Horarios'
 import Noticias from './pages/Noticias'
 import Noticia from './pages/Noticia'
 import QuienesSomos from './pages/QuienesSomos'
@@ -50,6 +51,7 @@ function App() {
         <Route path="/equipos/:slug" element={<Equipo />} />
         <Route path="/cantera" element={<Cantera />} />
         <Route path="/calendario" element={<Calendario />} />
+        <Route path="/horarios" element={<Horarios />} />
         <Route path="/noticias" element={<Noticias />} />
         <Route path="/noticias/:slug" element={<Noticia />} />
         <Route path="/quienes-somos" element={<QuienesSomos />} />

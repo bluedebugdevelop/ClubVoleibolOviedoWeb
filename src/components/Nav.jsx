@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import Crest from './Crest'
 import { redes } from './redes'
-import { club } from '../data/contenido'
+import { club, estadoPreinscripcion } from '../data/contenido'
 
 const equipos = [
   { to: '/equipos/superliga-2-masculino', texto: 'Superliga 2 Masculino' },
@@ -15,6 +15,7 @@ const equipos = [
 
 const secciones = [
   { to: '/calendario', texto: 'Calendario' },
+  { to: '/horarios', texto: 'Horarios' },
   { to: '/noticias', texto: 'Noticias' },
   { to: '/quienes-somos', texto: 'Quiénes somos' },
   { to: '/patrocinadores', texto: 'Patrocinadores' },
@@ -42,6 +43,9 @@ function Candado() {
 export default function Nav() {
   const [abierto, setAbierto] = useState(false)
   const { pathname } = useLocation()
+  // Con el plazo cerrado el botón sobra: vuelve solo cuando se cambien las
+  // fechas de la temporada que viene (ver `preinscripcion` en contenido.js).
+  const apuntate = estadoPreinscripcion() !== 'cerrada'
 
   /* al cambiar de página el cajón se cierra solo: si no, se queda abierto
      tapando la página nueva */
@@ -90,7 +94,7 @@ export default function Nav() {
           </div>
           <Candado />
           <NavLink className="btn-cta alt" to="/patrocinar">Patrocinar</NavLink>
-          <NavLink className="btn-cta" to="/inscripciones">Apúntate</NavLink>
+          {apuntate && <NavLink className="btn-cta" to="/inscripciones">Apúntate</NavLink>}
 
           {/* solo se ve por debajo de 1000px, donde .links se oculta */}
           <button
@@ -123,7 +127,7 @@ export default function Nav() {
 
             <div className="mnav-cta">
               <NavLink className="btn-cta alt" to="/patrocinar">Patrocinar</NavLink>
-              <NavLink className="btn-cta" to="/inscripciones">Apúntate</NavLink>
+              {apuntate && <NavLink className="btn-cta" to="/inscripciones">Apúntate</NavLink>}
             </div>
 
             <div className="mnav-social">

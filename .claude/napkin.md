@@ -239,6 +239,15 @@ Runbook curado del repo. No es un diario: si algo deja de ser útil, se borra.
    semilla no se vería.
    · El cartel de redes que los acompaña sale del HTML de la memoria
    `carteles-html-a-png`: una fila por equipo, foto real a sangre.
+   · **/horarios es el cartel en HTML** (`Horarios.jsx`, 15-09-2026): pinta
+   `porEquipo` en el ORDEN DE SUS CLAVES (pequeños → grandes, nacionales al
+   final), nombres por slug de `useEquipos()`, y avisa de los equipos del panel
+   sin entrada. Con `hasta` pasado enseña un `Pendiente` en vez de la lista.
+5. **Las llamadas «Apúntate» se apagan solas con el plazo cerrado.** `JoinCta`
+   devuelve null, la barra pierde el botón y el hero manda a /horarios cuando
+   `estadoPreinscripcion() === 'cerrada'` (Diego, 15-09-2026: el club no tiene
+   plazas). Vuelven en cuanto se muevan las fechas de `preinscripcion`; no hay
+   que reponer nada a mano.
 
 ## Datos de competición y escudos
 

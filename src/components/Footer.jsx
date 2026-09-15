@@ -25,6 +25,7 @@ export default function Footer() {
           <b>Club</b>
           <Link to="/quienes-somos">Quiénes somos</Link>
           <Link to="/noticias">Noticias</Link>
+          <Link to="/horarios">Horarios</Link>
           <Link to="/patrocinadores">Patrocinadores</Link>
           <Link to="/patrocinar">Patrocinar al club</Link>
           <Link to="/tienda">Tienda</Link>

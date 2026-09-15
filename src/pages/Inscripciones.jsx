@@ -114,7 +114,7 @@ export default function Inscripciones() {
             {ventana === 'antes' && (
               <>
                 <p className="notice aviso">
-                  <b>La preinscripción todavía no está abierta.</b> Se abre el 10 de agosto y se cierra el 25.
+                  <b>La preinscripción todavía no está abierta.</b> Es {preinscripcion.texto}.
                   Vuelve esos días y el formulario estará aquí mismo.
                 </p>
                 <p className="letra-pequena">

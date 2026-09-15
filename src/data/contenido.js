@@ -546,9 +546,19 @@ export const horariosTemporada = {
   temporada: '2026/27',
   hasta: '2027-06-30',
   // slug del equipo → sesiones. Un equipo sin entrada no enseña horario.
+  //
+  // Orden: el del cartel de redes, de pequeños a grandes y los dos nacionales
+  // al final. Este orden es también el que sigue /horarios al pintar las filas
+  // (ver `horariosPorEquipo`), así que tocar el orden aquí cambia esa página.
   porEquipo: {
-    'superliga-2-masculino': [{ dias: 'Lunes, miércoles y jueves', hora: '20:30 – 22:30' }],
-    'primera-nacional-femenina': [{ dias: 'Lunes, miércoles y viernes', hora: '20:30 – 22:30' }],
+    'alevin': [{ dias: 'Lunes y miércoles', hora: '18:00 – 19:15' }],
+    'alevin-federado': [{ dias: 'Lunes y miércoles', hora: '18:00 – 19:15' }],
+    'infantil-masculino': [{ dias: 'Lunes, miércoles y jueves', hora: '18:00 – 19:15' }],
+    'infantil-femenino-a': [{ dias: 'Martes y jueves', hora: '19:15 – 20:30' }, { dias: 'Viernes', hora: '17:30 – 19:00' }],
+    'infantil-femenino-b': [{ dias: 'Martes', hora: '18:00 – 19:15' }, { dias: 'Viernes', hora: '17:30 – 19:00' }],
+    'cadete-masculino': [{ dias: 'Martes y miércoles', hora: '19:15 – 20:30' }, { dias: 'Viernes', hora: '19:00 – 20:30' }],
+    'cadete-femenino-a': [{ dias: 'Martes y jueves', hora: '19:15 – 20:30' }, { dias: 'Viernes', hora: '17:30 – 19:00' }],
+    'cadete-femenino-b': [{ dias: 'Lunes', hora: '19:15 – 20:30' }, { dias: 'Viernes', hora: '19:00 – 20:30' }],
     'junior-masculino': [{ dias: 'Lunes, miércoles y jueves', hora: '19:15 – 20:30' }],
     // El PDF del club trae Juvenil Femenino A y B; en la web hay un solo equipo.
     'juvenil-femenino': [
@@ -556,14 +566,8 @@ export const horariosTemporada = {
       { dias: 'Equipo A · Viernes', hora: '19:00 – 20:30' },
       { dias: 'Equipo B · Martes y jueves', hora: '18:00 – 19:15' },
     ],
-    'cadete-masculino': [{ dias: 'Martes y miércoles', hora: '19:15 – 20:30' }, { dias: 'Viernes', hora: '19:00 – 20:30' }],
-    'cadete-femenino-a': [{ dias: 'Martes y jueves', hora: '19:15 – 20:30' }, { dias: 'Viernes', hora: '17:30 – 19:00' }],
-    'cadete-femenino-b': [{ dias: 'Lunes', hora: '19:15 – 20:30' }, { dias: 'Viernes', hora: '19:00 – 20:30' }],
-    'infantil-masculino': [{ dias: 'Lunes, miércoles y jueves', hora: '18:00 – 19:15' }],
-    'infantil-femenino-a': [{ dias: 'Martes y jueves', hora: '19:15 – 20:30' }, { dias: 'Viernes', hora: '17:30 – 19:00' }],
-    'infantil-femenino-b': [{ dias: 'Martes', hora: '18:00 – 19:15' }, { dias: 'Viernes', hora: '17:30 – 19:00' }],
-    'alevin-federado': [{ dias: 'Lunes y miércoles', hora: '18:00 – 19:15' }],
-    'alevin': [{ dias: 'Lunes y miércoles', hora: '18:00 – 19:15' }],
+    'primera-nacional-femenina': [{ dias: 'Lunes, miércoles y viernes', hora: '20:30 – 22:30' }],
+    'superliga-2-masculino': [{ dias: 'Lunes, miércoles y jueves', hora: '20:30 – 22:30' }],
     // 'senior-masculino' (2ª División) no viene en el PDF del club.
   },
 }
@@ -577,6 +581,17 @@ export function horariosTemporadaVigentes(hoy = new Date()) {
 export function horariosDe(slug, hoy = new Date()) {
   if (!horariosTemporadaVigentes(hoy)) return []
   return horariosTemporada.porEquipo[slug] || []
+}
+
+/**
+ * Todos los horarios de la temporada, para /horarios.
+ *
+ * `[]` si ya caducaron (o si aún no se han publicado); si no, la lista de
+ * equipos en el orden de `porEquipo` de arriba, cada uno con sus sesiones.
+ */
+export function horariosPorEquipo(hoy = new Date()) {
+  if (!horariosTemporadaVigentes(hoy)) return []
+  return Object.entries(horariosTemporada.porEquipo).map(([slug, sesiones]) => ({ slug, sesiones }))
 }
 
 /** Frase para las llamadas a inscripción repartidas por el sitio. */

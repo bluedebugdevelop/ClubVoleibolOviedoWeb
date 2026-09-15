@@ -509,6 +509,38 @@ footer .legal .credito b{color:var(--ink);font-family:"Barlow Condensed",sans-se
   .squad{grid-template-columns:repeat(3,1fr)}
 }
 
+/* -------- horarios (Horarios.jsx) --------
+   Una fila por equipo: nombre y categoría a la izquierda, sesiones a la
+   derecha. El segundo bloque (Equipos nacionales) lleva más separación arriba
+   para que no se lea como continuación del primero. */
+.horarios{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.horarios li{display:flex;justify-content:space-between;align-items:center;gap:20px;
+  padding:16px 0;border-bottom:1px solid var(--line)}
+.horarios .eq{text-decoration:none;color:var(--ink)}
+.horarios .eq b{display:block;font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:22px;
+  text-transform:uppercase;line-height:1.15}
+.horarios .eq:hover b{color:var(--blue)}
+.horarios .eq span{display:block;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);
+  margin-top:2px}
+.horarios .ses{text-align:right;font-family:"Barlow Condensed",sans-serif;font-weight:500;font-size:17px}
+.horarios .ses span{display:block}
+.horarios .ses span + span{margin-top:2px}
+.horarios .ses i{font-style:normal;font-weight:800;color:var(--blue);margin-left:8px}
+.horarios + .sechead{margin-top:44px}
+@media(max-width:640px){
+  .horarios li{flex-direction:column;align-items:flex-start}
+  .horarios .ses{text-align:left}
+}
+
+.horarios-sede{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.horarios-sede b{display:block;font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:24px;
+  text-transform:uppercase}
+.horarios-sede span{display:block;color:var(--dim)}
+.horarios-sede .btn{margin-left:auto}
+@media(max-width:640px){
+  .horarios-sede .btn{margin-left:0}
+}
+
 /* -------- calendario (Calendario.jsx) --------
    Mismo componente .fix que la ficha de equipo, pero aquí cada fila lleva
    además la columna del equipo (.who), así que la variante ancha vive bajo

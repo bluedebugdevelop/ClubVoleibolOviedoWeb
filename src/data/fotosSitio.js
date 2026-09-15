@@ -88,6 +88,15 @@ export const FOTOS_SITIO = [
     porDefecto: '/media/plancha.jpg',
   },
   {
+    clave: 'horarios',
+    titulo: 'Horarios — cabecera',
+    donde: 'Banda de detrás del título en /horarios.',
+    formato: 'cabecera',
+    vistaTitulo: 'Horarios de entrenamiento',
+    // la misma foto del cartel de horarios que se repartió por redes
+    porDefecto: '/media/bloqueo-noche.jpg',
+  },
+  {
     clave: 'inscripciones',
     titulo: 'Inscripciones — cabecera',
     donde: 'Banda de detrás del título en /inscripciones.',

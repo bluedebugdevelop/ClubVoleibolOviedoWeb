@@ -23,8 +23,12 @@ export default function Inicio() {
     description:
       'Club de voleibol de Oviedo fundado en 1991. Superliga 2 Masculino, Primera Nacional ' +
       'Femenina y 9 equipos de cantera entrenando en el Polideportivo José Manuel Fuente, ' +
-      'Colloto. Apúntate esta temporada.',
+      'Colloto. Horarios, calendario y noticias.',
   })
+
+  // Con la preinscripción cerrada, el hero no invita a apuntarse: invita a ver
+  // los horarios de entrenamiento (misma comprobación que en Nav.jsx).
+  const apuntate = estadoPreinscripcion() !== 'cerrada'
 
   const posterHero = useFoto('portada-hero')
   // tres: las noticias ocupan el ancho entero desde que se fue la columna de
@@ -53,7 +57,11 @@ export default function Inicio() {
           </p>
           <div className="btns">
             <a className="btn" href="#equipos">Ver equipos</a>
-            <Link className="btn ghost" to="/inscripciones">Apúntate al club</Link>
+            {apuntate ? (
+              <Link className="btn ghost" to="/inscripciones">Apúntate al club</Link>
+            ) : (
+              <Link className="btn ghost" to="/horarios">Horarios de entrenamiento</Link>
+            )}
           </div>
           <div className="kicker below">Temporada 2026/27 · Superliga 2 · Primera Nacional</div>
         </div>

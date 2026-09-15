@@ -32,6 +32,7 @@ const estaticas = [
   ['/', 1.0],
   ['/inscripciones', 0.9],
   ['/cantera', 0.8],
+  ['/horarios', 0.8],
   ['/quienes-somos', 0.8],
   ['/calendario', 0.7],
   ['/noticias', 0.7],
