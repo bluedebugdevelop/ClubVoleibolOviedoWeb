@@ -15,6 +15,9 @@ import { scrapeFvbpa } from './fuentes/fvbpa.mjs'
 import { scrapeRfevb } from './fuentes/rfevb.mjs'
 import { resolverEscudos } from './lib/escudos.mjs'
 
+import { hayBd } from '../api/_bd.js'
+import { guardarCompeticion } from '../bd/guardar-competicion.mjs'
+
 const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..')
 const DESTINO = join(RAIZ, 'src', 'data', 'competicion.json')
 // Las temporadas cerradas se guardan aquí, una por fichero, el día que las

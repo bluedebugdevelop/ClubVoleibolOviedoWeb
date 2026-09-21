@@ -34,6 +34,7 @@ import resumen from './api/resumen.js'
 import { SUBIDAS, TIPOS_ACEPTADOS, esPersistente } from './api/_almacen.js'
 import { configurado as panelConfigurado, sesion, sesionAdmin } from './api/_acceso.js'
 import { claveValida as claveDelRobot } from './api/resumen.js'
+import { hayBd, migrar } from './api/_bd.js'
 
 const raiz = path.dirname(fileURLToPath(import.meta.url))
 const dist = path.join(raiz, 'dist')
@@ -216,6 +217,22 @@ app.use((req, res) => {
   res.sendFile(path.join(dist, 'index.html'))
 })
 
+/* Las migraciones, antes de escuchar.
+
+   Desplegar y migrar son la misma operación en Railway: no hay un paso previo
+   donde encajar un comando. Van ANTES del `listen` para que el servicio no
+   empiece a contestar con un esquema a medio aplicar.
+
+   Si fallan, el proceso se muere con el error. Es lo que se quiere: Railway
+   mantiene el despliegue anterior en pie cuando el nuevo no arranca, así que
+   un esquema roto deja el sitio como estaba en vez de tirarlo. */
+try {
+  await migrar()
+} catch (e) {
+  console.error('bd: no se pudieron aplicar las migraciones —', e.message)
+  process.exit(1)
+}
+
 const puerto = process.env.PORT || 3000
 // 0.0.0.0 y no localhost: si escuchara solo en el loopback, Railway no vería
 // el puerto abierto y el servicio se quedaría sin exponer.
@@ -230,6 +247,12 @@ app.listen(puerto, '0.0.0.0', () => {
   /* Sin estas variables el panel responde 404 y el candado de la barra lleva a
      «página no encontrada». Visto desde fuera parece un fallo, así que aquí se
      dice en voz alta qué falta en vez de dejarlo a que alguien lo deduzca. */
+  if (!hayBd()) {
+    console.warn(
+      'AVISO: sin DATABASE_URL. El calendario se sirve del JSON del repositorio ' +
+        'y el club (usuarios, equipos, horarios) no está disponible.',
+    )
+  }
   if (!panelConfigurado()) {
     console.warn(
       'AVISO: el panel está APAGADO. Faltan (o están mal) PANEL_CLAVE_HASH y/o ' +
