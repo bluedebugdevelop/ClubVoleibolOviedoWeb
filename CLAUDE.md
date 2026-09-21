@@ -8,11 +8,25 @@ Web oficial del club. React 19 + Vite 8 + React Router 7, **CSS propio** en
 ```bash
 npm run dev        # front en caliente
 npm run dev:api    # endpoints de /api en local
-npm run datos      # scraping de federaciones -> src/data/competicion.json
+npm run datos      # scraping de federaciones -> Postgres + src/data/competicion.json
 npm run build
 npm start          # server.js (Express) — lo que corre en producción
 npm run lint       # oxlint
 ```
+
+## La base de datos
+
+**Postgres en Railway, en el mismo proyecto que la web (servicio `Postgres`).**
+Es la fuente de verdad del club entero: usuarios, equipos, plantillas, horarios,
+avisos, chat, la competición raspada y el contenido del panel. La web y la app
+móvil leen de aquí, que es lo que hace que sean el mismo club.
+
+- `bd/migraciones/*.sql` — el esquema. Se aplican **al arrancar** (`api/_bd.js`),
+  porque en Railway desplegar y migrar son la misma operación. Una migración ya
+  aplicada **no se reescribe nunca**: se añade otra encima.
+- `api/_bd.js` — pool, `filas`/`fila`/`enTransaccion` y el `migrar()` del arranque.
+- `scripts/importar-club.mjs` — trae Firestore a Postgres. Repetible.
+- `bd/guardar-competicion.mjs` — donde el raspador deja lo suyo.
 
 ## Dónde está qué
 
@@ -72,6 +86,27 @@ fijados) para sobrevivir al cambio de temporada. No cablear ids.
 **Un club puede tener dos equipos de la misma categoría y género en divisiones
 distintas** (sénior masculino en 1ª Nacional y en 2ª). La división entra en la
 clave de fusión.
+
+**Las horas de los partidos son HORA DE PARED, no instantes.** `partidos.cuando`
+y `eventos.cuando` son `timestamp` SIN zona, se escriben como texto y se leen con
+`to_char`. Ni un `new Date` en ese camino. Nacieron como `timestamptz` y eso
+convertía: el raspador escribía desde Madrid las 17:00 como las 15:00 UTC y
+Railway, que va en UTC, las servía como las 15:00. Todo el club vio el partido
+del 3 de octubre dos horas antes. Lo que publica la federación es «a las cinco en
+el pabellón», que no lleva zona porque no le hace falta.
+
+**Un raspado que llega sin partidos no borra el calendario que había.**
+`guardar-competicion.mjs` conserva lo guardado y lo anota en `raspados`. Pasó de
+verdad: los ids de grupo de la RFEVB apuntaban todavía a la temporada anterior y
+una pasada dejó la competición nacional sin un solo partido. Un calendario de
+ayer es mucho mejor que ninguno.
+
+**`/api/competicion` no puede cambiar de forma.** La app que está en las tiendas
+lee ese contrato campo por campo (`clave`, `equipoClub`, `partidos[].iso`,
+`clasificacion[].yo`). Se sirve desde Postgres y `api/_competicion-bd.js`
+reconstruye ese formato a mano: es compatibilidad, no diseño. Si hay que cambiar
+el contrato, hay que publicar versión en las dos tiendas y esperar a que la
+instale todo el club.
 
 **En el cambio de temporada las redes de seguridad se apagan.** `scrape.mjs` se
 niega a escribir si una fuente pierde todos sus equipos, pero eso solo vale
