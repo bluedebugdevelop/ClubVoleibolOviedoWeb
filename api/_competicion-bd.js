@@ -17,25 +17,27 @@
 
 import { filas } from './_bd.js'
 
-const dos = (n) => String(n).padStart(2, '0')
+/* La forma de pedir un partido, en un solo sitio.
 
-/**
- * Un timestamp de la base al 'YYYY-MM-DDTHH:MM' que espera la app.
- *
- * En hora local del servidor, como lo escribió el raspador. Sin hora
- * confirmada se devuelve solo el día: la app ya sabe leer eso como «hora por
- * confirmar», y es lo que evita pintar partidos de madrugada.
- */
-function aIso(fecha, horaConfirmada) {
-  const f = new Date(fecha)
-  const dia = `${f.getFullYear()}-${dos(f.getMonth() + 1)}-${dos(f.getDate())}`
-  return horaConfirmada ? `${dia}T${dos(f.getHours())}:${dos(f.getMinutes())}` : dia
-}
+   `to_char` es lo que mantiene la hora tal cual está guardada. Se parte en día
+   y reloj porque un partido sin hora confirmada devuelve solo el día, y es la
+   app la que sabe leer eso como «hora por confirmar». */
+const SELECCION_PARTIDO = `
+  SELECT *,
+         to_char(cuando, 'YYYY-MM-DD') AS dia,
+         to_char(cuando, 'HH24:MI')    AS reloj
+  FROM partidos`
 
+/* Las fechas salen ya formateadas de Postgres, con `to_char`.
+
+   Ni un `new Date` en este camino: la columna es hora de pared sin zona (ver
+   la migración 005) y meterla en un Date la volvería a atar a la zona del
+   proceso, que es exactamente el fallo que esa migración arregla. `dia` y
+   `reloj` llegan como texto y se juntan. */
 const aPartido = (p) => ({
   id: String(p.id).includes(':') ? String(p.id).split(':').slice(1).join(':') : String(p.id),
-  iso: aIso(p.cuando, p.hora_confirmada),
-  hora: p.hora_confirmada ? aIso(p.cuando, true).slice(11) : null,
+  iso: p.hora_confirmada ? `${p.dia}T${p.reloj}` : p.dia,
+  hora: p.hora_confirmada ? p.reloj : null,
   sede: p.sede,
   local: p.local,
   visitante: p.visitante,
@@ -93,10 +95,7 @@ export async function unaCompeticion(clave) {
   const c = await filas('SELECT * FROM competiciones WHERE clave = $1', [clave])
   if (c.length === 0) return null
 
-  const partidos = await filas(
-    'SELECT * FROM partidos WHERE competicion = $1 ORDER BY cuando, id',
-    [clave],
-  )
+  const partidos = await filas(`${SELECCION_PARTIDO} WHERE competicion = $1 ORDER BY cuando, id`, [clave])
   const tabla = await filas(
     'SELECT * FROM clasificacion WHERE competicion = $1 ORDER BY pos',
     [clave],
@@ -133,7 +132,7 @@ export async function indiceCompeticion() {
 /** Todo, para quien lo quiera entero. */
 export async function todaLaCompeticion() {
   const c = await filas('SELECT * FROM competiciones ORDER BY ente, nombre')
-  const partidos = await filas('SELECT * FROM partidos ORDER BY cuando, id')
+  const partidos = await filas(`${SELECCION_PARTIDO} ORDER BY cuando, id`)
   const tabla = await filas('SELECT * FROM clasificacion ORDER BY competicion, pos')
 
   // Se agrupa en memoria en vez de con una consulta por competición: son dos

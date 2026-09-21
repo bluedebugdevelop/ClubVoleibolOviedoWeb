@@ -28,11 +28,19 @@
 
 import { enTransaccion, hayBd } from '../api/_bd.js'
 
-/** 'YYYY-MM-DDTHH:MM' → Date en hora local, como hace la app. */
-function aFecha(iso) {
+/**
+ * 'YYYY-MM-DDTHH:MM' → 'YYYY-MM-DD HH:MM:00', que es lo que entiende Postgres.
+ *
+ * Se manda como TEXTO y no como Date a propósito. La columna es `timestamp`
+ * sin zona —una hora de pared, ver la migración 005— y un Date obligaría al
+ * driver a serializarlo con la zona del proceso: el mismo partido quedaría
+ * guardado a una hora distinta según desde dónde se corriera el raspador.
+ * Con texto, las cifras que entran son las que se guardan.
+ */
+function aMarca(iso) {
   const m = /^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}))?/.exec(String(iso ?? ''))
   if (!m) return null
-  return new Date(+m[1], +m[2] - 1, +m[3], +(m[4] ?? 0), +(m[5] ?? 0))
+  return `${m[1]}-${m[2]}-${m[3]} ${m[4] ?? '00'}:${m[5] ?? '00'}:00`
 }
 
 /**
@@ -101,7 +109,7 @@ export async function guardarCompeticion(salida) {
       await bd.query('DELETE FROM clasificacion WHERE competicion = $1', [e.clave])
 
       for (const p of e.partidos ?? []) {
-        const cuando = aFecha(p.iso)
+        const cuando = aMarca(p.iso)
         // Un partido sin fecha legible no se puede colocar en ningún
         // calendario; se descarta en vez de guardar una fila inútil.
         if (!cuando) continue
